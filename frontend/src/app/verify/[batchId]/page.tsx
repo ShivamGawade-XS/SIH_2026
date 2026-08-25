@@ -8,9 +8,11 @@ import FarmerProfile from "@/components/FarmerProfile";
 import Scorecard from "@/components/Scorecard";
 import CustodyTimeline from "@/components/CustodyTimeline";
 import ApiaryMap from "@/components/ApiaryMap";
+import NMRSpectrumViewer from "@/components/NMRSpectrumViewer";
 import { fetchBatchById } from "@/lib/contract";
 import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
 import { generateCertificatePDF } from "@/lib/pdf-certificate";
+import { saveComplaint } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
 import confetti from "canvas-confetti";
 import {
@@ -197,10 +199,11 @@ export default function ConsumerVerificationPage() {
           </div>
         </section>
 
-        {/* 5. AI QUALITY SCORECARD */}
+        {/* 5. AI QUALITY SCORECARD & NMR SPECTROMETRY */}
         <section className="py-24 px-6 md:px-12 lg:px-24 border-b border-charcoal/10 bg-white">
           <div className="max-w-6xl mx-auto">
             <Scorecard report={labReport} />
+            <NMRSpectrumViewer purityScore={batch.qualityScore} />
           </div>
         </section>
 
@@ -327,6 +330,16 @@ export default function ConsumerVerificationPage() {
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
+                    const ticketId = `CMP-2026-${Math.floor(Math.random() * 800 + 100)}`;
+                    saveComplaint({
+                      id: ticketId,
+                      batchId: batch.batchId,
+                      qrToken: qrToken,
+                      reportedBy: "Consumer (Verified Scan)",
+                      reason: reportReason,
+                      date: new Date().toISOString().split("T")[0],
+                      status: "Pending Quality Inspection",
+                    });
                     setReportSubmitted(true);
                   }}
                   className="space-y-4"

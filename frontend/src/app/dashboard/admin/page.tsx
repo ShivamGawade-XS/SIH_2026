@@ -4,39 +4,18 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import confetti from "canvas-confetti";
-import { getCustomBatches, saveCustomBatch } from "@/lib/registry";
+import { getCustomBatches, saveCustomBatch, getComplaints, ConsumerComplaint } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
 import { ShieldAlert, ArrowLeft, AlertTriangle, CheckCircle2, Ban, QrCode, ExternalLink, RefreshCw } from "lucide-react";
 
 export default function AdminRecallPage() {
   const [batches, setBatches] = useState<BatchMetadata[]>([]);
+  const [complaints, setComplaints] = useState<ConsumerComplaint[]>([]);
   const [revokedId, setRevokedId] = useState<number | null>(null);
-
-  // Consumer complaints queue (demonstration registry)
-  const [complaints, setComplaints] = useState([
-    {
-      id: "CMP-2026-881",
-      batchId: 2,
-      qrToken: "TT-2026-00002",
-      reportedBy: "Consumer (Kolkata Market)",
-      reason: "Broken QR seal on lid and unusually thin consistency",
-      date: "2026-08-24",
-      status: "Under Lab Review",
-    },
-    {
-      id: "CMP-2026-882",
-      batchId: 1,
-      qrToken: "TT-2026-00001",
-      reportedBy: "Retailer (New Delhi)",
-      reason: "Routine verification inquiry",
-      date: "2026-08-25",
-      status: "Verified Authentic",
-    },
-  ]);
 
   useEffect(() => {
     setBatches(getCustomBatches());
+    setComplaints(getComplaints());
   }, []);
 
   const handleRevokeBatch = (batchId: number) => {
