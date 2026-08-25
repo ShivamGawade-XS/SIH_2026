@@ -1,9 +1,24 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShieldCheck, Sparkles, LayoutDashboard, QrCode } from "lucide-react";
+import { ShieldCheck, Sparkles, LayoutDashboard, QrCode, Globe } from "lucide-react";
+import { Language } from "@/lib/i18n";
 
 export default function Navbar() {
+  const [lang, setLang] = useState<Language>("en");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("honeychain_lang") as Language;
+    if (saved) setLang(saved);
+  }, []);
+
+  const handleLangChange = (newLang: Language) => {
+    setLang(newLang);
+    localStorage.setItem("honeychain_lang", newLang);
+    window.dispatchEvent(new Event("honeychain_lang_changed"));
+  };
+
   return (
     <header className="border-b border-charcoal/10 bg-alabaster/95 backdrop-blur-sm sticky top-0 z-40 transition-all duration-300">
       <div className="max-w-6xl mx-auto px-6 md:px-12 flex justify-between items-center h-20">
@@ -24,8 +39,30 @@ export default function Navbar() {
           <span>Polygon Sepolia • Live Registry</span>
         </div>
 
-        {/* Right Navigation */}
-        <nav className="flex items-center gap-4 md:gap-8">
+        {/* Right Navigation + Language Switcher */}
+        <nav className="flex items-center gap-3 sm:gap-6">
+          {/* Indic Language Switcher */}
+          <div className="flex items-center border border-charcoal/20 bg-white text-[10px] font-semibold">
+            <button
+              onClick={() => handleLangChange("en")}
+              className={`px-2 py-1 transition-colors ${lang === "en" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => handleLangChange("hi")}
+              className={`px-2 py-1 transition-colors ${lang === "hi" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
+            >
+              हिंदी
+            </button>
+            <button
+              onClick={() => handleLangChange("bn")}
+              className={`px-2 py-1 transition-colors ${lang === "bn" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
+            >
+              বাংলা
+            </button>
+          </div>
+
           <Link
             href="/verify"
             className="text-xs uppercase tracking-widest text-charcoal hover:text-gold transition-colors duration-300 flex items-center gap-1.5"
@@ -35,10 +72,11 @@ export default function Navbar() {
           </Link>
           <Link
             href="/dashboard"
-            className="px-5 py-2.5 text-[10px] uppercase tracking-widest font-medium btn-gold-slide flex items-center gap-1.5"
+            className="px-4 sm:px-5 py-2.5 text-[10px] uppercase tracking-widest font-medium btn-gold-slide flex items-center gap-1.5"
           >
             <LayoutDashboard className="w-3 h-3" />
-            <span>KVIC Portal</span>
+            <span className="hidden sm:inline">KVIC Portal</span>
+            <span className="sm:hidden">Portal</span>
           </Link>
         </nav>
       </div>

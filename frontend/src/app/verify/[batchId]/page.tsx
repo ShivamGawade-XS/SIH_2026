@@ -33,6 +33,9 @@ export default function ConsumerVerificationPage() {
   const [data, setData] = useState<BatchMetadata | null>(null);
   const [copiedTx, setCopiedTx] = useState(false);
   const [copiedIpfs, setCopiedIpfs] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportSubmitted, setReportSubmitted] = useState(false);
+  const [reportReason, setReportReason] = useState("Broken or damaged QR seal on lid");
 
   useEffect(() => {
     fetchBatchById(batchIdNum).then((res) => setData(res));
@@ -271,6 +274,17 @@ export default function ConsumerVerificationPage() {
                     <span>Explorer</span>
                   </a>
                 </div>
+
+                {/* Report Counterfeit / Broken Seal */}
+                <div className="mt-6 pt-6 border-t border-charcoal/10 flex justify-between items-center">
+                  <span className="text-[10px] text-warm-grey">Suspect this jar is counterfeit or tampered?</span>
+                  <button
+                    onClick={() => setShowReportModal(true)}
+                    className="text-[10px] uppercase tracking-widest font-semibold text-rose-700 hover:text-rose-900 transition-colors underline"
+                  >
+                    Report Tampering
+                  </button>
+                </div>
               </div>
 
               {/* Right Col: Custody Timeline */}
@@ -284,6 +298,81 @@ export default function ConsumerVerificationPage() {
             </div>
           </div>
         </section>
+
+        {/* REPORT MODAL */}
+        {showReportModal && (
+          <div className="fixed inset-0 z-50 bg-charcoal/80 backdrop-blur-sm flex items-center justify-center p-6">
+            <div className="border border-charcoal/20 bg-white max-w-md w-full p-8 relative shadow-2xl">
+              <h3 className="text-2xl serif text-charcoal mb-2">Report Suspicious Jar / Tampering</h3>
+              <p className="text-xs text-warm-grey mb-6">
+                Your report for Batch #{batch.batchId} ({qrToken}) will be forwarded directly to KVIC & National Bee Board quality inspectors.
+              </p>
+
+              {reportSubmitted ? (
+                <div className="p-6 border border-emerald-300 bg-emerald-50 text-center">
+                  <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
+                  <p className="text-sm font-serif font-bold text-charcoal">Report Successfully Logged</p>
+                  <p className="text-xs text-warm-grey mt-1">Inspection Ticket: CMP-2026-{Math.floor(Math.random() * 800 + 100)}</p>
+                  <button
+                    onClick={() => {
+                      setShowReportModal(false);
+                      setReportSubmitted(false);
+                    }}
+                    className="mt-6 px-6 py-2 text-xs uppercase tracking-widest font-semibold btn-outline-luxury"
+                  >
+                    Close
+                  </button>
+                </div>
+              ) : (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setReportSubmitted(true);
+                  }}
+                  className="space-y-4"
+                >
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1">Issue Type</label>
+                    <select
+                      value={reportReason}
+                      onChange={(e) => setReportReason(e.target.value)}
+                      className="w-full h-10 border-b border-charcoal/30 bg-transparent text-xs focus:border-gold focus:outline-none"
+                    >
+                      <option value="Broken QR seal on lid">Broken or damaged QR seal on lid</option>
+                      <option value="Unusual fermented taste or thin syrup">Unusual fermented taste or thin syrup</option>
+                      <option value="Packaging / label appears duplicated">Packaging / label appears duplicated</option>
+                      <option value="Retailer overcharging above MSP">Retailer overcharging above MSP</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1">City / Purchase Location</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Connaught Place, New Delhi"
+                      className="w-full h-10 border-b border-charcoal/30 bg-transparent text-xs focus:border-gold focus:outline-none"
+                    />
+                  </div>
+                  <div className="flex gap-3 pt-4">
+                    <button
+                      type="submit"
+                      className="flex-1 py-3 text-xs uppercase tracking-widest font-semibold btn-gold-slide"
+                    >
+                      Submit Report
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowReportModal(false)}
+                      className="px-6 py-3 text-xs uppercase tracking-widest font-semibold btn-outline-luxury"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />

@@ -14,6 +14,7 @@ import {
   Sparkles,
   Activity,
   PlusCircle,
+  Truck,
   QrCode,
   LogOut,
   ExternalLink,
@@ -129,7 +130,7 @@ export default function DashboardOverviewPage() {
         </div>
 
         {/* 2. ACTION SHORTCUTS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           <Link
             href="/dashboard/register"
             className="p-8 border border-charcoal/20 bg-charcoal text-alabaster hover:border-gold transition-colors duration-500 group flex flex-col justify-between"
@@ -138,11 +139,11 @@ export default function DashboardOverviewPage() {
               <PlusCircle className="w-8 h-8 text-gold mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-2xl serif text-alabaster mb-2">Register Beekeeper</h3>
               <p className="text-xs text-taupe/70 leading-relaxed">
-                Onboard a new KVIC honey farmer with KYC, cooperative code, GPS location, and IPFS face photo.
+                Onboard a new KVIC honey farmer with KYC, cooperative code, GPS location, and IPFS photo.
               </p>
             </div>
             <div className="mt-8 text-[10px] uppercase tracking-widest text-gold font-semibold flex items-center gap-1">
-              <span>Open Registration Form</span>
+              <span>Open Registration</span>
               <span>→</span>
             </div>
           </Link>
@@ -155,11 +156,28 @@ export default function DashboardOverviewPage() {
               <Layers className="w-8 h-8 text-gold mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-2xl serif text-alabaster mb-2">Mint Harvest Batch</h3>
               <p className="text-xs text-taupe/70 leading-relaxed">
-                Input lab spectrometry metrics, generate instant AI purity score, and anchor batch to Polygon blockchain.
+                Input spectrometry, run live AI NMR anti-adulteration models, and mint on Polygon PoS.
               </p>
             </div>
             <div className="mt-8 text-[10px] uppercase tracking-widest text-gold font-semibold flex items-center gap-1">
               <span>Launch Minting Engine</span>
+              <span>→</span>
+            </div>
+          </Link>
+
+          <Link
+            href="/dashboard/custody"
+            className="p-8 border border-charcoal/20 bg-charcoal text-alabaster hover:border-gold transition-colors duration-500 group flex flex-col justify-between"
+          >
+            <div>
+              <Truck className="w-8 h-8 text-gold mb-4 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-2xl serif text-alabaster mb-2">Log Custody</h3>
+              <p className="text-xs text-taupe/70 leading-relaxed">
+                Record processing, cold filtration, lab certification, and dispatch events on-chain.
+              </p>
+            </div>
+            <div className="mt-8 text-[10px] uppercase tracking-widest text-gold font-semibold flex items-center gap-1">
+              <span>Log Custody Step</span>
               <span>→</span>
             </div>
           </Link>
@@ -172,11 +190,11 @@ export default function DashboardOverviewPage() {
               <QrCode className="w-8 h-8 text-gold mb-4 group-hover:scale-110 transition-transform duration-300" />
               <h3 className="text-2xl serif text-alabaster mb-2">Generate QR Labels</h3>
               <p className="text-xs text-taupe/70 leading-relaxed">
-                Produce printable tamper-evident TrueTag QR sheets for honey jars with direct verification links.
+                Produce printable tamper-evident TrueTag QR sticker sheets with direct scan authentication.
               </p>
             </div>
             <div className="mt-8 text-[10px] uppercase tracking-widest text-gold font-semibold flex items-center gap-1">
-              <span>Print QR Label Sheet</span>
+              <span>Print Label Sheet</span>
               <span>→</span>
             </div>
           </Link>
