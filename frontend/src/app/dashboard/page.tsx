@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import LiveTelemetryStream from "@/components/LiveTelemetryStream";
 import { DEMO_BATCHES } from "@/lib/constants";
 import { getCustomBatches, getCustomFarmers } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
@@ -200,45 +201,8 @@ export default function DashboardOverviewPage() {
           </Link>
         </div>
 
-        {/* 3. LIVE IOT HIVE TELEMETRY WIDGET */}
-        <div className="border border-charcoal/10 bg-white p-8 mb-16">
-          <div className="flex justify-between items-center mb-6 pb-4 border-b border-charcoal/10">
-            <div className="flex items-center gap-3">
-              <Radio className="w-4 h-4 text-rose-600 animate-pulse" />
-              <h3 className="text-xl serif text-charcoal">Live Apiary Telemetry Stream</h3>
-            </div>
-            <span className="text-[10px] uppercase tracking-widest font-mono text-warm-grey">
-              Muzaffarpur Litchi Valley Hub
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {hives.map((hive) => (
-              <div key={hive.id} className="p-5 border border-charcoal/10 bg-alabaster/40">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="font-mono text-xs font-bold text-charcoal">{hive.id}</span>
-                  <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 border border-emerald-200">
-                    {hive.status}
-                  </span>
-                </div>
-                <div className="grid grid-cols-3 gap-2 text-center my-3">
-                  <div className="border-r border-charcoal/10 pr-2">
-                    <span className="text-[10px] uppercase tracking-widest text-warm-grey block">Weight</span>
-                    <span className="text-base font-serif font-bold text-charcoal">{hive.weight} kg</span>
-                  </div>
-                  <div className="border-r border-charcoal/10 pr-2">
-                    <span className="text-[10px] uppercase tracking-widest text-warm-grey block">Temp</span>
-                    <span className="text-base font-serif font-bold text-charcoal">{hive.temp}°C</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase tracking-widest text-warm-grey block">Humidity</span>
-                    <span className="text-base font-serif font-bold text-charcoal">{hive.humidity}%</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* 3. LIVE IOT HIVE TELEMETRY STREAM (SSE REAL-TIME) */}
+        <LiveTelemetryStream />
 
         {/* 4. RECENT BATCHES TABLE */}
         <div className="border border-charcoal/10 bg-white p-8">

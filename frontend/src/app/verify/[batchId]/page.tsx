@@ -14,6 +14,7 @@ import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
 import { generateCertificatePDF } from "@/lib/pdf-certificate";
 import { saveComplaint } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
+import { TRANSLATIONS, Language } from "@/lib/i18n";
 import confetti from "canvas-confetti";
 import {
   ShieldCheck,
@@ -27,12 +28,15 @@ import {
   Layers,
   FileText,
   FileCheck,
+  Volume2,
 } from "lucide-react";
 
 export default function ConsumerVerificationPage() {
   const params = useParams();
   const batchIdNum = Number(params.batchId) || 1;
   const [data, setData] = useState<BatchMetadata | null>(null);
+  const [lang, setLang] = useState<Language>("en");
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [copiedTx, setCopiedTx] = useState(false);
   const [copiedIpfs, setCopiedIpfs] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -41,7 +45,43 @@ export default function ConsumerVerificationPage() {
 
   useEffect(() => {
     fetchBatchById(batchIdNum).then((res) => setData(res));
+    const saved = localStorage.getItem("honeychain_lang") as Language;
+    if (saved) setLang(saved);
+
+    const onLangChange = () => {
+      const current = localStorage.getItem("honeychain_lang") as Language;
+      if (current) setLang(current);
+    };
+    window.addEventListener("honeychain_lang_changed", onLangChange);
+    return () => window.removeEventListener("honeychain_lang_changed", onLangChange);
   }, [batchIdNum]);
+
+  const handleSpeakAudio = () => {
+    if (!data || typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+
+    let textToSpeak = "";
+    let voiceLang = "en-IN";
+
+    if (lang === "hi") {
+      textToSpeak = `बैच संख्या ${data.batch.batchId}, जो प्राथमिक मधुमक्खी पालक ${data.farmer.name} द्वारा ${data.farmer.location} में तैयार किया गया है, १०० में से ${data.batch.qualityScore} एआई शुद्धता स्कोर के साथ पूरी तरह शुद्ध और प्रमाणित है।`;
+      voiceLang = "hi-IN";
+    } else if (lang === "bn") {
+      textToSpeak = `ব্যাচ নম্বর ${data.batch.batchId}, যা মৌচাষী ${data.farmer.name} দ্বারা ${data.farmer.location}-এ উৎপাদিত, ১০০-তে ${data.batch.qualityScore} বিশুদ্ধতা স্কোর সহ সম্পূর্ণ খাঁটি।`;
+      voiceLang = "bn-IN";
+    } else {
+      textToSpeak = `Batch number 00${data.batch.batchId}, harvested by master beekeeper ${data.farmer.name} in ${data.farmer.location}, is verified authentic on Polygon blockchain with an AI purity score of ${data.batch.qualityScore} out of 100.`;
+      voiceLang = "en-US";
+    }
+
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    utterance.lang = voiceLang;
+    utterance.rate = 0.95;
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+  };
 
   if (!data) {
     return (
@@ -99,6 +139,8 @@ export default function ConsumerVerificationPage() {
     });
   };
 
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
+
   return (
     <div className="min-h-screen flex flex-col justify-between">
       <Navbar />
@@ -112,17 +154,28 @@ export default function ConsumerVerificationPage() {
                 <div className="flex items-center gap-3 mb-4">
                   <span className="h-px w-8 bg-gold" />
                   <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">
-                    Polygon Blockchain Verified • TrueTag {qrToken}
+                    {t.heroTag} • {qrToken}
                   </span>
                 </div>
                 <h1 className="text-6xl md:text-8xl serif text-charcoal font-normal leading-[0.95]">
-                  Verified. <span className="italic text-gold">Pure</span>. Yours.
+                  {t.heroTitle1} <span className="italic text-gold">{t.heroTitle2}</span> {t.heroTitle3}
                 </h1>
+
+                {/* Audio Narration Button for Rural Farmers & Buyers */}
+                <div className="mt-6">
+                  <button
+                    onClick={handleSpeakAudio}
+                    className="px-4 py-2 bg-charcoal text-alabaster hover:bg-gold hover:text-charcoal transition-colors text-xs uppercase tracking-widest font-semibold flex items-center gap-2"
+                  >
+                    <Volume2 className={`w-4 h-4 ${isSpeaking ? "text-gold animate-pulse" : ""}`} />
+                    <span>{isSpeaking ? "Playing Voice Summary..." : (lang === "hi" ? "🎙️ आवाज में प्रमाण पत्र सुनें" : lang === "bn" ? "🎙️ অডিও শুনুন" : "🎙️ Listen to Audio Narration")}</span>
+                  </button>
+                </div>
               </div>
               <div className="text-left md:text-right">
-                <p className="text-xs uppercase tracking-widest text-warm-grey">Batch Identifier</p>
+                <p className="text-xs uppercase tracking-widest text-warm-grey">{t.batchId}</p>
                 <p className="text-3xl font-serif font-bold text-charcoal">#00{batch.batchId}</p>
-                <p className="text-[10px] text-warm-grey mt-1">KVIC Registry Token: {qrToken}</p>
+                <p className="text-[10px] text-warm-grey mt-1">{t.registryToken}: {qrToken}</p>
               </div>
             </div>
           </div>
@@ -138,24 +191,30 @@ export default function ConsumerVerificationPage() {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  <span className="text-xs uppercase tracking-widest text-emerald-400 font-semibold">
-                    Authentic & Untampered
+                  <span className="text-[10px] uppercase tracking-widest text-gold font-semibold">
+                    {t.authenticBadge}
                   </span>
                 </div>
-                <h2 className="text-3xl md:text-4xl serif font-normal text-alabaster">
-                  {batch.grade}
+                <h2 className="text-3xl serif text-alabaster font-normal mb-2">
+                  {t.complianceBadge}
                 </h2>
-                <p className="text-xs text-taupe/70 mt-1">
-                  National Bee Board & FSSAI Standards 2021 Compliant
+                <p className="text-xs text-warm-grey max-w-md">
+                  Cryptographically secured by KVIC Regional Honey Protocol. Batch records are anchored to Polygon PoS and IPFS storage.
                 </p>
               </div>
             </div>
 
-            {/* Purity Score Metric */}
-            <div className="border border-gold/40 px-10 py-6 text-center bg-charcoal">
-              <p className="text-[10px] uppercase tracking-ultra text-warm-grey">AI Purity Score</p>
-              <div className="text-6xl font-serif font-bold text-gold my-1">{batch.qualityScore}</div>
-              <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold">Grade A+ Certified</p>
+            <div className="text-right border-l-0 md:border-l border-white/10 pl-0 md:pl-12 w-full md:w-auto">
+              <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold block mb-1">
+                {t.aiPurityScore}
+              </span>
+              <div className="flex items-baseline justify-start md:justify-end gap-2">
+                <span className="text-6xl font-serif text-gold font-normal">{batch.qualityScore}</span>
+                <span className="text-xl text-warm-grey font-serif">/100</span>
+              </div>
+              <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold block mt-1">
+                {batch.grade || t.gradeACertified}
+              </span>
             </div>
           </div>
         </section>

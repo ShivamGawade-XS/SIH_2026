@@ -6,8 +6,12 @@ Author: Shivam Gawade (ShivamGawade-XS)
 
 import os
 import time
+import json
+import random
+import asyncio
 from typing import Optional, List, Dict, Any
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import numpy as np
@@ -179,3 +183,40 @@ def detect_hive_anomaly(telemetry: HiveTelemetryInput):
         "confidence": 0.96 if status == "Normal" else 0.91,
         "recommendation": "Inspect brood box immediately" if status == "Alert" else ("Ventilate hive entrance" if status == "Warning" else "Normal foraging active")
     }
+
+async def telemetry_generator():
+    hives = [
+        "HIVE-RJ-102 (Alwar Mustard)",
+        "HIVE-WB-045 (Sundarbans Mangrove)",
+        "HIVE-JK-019 (Kashmir White Acacia)",
+        "HIVE-BH-088 (Muzaffarpur Litchi)",
+    ]
+    while True:
+        hive = random.choice(hives)
+        data = {
+            "hive_id": hive,
+            "weight_kg": round(random.uniform(41.5, 48.2), 2),
+            "internal_temp_c": round(random.uniform(33.8, 35.8), 1),
+            "humidity_percent": round(random.uniform(58.0, 66.0), 1),
+            "acoustic_frequency_hz": round(random.uniform(220.0, 255.0), 1),
+            "status": "Optimal Colony Health",
+            "timestamp": int(time.time()),
+        }
+        yield f"data: {json.dumps(data)}\n\n"
+        await asyncio.sleep(2)
+
+@app.get("/api/iot/stream")
+async def stream_hive_telemetry():
+    """
+    Server-Sent Events (SSE) stream broadcasting live IoT smart hive telemetry.
+    """
+    return StreamingResponse(
+        telemetry_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        }
+    )
+
