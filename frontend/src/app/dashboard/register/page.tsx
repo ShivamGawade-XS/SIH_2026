@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import confetti from "canvas-confetti";
 import { UserPlus, ArrowLeft, ShieldCheck, CheckCircle2, Upload } from "lucide-react";
+import { saveCustomFarmer, getCustomFarmers } from "@/lib/registry";
 
 export default function RegisterFarmerPage() {
   const router = useRouter();
@@ -25,18 +26,32 @@ export default function RegisterFarmerPage() {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate on-chain registration
     setTimeout(() => {
       setLoading(false);
+      const farmers = getCustomFarmers();
+      const nextId = farmers.length + 1;
+
+      const newFarmer = {
+        farmerId: nextId,
+        name: formData.name,
+        location: formData.location,
+        cooperativeId: formData.cooperativeId,
+        ipfsProfileHash: formData.ipfsHash || "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
+        isVerified: true,
+        registeredAt: Math.floor(Date.now() / 1000),
+      };
+
+      saveCustomFarmer(newFarmer);
+      setNewFarmerId(nextId);
       setSuccess(true);
-      setNewFarmerId(3);
+
       confetti({
         particleCount: 80,
         spread: 60,
         origin: { y: 0.6 },
         colors: ["#D4AF37", "#1A1A1A", "#FFFFFF"],
       });
-    }, 1200);
+    }, 1000);
   };
 
   return (

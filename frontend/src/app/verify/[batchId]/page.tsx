@@ -7,9 +7,12 @@ import Footer from "@/components/Footer";
 import FarmerProfile from "@/components/FarmerProfile";
 import Scorecard from "@/components/Scorecard";
 import CustodyTimeline from "@/components/CustodyTimeline";
+import ApiaryMap from "@/components/ApiaryMap";
 import { fetchBatchById } from "@/lib/contract";
 import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
+import { generateCertificatePDF } from "@/lib/pdf-certificate";
 import { BatchMetadata } from "@/lib/types";
+import confetti from "canvas-confetti";
 import {
   ShieldCheck,
   CheckCircle2,
@@ -20,8 +23,7 @@ import {
   Award,
   Calendar,
   Layers,
-  Droplets,
-  Gauge,
+  FileText,
   FileCheck,
 } from "lucide-react";
 
@@ -80,6 +82,16 @@ export default function ConsumerVerificationPage() {
     a.download = `HoneyChain_Batch_${batch.batchId}_W3C_VC.json`;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadPDF = () => {
+    generateCertificatePDF(data);
+    confetti({
+      particleCount: 50,
+      spread: 60,
+      origin: { y: 0.7 },
+      colors: ["#D4AF37", "#1A1A1A"],
+    });
   };
 
   return (
@@ -143,10 +155,11 @@ export default function ConsumerVerificationPage() {
           </div>
         </section>
 
-        {/* 3. FARMER PROVENANCE */}
+        {/* 3. FARMER PROVENANCE & GEOGRAPHIC TERROIR */}
         <section className="py-24 px-6 md:px-12 lg:px-24 border-b border-charcoal/10 bg-alabaster">
           <div className="max-w-6xl mx-auto">
             <FarmerProfile farmer={farmer} />
+            <ApiaryMap farmer={farmer} batchId={batch.batchId} />
           </div>
         </section>
 
@@ -232,14 +245,21 @@ export default function ConsumerVerificationPage() {
                   </div>
                 </div>
 
-                {/* Download Verifiable Credential */}
+                {/* Download Certificate Buttons */}
                 <div className="mt-10 flex flex-col sm:flex-row gap-4">
                   <button
-                    onClick={handleDownloadVC}
+                    onClick={handleDownloadPDF}
                     className="flex-1 py-4 px-6 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
                   >
-                    <Download className="w-4 h-4 text-gold" />
-                    <span>Download W3C Certificate</span>
+                    <FileText className="w-4 h-4 text-gold" />
+                    <span>Download Official PDF</span>
+                  </button>
+                  <button
+                    onClick={handleDownloadVC}
+                    className="py-4 px-6 text-xs uppercase tracking-widest font-semibold btn-outline-luxury flex items-center justify-center gap-2"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>W3C JSON-LD</span>
                   </button>
                   <a
                     href={`https://amoy.polygonscan.com/tx/${txHash}`}

@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import { HONEYCHAIN_ABI, HONEYCHAIN_CONTRACT_ADDRESS, POLYGON_SEPOLIA_RPC, DEMO_BATCHES } from "./constants";
 import { BatchMetadata, Farmer, HoneyBatch, CustodyEntry } from "./types";
+import { getCustomBatches } from "./registry";
 
 /**
  * Get read-only provider for Polygon Sepolia
@@ -93,8 +94,8 @@ export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
     };
   } catch (err) {
     console.warn("Contract read failed, falling back to local demo registry:", err);
-    // Find matching demo batch or default to batch 1
-    const match = DEMO_BATCHES.find((b) => b.qrToken === qrToken) || DEMO_BATCHES[0];
+    const customList = getCustomBatches();
+    const match = customList.find((b) => b.qrToken === qrToken) || customList[0];
     return match;
   }
 }
@@ -103,7 +104,8 @@ export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
  * Fetch batch metadata by Batch ID
  */
 export async function fetchBatchById(batchId: number): Promise<BatchMetadata> {
-  const match = DEMO_BATCHES.find((b) => b.batchId === batchId) || DEMO_BATCHES[0];
+  const customList = getCustomBatches();
+  const match = customList.find((b) => b.batchId === batchId) || customList[0];
   try {
     const contract = getReadOnlyContract();
     const rawBatch = await contract.batches(batchId);

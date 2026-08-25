@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { DEMO_BATCHES } from "@/lib/constants";
+import { getCustomBatches, getCustomFarmers } from "@/lib/registry";
+import { BatchMetadata } from "@/lib/types";
 import {
   Users,
   Layers,
@@ -21,6 +23,16 @@ import {
 
 export default function DashboardOverviewPage() {
   const router = useRouter();
+  const [batchesList, setBatchesList] = useState<BatchMetadata[]>(DEMO_BATCHES);
+  const [farmerCount, setFarmerCount] = useState(14240);
+
+  useEffect(() => {
+    const list = getCustomBatches();
+    const farmers = getCustomFarmers();
+    setBatchesList(list);
+    setFarmerCount(14240 + (farmers.length - 2));
+  }, []);
+
   const [hives, setHives] = useState([
     { id: "HIVE-001", weight: 34.2, temp: 34.8, humidity: 58.2, status: "Normal (Active Foraging)" },
     { id: "HIVE-002", weight: 31.8, temp: 35.1, humidity: 61.0, status: "Optimal Brood Temp" },
@@ -84,7 +96,7 @@ export default function DashboardOverviewPage() {
               <span className="text-[10px] uppercase tracking-widest text-warm-grey">Registered Farmers</span>
               <Users className="w-4 h-4 text-gold" />
             </div>
-            <p className="text-3xl font-serif text-charcoal font-bold">14,240</p>
+            <p className="text-3xl font-serif text-charcoal font-bold">{farmerCount.toLocaleString()}</p>
             <p className="text-[10px] text-emerald-700 mt-2 font-medium">+12 verified this week</p>
           </div>
 
@@ -93,7 +105,7 @@ export default function DashboardOverviewPage() {
               <span className="text-[10px] uppercase tracking-widest text-warm-grey">Minted Batches</span>
               <Layers className="w-4 h-4 text-gold" />
             </div>
-            <p className="text-3xl font-serif text-charcoal font-bold">18,920</p>
+            <p className="text-3xl font-serif text-charcoal font-bold">{(18920 + batchesList.length - 2).toLocaleString()}</p>
             <p className="text-[10px] text-emerald-700 mt-2 font-medium">100% on Polygon PoS</p>
           </div>
 
@@ -232,7 +244,7 @@ export default function DashboardOverviewPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-charcoal/5">
-                {DEMO_BATCHES.map((b) => (
+                {batchesList.map((b) => (
                   <tr key={b.batchId} className="hover:bg-alabaster/50 transition-colors">
                     <td className="py-4 font-mono font-bold text-charcoal">#00{b.batchId}</td>
                     <td className="py-4 font-mono text-warm-grey">{b.qrToken}</td>

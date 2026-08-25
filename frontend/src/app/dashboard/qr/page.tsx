@@ -1,18 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { QRCodeSVG } from "qrcode.react";
 import { DEMO_BATCHES } from "@/lib/constants";
+import { getCustomBatches } from "@/lib/registry";
+import { BatchMetadata } from "@/lib/types";
 import { QrCode, ArrowLeft, Printer, Download, Sparkles, ShieldCheck } from "lucide-react";
 
 export default function QrLabelsPage() {
+  const [batches, setBatches] = useState<BatchMetadata[]>(DEMO_BATCHES);
   const [selectedBatchId, setSelectedBatchId] = useState(1);
   const [labelCount, setLabelCount] = useState(6);
 
-  const selectedBatch = DEMO_BATCHES.find((b) => b.batchId === selectedBatchId) || DEMO_BATCHES[0];
+  useEffect(() => {
+    const list = getCustomBatches();
+    setBatches(list);
+  }, []);
+
+  const selectedBatch = batches.find((b) => b.batchId === selectedBatchId) || batches[0];
 
   const handlePrint = () => {
     window.print();
@@ -49,7 +57,7 @@ export default function QrLabelsPage() {
                 onChange={(e) => setSelectedBatchId(Number(e.target.value))}
                 className="h-12 border-b border-charcoal/30 bg-transparent px-2 text-xs font-sans focus:border-gold focus:outline-none"
               >
-                {DEMO_BATCHES.map((b) => (
+                {batches.map((b) => (
                   <option key={b.batchId} value={b.batchId}>
                     Batch #00{b.batchId} — {b.farmer.name} ({b.batch.qualityScore} pts)
                   </option>

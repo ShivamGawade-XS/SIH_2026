@@ -4,23 +4,50 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { QrCode, Search, Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
+import CameraScanner from "@/components/CameraScanner";
+import { QrCode, Search, Sparkles, ArrowRight, Camera, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
 export default function VerifySearchPage() {
   const [tokenInput, setTokenInput] = useState("");
+  const [showScanner, setShowScanner] = useState(false);
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!tokenInput.trim()) return;
     const clean = tokenInput.trim();
-    // Support batch ID or QR token
-    if (/^\d+$/.test(clean)) {
-      router.push(`/verify/${clean}`);
-    } else {
-      router.push(`/verify/1?qr=${encodeURIComponent(clean)}`);
+    // Support batch ID or QR token or full URL
+    processScanResult(clean);
+  };
+
+  const processScanResult = (decodedText: string) => {
+    setShowScanner(false);
+    let target = decodedText.trim();
+
+    // If it's a full URL e.g. http://localhost:3000/verify/1
+    if (target.includes("/verify/")) {
+      const parts = target.split("/verify/");
+      const batchPart = parts[1]?.split("?")[0]?.split("/")[0];
+      if (batchPart) {
+        router.push(`/verify/${batchPart}`);
+        return;
+      }
     }
+
+    // Direct number
+    if (/^\d+$/.test(target)) {
+      router.push(`/verify/${target}`);
+      return;
+    }
+
+    // Token string like TT-2026-00001
+    if (target.includes("TT-2026-00002")) {
+      router.push(`/verify/2`);
+      return;
+    }
+
+    router.push(`/verify/1?qr=${encodeURIComponent(target)}`);
   };
 
   const sampleBatches = [
@@ -32,6 +59,13 @@ export default function VerifySearchPage() {
     <div className="min-h-screen flex flex-col justify-between">
       <Navbar />
 
+      {showScanner && (
+        <CameraScanner
+          onScanSuccess={(code) => processScanResult(code)}
+          onClose={() => setShowScanner(false)}
+        />
+      )}
+
       <main className="py-24 px-6 md:px-12 max-w-4xl mx-auto w-full flex-1">
         {/* Header */}
         <div className="text-center mb-16">
@@ -42,12 +76,28 @@ export default function VerifySearchPage() {
             Verify Your <span className="italic text-gold">Honey</span>
           </h1>
           <p className="text-base text-warm-grey max-w-xl mx-auto leading-relaxed">
-            Enter the TrueTag QR identifier printed on your honey jar label or inspect a demo batch to verify harvest origins, lab spectrometry, and Polygon blockchain proof.
+            Scan the TrueTag QR code on your honey jar with your camera or enter the batch identifier to verify harvest origin, lab spectrometry, and Polygon blockchain proof.
           </p>
         </div>
 
-        {/* Search Bar */}
+        {/* Action Panel: Camera Scan + Manual Search */}
         <div className="border border-charcoal/20 bg-white p-8 md:p-12 mb-16 shadow-luxury-card">
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <button
+              onClick={() => setShowScanner(true)}
+              className="flex-1 h-14 px-8 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-3"
+            >
+              <Camera className="w-5 h-5 text-gold" />
+              <span>Scan Jar With Camera</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-4 my-6">
+            <div className="h-px flex-1 bg-charcoal/10" />
+            <span className="text-[10px] uppercase tracking-widest text-warm-grey">Or Enter Token Manually</span>
+            <div className="h-px flex-1 bg-charcoal/10" />
+          </div>
+
           <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <input
@@ -60,10 +110,10 @@ export default function VerifySearchPage() {
             </div>
             <button
               type="submit"
-              className="h-14 px-8 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
+              className="h-14 px-8 text-xs uppercase tracking-widest font-semibold btn-outline-luxury flex items-center justify-center gap-2"
             >
               <Search className="w-4 h-4" />
-              <span>Authenticate</span>
+              <span>Verify</span>
             </button>
           </form>
         </div>
