@@ -1,0 +1,375 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --alabaster: #F9F8F6;
+      --charcoal: #1A1A1A;
+      --gold: #D4AF37;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--alabaster);
+      color: var(--charcoal);
+      margin: 0;
+    }
+    h1, h2, h3, .serif {
+      font-family: 'Playfair Display', serif;
+    }
+    .letter-spacing-widest {
+      letter-spacing: 0.25em;
+    }
+    .border-gold {
+      border-color: var(--gold);
+    }
+    .bg-charcoal {
+      background-color: var(--charcoal);
+    }
+    .text-gold {
+      color: var(--gold);
+    }
+    .rounded-none {
+      border-radius: 0 !important;
+    }
+    .grid-line {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background-color: rgba(26, 26, 26, 0.05);
+      pointer-events: none;
+      z-index: 50;
+    }
+    .farmer-image {
+      filter: grayscale(100%);
+      transition: filter 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .farmer-image:hover {
+      filter: grayscale(0%);
+    }
+    .btn-gold-slide {
+      position: relative;
+      overflow: hidden;
+      transition: color 0.5s ease;
+      z-index: 1;
+    }
+    .btn-gold-slide::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background-color: var(--gold);
+      transition: left 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+      z-index: -1;
+    }
+    .btn-gold-slide:hover::after {
+      left: 0;
+    }
+    .btn-gold-slide:hover {
+      color: #fff;
+    }
+    .timeline-line {
+      width: 1px;
+      background-color: #e5e7eb;
+      position: absolute;
+      left: 11px;
+      top: 24px;
+      bottom: -24px;
+    }
+    .last-step .timeline-line {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen relative" data-sd-id="1">
+    <!-- 4-Column Grid Lines -->
+    <div class="grid-line" style="left: 25%" data-sd-id="2"></div>
+    <div class="grid-line" style="left: 50%" data-sd-id="3"></div>
+    <div class="grid-line" style="left: 75%" data-sd-id="4"></div>
+
+    <!-- Header / Hero Section -->
+    <header class="pt-24 pb-32 px-6 md:px-12 lg:px-24" data-sd-id="5">
+      <div class="max-w-6xl mx-auto" data-sd-id="6">
+        <p class="text-[10px] uppercase letter-spacing-widest font-semibold mb-6" data-sd-id="7">Blockchain Verified</p>
+        <h1 class="text-6xl md:text-8xl lg:text-9xl leading-[0.9] mb-8" data-sd-id="8">
+          Verified. <br>
+          <span class="italic text-gold" data-sd-id="9">Pure.</span> <br>
+          Yours.
+        </h1>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-t border-charcoal pt-6" data-sd-id="10">
+          <p class="text-xl" data-sd-id="11">HoneyChain <span class="text-gray-400 mx-2" data-sd-id="12">|</span> <span class="font-semibold" data-sd-id="13">by TrueTag</span></p>
+          <p class="text-sm uppercase tracking-widest" data-sd-id="14">KVIC Authenticated ΓÇó Batch 00492</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Authenticity Badge Section -->
+    <section class="bg-charcoal text-white py-24 px-6 md:px-12" data-sd-id="15">
+      <div class="max-w-6xl mx-auto flex flex-col items-center text-center" data-sd-id="16">
+        <div class="w-20 h-20 border border-gold flex items-center justify-center mb-8" data-sd-id="17">
+          <iconify-icon icon="lucide:check" class="text-4xl text-gold"></iconify-icon>
+        </div>
+        <div class="mb-4 text-gold" data-sd-id="18">
+          <span class="text-9xl serif" data-sd-id="19">92</span>
+          <span class="text-2xl ml-2 uppercase letter-spacing-widest" data-sd-id="20">Purity Score</span>
+        </div>
+        <div class="py-2 px-6 border border-white/20 mb-12 text-sm uppercase tracking-widest" data-sd-id="21">
+          Grade A+ Premium Raw Organic
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-2xl" data-sd-id="22">
+          <div class="flex items-center justify-center gap-3" data-sd-id="23">
+            <iconify-icon icon="lucide:check-circle-2" class="text-green-500 text-2xl"></iconify-icon>
+            <span class="uppercase tracking-widest text-xs" data-sd-id="24">FSSAI Certified Compliance</span>
+          </div>
+          <div class="flex items-center justify-center gap-3" data-sd-id="25">
+            <div class="bg-gold text-charcoal px-3 py-1 text-[10px] font-bold" data-sd-id="26">KVIC</div>
+            <span class="uppercase tracking-widest text-xs" data-sd-id="27">National Quality Standard</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Farmer Provenance Section -->
+    <section class="py-32 px-6 md:px-12 lg:px-24" data-sd-id="28">
+      <div class="max-w-6xl mx-auto" data-sd-id="29">
+        <p class="text-[10px] uppercase letter-spacing-widest font-semibold mb-12" data-sd-id="30">The Source</p>
+        <div class="flex flex-col md:flex-row gap-12 items-end" data-sd-id="31">
+          <div class="w-full md:w-5/12" data-sd-id="32">
+            <img src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?q=80&amp;w=1480&amp;auto=format&amp;fit=crop" alt="Farmer Portrait" class="farmer-image w-full aspect-[3/4] object-cover rounded-none" data-sd-id="33">
+          </div>
+          <div class="w-full md:w-7/12 pb-12" data-sd-id="34">
+            <h2 class="text-6xl md:text-7xl mb-6" data-sd-id="35">Rajesh K. Verma</h2>
+            <div class="space-y-4" data-sd-id="36">
+              <div class="flex justify-between border-b border-charcoal/10 pb-2" data-sd-id="37">
+                <span class="text-[10px] uppercase tracking-widest opacity-60" data-sd-id="38">Location</span>
+                <span class="text-sm font-medium" data-sd-id="39">Muzaffarpur, Bihar, India</span>
+              </div>
+              <div class="flex justify-between border-b border-charcoal/10 pb-2" data-sd-id="40">
+                <span class="text-[10px] uppercase tracking-widest opacity-60" data-sd-id="41">Cooperative ID</span>
+                <span class="text-sm font-medium" data-sd-id="42">KVIC-BEE-8829-01</span>
+              </div>
+              <div class="flex justify-between items-center border-b border-charcoal/10 pb-2" data-sd-id="43">
+                <span class="text-[10px] uppercase tracking-widest opacity-60" data-sd-id="44">Verification</span>
+                <span class="flex items-center gap-1 text-gold text-xs font-bold" data-sd-id="45">
+                  <iconify-icon icon="lucide:award"></iconify-icon> KVIC VERIFIED
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Harvest Data Section -->
+    <section class="bg-charcoal text-white py-32 px-6 md:px-12 lg:px-24" data-sd-id="46">
+      <div class="max-w-6xl mx-auto" data-sd-id="47">
+        <h3 class="text-4xl mb-16 serif" data-sd-id="48">Harvest Record</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-0 border-b border-white/20" data-sd-id="49">
+          <div class="border-t border-l border-white/20 p-8" data-sd-id="50">
+            <p class="text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-4" data-sd-id="51">Harvest Date</p>
+            <p class="text-4xl serif" data-sd-id="52">12.08.25</p>
+          </div>
+          <div class="border-t border-l border-white/20 p-8" data-sd-id="53">
+            <p class="text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-4" data-sd-id="54">Weight (KG)</p>
+            <p class="text-4xl serif" data-sd-id="55">0.500</p>
+          </div>
+          <div class="border-t border-l border-white/20 p-8" data-sd-id="56">
+            <p class="text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-4" data-sd-id="57">Brix Index</p>
+            <p class="text-4xl serif" data-sd-id="58">81.2%</p>
+          </div>
+          <div class="border-t border-l border-r border-white/20 p-8" data-sd-id="59">
+            <p class="text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-4" data-sd-id="60">Moisture</p>
+            <p class="text-4xl serif" data-sd-id="61">17.4%</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Quality Breakdown -->
+    <section class="py-32 px-6 md:px-12 lg:px-24" data-sd-id="62">
+      <div class="max-w-6xl mx-auto" data-sd-id="63">
+        <p class="text-[10px] uppercase letter-spacing-widest font-semibold mb-12 text-center" data-sd-id="64">AI Quality Analysis</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12" data-sd-id="65">
+          <!-- Param 1 -->
+          <div data-sd-id="66">
+            <div class="flex justify-between items-end mb-2" data-sd-id="67">
+              <span class="text-xs uppercase font-medium" data-sd-id="68">Moisture Content</span>
+              <span class="text-[10px] text-gold font-bold uppercase tracking-tighter" data-sd-id="69">Optimal</span>
+            </div>
+            <div class="h-[2px] w-full bg-gray-200" data-sd-id="70">
+              <div class="h-full bg-gold w-[85%]" data-sd-id="71"></div>
+            </div>
+            <p class="text-[10px] text-gray-400 mt-2" data-sd-id="72">Measured: 17.4% (Threshold &lt; 20%)</p>
+          </div>
+          <!-- Param 2 -->
+          <div data-sd-id="73">
+            <div class="flex justify-between items-end mb-2" data-sd-id="74">
+              <span class="text-xs uppercase font-medium" data-sd-id="75">Brix Value</span>
+              <span class="text-[10px] text-gold font-bold uppercase tracking-tighter" data-sd-id="76">Optimal</span>
+            </div>
+            <div class="h-[2px] w-full bg-gray-200" data-sd-id="77">
+              <div class="h-full bg-gold w-[92%]" data-sd-id="78"></div>
+            </div>
+            <p class="text-[10px] text-gray-400 mt-2" data-sd-id="79">Measured: 81.2┬░ Bx (Standard &gt; 75┬░)</p>
+          </div>
+          <!-- Param 3 -->
+          <div data-sd-id="80">
+            <div class="flex justify-between items-end mb-2" data-sd-id="81">
+              <span class="text-xs uppercase font-medium" data-sd-id="82">HMF Level</span>
+              <span class="text-[10px] text-gold font-bold uppercase tracking-tighter" data-sd-id="83">Optimal</span>
+            </div>
+            <div class="h-[2px] w-full bg-gray-200" data-sd-id="84">
+              <div class="h-full bg-gold w-[98%]" data-sd-id="85"></div>
+            </div>
+            <p class="text-[10px] text-gray-400 mt-2" data-sd-id="86">Measured: 12mg/kg (Limit 40mg)</p>
+          </div>
+          <!-- Param 4 -->
+          <div data-sd-id="87">
+            <div class="flex justify-between items-end mb-2" data-sd-id="88">
+              <span class="text-xs uppercase font-medium" data-sd-id="89">Diastase Activity</span>
+              <span class="text-[10px] text-gold font-bold uppercase tracking-tighter" data-sd-id="90">Optimal</span>
+            </div>
+            <div class="h-[2px] w-full bg-gray-200" data-sd-id="91">
+              <div class="h-full bg-gold w-[88%]" data-sd-id="92"></div>
+            </div>
+            <p class="text-[10px] text-gray-400 mt-2" data-sd-id="93">Measured: 18 DN (Min 8 DN)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blockchain Proof Section -->
+    <section class="py-32 px-6 md:px-12 lg:px-24 bg-white border-t border-b border-charcoal/5" data-sd-id="94">
+      <div class="max-w-6xl mx-auto" data-sd-id="95">
+        <div class="flex flex-col lg:flex-row gap-24" data-sd-id="96">
+          <div class="w-full lg:w-1/2" data-sd-id="97">
+            <p class="text-[10px] uppercase letter-spacing-widest font-semibold mb-8" data-sd-id="98">Chain of Trust</p>
+            <h3 class="text-5xl serif mb-12" data-sd-id="99">Immutable Evidence</h3>
+            
+            <div class="space-y-6" data-sd-id="100">
+              <div class="p-6 border border-charcoal/10 flex flex-col gap-2" data-sd-id="101">
+                <p class="text-[10px] uppercase tracking-widest text-gray-400" data-sd-id="102">Polygon Transaction Hash</p>
+                <div class="flex items-center justify-between font-mono text-xs" data-sd-id="103">
+                  <span data-sd-id="104">0x8f2d...4e9a2f</span>
+                  <button id="copy-btn-1" class="text-gold hover:opacity-70" data-sd-id="105">
+                    <iconify-icon icon="lucide:copy"></iconify-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="p-6 border border-charcoal/10 flex flex-col gap-2" data-sd-id="106">
+                <p class="text-[10px] uppercase tracking-widest text-gray-400" data-sd-id="107">IPFS Content ID</p>
+                <div class="flex items-center justify-between font-mono text-xs" data-sd-id="108">
+                  <span data-sd-id="109">QmXoy...Hwz8J</span>
+                  <button id="copy-btn-2" class="text-gold hover:opacity-70" data-sd-id="110">
+                    <iconify-icon icon="lucide:copy"></iconify-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button id="verify-explorer-btn" class="mt-12 w-full py-5 border border-charcoal text-[10px] uppercase tracking-[0.3em] font-bold btn-gold-slide rounded-none" data-sd-id="111">
+              View on Blockchain Explorer
+            </button>
+          </div>
+
+          <div class="w-full lg:w-1/2" data-sd-id="112">
+            <p class="text-[10px] uppercase letter-spacing-widest font-semibold mb-8" data-sd-id="113">Custody Timeline</p>
+            <div class="space-y-12 relative" data-sd-id="114">
+              <!-- Step 1 -->
+              <div class="relative pl-12" data-sd-id="115">
+                <div class="timeline-line" data-sd-id="116"></div>
+                <div class="absolute left-0 top-1 w-6 h-6 border border-gold bg-alabaster z-10 flex items-center justify-center" data-sd-id="117">
+                  <div class="w-2 h-2 bg-gold" data-sd-id="118"></div>
+                </div>
+                <div data-sd-id="119">
+                  <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1" data-sd-id="120">14.08.25 | 09:30 AM</p>
+                  <p class="font-medium text-sm" data-sd-id="121">Apiary Harvest Completed</p>
+                  <p class="text-xs text-gray-500 mt-1" data-sd-id="122">Registered by Rajesh K. Verma (Muzaffarpur)</p>
+                </div>
+              </div>
+              <!-- Step 2 -->
+              <div class="relative pl-12" data-sd-id="123">
+                <div class="timeline-line" data-sd-id="124"></div>
+                <div class="absolute left-0 top-1 w-6 h-6 border border-gold bg-alabaster z-10 flex items-center justify-center" data-sd-id="125">
+                  <div class="w-2 h-2 bg-gold" data-sd-id="126"></div>
+                </div>
+                <div data-sd-id="127">
+                  <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1" data-sd-id="128">16.08.25 | 11:20 AM</p>
+                  <p class="font-medium text-sm" data-sd-id="129">KVIC Processing Facility</p>
+                  <p class="text-xs text-gray-500 mt-1" data-sd-id="130">Cold filtration &amp; Bottling Stage</p>
+                </div>
+              </div>
+              <!-- Step 3 -->
+              <div class="relative pl-12" data-sd-id="131">
+                <div class="timeline-line" data-sd-id="132"></div>
+                <div class="absolute left-0 top-1 w-6 h-6 border border-gold bg-alabaster z-10 flex items-center justify-center" data-sd-id="133">
+                  <div class="w-2 h-2 bg-gold" data-sd-id="134"></div>
+                </div>
+                <div data-sd-id="135">
+                  <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1" data-sd-id="136">18.08.25 | 02:45 PM</p>
+                  <p class="font-medium text-sm" data-sd-id="137">National Quality Lab Certification</p>
+                  <p class="text-xs text-gray-500 mt-1" data-sd-id="138">Passed: FSSAI &amp; KVIC Purity Standards</p>
+                </div>
+              </div>
+              <!-- Step 4 -->
+              <div class="relative pl-12 last-step" data-sd-id="139">
+                <div class="timeline-line" data-sd-id="140"></div>
+                <div class="absolute left-0 top-1 w-6 h-6 border border-gold bg-charcoal z-10 flex items-center justify-center" data-sd-id="141">
+                  <iconify-icon icon="lucide:truck" class="text-xs text-gold"></iconify-icon>
+                </div>
+                <div data-sd-id="142">
+                  <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1" data-sd-id="143">22.08.25 | 10:00 AM</p>
+                  <p class="font-medium text-sm" data-sd-id="144">Distribution Release</p>
+                  <p class="text-xs text-gray-500 mt-1" data-sd-id="145">Secure Label Activation (TrueTag #7721)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-24 px-6 md:px-12 lg:px-24 bg-charcoal text-white" data-sd-id="146">
+      <div class="max-w-6xl mx-auto" data-sd-id="147">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-24" data-sd-id="148">
+          <div data-sd-id="149">
+            <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-6" data-sd-id="150">Collaborators</p>
+            <div class="flex flex-col gap-4" data-sd-id="151">
+              <p class="text-lg serif italic" data-sd-id="152">KVIC Authority</p>
+              <p class="text-lg serif italic" data-sd-id="153">National Bee Board</p>
+            </div>
+          </div>
+          <div data-sd-id="154">
+            <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-6" data-sd-id="155">Technology</p>
+            <p class="text-lg serif" data-sd-id="156">TrueTag Identity Platform</p>
+            <p class="text-xs text-gray-400 mt-2" data-sd-id="157">Blockchain-Enabled Provenance Tracking</p>
+          </div>
+          <div class="flex flex-col items-start md:items-end" data-sd-id="158">
+            <div class="bg-white text-charcoal px-4 py-2 font-bold text-xs uppercase tracking-widest mb-4 rounded-none" data-sd-id="159">
+              SIH 2026
+            </div>
+            <p class="text-[10px] text-gray-500" data-sd-id="160">Smart India Hackathon Finalist</p>
+          </div>
+        </div>
+        <div class="border-t border-white/10 pt-12 flex flex-col md:flex-row justify-between items-center gap-6" data-sd-id="161">
+          <p class="text-[10px] uppercase tracking-widest text-gray-500" data-sd-id="162">┬⌐ 2026 HoneyChain by TrueTag. All Rights Reserved.</p>
+          <div class="flex gap-8" data-sd-id="163">
+            <a href="#" id="footer-privacy" class="text-[10px] uppercase tracking-widest hover:text-gold" data-sd-id="164">Privacy Policy</a>
+            <a href="#" id="footer-terms" class="text-[10px] uppercase tracking-widest hover:text-gold" data-sd-id="165">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+</body></html>
