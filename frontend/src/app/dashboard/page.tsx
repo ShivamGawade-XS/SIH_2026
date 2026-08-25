@@ -21,6 +21,8 @@ import {
   ExternalLink,
   ShieldCheck,
   Radio,
+  FileSpreadsheet,
+  ShieldAlert,
 } from "lucide-react";
 
 export default function DashboardOverviewPage() {
@@ -35,26 +37,6 @@ export default function DashboardOverviewPage() {
     setFarmerCount(14240 + (farmers.length - 2));
   }, []);
 
-  const [hives, setHives] = useState([
-    { id: "HIVE-001", weight: 34.2, temp: 34.8, humidity: 58.2, status: "Normal (Active Foraging)" },
-    { id: "HIVE-002", weight: 31.8, temp: 35.1, humidity: 61.0, status: "Optimal Brood Temp" },
-    { id: "HIVE-003", weight: 28.4, temp: 37.4, humidity: 69.5, status: "Harvest Ready" },
-  ]);
-
-  // Simulate live IoT fluctuations every 4 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setHives((prev) =>
-        prev.map((h) => ({
-          ...h,
-          weight: Number((h.weight + (Math.random() * 0.2 - 0.1)).toFixed(2)),
-          temp: Number((h.temp + (Math.random() * 0.2 - 0.1)).toFixed(1)),
-        }))
-      );
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/dashboard/login");
@@ -62,30 +44,37 @@ export default function DashboardOverviewPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between">
+    <div className="min-h-screen flex flex-col justify-between bg-[#F9F8F6]">
       <Navbar />
 
       <main className="py-16 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto w-full flex-1">
         {/* Officer Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12 pb-8 border-b border-charcoal/10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12 pb-8 border-b-2 border-charcoal/10">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="w-2 h-2 bg-emerald-500 animate-pulse" />
-              <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">
-                KVIC Field Officer Portal • Station #BH-002
+              <span className="w-2.5 h-2.5 bg-emerald-500 animate-pulse" />
+              <span className="text-[10px] uppercase tracking-ultra text-charcoal font-bold">
+                KVIC Field Operations Center • Station #BH-002
               </span>
             </div>
             <h1 className="text-4xl md:text-5xl serif text-charcoal font-normal">
-              Operations <span className="italic text-gold">Dashboard</span>
+              Operations <span className="italic text-gold font-serif">Dashboard</span>
             </h1>
           </div>
 
           <div className="flex items-center gap-4">
+            <Link
+              href="/dashboard/admin"
+              className="px-4 py-2 text-xs uppercase tracking-widest font-bold border-2 border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 flex items-center gap-1.5 transition-colors shadow-xs"
+            >
+              <ShieldAlert className="w-3.5 h-3.5" />
+              <span>Admin Recall Center</span>
+            </Link>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 text-xs uppercase tracking-widest font-semibold border border-charcoal/20 hover:border-charcoal flex items-center gap-1.5 transition-colors"
+              className="px-4 py-2 text-xs uppercase tracking-widest font-bold border-2 border-charcoal/30 hover:border-charcoal bg-white flex items-center gap-1.5 transition-colors shadow-xs"
             >
-              <LogOut className="w-3.5 h-3.5" />
+              <LogOut className="w-3.5 h-3.5 text-charcoal" />
               <span>Logout</span>
             </button>
           </div>
@@ -93,109 +82,126 @@ export default function DashboardOverviewPage() {
 
         {/* 1. TOP METRIC STATS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <div className="p-6 border border-charcoal/10 bg-white">
+          <div className="p-6 border-2 border-charcoal/15 bg-white shadow-xs hover:border-gold transition-all duration-300">
             <div className="flex justify-between items-start mb-4">
-              <span className="text-[10px] uppercase tracking-widest text-warm-grey">Registered Farmers</span>
-              <Users className="w-4 h-4 text-gold" />
+              <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">Registered Farmers</span>
+              <Users className="w-5 h-5 text-gold" />
             </div>
             <p className="text-3xl font-serif text-charcoal font-bold">{farmerCount.toLocaleString()}</p>
-            <p className="text-[10px] text-emerald-700 mt-2 font-medium">+12 verified this week</p>
+            <p className="text-[10px] text-emerald-800 mt-2 font-bold font-mono">+12 verified this week</p>
           </div>
 
-          <div className="p-6 border border-charcoal/10 bg-white">
+          <div className="p-6 border-2 border-charcoal/15 bg-white shadow-xs hover:border-gold transition-all duration-300">
             <div className="flex justify-between items-start mb-4">
-              <span className="text-[10px] uppercase tracking-widest text-warm-grey">Minted Batches</span>
-              <Layers className="w-4 h-4 text-gold" />
+              <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">Minted Batches</span>
+              <Layers className="w-5 h-5 text-gold" />
             </div>
             <p className="text-3xl font-serif text-charcoal font-bold">{(18920 + batchesList.length - 2).toLocaleString()}</p>
-            <p className="text-[10px] text-emerald-700 mt-2 font-medium">100% on Polygon PoS</p>
+            <p className="text-[10px] text-emerald-800 mt-2 font-bold font-mono">100% on Polygon PoS</p>
           </div>
 
-          <div className="p-6 border border-charcoal/10 bg-white">
+          <div className="p-6 border-2 border-charcoal/15 bg-white shadow-xs hover:border-gold transition-all duration-300">
             <div className="flex justify-between items-start mb-4">
-              <span className="text-[10px] uppercase tracking-widest text-warm-grey">Avg. AI Purity Score</span>
-              <Sparkles className="w-4 h-4 text-gold" />
+              <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">Avg. AI Purity Score</span>
+              <Sparkles className="w-5 h-5 text-gold" />
             </div>
             <p className="text-3xl font-serif text-charcoal font-bold">92.8<span className="text-sm font-sans font-normal text-warm-grey">/100</span></p>
-            <p className="text-[10px] text-emerald-700 mt-2 font-medium">Grade A+ Average</p>
+            <p className="text-[10px] text-emerald-800 mt-2 font-bold font-mono">Grade A+ Average</p>
           </div>
 
-          <div className="p-6 border border-charcoal/10 bg-white">
+          <div className="p-6 border-2 border-charcoal/15 bg-white shadow-xs hover:border-gold transition-all duration-300">
             <div className="flex justify-between items-start mb-4">
-              <span className="text-[10px] uppercase tracking-widest text-warm-grey">IoT Hive Telemetry</span>
-              <Activity className="w-4 h-4 text-gold" />
+              <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">IoT Hive Telemetry</span>
+              <Activity className="w-5 h-5 text-gold" />
             </div>
             <p className="text-3xl font-serif text-charcoal font-bold">24 Nodes</p>
-            <p className="text-[10px] text-emerald-700 mt-2 font-medium">Streaming Live</p>
+            <p className="text-[10px] text-emerald-800 mt-2 font-bold font-mono">Live SSE Streaming</p>
           </div>
         </div>
 
         {/* 2. ACTION SHORTCUTS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-16">
           <Link
             href="/dashboard/register"
-            className="p-8 border border-charcoal/20 bg-charcoal text-alabaster hover:border-gold transition-colors duration-500 group flex flex-col justify-between"
+            className="p-6 border-2 border-charcoal bg-[#141414] text-alabaster hover:border-gold transition-all duration-400 group flex flex-col justify-between shadow-sm"
           >
             <div>
-              <PlusCircle className="w-8 h-8 text-gold mb-4 group-hover:scale-110 transition-transform duration-300" />
-              <h3 className="text-2xl serif text-alabaster mb-2">Register Beekeeper</h3>
-              <p className="text-xs text-taupe/70 leading-relaxed">
-                Onboard a new KVIC honey farmer with KYC, cooperative code, GPS location, and IPFS photo.
+              <PlusCircle className="w-7 h-7 text-gold mb-3 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-xl serif text-alabaster mb-1 font-bold">Register Beekeeper</h3>
+              <p className="text-xs text-taupe/70 leading-relaxed font-light">
+                KYC, cooperative code, GPS location, IPFS photo.
               </p>
             </div>
-            <div className="mt-8 text-[10px] uppercase tracking-widest text-gold font-semibold flex items-center gap-1">
-              <span>Open Registration</span>
+            <div className="mt-6 text-[10px] uppercase tracking-widest text-gold font-bold flex items-center gap-1">
+              <span>Open Form</span>
               <span>→</span>
             </div>
           </Link>
 
           <Link
             href="/dashboard/mint"
-            className="p-8 border border-charcoal/20 bg-charcoal text-alabaster hover:border-gold transition-colors duration-500 group flex flex-col justify-between"
+            className="p-6 border-2 border-charcoal bg-[#141414] text-alabaster hover:border-gold transition-all duration-400 group flex flex-col justify-between shadow-sm"
           >
             <div>
-              <Layers className="w-8 h-8 text-gold mb-4 group-hover:scale-110 transition-transform duration-300" />
-              <h3 className="text-2xl serif text-alabaster mb-2">Mint Harvest Batch</h3>
-              <p className="text-xs text-taupe/70 leading-relaxed">
-                Input spectrometry, run live AI NMR anti-adulteration models, and mint on Polygon PoS.
+              <Layers className="w-7 h-7 text-gold mb-3 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-xl serif text-alabaster mb-1 font-bold">Mint Batch</h3>
+              <p className="text-xs text-taupe/70 leading-relaxed font-light">
+                FastAPI NMR anti-adulteration models on Polygon.
               </p>
             </div>
-            <div className="mt-8 text-[10px] uppercase tracking-widest text-gold font-semibold flex items-center gap-1">
-              <span>Launch Minting Engine</span>
+            <div className="mt-6 text-[10px] uppercase tracking-widest text-gold font-bold flex items-center gap-1">
+              <span>Launch Mint</span>
               <span>→</span>
             </div>
           </Link>
 
           <Link
             href="/dashboard/custody"
-            className="p-8 border border-charcoal/20 bg-charcoal text-alabaster hover:border-gold transition-colors duration-500 group flex flex-col justify-between"
+            className="p-6 border-2 border-charcoal bg-[#141414] text-alabaster hover:border-gold transition-all duration-400 group flex flex-col justify-between shadow-sm"
           >
             <div>
-              <Truck className="w-8 h-8 text-gold mb-4 group-hover:scale-110 transition-transform duration-300" />
-              <h3 className="text-2xl serif text-alabaster mb-2">Log Custody</h3>
-              <p className="text-xs text-taupe/70 leading-relaxed">
-                Record processing, cold filtration, lab certification, and dispatch events on-chain.
+              <Truck className="w-7 h-7 text-gold mb-3 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-xl serif text-alabaster mb-1 font-bold">Log Custody</h3>
+              <p className="text-xs text-taupe/70 leading-relaxed font-light">
+                Processing, cold filtration, lab certification.
               </p>
             </div>
-            <div className="mt-8 text-[10px] uppercase tracking-widest text-gold font-semibold flex items-center gap-1">
-              <span>Log Custody Step</span>
+            <div className="mt-6 text-[10px] uppercase tracking-widest text-gold font-bold flex items-center gap-1">
+              <span>Log Step</span>
+              <span>→</span>
+            </div>
+          </Link>
+
+          <Link
+            href="/dashboard/bulk"
+            className="p-6 border-2 border-charcoal bg-[#141414] text-alabaster hover:border-gold transition-all duration-400 group flex flex-col justify-between shadow-sm"
+          >
+            <div>
+              <FileSpreadsheet className="w-7 h-7 text-gold mb-3 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-xl serif text-alabaster mb-1 font-bold">Bulk CSV Mint</h3>
+              <p className="text-xs text-taupe/70 leading-relaxed font-light">
+                High-throughput multi-barrel CSV minting.
+              </p>
+            </div>
+            <div className="mt-6 text-[10px] uppercase tracking-widest text-gold font-bold flex items-center gap-1">
+              <span>Upload CSV</span>
               <span>→</span>
             </div>
           </Link>
 
           <Link
             href="/dashboard/qr"
-            className="p-8 border border-charcoal/20 bg-charcoal text-alabaster hover:border-gold transition-colors duration-500 group flex flex-col justify-between"
+            className="p-6 border-2 border-charcoal bg-[#141414] text-alabaster hover:border-gold transition-all duration-400 group flex flex-col justify-between shadow-sm"
           >
             <div>
-              <QrCode className="w-8 h-8 text-gold mb-4 group-hover:scale-110 transition-transform duration-300" />
-              <h3 className="text-2xl serif text-alabaster mb-2">Generate QR Labels</h3>
-              <p className="text-xs text-taupe/70 leading-relaxed">
-                Produce printable tamper-evident TrueTag QR sticker sheets with direct scan authentication.
+              <QrCode className="w-7 h-7 text-gold mb-3 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-xl serif text-alabaster mb-1 font-bold">Print QR Labels</h3>
+              <p className="text-xs text-taupe/70 leading-relaxed font-light">
+                Printable tamper-evident TrueTag sticker sheets.
               </p>
             </div>
-            <div className="mt-8 text-[10px] uppercase tracking-widest text-gold font-semibold flex items-center gap-1">
-              <span>Print Label Sheet</span>
+            <div className="mt-6 text-[10px] uppercase tracking-widest text-gold font-bold flex items-center gap-1">
+              <span>Print Sheet</span>
               <span>→</span>
             </div>
           </Link>
@@ -205,47 +211,57 @@ export default function DashboardOverviewPage() {
         <LiveTelemetryStream />
 
         {/* 4. RECENT BATCHES TABLE */}
-        <div className="border border-charcoal/10 bg-white p-8">
+        <div className="border-2 border-charcoal/15 bg-white p-8 shadow-sm">
           <div className="flex justify-between items-center mb-6 pb-4 border-b border-charcoal/10">
-            <h3 className="text-xl serif text-charcoal">Recently Authenticated Harvest Batches</h3>
-            <span className="text-[10px] uppercase tracking-widest text-warm-grey font-mono">
-              Polygon Sepolia
+            <h3 className="text-2xl serif text-charcoal font-bold">Recently Authenticated Harvest Batches</h3>
+            <span className="text-[10px] uppercase tracking-widest text-charcoal font-mono font-bold">
+              Polygon PoS
             </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-charcoal/10 text-[10px] uppercase tracking-widest text-warm-grey">
-                  <th className="pb-3 font-semibold">Batch ID</th>
-                  <th className="pb-3 font-semibold">QR Token</th>
-                  <th className="pb-3 font-semibold">Beekeeper / Location</th>
-                  <th className="pb-3 font-semibold">Purity Score</th>
-                  <th className="pb-3 font-semibold">Grade</th>
-                  <th className="pb-3 font-semibold text-right">Inspect</th>
+                <tr className="border-b-2 border-charcoal/15 bg-[#F9F8F6] text-[10px] uppercase tracking-widest text-warm-grey">
+                  <th className="p-3 font-bold">Batch ID</th>
+                  <th className="p-3 font-bold">QR Token</th>
+                  <th className="p-3 font-bold">Beekeeper / Location</th>
+                  <th className="p-3 font-bold">Purity Score</th>
+                  <th className="p-3 font-bold">Grade</th>
+                  <th className="p-3 font-bold text-right">Inspect</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-charcoal/5">
-                {batchesList.map((b) => (
-                  <tr key={b.batchId} className="hover:bg-alabaster/50 transition-colors">
-                    <td className="py-4 font-mono font-bold text-charcoal">#00{b.batchId}</td>
-                    <td className="py-4 font-mono text-warm-grey">{b.qrToken}</td>
-                    <td className="py-4">
-                      <span className="font-medium text-charcoal block">{b.farmer.name}</span>
-                      <span className="text-[10px] text-warm-grey">{b.farmer.location}</span>
+              <tbody className="divide-y divide-charcoal/10">
+                {batchesList.map((item) => (
+                  <tr key={item.batchId} className="hover:bg-[#F9F8F6] transition-colors">
+                    <td className="p-3 font-mono font-bold text-charcoal">
+                      #00{item.batchId}
                     </td>
-                    <td className="py-4">
-                      <span className="text-sm font-serif font-bold text-gold">{b.batch.qualityScore}</span>
-                      <span className="text-[10px] text-warm-grey">/100</span>
+                    <td className="p-3 font-mono font-semibold text-charcoal">{item.qrToken}</td>
+                    <td className="p-3">
+                      <p className="font-semibold text-charcoal">{item.farmer.name}</p>
+                      <p className="text-[10px] text-warm-grey">{item.farmer.location}</p>
                     </td>
-                    <td className="py-4 font-medium text-charcoal">{b.batch.grade}</td>
-                    <td className="py-4 text-right">
+                    <td className="p-3">
+                      <span className="text-sm font-serif font-bold text-gold">
+                        {item.batch.qualityScore}/100
+                      </span>
+                    </td>
+                    <td className="p-3">
+                      <span className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border ${
+                        item.batch.isRevoked
+                          ? "border-rose-400 bg-rose-50 text-rose-800"
+                          : "border-emerald-300 bg-emerald-50 text-emerald-800"
+                      }`}>
+                        {item.batch.grade}
+                      </span>
+                    </td>
+                    <td className="p-3 text-right">
                       <Link
-                        href={`/verify/${b.batchId}`}
-                        target="_blank"
-                        className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest font-semibold text-charcoal hover:text-gold transition-colors"
+                        href={`/verify/${item.batchId}`}
+                        className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors"
                       >
-                        <span>Verify View</span>
+                        <span>View</span>
                         <ExternalLink className="w-3 h-3" />
                       </Link>
                     </td>
