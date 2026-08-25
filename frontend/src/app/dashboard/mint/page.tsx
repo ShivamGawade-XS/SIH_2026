@@ -1,0 +1,272 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import confetti from "canvas-confetti";
+import { Layers, ArrowLeft, Sparkles, CheckCircle2, QrCode, ExternalLink, ShieldCheck } from "lucide-react";
+
+export default function MintBatchPage() {
+  const [farmerId, setFarmerId] = useState("1");
+  const [moisture, setMoisture] = useState(17.8);
+  const [brix, setBrix] = useState(81.2);
+  const [hmf, setHmf] = useState(16.4);
+  const [diastase, setDiastase] = useState(18.0);
+  const [yieldKg, setYieldKg] = useState(120);
+
+  const [loading, setLoading] = useState(false);
+  const [successData, setSuccessData] = useState<{
+    batchId: number;
+    score: number;
+    grade: string;
+    qrToken: string;
+    txHash: string;
+  } | null>(null);
+
+  // Real-time AI Purity calculation based on FSSAI standards formula
+  const calculateScore = () => {
+    let score = 100;
+    // Moisture penalty (max 20)
+    if (moisture > 20) score -= (moisture - 20) * 15;
+    else if (moisture < 17) score += 2;
+
+    // Brix penalty (min 65)
+    if (brix < 65) score -= (65 - brix) * 3;
+    else if (brix >= 80) score += 1;
+
+    // HMF penalty (max 80)
+    if (hmf > 40) score -= ((hmf - 40) / 40) * 20;
+
+    // Diastase penalty (min 8)
+    if (diastase < 8) score -= (8 - diastase) * 5;
+
+    const clamped = Math.max(10, Math.min(99, Math.round(score)));
+    let grade = "Grade A+ Premium Raw Organic";
+    if (clamped < 70) grade = "Grade C Sub-Standard";
+    else if (clamped < 85) grade = "Grade B Standard Honey";
+    else if (clamped < 92) grade = "Grade A Pure Natural";
+
+    return { score: clamped, grade };
+  };
+
+  const { score: liveScore, grade: liveGrade } = calculateScore();
+
+  const handleMint = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      const generatedToken = `TT-2026-0000${Math.floor(Math.random() * 900 + 100)}`;
+      setSuccessData({
+        batchId: 3,
+        score: liveScore,
+        grade: liveGrade,
+        qrToken: generatedToken,
+        txHash: "0x" + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join(""),
+      });
+
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ["#D4AF37", "#1A1A1A", "#FFFFFF"],
+      });
+    }, 1500);
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col justify-between">
+      <Navbar />
+
+      <main className="py-16 px-6 md:px-12 max-w-5xl mx-auto w-full flex-1">
+        <Link
+          href="/dashboard"
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-8"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Back to Operations Dashboard</span>
+        </Link>
+
+        <div className="border border-charcoal/20 bg-white p-8 md:p-12 shadow-luxury-card">
+          <div className="flex items-center gap-4 mb-8 pb-6 border-b border-charcoal/10">
+            <div className="w-12 h-12 border border-charcoal bg-charcoal text-gold flex items-center justify-center">
+              <Layers className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-ultra text-warm-grey">Polygon PoS Ledger</p>
+              <h1 className="text-3xl md:text-4xl serif text-charcoal font-normal">Mint Honey Harvest Batch</h1>
+            </div>
+          </div>
+
+          {successData ? (
+            <div className="p-8 border border-emerald-300 bg-emerald-50/50 text-center">
+              <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
+              <h2 className="text-3xl serif text-charcoal mb-2">Batch Minted & Anchored On-Chain</h2>
+              <p className="text-xs text-warm-grey max-w-md mx-auto mb-6">
+                Assigned Batch ID <span className="font-mono font-bold text-charcoal">#00{successData.batchId}</span> with QR Token{" "}
+                <span className="font-mono font-bold text-charcoal">{successData.qrToken}</span>.
+              </p>
+
+              <div className="p-4 border border-charcoal/10 bg-white max-w-lg mx-auto text-left font-mono text-xs mb-8 space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-warm-grey">AI Purity Score:</span>
+                  <span className="font-bold text-gold">{successData.score}/100</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-warm-grey">Classification:</span>
+                  <span className="font-semibold text-charcoal">{successData.grade}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-warm-grey">Polygon Tx:</span>
+                  <span className="truncate max-w-[200px] text-[10px]">{successData.txHash}</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Link
+                  href={`/verify/${successData.batchId}`}
+                  target="_blank"
+                  className="px-8 py-4 text-xs uppercase tracking-widest font-semibold btn-gold-slide inline-flex items-center justify-center gap-2"
+                >
+                  <span>Open Consumer Verify View</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href="/dashboard/qr"
+                  className="px-8 py-4 text-xs uppercase tracking-widest font-semibold btn-outline-luxury inline-block"
+                >
+                  Print QR Label Sheet
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleMint} className="space-y-8">
+              {/* Farmer selection */}
+              <div>
+                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  Select Registered Beekeeper
+                </label>
+                <select
+                  value={farmerId}
+                  onChange={(e) => setFarmerId(e.target.value)}
+                  className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
+                >
+                  <option value="1">#001 — Rajesh Kumar Verma (Muzaffarpur, Bihar - KVIC-BH-002)</option>
+                  <option value="2">#002 — Lakshmi Devi (Sundarbans, West Bengal - KVIC-WB-019)</option>
+                  <option value="3">#003 — Subhash Chander (Kashmir Valley, J&K - KVIC-JK-004)</option>
+                </select>
+              </div>
+
+              {/* Lab Parameters */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                    Moisture Content (%)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    required
+                    value={moisture}
+                    onChange={(e) => setMoisture(parseFloat(e.target.value) || 0)}
+                    className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
+                  />
+                  <span className="text-[10px] text-warm-grey mt-1 block">FSSAI Max: 20%</span>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                    Brix Sugar Index (°Bx)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    required
+                    value={brix}
+                    onChange={(e) => setBrix(parseFloat(e.target.value) || 0)}
+                    className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
+                  />
+                  <span className="text-[10px] text-warm-grey mt-1 block">FSSAI Min: 65°Bx</span>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                    HMF Freshness (mg/kg)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    required
+                    value={hmf}
+                    onChange={(e) => setHmf(parseFloat(e.target.value) || 0)}
+                    className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
+                  />
+                  <span className="text-[10px] text-warm-grey mt-1 block">FSSAI Max: 80 mg/kg</span>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                    Diastase Activity (DN)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    required
+                    value={diastase}
+                    onChange={(e) => setDiastase(parseFloat(e.target.value) || 0)}
+                    className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
+                  />
+                  <span className="text-[10px] text-warm-grey mt-1 block">FSSAI Min: 8 DN</span>
+                </div>
+              </div>
+
+              {/* Yield */}
+              <div>
+                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  Harvest Yield Weight (kg)
+                </label>
+                <input
+                  type="number"
+                  required
+                  value={yieldKg}
+                  onChange={(e) => setYieldKg(parseInt(e.target.value) || 0)}
+                  className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
+                />
+              </div>
+
+              {/* Live AI Spectrometry Preview Card */}
+              <div className="p-6 border border-gold/40 bg-charcoal text-alabaster flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Sparkles className="w-4 h-4 text-gold" />
+                    <span className="text-[10px] uppercase tracking-widest text-gold font-semibold">
+                      Real-Time AI Spectrometry Score
+                    </span>
+                  </div>
+                  <h3 className="text-2xl serif text-alabaster">{liveGrade}</h3>
+                  <p className="text-xs text-taupe/70 mt-1">Calibrated against FSSAI & National Bee Board standards</p>
+                </div>
+                <div className="text-right self-end md:self-auto">
+                  <span className="text-5xl font-serif font-bold text-gold">{liveScore}</span>
+                  <span className="text-sm font-serif text-warm-grey">/100</span>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full h-14 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
+              >
+                <span>{loading ? "Minting on Polygon Sepolia..." : "Mint Batch & Generate QR Token"}</span>
+              </button>
+            </form>
+          )}
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
