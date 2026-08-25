@@ -1,0 +1,47 @@
+# Node.js & Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Next.js & Build Output
+.next/
+out/
+build/
+dist/
+
+# Hardhat & Smart Contracts
+artifacts/
+cache/
+typechain/
+typechain-types/
+coverage/
+coverage.json
+
+# Python & AI Microservice
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv/
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
