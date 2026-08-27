@@ -45,11 +45,19 @@ const ROLE_LABEL: Record<Role, string> = {
   ADMIN: "System Admin",
 };
 
+import { DEMO_OFFICERS } from "@/lib/auth-constants";
+
 export default function DashboardClient({ user }: { user: SessionUser }) {
   const router = useRouter();
+  const [currentUser, setCurrentUser] = useState<SessionUser>(user);
   const [batchesList, setBatchesList] = useState<BatchMetadata[]>(DEMO_BATCHES);
   const [farmerCount, setFarmerCount] = useState(14240);
   const [complaints, setComplaints] = useState<ConsumerComplaint[]>([]);
+  const [isSwitching, setIsSwitching] = useState(false);
+
+  useEffect(() => {
+    setCurrentUser(user);
+  }, [user]);
 
   useEffect(() => {
     const list = getCustomBatches();
@@ -59,19 +67,81 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
     setComplaints(getComplaints());
   }, []);
 
+  const handleSwitchPersona = async (officer: typeof DEMO_OFFICERS[0]) => {
+    setIsSwitching(true);
+    setCurrentUser({
+      name: officer.name,
+      email: officer.email,
+      role: officer.role as Role,
+    });
+
+    try {
+      await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: officer.email, password: officer.password }),
+      });
+    } catch (e) {
+      console.warn("Session update error:", e);
+    } finally {
+      setIsSwitching(false);
+    }
+  };
+
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     window.location.href = "/dashboard/login";
   };
 
-  const role = user.role;
-  const meta = ROLE_META[role];
+  const role = currentUser.role;
+  const meta = ROLE_META[role] || ROLE_META.FIELD_OFFICER;
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#F9F8F6]">
       <Navbar />
 
-      <main className="py-16 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto w-full flex-1">
+      <main className="py-12 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto w-full flex-1">
+
+        {/* ── SIH EVALUATOR QUICK PERSONA SWITCHER BANNER ── */}
+        <div className="mb-8 p-4 border-2 border-gold/40 bg-amber-50/70 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5">
+            <span className="w-2.5 h-2.5 bg-amber-500 rounded-full animate-ping" />
+            <div>
+              <p className="text-[10px] uppercase tracking-ultra font-bold text-charcoal">
+                SIH Judge & Evaluator Live Persona Switcher
+              </p>
+              <p className="text-xs text-warm-grey">
+                Click any role to preview its dedicated real-time workflow instantly:
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {DEMO_OFFICERS.map((officer) => {
+              const isActive = currentUser.email.toLowerCase() === officer.email.toLowerCase();
+              return (
+                <button
+                  key={officer.email}
+                  type="button"
+                  onClick={() => handleSwitchPersona(officer)}
+                  disabled={isSwitching}
+                  className={`px-3 py-1.5 text-xs font-serif font-semibold border-2 transition-all flex items-center gap-1.5 shadow-2xs ${
+                    isActive
+                      ? "bg-charcoal text-gold border-charcoal scale-105"
+                      : "bg-white text-charcoal border-charcoal/20 hover:border-gold"
+                  }`}
+                >
+                  <span className={`w-2 h-2 rounded-full ${
+                    officer.role === "FIELD_OFFICER" ? "bg-emerald-500" :
+                    officer.role === "LAB_ANALYST" ? "bg-blue-500" : "bg-rose-500"
+                  }`} />
+                  <span>{ROLE_LABEL[officer.role as Role]}: {officer.name.split(" ")[0]}</span>
+                  {isActive && <span className="text-[9px] uppercase font-sans font-bold bg-gold text-charcoal px-1 ml-0.5">Active</span>}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
         {/* ── HEADER ── */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12 pb-8 border-b-2 border-charcoal/10">
@@ -84,9 +154,9 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               </span>
             </div>
             <h1 className="text-4xl md:text-5xl serif text-charcoal font-normal">
-              Welcome, <span className="italic text-gold font-serif">{user.name.split(" ")[0]}</span>
+              Welcome, <span className="italic text-gold font-serif">{currentUser.name.split(" ")[0]}</span>
             </h1>
-            <p className="text-sm text-warm-grey mt-1 font-mono">{user.email}</p>
+            <p className="text-sm text-warm-grey mt-1 font-mono">{currentUser.email}</p>
           </div>
 
           <div className="flex items-center gap-3">

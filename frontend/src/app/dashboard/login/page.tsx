@@ -34,9 +34,8 @@ export default function LoginPage() {
       if (!res.ok) {
         setError(data.error || "Authentication failed.");
       } else {
-        // Hard redirect so the new session cookie is always picked up fresh
-        // and the dashboard re-fetches /api/auth/me with the correct role
-        window.location.href = "/dashboard";
+        // Timestamp param bypasses browser bfcache / stale page cache
+        window.location.href = `/dashboard?ts=${Date.now()}`;
       }
     } catch {
       setError("Network error. Please try again.");
