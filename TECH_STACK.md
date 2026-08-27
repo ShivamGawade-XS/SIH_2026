@@ -62,26 +62,35 @@ flowchart TD
 
 ```solidity
 struct Farmer {
-    uint256 farmerId;       // Unique ID (Aadhaar / KVIC hash)
+    uint256 farmerId;       // Unique ID (KVIC BRN / Cooperative Hash)
+    address walletAddress;  // Beekeeper wallet
     string name;            // "Ramesh Kumar"
     string location;        // "Sundarbans, West Bengal"
     string cooperativeId;   // "KVIC-WB-04"
+    string ipfsProfileHash; // IPFS CID
     bool isVerified;        // Verified by KVIC Field Officer
+    uint256 registeredAt;   // Registration timestamp
 }
 
 struct Batch {
     uint256 batchId;        // Unique Batch ID
+    uint256 requestId;      // Originating Harvest Request
     uint256 farmerId;       // Associated Farmer
     uint256 harvestTimestamp; // Unix Timestamp
-    string ipfsHash;        // IPFS CID (ipfs://Qm...)
+    string ipfsMetadataHash; // Full IPFS CID manifest
     uint8 qualityScore;     // AI Purity Score (0-100)
+    string grade;           // e.g. "Grade A+ (Premium Raw Organic)"
     bool isAuthentic;       // Authenticity status
+    bool isDisputed;        // Non-destructive fraud flag
+    string disputeReason;   // Dispute notes
+    bool isRevoked;         // Emergency revocation flag
 }
 
 struct CustodyEntry {
+    address actor;          // Logger wallet address
     string entity;          // "Sundarbans Processing Hub"
     uint256 timestamp;      // Unix Timestamp
-    string action;          // "Received", "Pasteurized", "Dispatched"
+    string action;          // "Received", "Cold Filtered", "Dispatched"
 }
 ```
 

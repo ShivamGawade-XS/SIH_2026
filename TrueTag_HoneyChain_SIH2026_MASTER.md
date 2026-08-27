@@ -79,7 +79,7 @@ Companies solving adjacent problems globally: HonestBee (Singapore), iFarm (Russ
 ### 3.2 How It Works (5 Steps)
 
 **Step 1 — Hive Registration**
-Beekeeper registers apiary: location, cooperative ID, Aadhaar-linked farmer ID. Farmer profile minted on blockchain. One-time setup by KVIC field officer.
+Beekeeper registers apiary: location, cooperative ID, official KVIC Beekeeper Registration Number (BRN). Farmer profile minted on blockchain. One-time setup by KVIC field officer.
 
 **Step 2 — IoT Hive Monitoring (Continuous)**
 Sensors at hive log temperature, weight, humidity in real time. Data feeds into the HoneyChain dashboard. AI model watches for anomalies — weight drop = swarm risk, temperature drop = colony stress, weight pattern = honey production forecast.
@@ -289,7 +289,7 @@ Show 3 hives on the admin dashboard: 2 healthy, 1 with a triggered Varroa alert.
 ## 5. Product Features — Full List
 
 ### 5.1 Beekeeper Portal
-- Register apiary (name, GPS location, cooperative ID, Aadhaar-linked ID)
+- Register apiary (name, GPS location, cooperative ID, KVIC Beekeeper Registration Number / DigiLocker ID)
 - Log new harvest batch (form + auto-pull from IoT mock)
 - View all batches and their blockchain confirmation status
 - Download QR code PDF labels (print-ready)

@@ -222,7 +222,7 @@ contract TrueTag {
 ## 4. Product Features (Full List)
 
 ### 4.1 Beekeeper Portal
-- Register apiary (name, location, cooperative ID, Aadhaar-linked ID)
+- Register apiary (name, location, cooperative ID, KVIC Beekeeper Registration Number / DigiLocker ID)
 - Log new harvest batch (form input + IoT data pull)
 - View all batches and their blockchain status
 - Download QR codes (PDF printable labels)
@@ -318,7 +318,7 @@ Governments don't pay for SaaS until someone else proves it works. Build for KVI
 ## 7. 36-Hour Build Plan
 
 ### Pre-Hackathon (This Week)
-- [ ] Set up Polygon Mumbai testnet wallets (team)
+- [ ] Set up Polygon Amoy testnet wallets (Chain ID: 80002)
 - [ ] Deploy skeleton HoneyBatch.sol to testnet
 - [ ] Initialize Next.js repo with Tailwind + shadcn/ui
 - [ ] Train and serialize AI quality model (scikit-learn) on synthetic data
@@ -329,7 +329,7 @@ Governments don't pay for SaaS until someone else proves it works. Build for KVI
 
 ### Hour 0–6: Foundation
 - [ ] Finalize smart contract: `registerFarmer()`, `mintBatch()`, `verifyBatch()`
-- [ ] Deploy to Polygon Mumbai testnet
+- [ ] Deploy to Polygon Amoy testnet
 - [ ] Set up Next.js project structure: `/farmer`, `/admin`, `/verify/[qrCode]`
 - [ ] Connect Wagmi/ethers.js to frontend
 - [ ] Set up PostgreSQL schema on Railway

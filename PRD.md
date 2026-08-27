@@ -39,7 +39,7 @@
 ## 3. Core Functional Requirements (FR)
 
 ### Module 1: Farmer & Apiary Digital Identity
-- **FR-1.1**: The system shall register beekeepers with Aadhaar-linked IDs, cooperative ID, name, photo, and geolocation coordinates.
+- **FR-1.1**: The system shall register beekeepers with official KVIC Beekeeper Registration Numbers (BRN), cooperative ID, name, photo, and geolocation coordinates.
 - **FR-1.2**: KVIC field officers shall verify and approve registered beekeepers before harvest minting privileges are granted.
 - **FR-1.3**: Farmer profile metadata shall be stored on IPFS and indexed via smart contract mapping.
 
