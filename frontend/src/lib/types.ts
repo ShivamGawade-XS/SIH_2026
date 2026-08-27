@@ -52,6 +52,7 @@ export interface BatchMetadata {
   qrToken: string;
   txHash?: string;
   blockNumber?: number;
+  botanicalFlora?: string;
 }
 
 export interface UserSession {

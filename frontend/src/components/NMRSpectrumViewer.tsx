@@ -139,9 +139,9 @@ export default function NMRSpectrumViewer({ purityScore, adulterantClass }: NMRS
           </div>
           <div>
             <span className="text-[9px] uppercase tracking-ultra text-warm-grey block">
-              1H-Nuclear Magnetic Resonance (NMR) 400 MHz
+              1H-Nuclear Magnetic Resonance (NMR) 400 MHz • Spectral Simulation
             </span>
-            <h4 className="text-xl serif font-normal text-alabaster">Molecular Spectrometry Signature</h4>
+            <h4 className="text-xl serif font-normal text-alabaster">Molecular Resonance Fingerprint Model</h4>
           </div>
         </div>
 
@@ -151,13 +151,13 @@ export default function NMRSpectrumViewer({ purityScore, adulterantClass }: NMRS
         </div>
       </div>
 
-      {/* Canvas Viewport */}
-      <div className="relative border border-white/10 bg-black/40 p-2 overflow-hidden">
+      {/* Canvas Viewport with responsive scroll container */}
+      <div className="relative border border-white/10 bg-black/40 p-2 overflow-x-auto max-w-full">
         <canvas
           ref={canvasRef}
           width={700}
           height={220}
-          className="w-full h-auto block"
+          className="w-full min-w-[340px] h-auto block"
         />
       </div>
 
@@ -180,6 +180,11 @@ export default function NMRSpectrumViewer({ purityScore, adulterantClass }: NMRS
           <span className="text-sm font-bold text-gold">99.4% Verified</span>
         </div>
       </div>
+
+      {/* Scientific Disclaimer Footnote */}
+      <p className="text-[9px] text-warm-grey/70 font-sans mt-4 pt-3 border-t border-white/5 italic">
+        *Illustrative resonance simulation parameterized by standard 400 MHz 1H-NMR botanical markers. Official high-throughput spectroscopy is conducted at NABL-accredited national laboratories.
+      </p>
     </div>
   );
 }

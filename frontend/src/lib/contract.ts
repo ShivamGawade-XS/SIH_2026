@@ -1,13 +1,25 @@
 import { ethers } from "ethers";
-import { HONEYCHAIN_ABI, HONEYCHAIN_CONTRACT_ADDRESS, POLYGON_SEPOLIA_RPC, DEMO_BATCHES } from "./constants";
+import { HONEYCHAIN_ABI, HONEYCHAIN_CONTRACT_ADDRESS, POLYGON_AMOY_RPC, DEMO_BATCHES } from "./constants";
 import { BatchMetadata, Farmer, HoneyBatch, CustodyEntry } from "./types";
 import { getCustomBatches } from "./registry";
 
 /**
- * Get read-only provider for Polygon Sepolia
+ * Helper to enforce timeout on RPC blockchain calls
+ */
+async function withTimeout<T>(promise: Promise<T>, ms = 4000): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(`Blockchain RPC call timed out after ${ms}ms`)), ms)
+    ),
+  ]);
+}
+
+/**
+ * Get read-only provider for Polygon Amoy
  */
 export function getReadOnlyProvider(): ethers.JsonRpcProvider {
-  return new ethers.JsonRpcProvider(POLYGON_SEPOLIA_RPC);
+  return new ethers.JsonRpcProvider(POLYGON_AMOY_RPC);
 }
 
 /**
@@ -33,18 +45,29 @@ export async function getSignerContract(): Promise<{ contract: ethers.Contract; 
 }
 
 /**
- * Fetch batch metadata by QR token with fallback to demo data if contract is unreachable
+ * Fetch batch metadata by QR token with fallback to demo registry
  */
 export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
+  const customList = getCustomBatches();
+  const localMatch = customList.find(
+    (b) =>
+      b.qrToken?.toLowerCase() === qrToken?.toLowerCase() ||
+      String(b.batchId) === String(qrToken)
+  );
+
   try {
     const contract = getReadOnlyContract();
-    const result = await contract.verifyByQR(qrToken);
-    const rawBatch = result.batch;
-    const rawFarmer = result.farmer;
-
+    // 1. Get Batch by QR Token
+    const rawBatch = await withTimeout(contract.getBatchByQR(qrToken), 4000);
     const batchId = Number(rawBatch.batchId);
+    if (!batchId || batchId === 0) {
+      return localMatch || customList[0] || DEMO_BATCHES[0];
+    }
+
+    // 2. Get Farmer & Custody
+    const rawFarmer = await withTimeout(contract.getFarmer(Number(rawBatch.farmerId)), 3000);
     const rawCustody: Array<{ actor: string; entity: string; timestamp: bigint; action: string }> =
-      await contract.getCustodyChain(batchId);
+      await withTimeout(contract.getCustodyChain(batchId), 3000).catch(() => []);
 
     const custodyChain: CustodyEntry[] = rawCustody.map((c) => ({
       actor: c.actor,
@@ -70,7 +93,7 @@ export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
       ipfsMetadataHash: rawBatch.ipfsMetadataHash,
       qualityScore: Number(rawBatch.qualityScore),
       grade: rawBatch.grade,
-      isAuthentic: rawBatch.isAuthentic,
+      isAuthentic: rawBatch.isAuthentic && !rawBatch.isRevoked && !rawBatch.isDisputed,
       isRevoked: rawBatch.isRevoked,
     };
 
@@ -78,8 +101,8 @@ export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
       batchId,
       farmer,
       batch,
-      custodyChain,
-      labReport: {
+      custodyChain: custodyChain.length > 0 ? custodyChain : (localMatch?.custodyChain || []),
+      labReport: localMatch?.labReport || {
         moisturePercent: 17.5,
         brixPercent: 81.0,
         hmfMgPerKg: 15.0,
@@ -87,16 +110,15 @@ export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
         electricalConductivity: 0.4,
         purityScore: batch.qualityScore,
         grade: batch.grade,
-        passedFSSAI: true,
+        passedFSSAI: batch.qualityScore >= 70,
         testedAt: new Date(batch.harvestTimestamp * 1000).toISOString().split("T")[0],
       },
-      qrToken,
+      qrToken: localMatch?.qrToken || qrToken,
+      txHash: localMatch?.txHash,
     };
   } catch (err) {
-    console.warn("Contract read failed, falling back to local demo registry:", err);
-    const customList = getCustomBatches();
-    const match = customList.find((b) => b.qrToken === qrToken) || customList[0];
-    return match;
+    // Graceful offline fallback to local registry
+    return localMatch || customList[0] || DEMO_BATCHES[0];
   }
 }
 
@@ -105,15 +127,16 @@ export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
  */
 export async function fetchBatchById(batchId: number): Promise<BatchMetadata> {
   const customList = getCustomBatches();
-  const match = customList.find((b) => b.batchId === batchId) || customList[0];
+  const localMatch = customList.find((b) => Number(b.batchId) === Number(batchId));
+
   try {
     const contract = getReadOnlyContract();
-    const rawBatch = await contract.batches(batchId);
+    const rawBatch = await withTimeout(contract.getBatch(batchId), 4000);
     if (!rawBatch || Number(rawBatch.batchId) === 0) {
-      return match;
+      return localMatch || customList[0] || DEMO_BATCHES[0];
     }
-    const rawFarmer = await contract.farmers(Number(rawBatch.farmerId));
-    const rawCustody = await contract.getCustodyChain(batchId);
+    const rawFarmer = await withTimeout(contract.getFarmer(Number(rawBatch.farmerId)), 3000);
+    const rawCustody = await withTimeout(contract.getCustodyChain(batchId), 3000).catch(() => []);
 
     return {
       batchId,
@@ -133,20 +156,30 @@ export async function fetchBatchById(batchId: number): Promise<BatchMetadata> {
         ipfsMetadataHash: rawBatch.ipfsMetadataHash,
         qualityScore: Number(rawBatch.qualityScore),
         grade: rawBatch.grade,
-        isAuthentic: rawBatch.isAuthentic,
+        isAuthentic: rawBatch.isAuthentic && !rawBatch.isRevoked && !rawBatch.isDisputed,
         isRevoked: rawBatch.isRevoked,
       },
-      custodyChain: rawCustody.map((c: any) => ({
+      custodyChain: (rawCustody || []).map((c: any) => ({
         actor: c.actor,
         entity: c.entity,
         timestamp: Number(c.timestamp),
         action: c.action,
       })),
-      labReport: match.labReport,
-      qrToken: match.qrToken,
-      txHash: match.txHash,
+      labReport: localMatch?.labReport || {
+        moisturePercent: 17.2,
+        brixPercent: 81.4,
+        hmfMgPerKg: 14.5,
+        diastaseNumber: 18.2,
+        electricalConductivity: 0.38,
+        purityScore: Number(rawBatch.qualityScore),
+        grade: rawBatch.grade,
+        passedFSSAI: Number(rawBatch.qualityScore) >= 70,
+        testedAt: new Date(Number(rawBatch.harvestTimestamp) * 1000).toISOString().split("T")[0],
+      },
+      qrToken: localMatch?.qrToken || `TT-2026-0000${batchId}`,
+      txHash: localMatch?.txHash,
     };
   } catch {
-    return match;
+    return localMatch || customList[0] || DEMO_BATCHES[0];
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FarmerProfile from "@/components/FarmerProfile";
@@ -9,10 +9,13 @@ import Scorecard from "@/components/Scorecard";
 import CustodyTimeline from "@/components/CustodyTimeline";
 import ApiaryMap from "@/components/ApiaryMap";
 import NMRSpectrumViewer from "@/components/NMRSpectrumViewer";
-import { fetchBatchById } from "@/lib/contract";
+import BeekeeperTipModal from "@/components/BeekeeperTipModal";
+import GITagBadge from "@/components/GITagBadge";
+import { fetchBatchById, fetchBatchByQR } from "@/lib/contract";
 import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
 import { generateCertificatePDF } from "@/lib/pdf-certificate";
-import { saveComplaint } from "@/lib/registry";
+import { generateExportPassportPDF } from "@/lib/export-passport";
+import { saveComplaint, subscribeToBatchUpdates } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
 import { TRANSLATIONS, Language } from "@/lib/i18n";
 import confetti from "canvas-confetti";
@@ -29,22 +32,34 @@ import {
   FileText,
   FileCheck,
   Volume2,
+  Heart,
+  Globe,
+  FileDown,
 } from "lucide-react";
 
 export default function ConsumerVerificationPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
+  const qrParam = searchParams.get("qr");
   const batchIdNum = Number(params.batchId) || 1;
+
   const [data, setData] = useState<BatchMetadata | null>(null);
   const [lang, setLang] = useState<Language>("en");
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [copiedTx, setCopiedTx] = useState(false);
   const [copiedIpfs, setCopiedIpfs] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [showTipModal, setShowTipModal] = useState(false);
   const [reportSubmitted, setReportSubmitted] = useState(false);
   const [reportReason, setReportReason] = useState("Broken or damaged QR seal on lid");
 
   useEffect(() => {
-    fetchBatchById(batchIdNum).then((res) => setData(res));
+    if (qrParam) {
+      fetchBatchByQR(qrParam).then((res) => setData(res));
+    } else {
+      fetchBatchById(batchIdNum).then((res) => setData(res));
+    }
+
     const saved = localStorage.getItem("honeychain_lang") as Language;
     if (saved) setLang(saved);
 
@@ -53,8 +68,23 @@ export default function ConsumerVerificationPage() {
       if (current) setLang(current);
     };
     window.addEventListener("honeychain_lang_changed", onLangChange);
-    return () => window.removeEventListener("honeychain_lang_changed", onLangChange);
-  }, [batchIdNum]);
+
+    // Cross-tab real-time sync for recall / dispute status
+    const unsubscribe = subscribeToBatchUpdates((updated) => {
+      setData((prev) => {
+        if (!prev) return updated;
+        if (prev.batchId === updated.batchId || (qrParam && prev.qrToken === updated.qrToken)) {
+          return updated;
+        }
+        return prev;
+      });
+    });
+
+    return () => {
+      window.removeEventListener("honeychain_lang_changed", onLangChange);
+      unsubscribe();
+    };
+  }, [batchIdNum, qrParam]);
 
   const handleSpeakAudio = () => {
     if (!data || typeof window === "undefined" || !("speechSynthesis" in window)) return;
@@ -85,11 +115,20 @@ export default function ConsumerVerificationPage() {
 
   if (!data) {
     return (
-      <div className="min-h-screen flex flex-col justify-between">
+      <div className="min-h-screen flex flex-col justify-between bg-[#F9F8F6]">
         <Navbar />
-        <div className="py-32 text-center">
-          <p className="text-xs uppercase tracking-widest text-warm-grey">Querying Polygon Ledger...</p>
-        </div>
+        <main className="py-24 px-6 md:px-12 max-w-4xl mx-auto w-full flex-1">
+          <div className="animate-pulse space-y-8">
+            <div className="h-6 w-48 bg-charcoal/10 rounded" />
+            <div className="h-16 w-3/4 bg-charcoal/15 rounded" />
+            <div className="h-48 w-full bg-white border-2 border-charcoal/10 p-8 flex flex-col justify-center items-center gap-3">
+              <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
+              <p className="text-xs uppercase tracking-widest text-warm-grey font-bold">
+                Querying Polygon Amoy Ledger & IPFS Provenance...
+              </p>
+            </div>
+          </div>
+        </main>
         <Footer />
       </div>
     );
@@ -139,6 +178,16 @@ export default function ConsumerVerificationPage() {
     });
   };
 
+  const handleDownloadAPEDA = () => {
+    generateExportPassportPDF(data);
+    confetti({
+      particleCount: 50,
+      spread: 60,
+      origin: { y: 0.7 },
+      colors: ["#D4AF37", "#138808", "#1A1A1A"],
+    });
+  };
+
   const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
 
   return (
@@ -151,24 +200,33 @@ export default function ConsumerVerificationPage() {
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
               <div>
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex flex-wrap items-center gap-3 mb-4">
                   <span className="h-px w-8 bg-gold" />
                   <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">
                     {t.heroTag} • {qrToken}
                   </span>
+                  <GITagBadge location={farmer.location} batchId={batch.batchId} />
                 </div>
                 <h1 className="text-6xl md:text-8xl serif text-charcoal font-normal leading-[0.95]">
                   {t.heroTitle1} <span className="italic text-gold">{t.heroTitle2}</span> {t.heroTitle3}
                 </h1>
 
-                {/* Audio Narration Button for Rural Farmers & Buyers */}
-                <div className="mt-6">
+                {/* Actions: Audio Narration & Direct UPI Tip */}
+                <div className="mt-6 flex flex-wrap items-center gap-3">
                   <button
                     onClick={handleSpeakAudio}
-                    className="px-4 py-2 bg-charcoal text-alabaster hover:bg-gold hover:text-charcoal transition-colors text-xs uppercase tracking-widest font-semibold flex items-center gap-2"
+                    className="px-4 py-2.5 bg-charcoal text-alabaster hover:bg-gold hover:text-charcoal transition-colors text-xs uppercase tracking-widest font-semibold flex items-center gap-2 shadow-xs"
                   >
                     <Volume2 className={`w-4 h-4 ${isSpeaking ? "text-gold animate-pulse" : ""}`} />
                     <span>{isSpeaking ? "Playing Voice Summary..." : (lang === "hi" ? "🎙️ आवाज में प्रमाण पत्र सुनें" : lang === "bn" ? "🎙️ অডিও শুনুন" : "🎙️ Listen to Audio Narration")}</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShowTipModal(true)}
+                    className="px-4 py-2.5 border-2 border-gold bg-gold/10 hover:bg-gold text-charcoal transition-colors text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-xs"
+                  >
+                    <Heart className="w-4 h-4 text-rose-600 fill-rose-600/30" />
+                    <span>🇮🇳 Tip Beekeeper (Direct UPI)</span>
                   </button>
                 </div>
               </div>
@@ -311,13 +369,20 @@ export default function ConsumerVerificationPage() {
                 </div>
 
                 {/* Download Certificate Buttons */}
-                <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                <div className="mt-10 flex flex-wrap gap-4">
                   <button
                     onClick={handleDownloadPDF}
                     className="flex-1 py-4 px-6 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
                   >
                     <FileText className="w-4 h-4 text-gold" />
-                    <span>Download Official PDF</span>
+                    <span>KVIC Certificate (PDF)</span>
+                  </button>
+                  <button
+                    onClick={handleDownloadAPEDA}
+                    className="py-4 px-6 text-xs uppercase tracking-widest font-semibold border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <Globe className="w-4 h-4 text-gold" />
+                    <span>APEDA Export Passport</span>
                   </button>
                   <button
                     onClick={handleDownloadVC}
@@ -445,6 +510,17 @@ export default function ConsumerVerificationPage() {
             </div>
           </div>
         )}
+
+        {/* BEEKEEPER DIRECT UPI TIP MODAL */}
+        <BeekeeperTipModal
+          isOpen={showTipModal}
+          onClose={() => setShowTipModal(false)}
+          farmerName={farmer.name}
+          farmerLocation={farmer.location}
+          cooperativeId={farmer.cooperativeId}
+          batchId={batch.batchId}
+          farmerVpa={`${farmer.name.toLowerCase().replace(/\s+/g, ".")}@sbi`}
+        />
       </main>
 
       <Footer />

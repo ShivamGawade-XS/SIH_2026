@@ -5,12 +5,15 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CameraScanner from "@/components/CameraScanner";
-import { QrCode, Search, Sparkles, ArrowRight, Camera, ShieldCheck } from "lucide-react";
+import OfflineSMSSimulator from "@/components/OfflineSMSSimulator";
+import { QrCode, Search, Sparkles, ArrowRight, Camera, ShieldCheck, MessageSquare } from "lucide-react";
 import Link from "next/link";
+import { getCustomBatches } from "@/lib/registry";
 
 export default function VerifySearchPage() {
   const [tokenInput, setTokenInput] = useState("");
   const [showScanner, setShowScanner] = useState(false);
+  const [showSmsModal, setShowSmsModal] = useState(false);
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -22,10 +25,10 @@ export default function VerifySearchPage() {
 
   const processScanResult = (decodedText: string) => {
     setShowScanner(false);
-    let target = decodedText.trim();
+    const clean = decodedText.trim();
 
-    if (target.includes("/verify/")) {
-      const parts = target.split("/verify/");
+    if (clean.includes("/verify/")) {
+      const parts = clean.split("/verify/");
       const batchPart = parts[1]?.split("?")[0]?.split("/")[0];
       if (batchPart) {
         router.push(`/verify/${batchPart}`);
@@ -33,17 +36,25 @@ export default function VerifySearchPage() {
       }
     }
 
-    if (/^\d+$/.test(target)) {
-      router.push(`/verify/${target}`);
+    // Check custom batch registry
+    const customList = getCustomBatches();
+    const match = customList.find(
+      (b) =>
+        b.qrToken.toLowerCase() === clean.toLowerCase() ||
+        String(b.batchId) === clean
+    );
+
+    if (match) {
+      router.push(`/verify/${match.batchId}?qr=${encodeURIComponent(match.qrToken)}`);
       return;
     }
 
-    if (target.includes("TT-2026-00002")) {
-      router.push(`/verify/2`);
+    if (/^\d+$/.test(clean)) {
+      router.push(`/verify/${clean}`);
       return;
     }
 
-    router.push(`/verify/1?qr=${encodeURIComponent(target)}`);
+    router.push(`/verify/1?qr=${encodeURIComponent(clean)}`);
   };
 
   const sampleBatches = [
@@ -62,6 +73,11 @@ export default function VerifySearchPage() {
         />
       )}
 
+      <OfflineSMSSimulator
+        isOpen={showSmsModal}
+        onClose={() => setShowSmsModal(false)}
+      />
+
       <main className="py-24 px-6 md:px-12 max-w-4xl mx-auto w-full flex-1">
         {/* Header */}
         <div className="text-center mb-16">
@@ -75,19 +91,27 @@ export default function VerifySearchPage() {
             Verify Your <span className="italic text-gold font-serif">Honey</span>
           </h1>
           <p className="text-sm md:text-base text-warm-grey max-w-xl mx-auto leading-relaxed font-normal">
-            Scan the TrueTag QR code on your honey jar with your camera or enter the batch identifier to verify harvest origin, lab spectrometry, and Polygon blockchain proof.
+            Scan the TrueTag QR code on your honey jar with your camera, enter the batch token manually, or test rural offline SMS / USSD shortcode verification.
           </p>
         </div>
 
-        {/* Action Panel: Camera Scan + Manual Search */}
+        {/* Action Panel: Camera Scan + SMS Simulation + Manual Search */}
         <div className="border-2 border-charcoal/20 bg-white p-8 md:p-12 mb-16 shadow-md">
-          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <button
               onClick={() => setShowScanner(true)}
-              className="flex-1 h-14 px-8 text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center justify-center gap-3 shadow-sm"
+              className="h-14 px-6 text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center justify-center gap-3 shadow-sm"
             >
               <Camera className="w-5 h-5 text-gold" />
               <span>Scan Jar With Camera</span>
+            </button>
+
+            <button
+              onClick={() => setShowSmsModal(true)}
+              className="h-14 px-6 text-xs uppercase tracking-widest font-bold border-2 border-charcoal bg-alabaster hover:bg-charcoal hover:text-gold text-charcoal flex items-center justify-center gap-2.5 transition-colors shadow-sm"
+            >
+              <MessageSquare className="w-4 h-4 text-gold" />
+              <span>Offline SMS / USSD Mode</span>
             </button>
           </div>
 

@@ -209,7 +209,7 @@ export default function QualityLabPage() {
             </div>
 
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Moisture Content (%)
@@ -239,7 +239,7 @@ export default function QualityLabPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     HMF Content (mg/kg)
@@ -269,7 +269,7 @@ export default function QualityLabPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Elec. Conductivity (mS/cm)
@@ -299,7 +299,7 @@ export default function QualityLabPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Exogenous C4 Sugars (%)
@@ -446,7 +446,7 @@ export default function QualityLabPage() {
               </h3>
             </div>
             <span className="text-[10px] font-mono font-bold text-charcoal uppercase tracking-widest bg-[#F9F8F6] px-3 py-1.5 border border-charcoal/15">
-              Instrument: Bruker Avance III HD
+              NMR Profile Simulation (IS 4941 Standard)
             </span>
           </div>
 

@@ -11,6 +11,15 @@ const STORAGE_KEY_BATCHES = "honeychain_custom_batches";
 const STORAGE_KEY_FARMERS = "honeychain_custom_farmers";
 const STORAGE_KEY_COMPLAINTS = "honeychain_complaints";
 
+let syncChannel: BroadcastChannel | null = null;
+if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+  try {
+    syncChannel = new BroadcastChannel("honeychain_sync");
+  } catch {
+    syncChannel = null;
+  }
+}
+
 export interface ConsumerComplaint {
   id: string;
   batchId: number;
@@ -66,9 +75,53 @@ export function saveCustomBatch(batch: BatchMetadata): void {
       list.unshift(batch);
     }
     localStorage.setItem(STORAGE_KEY_BATCHES, JSON.stringify(list));
+
+    // Broadcast update across tabs
+    if (syncChannel) {
+      syncChannel.postMessage({ type: "BATCH_UPDATED", batchId: batch.batchId, batch });
+    }
+    window.dispatchEvent(new CustomEvent("honeychain_batch_updated", { detail: batch }));
   } catch (e) {
     console.warn("Failed to persist batch locally:", e);
   }
+}
+
+export function subscribeToBatchUpdates(callback: (batch: BatchMetadata) => void): () => void {
+  if (typeof window === "undefined") return () => {};
+
+  const handleBroadcast = (event: MessageEvent) => {
+    if (event.data?.type === "BATCH_UPDATED" && event.data.batch) {
+      callback(event.data.batch);
+    }
+  };
+
+  const handleCustom = (event: Event) => {
+    const custom = event as CustomEvent<BatchMetadata>;
+    if (custom.detail) {
+      callback(custom.detail);
+    }
+  };
+
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === STORAGE_KEY_BATCHES) {
+      const batches = getCustomBatches();
+      if (batches.length > 0) callback(batches[0]);
+    }
+  };
+
+  if (syncChannel) {
+    syncChannel.addEventListener("message", handleBroadcast);
+  }
+  window.addEventListener("honeychain_batch_updated", handleCustom);
+  window.addEventListener("storage", handleStorage);
+
+  return () => {
+    if (syncChannel) {
+      syncChannel.removeEventListener("message", handleBroadcast);
+    }
+    window.removeEventListener("honeychain_batch_updated", handleCustom);
+    window.removeEventListener("storage", handleStorage);
+  };
 }
 
 export function getCustomFarmers(): Farmer[] {
@@ -91,6 +144,10 @@ export function saveCustomFarmer(farmer: Farmer): void {
     const list: Farmer[] = raw ? JSON.parse(raw) : [];
     list.push(farmer);
     localStorage.setItem(STORAGE_KEY_FARMERS, JSON.stringify(list));
+
+    if (syncChannel) {
+      syncChannel.postMessage({ type: "FARMER_REGISTERED", farmer });
+    }
   } catch (e) {
     console.warn("Failed to persist farmer locally:", e);
   }

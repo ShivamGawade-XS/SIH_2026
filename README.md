@@ -108,12 +108,18 @@ graph TD
 
 ```
 SIH_2026/
-├── README.md                          # Comprehensive Documentation
-├── TrueTag_HoneyChain_SIH2026_MASTER.md # Master Strategy & Build Document
-├── TrueTag_SIH2026_Complete.md        # Problem & Market Deconstruction
+├── README.md                          # Main Architecture & Overview
+├── DEMO.md                            # 5-Minute Grand Finale Pitch & Demo Script
+├── docs/                              # System Specifications & PRD Archives
+│   ├── PRD.md                         # Product Requirements Document
+│   ├── TECH_STACK.md                  # Comprehensive Stack Architecture
+│   ├── SKILLS.md                      # Technical Skills & Domain Overview
+│   ├── TrueTag_HoneyChain_SIH2026_MASTER.md # Master Technical Strategy
+│   └── TrueTag_SIH2026_Complete.md    # Problem & Market Deconstruction
 ├── contracts/                         # Solidity Smart Contracts & Hardhat Setup
 │   ├── contracts/
-│   │   └── HoneyChain.sol             # Master Honey Provenance Contract
+│   │   ├── HoneyChain.sol             # Master Honey Provenance Contract
+│   │   └── HoneyChainQR.sol           # QR Anti-Counterfeiting & Clone Counter
 │   ├── scripts/
 │   │   └── deploy.js                  # Deployment script for Polygon network
 │   ├── hardhat.config.js              # Hardhat configuration
@@ -125,12 +131,13 @@ SIH_2026/
 │   │   └── lib/                       # Web3 & API helper functions
 │   ├── public/                        # Static assets
 │   ├── package.json
-│   └── tailwind.config.js
+│   └── tailwind.config.ts
 ├── ai_service/                        # Python FastAPI Microservice
 │   ├── main.py                        # FastAPI routes & prediction endpoints
+│   ├── train.py                       # FSSAI Random Forest training pipeline
 │   ├── model/                         # Scikit-learn model artifacts (.pkl)
 │   ├── requirements.txt               # Python dependencies
-│   └── README.md
+│   └── Dockerfile
 └── iot_simulator/                     # Hive Sensor Telemetry Generator
     ├── simulator.py                   # Real-time hive sensor data generator
     └── requirements.txt
@@ -322,13 +329,13 @@ contract HoneyChain is AccessControl {
 ### Q4. "You claimed ₹6–10 crore ARR Year 1 from SaaS. 50 brands × ₹30,000/month = ₹1.8 crore ARR. Where does the rest come from?"
 
 > **Definitive Answer:**
-> SaaS alone does not equal ₹6–10 crore. Our realistic Year 1 ARR is **~₹3.5–4.4 crore**, derived from 4 diversified, verifiable revenue streams:
+> SaaS subscriptions are paid by **private honey brands & commercial processors** (e.g., Dabur, Patanjali, Apis, Organic India) seeking KVIC blockchain export certification to prove compliance to international buyers. KVIC acts as the mandating regulator and nodal authority, while brand processors are the paying SaaS subscribers.
 >
 > | Revenue Stream | Unit Economics | Volume / Basis | Year 1 ARR |
 > |---|---|---|---|
 > | **1. Brand SaaS Subscriptions** | ₹30,000 / month | 50 commercial honey brands | **₹1.80 crore** |
 > | **2. Per-Batch QR Minting** | ₹5 / batch certificate | 60,000 harvest batches | **₹30 lakh** |
-> | **3. Cooperative Subscriptions** | ₹1,000 / beekeeper / yr (KVIC subsidized) | 15,000 active beekeepers | **₹1.50 crore** |
+> | **3. Cooperative Subscriptions** | ₹1,000 / beekeeper / yr (absorbed by KVIC Honey Mission scheme) | 15,000 active beekeepers | **₹1.50 crore** |
 > | **4. Export Digital Passports** | ₹10,000 / consignment cert | 800 export consignments | **₹80 lakh** |
 > | **Year 1 Target Total** | | | **~₹4.40 crore ARR** |
 >

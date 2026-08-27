@@ -53,26 +53,34 @@ export default function HomePage() {
 
         {/* 2. STATS BAR (Dark Obsidian) */}
         <section className="py-16 px-6 md:px-12 lg:px-24 bg-[#141414] text-alabaster border-b-2 border-charcoal">
-          <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="border-t border-white/15 pt-6">
-              <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Registered Beekeepers</p>
-              <p className="text-4xl serif text-gold font-bold">14,240+</p>
-              <p className="text-[10px] text-taupe/70 mt-1 font-mono">Across 18 States</p>
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center gap-2 mb-6">
+              <span className="w-1.5 h-1.5 bg-gold rounded-full" />
+              <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-mono">
+                National Deployment Target (KVIC & National Bee Board 2026–27 Scheme)
+              </span>
             </div>
-            <div className="border-t border-white/15 pt-6">
-              <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Batches Authenticated</p>
-              <p className="text-4xl serif text-alabaster font-bold">1.8M+</p>
-              <p className="text-[10px] text-taupe/70 mt-1 font-mono">100% On-Chain</p>
-            </div>
-            <div className="border-t border-white/15 pt-6">
-              <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">FSSAI Compliance</p>
-              <p className="text-4xl serif text-emerald-400 font-bold">99.4%</p>
-              <p className="text-[10px] text-taupe/70 mt-1 font-mono">Spectrometry Passed</p>
-            </div>
-            <div className="border-t border-white/15 pt-6">
-              <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Consumer Scans</p>
-              <p className="text-4xl serif text-gold font-bold">4.2M+</p>
-              <p className="text-[10px] text-taupe/70 mt-1 font-mono">Zero Gas Cost</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="border-t border-white/15 pt-6">
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Registered Beekeepers</p>
+                <p className="text-4xl serif text-gold font-bold">14,240+</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">Across 18 State Clusters</p>
+              </div>
+              <div className="border-t border-white/15 pt-6">
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Target Batches</p>
+                <p className="text-4xl serif text-alabaster font-bold">1.8M+</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">Polygon PoS Tokenized</p>
+              </div>
+              <div className="border-t border-white/15 pt-6">
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">FSSAI Compliance</p>
+                <p className="text-4xl serif text-emerald-400 font-bold">99.4%</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">IS 4941:2020 Standard</p>
+              </div>
+              <div className="border-t border-white/15 pt-6">
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Consumer Scans</p>
+                <p className="text-4xl serif text-gold font-bold">4.2M+</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">Zero Consumer Gas Fee</p>
+              </div>
             </div>
           </div>
         </section>

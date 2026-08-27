@@ -91,7 +91,7 @@ export default function MintBatchPage() {
           batchId: newBatchId,
           farmerId: selectedFarmer.farmerId,
           harvestTimestamp: Math.floor(Date.now() / 1000),
-          ipfsMetadataHash: "Qm" + Array.from({ length: 44 }, () => "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]).join(""),
+          ipfsMetadataHash: "bafybeic" + Array.from({ length: 50 }, () => "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]).join(""),
           qualityScore: aiScore,
           grade: aiGrade,
           isAuthentic: true,

@@ -5,25 +5,32 @@
 export const HONEYCHAIN_CONTRACT_ADDRESS =
   process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
-export const POLYGON_SEPOLIA_RPC =
-  process.env.NEXT_PUBLIC_RPC_URL || "https://rpc-sepolia.polygon.technology";
+export const POLYGON_AMOY_RPC =
+  process.env.NEXT_PUBLIC_RPC_URL || "https://rpc-amoy.polygon.technology";
+
+export const POLYGON_SEPOLIA_RPC = POLYGON_AMOY_RPC;
 
 export const HONEYCHAIN_ABI = [
   "function totalFarmers() view returns (uint256)",
   "function totalBatches() view returns (uint256)",
-  "function farmers(uint256) view returns (uint256 farmerId, string name, string location, string cooperativeId, string ipfsProfileHash, bool isVerified, uint256 registeredAt)",
-  "function batches(uint256) view returns (uint256 batchId, uint256 farmerId, uint256 harvestTimestamp, string ipfsMetadataHash, uint8 qualityScore, string grade, bool isAuthentic, bool isRevoked)",
+  "function totalRequests() view returns (uint256)",
+  "function getFarmer(uint256) view returns (tuple(uint256 farmerId, address walletAddress, string name, string location, string cooperativeId, string ipfsProfileHash, bool isVerified, uint256 registeredAt))",
+  "function getBatch(uint256) view returns (tuple(uint256 batchId, uint256 requestId, uint256 farmerId, uint256 harvestTimestamp, string ipfsMetadataHash, uint8 qualityScore, string grade, bool isAuthentic, bool isDisputed, string disputeReason, address flaggedBy, bool isRevoked))",
+  "function getBatchByQR(string) view returns (tuple(uint256 batchId, uint256 requestId, uint256 farmerId, uint256 harvestTimestamp, string ipfsMetadataHash, uint8 qualityScore, string grade, bool isAuthentic, bool isDisputed, string disputeReason, address flaggedBy, bool isRevoked))",
   "function getCustodyChain(uint256) view returns (tuple(address actor, string entity, uint256 timestamp, string action)[])",
-  "function verifyByQR(string) view returns (tuple(uint256 batchId, uint256 farmerId, uint256 harvestTimestamp, string ipfsMetadataHash, uint8 qualityScore, string grade, bool isAuthentic, bool isRevoked) batch, tuple(uint256 farmerId, string name, string location, string cooperativeId, string ipfsProfileHash, bool isVerified, uint256 registeredAt) farmer)",
-  "function registerFarmer(string name, string location, string cooperativeId, string ipfsProfileHash) returns (uint256)",
-  "function mintBatch(uint256 farmerId, string ipfsMetadataHash, uint8 qualityScore, string grade, string qrToken) returns (uint256)",
+  "function registerFarmer(address walletAddress, string name, string location, string cooperativeId, string ipfsProfileHash) returns (uint256)",
+  "function submitHarvest(string floraSource, uint256 quantityKg, string ipfsMetadataHash) returns (uint256)",
+  "function approveHarvestAndMint(uint256 requestId, string ipfsMetadataHash, uint8 qualityScore, string grade, string qrToken) returns (uint256)",
   "function addCustody(uint256 batchId, string entity, string action)",
-  "function updateQualityScore(uint256 batchId, uint8 newScore, string newGrade)",
+  "function flagFraud(uint256 batchId, string reason)",
+  "function resolveDispute(uint256 batchId, bool restoreAuthentic, string resolutionRemarks)",
   "function revokeBatch(uint256 batchId)",
-  "event FarmerRegistered(uint256 indexed farmerId, string name, string location, address registeredBy)",
-  "event BatchMinted(uint256 indexed batchId, uint256 indexed farmerId, string ipfsMetadataHash, uint8 qualityScore, string grade, address mintedBy)",
+  "event FarmerRegistered(uint256 indexed farmerId, address indexed walletAddress, string name, string location, address registeredBy)",
+  "event HarvestSubmitted(uint256 indexed requestId, uint256 indexed farmerId, address indexed beekeeper, uint256 quantityKg, string floraSource, string ipfsMetadataHash)",
+  "event HarvestApproved(uint256 indexed requestId, uint256 indexed batchId, address indexed officer, uint8 qualityScore, string grade)",
+  "event BatchMinted(uint256 indexed batchId, uint256 indexed requestId, uint256 indexed farmerId, string ipfsMetadataHash, uint8 qualityScore, string grade, address mintedBy)",
   "event CustodyLogged(uint256 indexed batchId, string entity, string action, address loggedBy)",
-  "event QualityScoreUpdated(uint256 indexed batchId, uint8 oldScore, uint8 newScore, string newGrade, address updatedBy)"
+  "event BatchRevoked(uint256 indexed batchId, address revokedBy)"
 ];
 
 // FSSAI Quality Benchmark Constants
@@ -52,7 +59,7 @@ export const DEMO_BATCHES = [
       batchId: 1,
       farmerId: 1,
       harvestTimestamp: 1723618800,
-      ipfsMetadataHash: "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
+      ipfsMetadataHash: "bafybeihdwdcefgh4dqkjv67ui9p1qwe87yu123456789abcdef",
       qualityScore: 94,
       grade: "Grade A+ Premium Raw Organic",
       isAuthentic: true,

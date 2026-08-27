@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { DEMO_BATCHES } from "@/lib/constants";
 import { getCustomBatches } from "@/lib/registry";
 import { generateCertificatePDF } from "@/lib/pdf-certificate";
+import { generateExportPassportPDF } from "@/lib/export-passport";
 import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
 import { BatchMetadata } from "@/lib/types";
 import {
@@ -21,6 +22,7 @@ import {
   Layers,
   Sparkles,
   ExternalLink,
+  Globe,
 } from "lucide-react";
 
 export default function ReportsPage() {
@@ -48,6 +50,15 @@ export default function ReportsPage() {
     setDownloadingId(batch.batchId);
     try {
       generateCertificatePDF(batch);
+    } finally {
+      setTimeout(() => setDownloadingId(null), 800);
+    }
+  };
+
+  const handleDownloadAPEDA = (batch: BatchMetadata) => {
+    setDownloadingId(batch.batchId);
+    try {
+      generateExportPassportPDF(batch);
     } finally {
       setTimeout(() => setDownloadingId(null), 800);
     }
@@ -286,13 +297,23 @@ export default function ReportsPage() {
                           className="px-2.5 py-1 text-[10px] uppercase tracking-widest font-bold border border-charcoal/30 bg-white hover:bg-charcoal hover:text-gold text-charcoal transition-colors shadow-2xs inline-flex items-center gap-1"
                         >
                           <Download className="w-3 h-3" />
-                          <span>PDF Cert</span>
+                          <span>KVIC Cert</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleDownloadAPEDA(item)}
+                          disabled={downloadingId === item.batchId}
+                          className="px-2.5 py-1 text-[10px] uppercase tracking-widest font-bold border border-gold/40 bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal transition-colors shadow-2xs inline-flex items-center gap-1"
+                        >
+                          <Globe className="w-3 h-3 text-gold" />
+                          <span>APEDA Passport</span>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => handleDownloadVC(item)}
-                          className="px-2.5 py-1 text-[10px] uppercase tracking-widest font-bold border border-gold/40 bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal transition-colors shadow-2xs inline-flex items-center gap-1"
+                          className="px-2.5 py-1 text-[10px] uppercase tracking-widest font-bold border border-charcoal/20 bg-white hover:bg-charcoal hover:text-white text-charcoal transition-colors shadow-2xs inline-flex items-center gap-1"
                         >
                           <Award className="w-3 h-3 text-gold" />
                           <span>W3C VC</span>

@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LiveTelemetryStream from "@/components/LiveTelemetryStream";
 import { DEMO_BATCHES } from "@/lib/constants";
-import { getCustomBatches, getCustomFarmers, getComplaints, ConsumerComplaint } from "@/lib/registry";
+import { getCustomBatches, getCustomFarmers, getComplaints, ConsumerComplaint, subscribeToBatchUpdates } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
 import {
   Users, Layers, Sparkles, Activity, PlusCircle, Truck, QrCode,
@@ -65,6 +65,13 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
     setBatchesList(list);
     setFarmerCount(14240 + (farmers.length - 2));
     setComplaints(getComplaints());
+
+    const unsubscribe = subscribeToBatchUpdates(() => {
+      setBatchesList(getCustomBatches());
+      setComplaints(getComplaints());
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const handleSwitchPersona = async (officer: typeof DEMO_OFFICERS[0]) => {
@@ -81,6 +88,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: officer.email, password: officer.password }),
       });
+      router.refresh();
     } catch (e) {
       console.warn("Session update error:", e);
     } finally {

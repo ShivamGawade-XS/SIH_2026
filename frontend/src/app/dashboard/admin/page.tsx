@@ -6,25 +6,29 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getCustomBatches, saveCustomBatch, getComplaints, ConsumerComplaint } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
+import GovtInteroperabilityCard from "@/components/GovtInteroperabilityCard";
 import { ShieldAlert, ArrowLeft, AlertTriangle, CheckCircle2, Ban, QrCode, ExternalLink, RefreshCw } from "lucide-react";
 
 export default function AdminRecallPage() {
   const [batches, setBatches] = useState<BatchMetadata[]>([]);
   const [complaints, setComplaints] = useState<ConsumerComplaint[]>([]);
   const [revokedId, setRevokedId] = useState<number | null>(null);
+  const [modalBatchId, setModalBatchId] = useState<number | null>(null);
+  const [recallReason, setRecallReason] = useState("Suspected Adulteration / Broken Tamper Seal");
 
   useEffect(() => {
     setBatches(getCustomBatches());
     setComplaints(getComplaints());
   }, []);
 
-  const handleRevokeBatch = (batchId: number) => {
-    const target = batches.find((b) => b.batchId === batchId);
-    if (!target) return;
+  const openRecallModal = (batchId: number) => {
+    setModalBatchId(batchId);
+  };
 
-    if (!confirm(`Are you sure you want to RECALL and REVOKE Batch #${batchId}? This will invalidate all consumer QR scans immediately.`)) {
-      return;
-    }
+  const confirmRevocation = () => {
+    if (!modalBatchId) return;
+    const target = batches.find((b) => b.batchId === modalBatchId);
+    if (!target) return;
 
     const updated: BatchMetadata = {
       ...target,
@@ -32,13 +36,14 @@ export default function AdminRecallPage() {
         ...target.batch,
         isRevoked: true,
         isAuthentic: false,
-        grade: "REVOKED / FOOD SAFETY RECALL",
+        grade: `REVOKED / FOOD SAFETY RECALL (${recallReason})`,
       },
     };
 
     saveCustomBatch(updated);
     setBatches(getCustomBatches());
-    setRevokedId(batchId);
+    setRevokedId(modalBatchId);
+    setModalBatchId(null);
   };
 
   return (
@@ -53,6 +58,9 @@ export default function AdminRecallPage() {
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Operations Dashboard</span>
         </Link>
+
+        {/* National Bee Board & AgriStack Interoperability Card */}
+        <GovtInteroperabilityCard />
 
         {/* Header */}
         <div className="border border-charcoal/20 bg-white p-8 md:p-12 shadow-luxury-card mb-12">
@@ -147,8 +155,8 @@ export default function AdminRecallPage() {
                           <span className="text-[10px] text-warm-grey font-mono">Ledger Sealed</span>
                         ) : (
                           <button
-                            onClick={() => handleRevokeBatch(b.batchId)}
-                            className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-[10px] uppercase tracking-widest font-semibold transition-colors"
+                            onClick={() => openRecallModal(b.batchId)}
+                            className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-[10px] uppercase tracking-widest font-semibold transition-colors shadow-xs"
                           >
                             Emergency Revoke
                           </button>
@@ -161,6 +169,58 @@ export default function AdminRecallPage() {
             </div>
           </div>
         </div>
+
+        {/* Custom Luxury Recall Confirmation Modal */}
+        {modalBatchId && (
+          <div className="fixed inset-0 z-50 bg-charcoal/80 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="border-2 border-rose-500 bg-white max-w-md w-full p-8 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+              <div className="flex items-center gap-3 mb-4 pb-4 border-b border-charcoal/10 text-rose-600">
+                <ShieldAlert className="w-6 h-6" />
+                <h3 className="text-xl serif font-bold">Confirm Batch Revocation</h3>
+              </div>
+
+              <p className="text-xs text-warm-grey mb-4">
+                You are about to issue a permanent emergency food safety revocation for <strong>Batch #{modalBatchId}</strong>.
+                All consumer verification scans for this batch token will immediately flag as <strong>REVOKED / RECALLED</strong> across all distributed nodes and active sessions.
+              </p>
+
+              <div className="mb-6">
+                <label className="block text-[10px] uppercase tracking-widest text-charcoal font-bold mb-1.5">
+                  Official Revocation Reason:
+                </label>
+                <select
+                  value={recallReason}
+                  onChange={(e) => setRecallReason(e.target.value)}
+                  className="w-full h-10 border border-charcoal/30 bg-alabaster px-3 text-xs font-mono font-bold focus:border-rose-600 focus:outline-none"
+                >
+                  <option value="Suspected Adulteration / Broken Tamper Seal">Suspected Adulteration / Broken Tamper Seal</option>
+                  <option value="High Exogenous C4 Corn/Cane Syrup Detected">High Exogenous C4 Corn/Cane Syrup Detected</option>
+                  <option value="SMR Rice Syrup Oligosaccharides Marker Positive">SMR Rice Syrup Oligosaccharides Marker Positive</option>
+                  <option value="FSSAI IS 4941 Moisture / HMF Threshold Violation">FSSAI IS 4941 Moisture / HMF Threshold Violation</option>
+                  <option value="Physical Packaging Tampering Reported by Retailer">Physical Packaging Tampering Reported by Retailer</option>
+                </select>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setModalBatchId(null)}
+                  className="flex-1 h-11 border border-charcoal/30 text-charcoal text-xs uppercase tracking-widest font-bold hover:bg-alabaster transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmRevocation}
+                  className="flex-1 h-11 bg-rose-600 hover:bg-rose-700 text-white text-xs uppercase tracking-widest font-bold transition-colors shadow-md flex items-center justify-center gap-1.5"
+                >
+                  <Ban className="w-4 h-4" />
+                  <span>Execute Revoke</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />
