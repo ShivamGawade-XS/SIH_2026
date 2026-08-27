@@ -55,8 +55,8 @@ export default function DashboardOverviewPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch session from our /api/auth/me endpoint
-    fetch("/api/auth/me")
+    // Fetch session from our /api/auth/me endpoint — no-store prevents stale role reads
+    fetch("/api/auth/me", { cache: "no-store" })
       .then((r) => r.json())
       .then((data) => {
         if (data?.user) setUser(data.user);
