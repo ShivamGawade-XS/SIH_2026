@@ -259,6 +259,37 @@ contract HoneyChain {
 
 ---
 
+## 🎯 SIH 2026 Judge Q&A & Technical Defense Guide
+
+### Q1. "Consumer scan rates on food products globally are under 3%. Why would an average Indian consumer, buying honey at a kirana store, scan a QR code? You're solving a problem consumers don't know they have."
+
+> **Definitive Answer:**
+> 1. **High-Motivation Trigger Points**: Passive packaging QR codes get <3% scans, but HoneyChain targets two deliberate high-intent touchpoints:
+>    - **E-Commerce Listings (Amazon / Flipkart / ONDC)**: Product description displays *"Scan on delivery to verify batch authenticity"* — digital-native buyers in this segment actively verify products.
+>    - **Premium Retail Shelf-Talkers**: For premium raw/organic honey priced at ₹500–800/kg (vs ₹200 commercial syrup), the QR code acts as the **instant justification for premium pricing** directly at the point of sale.
+> 2. **Regulatory Pull (FSSAI 2025 E-Labeling Guidelines)**: KVIC and certified honey brands use "Blockchain Verified" claims to comply with upcoming FSSAI digital transparency norms, driving structural adoption.
+> 3. **The Real ROI is B2B & Export Compliance**: The primary economic return of HoneyChain is **B2B export documentation**. Cooperatives and exporters use immutable on-chain batch passports to satisfy strict APEDA, USFDA, and EU carbon isotope ($^{13}\text{C}$) / NMR traceability audits. Consumer trust is a powerful secondary advantage.
+
+---
+
+### Q2. "You claim Varroa mite detection accuracy on CNN models. On what data? India primarily uses *Apis cerana indica* — not the European *Apis mellifera* in Western datasets."
+
+> **Definitive Answer:**
+> 1. **Honest Dataset Attribution**: Open benchmark datasets (e.g. BeeImage) are Western *Apis mellifera* baselines.
+> 2. **Species-Transferable Morphological Signals**: The vision model inspects physical frame-level pathology (reddish-brown mite clusters, perforated brood cell cappings, and comb decay) rather than individual bee taxonomy — visual symptoms that are structurally identical across both Western and native Indian bee species.
+> 3. **Indian Dataset Pipeline & ICAR Partnership**: Post-SIH field rollout equips KVIC field officers with mobile inspection tools to capture geo-tagged *Apis cerana indica* frame imagery, while establishing an official data validation pipeline with **ICAR-AICRP on Honeybees & Pollinators**.
+
+---
+
+### Q3. "What stops a counterfeiter from buying one genuine jar, copying the QR code, and printing it on 10,000 fake jars?"
+
+> **Definitive Answer:**
+> 1. **Unit-Level Serial Encoding**: Every jar carries a unique serial token `HC-{YEAR}-{BATCH_ID}-{UNIT_SERIAL}` (e.g., `HC-2026-00142-037`) derived from harvest mass ($42.5\text{ kg} \rightarrow 85\text{ units}$).
+> 2. **First-Scan Activation vs. Duplicate Warnings**: The genuine buyer's first scan activates the unit on-chain. Subsequent scans on the same serial immediately alert the buyer: *"Warning: This QR serial has already been scanned multiple times. Check lid tamper seal."*
+> 3. **$3\times$ Volume Anomaly Engine**: If total scans on a batch exceed $3\times \text{expectedUnitCount}$ (e.g., $>255$ scans on an 85-jar batch), the backend automatically flags the batch as disputed and dispatches an instant red alert to the KVIC District Supervisor for retail recall.
+
+---
+
 ## 📈 Impact & Business Model
 
 - **Beekeeper Earnings**: Direct provenance increases market price realization by **2x to 3x** per kg.
