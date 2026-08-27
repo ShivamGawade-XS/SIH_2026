@@ -1,300 +1,351 @@
 const { expect } = require("chai");
 const { ethers }  = require("hardhat");
 
-/**
- * HoneyChain.sol — Full Test Suite
- * Tests: RBAC roles, farmer registration, batch minting, custody chain, QR verify, revocation
- */
-describe("HoneyChain", function () {
-  let honeyChain;
-  let admin, fieldOfficer, labAnalyst, consumer, unauthorized;
+describe("HoneyChain — 3-Role Approval Workflow", function () {
+  let contract;
+  let admin, fieldOfficer, supervisor, beekeeperWallet, stranger;
 
-  // Role hashes
-  let ADMIN_ROLE, FIELD_OFFICER_ROLE, LAB_ANALYST_ROLE;
-
-  // Shared test data
-  const farmerData = {
-    name:            "Rajesh Kumar Verma",
-    location:        "Muzaffarpur, Bihar",
-    cooperativeId:   "KVIC-BH-002",
-    ipfsProfileHash: "QmFarmerProfileHash123"
-  };
-  const batchData = {
-    ipfsMetadataHash: "QmBatchMetadataHash456",
-    qualityScore:     88,
-    grade:            "Grade A+ Premium Raw Organic",
-    qrToken:          "TT-2026-00001"
-  };
+  // Role bytes32 constants
+  const BEEKEEPER_ROLE           = ethers.keccak256(ethers.toUtf8Bytes("BEEKEEPER_ROLE"));
+  const FIELD_OFFICER_ROLE       = ethers.keccak256(ethers.toUtf8Bytes("FIELD_OFFICER_ROLE"));
+  const DISTRICT_SUPERVISOR_ROLE = ethers.keccak256(ethers.toUtf8Bytes("DISTRICT_SUPERVISOR_ROLE"));
+  const ADMIN_ROLE               = ethers.keccak256(ethers.toUtf8Bytes("ADMIN_ROLE"));
 
   beforeEach(async function () {
-    [admin, fieldOfficer, labAnalyst, consumer, unauthorized] = await ethers.getSigners();
+    [admin, fieldOfficer, supervisor, beekeeperWallet, stranger] = await ethers.getSigners();
 
     const HoneyChain = await ethers.getContractFactory("HoneyChain");
-    honeyChain = await HoneyChain.deploy();
-    await honeyChain.waitForDeployment();
+    contract = await HoneyChain.deploy();
 
-    ADMIN_ROLE         = await honeyChain.ADMIN_ROLE();
-    FIELD_OFFICER_ROLE = await honeyChain.FIELD_OFFICER_ROLE();
-    LAB_ANALYST_ROLE   = await honeyChain.LAB_ANALYST_ROLE();
+    // Setup: admin grants roles
+    await contract.connect(admin).grantFieldOfficer(fieldOfficer.address);
+    await contract.connect(admin).grantDistrictSupervisor(supervisor.address);
 
-    // Grant roles
-    await honeyChain.connect(admin).grantFieldOfficer(fieldOfficer.address);
-    await honeyChain.connect(admin).grantLabAnalyst(labAnalyst.address);
+    // Register the beekeeper
+    await contract.connect(fieldOfficer).registerFarmer(
+      beekeeperWallet.address,
+      "Ramesh Kumar",
+      "Sundarbans, West Bengal",
+      "KVIC-WB-2024-001",
+      "QmFarmerProfileHash123"
+    );
   });
 
-  // ─── Deployment & RBAC ─────────────────────────────────────────────────────
-  describe("Deployment & RBAC", function () {
-    it("should grant deployer admin and field officer roles", async function () {
-      expect(await honeyChain.hasRole(ADMIN_ROLE,         admin.address)).to.be.true;
-      expect(await honeyChain.hasRole(FIELD_OFFICER_ROLE, admin.address)).to.be.true;
+  // ─── RBAC Tests ───────────────────────────────────────────────────────────
+
+  describe("Role-Based Access Control", function () {
+    it("grants BEEKEEPER_ROLE to farmer wallet on registration", async () => {
+      expect(await contract.hasRole(BEEKEEPER_ROLE, beekeeperWallet.address)).to.equal(true);
     });
 
-    it("should grant fieldOfficer the FIELD_OFFICER_ROLE", async function () {
-      expect(await honeyChain.hasRole(FIELD_OFFICER_ROLE, fieldOfficer.address)).to.be.true;
+    it("correctly assigns FIELD_OFFICER_ROLE", async () => {
+      expect(await contract.hasRole(FIELD_OFFICER_ROLE, fieldOfficer.address)).to.equal(true);
     });
 
-    it("should grant labAnalyst the LAB_ANALYST_ROLE", async function () {
-      expect(await honeyChain.hasRole(LAB_ANALYST_ROLE, labAnalyst.address)).to.be.true;
+    it("correctly assigns DISTRICT_SUPERVISOR_ROLE", async () => {
+      expect(await contract.hasRole(DISTRICT_SUPERVISOR_ROLE, supervisor.address)).to.equal(true);
     });
 
-    it("should start with 0 farmers and 0 batches", async function () {
-      expect(await honeyChain.totalFarmers()).to.equal(0);
-      expect(await honeyChain.totalBatches()).to.equal(0);
-    });
-
-    it("should revert when unauthorized tries to grant Field Officer role", async function () {
+    it("blocks stranger from registering farmers", async () => {
       await expect(
-        honeyChain.connect(unauthorized).grantFieldOfficer(consumer.address)
-      ).to.be.reverted;
-    });
-  });
-
-  // ─── Farmer Registration ────────────────────────────────────────────────────
-  describe("Farmer Registration", function () {
-    it("should allow field officer to register a farmer", async function () {
-      const tx = await honeyChain.connect(fieldOfficer).registerFarmer(
-        farmerData.name, farmerData.location, farmerData.cooperativeId, farmerData.ipfsProfileHash
-      );
-
-      await expect(tx)
-        .to.emit(honeyChain, "FarmerRegistered")
-        .withArgs(1, farmerData.name, farmerData.location, fieldOfficer.address);
-
-      const farmer = await honeyChain.farmers(1);
-      expect(farmer.name).to.equal(farmerData.name);
-      expect(farmer.location).to.equal(farmerData.location);
-      expect(farmer.cooperativeId).to.equal(farmerData.cooperativeId);
-      expect(farmer.isVerified).to.be.true;
-      expect(farmer.farmerId).to.equal(1);
-    });
-
-    it("should increment farmer counter correctly", async function () {
-      await honeyChain.connect(fieldOfficer).registerFarmer(
-        farmerData.name, farmerData.location, farmerData.cooperativeId, farmerData.ipfsProfileHash
-      );
-      await honeyChain.connect(fieldOfficer).registerFarmer(
-        "Priya Sharma", "Aurangabad, Maharashtra", "KVIC-MH-009", "QmFarmer2"
-      );
-      expect(await honeyChain.totalFarmers()).to.equal(2);
-    });
-
-    it("should revert when unauthorized user tries to register farmer", async function () {
-      await expect(
-        honeyChain.connect(unauthorized).registerFarmer(
-          farmerData.name, farmerData.location, farmerData.cooperativeId, farmerData.ipfsProfileHash
+        contract.connect(stranger).registerFarmer(
+          stranger.address, "X", "Y", "Z", "hash"
         )
       ).to.be.reverted;
     });
+
+    it("blocks stranger from submitting harvest", async () => {
+      await expect(
+        contract.connect(stranger).submitHarvest("Acacia", 50, "QmHash")
+      ).to.be.reverted;
+    });
   });
 
-  // ─── Batch Minting ──────────────────────────────────────────────────────────
-  describe("Batch Minting", function () {
-    let farmerId;
+  // ─── Step 1: Beekeeper Submits Harvest ────────────────────────────────────
 
-    beforeEach(async function () {
-      const tx = await honeyChain.connect(fieldOfficer).registerFarmer(
-        farmerData.name, farmerData.location, farmerData.cooperativeId, farmerData.ipfsProfileHash
+  describe("Step 1 — Beekeeper: submitHarvest()", function () {
+    it("allows a registered beekeeper to submit a harvest request", async () => {
+      const tx = await contract.connect(beekeeperWallet).submitHarvest(
+        "Mustard Blossom", 120, "QmHarvestMetaHash001"
       );
       const receipt = await tx.wait();
-      farmerId = 1;
+      const event = receipt.logs.find(l => l.fragment?.name === "HarvestSubmitted");
+      expect(event).to.not.be.undefined;
+      expect(event.args.requestId).to.equal(1n);
+      expect(event.args.quantityKg).to.equal(120n);
     });
 
-    it("should allow field officer to mint a batch", async function () {
-      const tx = await honeyChain.connect(fieldOfficer).mintBatch(
-        farmerId, batchData.ipfsMetadataHash, batchData.qualityScore, batchData.grade, batchData.qrToken
-      );
-
-      await expect(tx)
-        .to.emit(honeyChain, "BatchMinted")
-        .withArgs(1, farmerId, batchData.ipfsMetadataHash, batchData.qualityScore, batchData.grade, fieldOfficer.address);
-
-      const batch = await honeyChain.batches(1);
-      expect(batch.farmerId).to.equal(farmerId);
-      expect(batch.qualityScore).to.equal(batchData.qualityScore);
-      expect(batch.grade).to.equal(batchData.grade);
-      expect(batch.isAuthentic).to.be.true;
-      expect(batch.isRevoked).to.be.false;
+    it("stores request in Pending state", async () => {
+      await contract.connect(beekeeperWallet).submitHarvest("Acacia", 80, "QmHash2");
+      const req = await contract.getHarvestRequest(1);
+      expect(req.status).to.equal(0); // RequestStatus.Pending
+      expect(req.floraSource).to.equal("Acacia");
     });
 
-    it("should link QR token to batch", async function () {
-      await honeyChain.connect(fieldOfficer).mintBatch(
-        farmerId, batchData.ipfsMetadataHash, batchData.qualityScore, batchData.grade, batchData.qrToken
-      );
-      expect(await honeyChain.qrToBatch(batchData.qrToken)).to.equal(1);
-    });
-
-    it("should auto-log initial custody entry on mint", async function () {
-      await honeyChain.connect(fieldOfficer).mintBatch(
-        farmerId, batchData.ipfsMetadataHash, batchData.qualityScore, batchData.grade, batchData.qrToken
-      );
-      const chain = await honeyChain.getCustodyChain(1);
-      expect(chain.length).to.equal(1);
-      expect(chain[0].action).to.equal("Harvested & Minted on HoneyChain");
-    });
-
-    it("should revert when QR token is already used", async function () {
-      await honeyChain.connect(fieldOfficer).mintBatch(
-        farmerId, batchData.ipfsMetadataHash, batchData.qualityScore, batchData.grade, batchData.qrToken
-      );
+    it("blocks zero-quantity harvest submissions", async () => {
       await expect(
-        honeyChain.connect(fieldOfficer).mintBatch(
-          farmerId, "QmOther", 75, "Grade B", batchData.qrToken  // same QR token
-        )
-      ).to.be.revertedWith("HoneyChain: QR token already used");
+        contract.connect(beekeeperWallet).submitHarvest("Litchi", 0, "QmHash")
+      ).to.be.revertedWith("HoneyChain: Quantity must be > 0");
     });
 
-    it("should revert when quality score > 100", async function () {
+    it("blocks unregistered callers", async () => {
       await expect(
-        honeyChain.connect(fieldOfficer).mintBatch(farmerId, "QmX", 101, "Invalid", "TT-999")
-      ).to.be.revertedWith("HoneyChain: Score must be 0-100");
-    });
-
-    it("should revert minting for non-existent farmer", async function () {
-      await expect(
-        honeyChain.connect(fieldOfficer).mintBatch(999, "QmX", 80, "Grade A", "TT-888")
-      ).to.be.revertedWith("HoneyChain: Farmer not registered");
-    });
-  });
-
-  // ─── Custody Chain ──────────────────────────────────────────────────────────
-  describe("Custody Chain", function () {
-    beforeEach(async function () {
-      await honeyChain.connect(fieldOfficer).registerFarmer(
-        farmerData.name, farmerData.location, farmerData.cooperativeId, farmerData.ipfsProfileHash
-      );
-      await honeyChain.connect(fieldOfficer).mintBatch(
-        1, batchData.ipfsMetadataHash, batchData.qualityScore, batchData.grade, batchData.qrToken
-      );
-    });
-
-    it("should log additional custody entries correctly", async function () {
-      await honeyChain.connect(fieldOfficer).addCustody(1, "KVIC Processing Unit #4, Jaipur", "Received");
-      await honeyChain.connect(fieldOfficer).addCustody(1, "FSSAI National Quality Lab", "Certified");
-
-      const chain = await honeyChain.getCustodyChain(1);
-      expect(chain.length).to.equal(3); // 1 auto + 2 added
-      expect(chain[1].entity).to.equal("KVIC Processing Unit #4, Jaipur");
-      expect(chain[2].entity).to.equal("FSSAI National Quality Lab");
-    });
-
-    it("should emit CustodyLogged event", async function () {
-      await expect(
-        honeyChain.connect(fieldOfficer).addCustody(1, "Warehouse A", "Stored")
-      ).to.emit(honeyChain, "CustodyLogged").withArgs(1, "Warehouse A", "Stored", fieldOfficer.address);
-    });
-
-    it("should return correct custody count", async function () {
-      await honeyChain.connect(fieldOfficer).addCustody(1, "Unit 1", "Processed");
-      expect(await honeyChain.getCustodyCount(1)).to.equal(2);
-    });
-  });
-
-  // ─── QR Verification ───────────────────────────────────────────────────────
-  describe("QR Verification (Consumer Scan)", function () {
-    beforeEach(async function () {
-      await honeyChain.connect(fieldOfficer).registerFarmer(
-        farmerData.name, farmerData.location, farmerData.cooperativeId, farmerData.ipfsProfileHash
-      );
-      await honeyChain.connect(fieldOfficer).mintBatch(
-        1, batchData.ipfsMetadataHash, batchData.qualityScore, batchData.grade, batchData.qrToken
-      );
-    });
-
-    it("should return batch and farmer data from QR token", async function () {
-      const [batch, farmer] = await honeyChain.verifyByQR(batchData.qrToken);
-      expect(batch.qualityScore).to.equal(batchData.qualityScore);
-      expect(batch.grade).to.equal(batchData.grade);
-      expect(farmer.name).to.equal(farmerData.name);
-      expect(farmer.location).to.equal(farmerData.location);
-    });
-
-    it("should revert on invalid QR token", async function () {
-      await expect(honeyChain.verifyByQR("INVALID-QR")).to.be.revertedWith("HoneyChain: Invalid QR token");
-    });
-
-    it("should revert on revoked batch QR", async function () {
-      await honeyChain.connect(admin).revokeBatch(1);
-      await expect(honeyChain.verifyByQR(batchData.qrToken)).to.be.revertedWith("HoneyChain: Product has been recalled");
-    });
-  });
-
-  // ─── Quality Score Update ───────────────────────────────────────────────────
-  describe("Quality Score Update (Lab Analyst)", function () {
-    beforeEach(async function () {
-      await honeyChain.connect(fieldOfficer).registerFarmer(
-        farmerData.name, farmerData.location, farmerData.cooperativeId, farmerData.ipfsProfileHash
-      );
-      await honeyChain.connect(fieldOfficer).mintBatch(
-        1, batchData.ipfsMetadataHash, batchData.qualityScore, batchData.grade, batchData.qrToken
-      );
-    });
-
-    it("should allow lab analyst to update quality score", async function () {
-      await expect(
-        honeyChain.connect(labAnalyst).updateQualityScore(1, 95, "Grade S Premium Verified")
-      ).to.emit(honeyChain, "QualityScoreUpdated")
-        .withArgs(1, 88, 95, "Grade S Premium Verified", labAnalyst.address);
-
-      const batch = await honeyChain.batches(1);
-      expect(batch.qualityScore).to.equal(95);
-      expect(batch.grade).to.equal("Grade S Premium Verified");
-    });
-
-    it("should revert when field officer tries to update quality score", async function () {
-      await expect(
-        honeyChain.connect(fieldOfficer).updateQualityScore(1, 70, "Grade B")
+        contract.connect(stranger).submitHarvest("Tulsi", 10, "QmHash")
       ).to.be.reverted;
     });
   });
 
-  // ─── Admin Revocation ──────────────────────────────────────────────────────
-  describe("Admin Batch Revocation", function () {
-    beforeEach(async function () {
-      await honeyChain.connect(fieldOfficer).registerFarmer(
-        farmerData.name, farmerData.location, farmerData.cooperativeId, farmerData.ipfsProfileHash
-      );
-      await honeyChain.connect(fieldOfficer).mintBatch(
-        1, batchData.ipfsMetadataHash, batchData.qualityScore, batchData.grade, batchData.qrToken
-      );
+  // ─── Step 2: Field Officer Approves / Rejects ─────────────────────────────
+
+  describe("Step 2 — Field Officer: approveHarvestAndMint()", function () {
+    beforeEach(async () => {
+      await contract.connect(beekeeperWallet).submitHarvest("Litchi", 200, "QmRawHash");
     });
 
-    it("should allow admin to revoke a batch", async function () {
-      await expect(honeyChain.connect(admin).revokeBatch(1))
-        .to.emit(honeyChain, "BatchRevoked").withArgs(1, admin.address);
-
-      const batch = await honeyChain.batches(1);
-      expect(batch.isRevoked).to.be.true;
+    it("mints a batch upon approval", async () => {
+      const tx = await contract.connect(fieldOfficer).approveHarvestAndMint(
+        1, "QmVerifiedMetaHash", 87, "Grade A (Raw Organic)", "HCQR-001"
+      );
+      const receipt = await tx.wait();
+      const event = receipt.logs.find(l => l.fragment?.name === "BatchMinted");
+      expect(event).to.not.be.undefined;
+      expect(event.args.batchId).to.equal(1n);
+      expect(event.args.qualityScore).to.equal(87n);
     });
 
-    it("should prevent custody logging on revoked batch", async function () {
-      await honeyChain.connect(admin).revokeBatch(1);
+    it("marks request as Approved", async () => {
+      await contract.connect(fieldOfficer).approveHarvestAndMint(
+        1, "QmVerifiedHash", 90, "Grade A+", "HCQR-002"
+      );
+      const req = await contract.getHarvestRequest(1);
+      expect(req.status).to.equal(1); // RequestStatus.Approved
+    });
+
+    it("sets batch as authentic after minting", async () => {
+      await contract.connect(fieldOfficer).approveHarvestAndMint(
+        1, "QmVerifiedHash", 90, "Grade A+", "HCQR-003"
+      );
+      const batch = await contract.getBatch(1);
+      expect(batch.isAuthentic).to.equal(true);
+      expect(batch.isDisputed).to.equal(false);
+      expect(batch.isRevoked).to.equal(false);
+    });
+
+    it("rejects duplicate QR token on second mint", async () => {
+      await contract.connect(fieldOfficer).approveHarvestAndMint(
+        1, "QmHash", 80, "Grade B", "HCQR-DUPE"
+      );
+      // Submit another harvest
+      await contract.connect(beekeeperWallet).submitHarvest("Ajwain", 50, "QmHash2");
       await expect(
-        honeyChain.connect(fieldOfficer).addCustody(1, "Distributor", "Shipped")
-      ).to.be.revertedWith("HoneyChain: Batch has been revoked");
+        contract.connect(fieldOfficer).approveHarvestAndMint(
+          2, "QmHash2", 75, "Grade B", "HCQR-DUPE"
+        )
+      ).to.be.revertedWith("HoneyChain: QR token already assigned");
     });
 
-    it("should revert when unauthorized tries to revoke", async function () {
-      await expect(honeyChain.connect(consumer).revokeBatch(1)).to.be.reverted;
+    it("prevents approving an already-approved request", async () => {
+      await contract.connect(fieldOfficer).approveHarvestAndMint(
+        1, "QmHash", 80, "Grade A", "HCQR-X1"
+      );
+      await expect(
+        contract.connect(fieldOfficer).approveHarvestAndMint(
+          1, "QmHash2", 80, "Grade A", "HCQR-X2"
+        )
+      ).to.be.revertedWith("HoneyChain: Request not in pending state");
+    });
+
+    it("blocks stranger from approving", async () => {
+      await expect(
+        contract.connect(stranger).approveHarvestAndMint(
+          1, "QmHash", 80, "Grade A", "HCQR-S1"
+        )
+      ).to.be.reverted;
+    });
+  });
+
+  describe("Step 2 — Field Officer: rejectHarvest()", function () {
+    beforeEach(async () => {
+      await contract.connect(beekeeperWallet).submitHarvest("Neem", 30, "QmNeem");
+    });
+
+    it("rejects a harvest with a reason", async () => {
+      const tx = await contract.connect(fieldOfficer).rejectHarvest(
+        1, "Moisture content exceeds FSSAI 20% threshold"
+      );
+      const receipt = await tx.wait();
+      const event = receipt.logs.find(l => l.fragment?.name === "HarvestRejected");
+      expect(event).to.not.be.undefined;
+      expect(event.args.reason).to.include("FSSAI");
+    });
+
+    it("stores Rejected status", async () => {
+      await contract.connect(fieldOfficer).rejectHarvest(1, "Failed origin verification");
+      const req = await contract.getHarvestRequest(1);
+      expect(req.status).to.equal(2); // RequestStatus.Rejected
+    });
+
+    it("blocks approving after rejection", async () => {
+      await contract.connect(fieldOfficer).rejectHarvest(1, "Bad sample");
+      await expect(
+        contract.connect(fieldOfficer).approveHarvestAndMint(
+          1, "QmHash", 80, "Grade A", "HCQR-Y1"
+        )
+      ).to.be.revertedWith("HoneyChain: Request not in pending state");
+    });
+  });
+
+  // ─── Step 3: District Supervisor Fraud Flag & Audit ───────────────────────
+
+  describe("Step 3 — District Supervisor: flagFraud()", function () {
+    beforeEach(async () => {
+      await contract.connect(beekeeperWallet).submitHarvest("Acacia", 100, "QmAcacia");
+      await contract.connect(fieldOfficer).approveHarvestAndMint(
+        1, "QmVerifiedAcacia", 85, "Grade A", "HCQR-AUDIT1"
+      );
+    });
+
+    it("marks batch as disputed without deleting it", async () => {
+      await contract.connect(supervisor).flagFraud(
+        1, "C4 sugar (corn syrup) detected in NMR spectrometry"
+      );
+      const batch = await contract.getBatch(1);
+      expect(batch.isDisputed).to.equal(true);
+      expect(batch.isAuthentic).to.equal(false);
+      expect(batch.isRevoked).to.equal(false); // NOT deleted
+      expect(batch.disputeReason).to.include("corn syrup");
+    });
+
+    it("emits BatchDisputed event", async () => {
+      await expect(
+        contract.connect(supervisor).flagFraud(1, "Adulterated with rice syrup")
+      )
+        .to.emit(contract, "BatchDisputed")
+        .withArgs(1n, "Adulterated with rice syrup", supervisor.address);
+    });
+
+    it("appends fraud flag to custody chain", async () => {
+      await contract.connect(supervisor).flagFraud(1, "SMR 13C isotope anomaly");
+      const chain = await contract.getCustodyChain(1);
+      const lastEntry = chain[chain.length - 1];
+      expect(lastEntry.action).to.include("FLAGGED AS FRAUDULENT");
+      expect(lastEntry.actor).to.equal(supervisor.address);
+    });
+
+    it("blocks stranger from flagging fraud", async () => {
+      await expect(
+        contract.connect(stranger).flagFraud(1, "Tampered")
+      ).to.be.reverted;
+    });
+
+    it("blocks Field Officer from flagging fraud", async () => {
+      await expect(
+        contract.connect(fieldOfficer).flagFraud(1, "Fraud")
+      ).to.be.reverted;
+    });
+  });
+
+  describe("Step 3 — District Supervisor: resolveDispute()", function () {
+    beforeEach(async () => {
+      await contract.connect(beekeeperWallet).submitHarvest("Jamun", 75, "QmJamun");
+      await contract.connect(fieldOfficer).approveHarvestAndMint(
+        1, "QmVerifiedJamun", 92, "Grade A+", "HCQR-RES1"
+      );
+      await contract.connect(supervisor).flagFraud(1, "Suspected adulteration — pending retesting");
+    });
+
+    it("restores batch as authentic after secondary investigation clears it", async () => {
+      await contract.connect(supervisor).resolveDispute(
+        1, true, "Secondary NABL lab found no adulteration — batch cleared"
+      );
+      const batch = await contract.getBatch(1);
+      expect(batch.isDisputed).to.equal(false);
+      expect(batch.isAuthentic).to.equal(true);
+      expect(batch.isRevoked).to.equal(false);
+    });
+
+    it("permanently revokes batch if fraud confirmed", async () => {
+      await contract.connect(supervisor).resolveDispute(
+        1, false, "FSSAI Kolkata lab confirmed C4 adulteration — REVOKED"
+      );
+      const batch = await contract.getBatch(1);
+      expect(batch.isAuthentic).to.equal(false);
+      expect(batch.isRevoked).to.equal(true);
+    });
+
+    it("emits DisputeResolved event", async () => {
+      await expect(
+        contract.connect(supervisor).resolveDispute(1, true, "Cleared by NABL lab")
+      )
+        .to.emit(contract, "DisputeResolved")
+        .withArgs(1n, true, "Cleared by NABL lab", supervisor.address);
+    });
+
+    it("rejects resolving a non-disputed batch", async () => {
+      await contract.connect(supervisor).resolveDispute(1, true, "Cleared");
+      await expect(
+        contract.connect(supervisor).resolveDispute(1, false, "Re-flag")
+      ).to.be.revertedWith("HoneyChain: Batch is not currently disputed");
+    });
+  });
+
+  // ─── Admin Revocation ─────────────────────────────────────────────────────
+
+  describe("Admin: revokeBatch()", function () {
+    beforeEach(async () => {
+      await contract.connect(beekeeperWallet).submitHarvest("Tulsi", 60, "QmTulsi");
+      await contract.connect(fieldOfficer).approveHarvestAndMint(
+        1, "QmVerifiedTulsi", 78, "Grade B", "HCQR-ADMIN1"
+      );
+    });
+
+    it("revokes batch and marks it inauthentic", async () => {
+      await contract.connect(admin).revokeBatch(1);
+      const batch = await contract.getBatch(1);
+      expect(batch.isRevoked).to.equal(true);
+      expect(batch.isAuthentic).to.equal(false);
+    });
+
+    it("emits BatchRevoked event", async () => {
+      await expect(contract.connect(admin).revokeBatch(1))
+        .to.emit(contract, "BatchRevoked")
+        .withArgs(1n, admin.address);
+    });
+
+    it("blocks Field Officer from revoking", async () => {
+      await expect(contract.connect(fieldOfficer).revokeBatch(1)).to.be.reverted;
+    });
+  });
+
+  // ─── QR Lookup ────────────────────────────────────────────────────────────
+
+  describe("QR Token Lookup", function () {
+    it("resolves QR token to correct batch", async () => {
+      await contract.connect(beekeeperWallet).submitHarvest("Coriander", 40, "QmCor");
+      await contract.connect(fieldOfficer).approveHarvestAndMint(
+        1, "QmVerifiedCor", 81, "Grade A", "HCQR-LOOKUP1"
+      );
+      const batch = await contract.getBatchByQR("HCQR-LOOKUP1");
+      expect(batch.batchId).to.equal(1n);
+      expect(batch.qualityScore).to.equal(81n);
+    });
+  });
+
+  // ─── Custody Chain ────────────────────────────────────────────────────────
+
+  describe("Custody Chain Logging", function () {
+    it("logs full custody journey", async () => {
+      await contract.connect(beekeeperWallet).submitHarvest("Sunflower", 90, "QmSun");
+      await contract.connect(fieldOfficer).approveHarvestAndMint(
+        1, "QmVerifiedSun", 89, "Grade A+", "HCQR-CUST1"
+      );
+      await contract.connect(fieldOfficer).addCustody(1, "KVIC Processing Unit #7, Patna", "Received & Graded");
+      await contract.connect(fieldOfficer).addCustody(1, "Pasteurization Facility, Jaipur", "Pasteurized at 40°C");
+
+      const chain = await contract.getCustodyChain(1);
+      expect(chain.length).to.equal(3); // 1 auto + 2 manual
+      expect(chain[1].entity).to.include("Patna");
+      expect(chain[2].entity).to.include("Jaipur");
     });
   });
 });
