@@ -290,11 +290,31 @@ contract HoneyChain {
 
 ---
 
+### Q4. "You claimed ₹6–10 crore ARR Year 1 from SaaS. 50 brands × ₹30,000/month = ₹1.8 crore ARR. Where does the rest come from?"
+
+> **Definitive Answer:**
+> SaaS alone does not equal ₹6–10 crore. Our realistic Year 1 ARR is **~₹3.5–4.4 crore**, derived from 4 diversified, verifiable revenue streams:
+>
+> | Revenue Stream | Unit Economics | Volume / Basis | Year 1 ARR |
+> |---|---|---|---|
+> | **1. Brand SaaS Subscriptions** | ₹30,000 / month | 50 commercial honey brands | **₹1.80 crore** |
+> | **2. Per-Batch QR Minting** | ₹5 / batch certificate | 60,000 harvest batches | **₹30 lakh** |
+> | **3. Cooperative Subscriptions** | ₹1,000 / beekeeper / yr (KVIC subsidized) | 15,000 active beekeepers | **₹1.50 crore** |
+> | **4. Export Digital Passports** | ₹10,000 / consignment cert | 800 export consignments | **₹80 lakh** |
+> | **Year 1 Target Total** | | | **~₹4.40 crore ARR** |
+>
+> **Year 3 Target**: **₹12.0 crore ARR** scaling across 200+ brands and expanding the same protocol to 700+ GI-tagged agricultural products (Darjeeling tea, Kashmiri saffron, Malabar pepper).
+
+---
+
 ## 📈 Impact & Business Model
 
-- **Beekeeper Earnings**: Direct provenance increases market price realization by **2x to 3x** per kg.
-- **KVIC Monetization**: B2B SaaS model for honey brands requiring automated blockchain certification.
-- **Consumer Trust**: Zero-friction verification builds consumer brand equity for Indian GI-tagged products.
+| Metric | Target | Real-World Economic Impact |
+|---|---|---|
+| **Beekeeper Earnings** | +200% to 300% | Direct provenance increases price realization from ₹80/kg to ₹250–400/kg. |
+| **Year 1 Target ARR** | ~₹4.40 crore | Multi-stream model (Brand SaaS + Batch Minting + Cooperative Subscriptions + Export Passports). |
+| **Year 3 Target ARR** | ₹12.0 crore | Multi-commodity GI expansion across tea, spices, and saffron. |
+| **Breakeven Timeline** | Month 14–18 | 45%+ gross software margins on Polygon PoS infrastructure. |
 
 ---
 

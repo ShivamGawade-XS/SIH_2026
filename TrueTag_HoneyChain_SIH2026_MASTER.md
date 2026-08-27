@@ -329,15 +329,15 @@ Show 3 hives on the admin dashboard: 2 healthy, 1 with a triggered Varroa alert.
 
 ### 6.1 Revenue Streams
 
-| Stream | Mechanism | Unit Economics | Year 1 Target |
+| Stream | Mechanism | Calculation | Year 1 ARR |
 |---|---|---|---|
-| SaaS for brands | ₹15,000–₹75,000/month per honey brand | 50 brands × ₹30k avg | ₹3–5 crore ARR |
-| Per-batch QR cert | ₹2–8 per batch minted on-chain | 3 lakh Indian batches/year, 20% share | ₹1.5–2 crore |
-| Cooperative subscription | ₹500–₹1,500/beekeeper/year (IoT + AI + market access) | 10% of 1.5L KVIC beekeepers | ₹1–2 crore |
-| Export certificates | ₹5,000–₹20,000 per export shipment digital cert | 8,000 shipments/year, 10% share | ₹80L–₹1.5 crore |
-| **Year 1 Total** | | | **₹6–10 crore ARR** |
+| **SaaS for Brands** | Tiered monthly licensing for commercial honey processors | 50 brands × ₹30,000/month avg | **₹1.80 crore** |
+| **Per-Batch QR Minting** | On-chain batch anchoring + tamper-evident QR serials | 60,000 batches × ₹5/batch | **₹30 lakh** |
+| **Cooperative Subscription** | Subsidized KVIC Honey Mission support, IoT & AI telemetry | 15,000 beekeepers × ₹1,000/year | **₹1.50 crore** |
+| **Export Digital Certs** | High-assurance APEDA/USFDA/EU batch passports | 800 export shipments × ₹10,000/cert | **₹80 lakh** |
+| **Year 1 Target Total** | | | **~₹4.40 crore ARR** |
 
-**Year 3 projection:** ₹12–18 crore ARR with 40%+ gross margins. Breakeven ~Month 18.
+**Year 3 Projection:** **₹12.0 crore ARR** (expanding to 200+ brands, 50,000 beekeepers, and GI-tag multi-commodity expansion) with 45%+ gross margins. Operational breakeven achieved by Month 14.
 
 **Stream 5 (Future):** Anonymous aggregated hive health data sold to agricultural research institutions, crop insurers, and commodity traders. Near-zero marginal cost.
 
@@ -488,13 +488,21 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 | 5 | Live Demo | [QR scan happens here] |
 | 6 | Tech Stack | Polygon + IPFS + CNN + ML + Flutter. Architecture diagram. |
 | 7 | The AI Advantage | CNN: 87% Varroa detection accuracy. ML: quality grade in 3 seconds. |
-| 8 | Business Model | 4 revenue streams. ₹6–10 crore ARR Year 1. ₹12–18 crore Year 3. |
+| 8 | Business Model | 4 revenue streams. ~₹3.5–4.4 crore ARR Year 1. ₹12 crore Year 3. |
 | 9 | Scalability Roadmap | Honey → GI expansion → National → ASEAN export corridor |
 | 10 | The Ask | 3-district KVIC pilot. 500 farmers. 90 days post-SIH. |
 
 ---
 
 ## 12. Judge Questions — Prepared Answers
+
+**Q: "You claimed ₹6–10 crore ARR Year 1 from SaaS. 50 brands × ₹30,000/month = ₹1.8 crore ARR. Where does the rest come from?"**
+A: "You're completely right to call out that SaaS alone cannot reach ₹6–10 crore. Our realistic Year 1 ARR is **₹3.5–4.4 crore**, split across 4 distinct streams with verifiable unit economics:
+1. **Brand SaaS**: 50 brands × ₹30,000/month = ₹1.80 crore.
+2. **Per-Batch QR Minting**: 60,000 batches × ₹5/batch = ₹30 lakh.
+3. **Cooperative IoT/AI Telemetry**: 15,000 beekeepers @ ₹1,000/year (cooperative/Honey Mission subsidized) = ₹1.50 crore.
+4. **Export Digital Certificates**: 800 export consignments × ₹10,000/passport for APEDA/USFDA customs clearance = ₹80 lakh.
+This totals **₹4.40 crore Year 1 ARR**, scaling to **₹12.0 crore in Year 3** as we expand to 200+ brands and multi-commodity GI products."
 
 **Q: "What stops a beekeeper from entering fake data?"**
 A: "IoT sensors generate the core data autonomously. The beekeeper cannot override a GPS coordinate, a hive weight reading, or a temperature log. The only manual input is harvest date, and it's timestamped at submission. Additionally, KVIC field officers act as an approval gate — no batch is minted without their digital sign-off. This mirrors KVIC's existing manual certification process, just digitized and cryptographically enforced."
