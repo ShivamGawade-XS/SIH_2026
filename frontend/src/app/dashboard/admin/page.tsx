@@ -4,7 +4,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { getCustomBatches, saveCustomBatch, getComplaints, ConsumerComplaint } from "@/lib/registry";
+import {
+  getCustomBatches,
+  saveCustomBatch,
+  getComplaints,
+  fetchBatchesFromDB,
+  fetchComplaintsFromDB,
+  ConsumerComplaint,
+} from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
 import GovtInteroperabilityCard from "@/components/GovtInteroperabilityCard";
 import { ShieldAlert, ArrowLeft, AlertTriangle, CheckCircle2, Ban, QrCode, ExternalLink, RefreshCw } from "lucide-react";
@@ -17,8 +24,8 @@ export default function AdminRecallPage() {
   const [recallReason, setRecallReason] = useState("Suspected Adulteration / Broken Tamper Seal");
 
   useEffect(() => {
-    setBatches(getCustomBatches());
-    setComplaints(getComplaints());
+    fetchBatchesFromDB().then((b) => setBatches(b));
+    fetchComplaintsFromDB().then((c) => setComplaints(c));
   }, []);
 
   const openRecallModal = (batchId: number) => {

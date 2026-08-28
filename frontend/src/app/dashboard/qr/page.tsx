@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { QRCodeSVG } from "qrcode.react";
 import { DEMO_BATCHES } from "@/lib/constants";
-import { getCustomBatches } from "@/lib/registry";
+import { getCustomBatches, fetchBatchesFromDB } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
 import { QrCode, ArrowLeft, Printer, Download, Sparkles, ShieldCheck } from "lucide-react";
 
@@ -16,8 +16,10 @@ export default function QrLabelsPage() {
   const [labelCount, setLabelCount] = useState(6);
 
   useEffect(() => {
-    const list = getCustomBatches();
-    setBatches(list);
+    fetchBatchesFromDB().then((list) => {
+      setBatches(list);
+      if (list.length > 0) setSelectedBatchId(list[0].batchId);
+    });
   }, []);
 
   const selectedBatch = batches.find((b) => b.batchId === selectedBatchId) || batches[0];

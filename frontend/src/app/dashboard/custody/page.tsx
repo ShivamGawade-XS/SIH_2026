@@ -5,7 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import confetti from "canvas-confetti";
-import { getCustomBatches, saveCustomBatch } from "@/lib/registry";
+import { getCustomBatches, saveCustomBatch, fetchBatchesFromDB } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
 import { Truck, ArrowLeft, ShieldCheck, CheckCircle2, Factory, FlaskConical, Store, ExternalLink } from "lucide-react";
 
@@ -20,9 +20,10 @@ export default function CustodyLoggingPage() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    const list = getCustomBatches();
-    setBatches(list);
-    if (list.length > 0) setSelectedBatchId(list[0].batchId);
+    fetchBatchesFromDB().then((list) => {
+      setBatches(list);
+      if (list.length > 0) setSelectedBatchId(list[0].batchId);
+    });
   }, []);
 
   const selectedBatch = batches.find((b) => b.batchId === selectedBatchId) || batches[0];

@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { DEMO_BATCHES } from "@/lib/constants";
-import { getCustomBatches } from "@/lib/registry";
+import { getCustomBatches, fetchBatchesFromDB } from "@/lib/registry";
 import { generateCertificatePDF } from "@/lib/pdf-certificate";
 import { generateExportPassportPDF } from "@/lib/export-passport";
 import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
@@ -26,10 +26,14 @@ import {
 } from "lucide-react";
 
 export default function ReportsPage() {
-  const allBatches = getCustomBatches();
+  const [allBatches, setAllBatches] = useState<BatchMetadata[]>(getCustomBatches());
   const [searchTerm, setSearchTerm] = useState("");
   const [gradeFilter, setGradeFilter] = useState("ALL");
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetchBatchesFromDB().then((b) => setAllBatches(b));
+  }, []);
 
   const filtered = allBatches.filter((item) => {
     const matchesSearch =
