@@ -5,6 +5,8 @@ import Link from "next/link";
 import { LayoutDashboard, QrCode, Menu, X, Globe, ShieldCheck, Microscope, PlusCircle } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
+import HoneyChainLogo from "@/components/HoneyChainLogo";
+
 export default function Navbar() {
   const { lang, setLang, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,18 +23,8 @@ export default function Navbar() {
     <header className="border-b-2 border-charcoal/15 bg-[#F9F8F6]/95 backdrop-blur-md sticky top-0 z-50 shadow-sm transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex justify-between items-center h-20">
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-3 sm:gap-4 group">
-          <div className="w-10 h-10 border-2 border-charcoal bg-charcoal text-alabaster flex items-center justify-center font-bold text-xs group-hover:border-gold transition-colors duration-500 shadow-sm shrink-0">
-            <span className="font-serif italic text-gold text-lg">H</span>
-          </div>
-          <div>
-            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase block text-charcoal truncate max-w-[140px] xs:max-w-[200px] sm:max-w-none">
-              {t("brandName")}
-            </span>
-            <span className="text-[9px] sm:text-[10px] text-warm-grey uppercase tracking-widest block font-medium">
-              {t("brandTag")}
-            </span>
-          </div>
+        <Link href="/" className="group">
+          <HoneyChainLogo size="md" variant="full" />
         </Link>
 
         {/* Center Pill: Live Status (Desktop only) */}

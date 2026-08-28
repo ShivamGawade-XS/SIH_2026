@@ -11,6 +11,9 @@ import ApiaryMap from "@/components/ApiaryMap";
 import NMRSpectrumViewer from "@/components/NMRSpectrumViewer";
 import BeekeeperTipModal from "@/components/BeekeeperTipModal";
 import GITagBadge from "@/components/GITagBadge";
+import SupplyChainMapReplay from "@/components/SupplyChainMapReplay";
+import PollenInspector from "@/components/PollenInspector";
+import DBTPayoutCard from "@/components/DBTPayoutCard";
 import { fetchBatchById, fetchBatchByQR } from "@/lib/contract";
 import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
 import { generateCertificatePDF } from "@/lib/pdf-certificate";
@@ -313,9 +316,25 @@ export default function ConsumerVerificationPage() {
 
         {/* 5. AI QUALITY SCORECARD & NMR SPECTROMETRY */}
         <section className="py-24 px-6 md:px-12 lg:px-24 border-b border-charcoal/10 bg-white">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto space-y-16">
             <Scorecard report={labReport} />
+            <PollenInspector botanicalFlora={data.botanicalFlora || farmer.location} batchId={batch.batchId} />
             <NMRSpectrumViewer purityScore={batch.qualityScore} />
+          </div>
+        </section>
+
+        {/* 5B. PHYSICAL TRANSIT & SUPPLY CHAIN ROUTE REPLAY */}
+        <section className="py-20 px-6 md:px-12 lg:px-24 border-b border-charcoal/10 bg-[#F9F8F6]">
+          <div className="max-w-6xl mx-auto space-y-12">
+            <SupplyChainMapReplay batchId={batch.batchId} custodyChain={custodyChain} botanicalOrigin={data.botanicalFlora || farmer.location} />
+            <DBTPayoutCard
+              beekeeperName={farmer.name}
+              cooperativeId={farmer.cooperativeId}
+              upiVpa={farmer.upiVpa}
+              qualityScore={batch.qualityScore}
+              grade={batch.grade}
+              batchId={batch.batchId}
+            />
           </div>
         </section>
 

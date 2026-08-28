@@ -81,6 +81,48 @@ export default function AdminRecallPage() {
             </div>
           </div>
 
+          {/* 0. NATIONAL ADULTERATION RADAR & CLUSTER HEATMAP */}
+          <div className="mb-12">
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+                  National Quality Surveillance Engine
+                </p>
+                <h3 className="text-xl serif text-charcoal font-normal">
+                  Regional Adulteration Radar & Cluster Anomaly Map
+                </h3>
+              </div>
+              <span className="px-3 py-1 bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono text-[10px] uppercase font-bold">
+                97.6% National Purity Average
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mb-6">
+              {[
+                { state: "Bihar (Muzaffarpur)", score: "98.4%", risk: "Optimal", batches: 412, status: "bg-emerald-50 text-emerald-900 border-emerald-300" },
+                { state: "West Bengal (Sundarbans)", score: "96.1%", risk: "Optimal", batches: 289, status: "bg-emerald-50 text-emerald-900 border-emerald-300" },
+                { state: "Jammu & Kashmir", score: "99.2%", risk: "Optimal", batches: 175, status: "bg-emerald-50 text-emerald-900 border-emerald-300" },
+                { state: "Rajasthan", score: "91.5%", risk: "Elevated Moisture", batches: 220, status: "bg-amber-50 text-amber-900 border-amber-300" },
+                { state: "Tamil Nadu (Nilgiris)", score: "97.8%", risk: "Optimal", batches: 140, status: "bg-emerald-50 text-emerald-900 border-emerald-300" },
+              ].map((cluster, idx) => (
+                <div key={idx} className={`p-3.5 border-2 ${cluster.status} flex flex-col justify-between`}>
+                  <div>
+                    <span className="text-[9px] uppercase tracking-widest font-mono font-bold block opacity-75 truncate">
+                      {cluster.state}
+                    </span>
+                    <span className="text-xl font-serif font-bold block mt-1">
+                      {cluster.score}
+                    </span>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-current/20 text-[9px] font-mono flex justify-between">
+                    <span>{cluster.risk}</span>
+                    <span>{cluster.batches} B</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* 1. Consumer Complaints Queue */}
           <div className="mb-12">
             <h3 className="text-xl serif text-charcoal mb-4 flex items-center gap-2">
