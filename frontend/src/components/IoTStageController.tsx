@@ -50,7 +50,11 @@ export default function IoTStageController() {
                 SIH Stage IoT Hardware Controller
               </span>
             </div>
-            <span className={px-2 py-0.5 text-[9px] uppercase font-mono font-bold border }>
+            <span className={`px-2 py-0.5 text-[9px] uppercase font-mono font-bold border ${
+              alertActive
+                ? "bg-rose-950/80 text-rose-400 border-rose-500 animate-pulse"
+                : "bg-emerald-950/80 text-emerald-400 border-emerald-500"
+            }`}>
               {alertActive ? "ANOMALY ACTIVE" : "OPTIMAL BASELINE"}
             </span>
           </div>
