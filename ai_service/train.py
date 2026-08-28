@@ -53,9 +53,8 @@ def train_and_save():
     clf_model.fit(X_train, y_clf_train)
     y_pred = clf_model.predict(X_test)
     acc = accuracy_score(y_clf_test, y_pred)
-    print(f"      Adulteration Classifier Accuracy: {acc * 100:.2f}%")
-    print("
-" + classification_report(y_clf_test, y_pred))
+    print(f"      Adulteration Classifier Accuracy: {acc * 100:.2f}%\n")
+    print(classification_report(y_clf_test, y_pred))
 
     os.makedirs(os.path.join(os.path.dirname(__file__), "model"), exist_ok=True)
     joblib.dump(reg_model, os.path.join(os.path.dirname(__file__), "model", "quality_model.pkl"))
