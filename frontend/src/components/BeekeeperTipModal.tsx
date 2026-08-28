@@ -21,6 +21,7 @@ interface BeekeeperTipModalProps {
   farmerLocation: string;
   cooperativeId: string;
   batchId: number;
+  farmerId?: number;
   farmerVpa?: string;
 }
 
@@ -33,6 +34,7 @@ export default function BeekeeperTipModal({
   farmerLocation,
   cooperativeId,
   batchId,
+  farmerId,
   farmerVpa = "rajesh.verma@sbi",
 }: BeekeeperTipModalProps) {
   const [selectedAmount, setSelectedAmount] = useState<number>(50);
@@ -73,7 +75,7 @@ export default function BeekeeperTipModal({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           batchId,
-          farmerId: batchId, // or linked farmer ID
+          farmerId: farmerId || batchId,
           amount: currentAmount,
           utrNumber: generatedUtr,
           tipperName: tipperName.trim() || "Kind Consumer",

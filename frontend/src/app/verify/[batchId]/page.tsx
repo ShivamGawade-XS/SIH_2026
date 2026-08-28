@@ -514,6 +514,7 @@ export default function ConsumerVerificationPage() {
           farmerLocation={farmer.location}
           cooperativeId={farmer.cooperativeId}
           batchId={batch.batchId}
+          farmerId={farmer.farmerId}
           farmerVpa={farmer.upiVpa || `${farmer.name.toLowerCase().replace(/\s+/g, ".")}@sbi`}
         />
       </main>

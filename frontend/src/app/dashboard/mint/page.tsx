@@ -79,73 +79,106 @@ export default function MintBatchPage() {
     e.preventDefault();
     setLoading(true);
 
-    const allBatches = getCustomBatches();
-    const newBatchId = allBatches.length + 1;
-    const generatedToken = `TT-2026-0000${newBatchId}`;
-    const generatedTx = "0x" + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
-    
-    const selectedFarmer = farmersList.find(f => f.farmerId === Number(farmerId)) || farmersList[0];
+    const selectedFarmer = farmersList.find((f) => f.farmerId === Number(farmerId)) || farmersList[0];
 
-    // Construct BatchMetadata object and save
-    const newBatchRecord = {
-      batchId: newBatchId,
-      farmer: selectedFarmer,
-      batch: {
+    try {
+      // 1. Post directly to DB API for atomic ID and token assignment
+      const res = await fetch("/api/batches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          farmerId: selectedFarmer.farmerId,
+          botanicalFlora: "Monofloral Organic Flora",
+          quantityKg: yieldKg,
+          qualityScore: aiScore,
+          grade: aiGrade,
+          moisture,
+          brix,
+          hmf,
+          diastase,
+          conductivity,
+        }),
+      });
+
+      let newBatchId = 3;
+      let generatedToken = `TT-2026-00003`;
+      let generatedTx = "0x" + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
+
+      if (res.ok) {
+        const data = await res.json();
+        newBatchId = data.batchId;
+        generatedToken = data.qrToken;
+        generatedTx = data.txHash || generatedTx;
+      } else {
+        const allBatches = getCustomBatches();
+        newBatchId = allBatches.length + 1;
+        generatedToken = `TT-2026-${String(newBatchId).padStart(5, "0")}`;
+      }
+
+      // Construct BatchMetadata object and update local caches
+      const newBatchRecord = {
         batchId: newBatchId,
-        farmerId: selectedFarmer.farmerId,
-        harvestTimestamp: Math.floor(Date.now() / 1000),
-        ipfsMetadataHash: "bafybeic" + Array.from({ length: 50 }, () => "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]).join(""),
-        qualityScore: aiScore,
-        grade: aiGrade,
-        isAuthentic: true,
-        isRevoked: false,
-      },
-      custodyChain: [
-        {
-          actor: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-          entity: `Apiary Site (${selectedFarmer.location})`,
-          timestamp: Math.floor(Date.now() / 1000),
-          action: "Harvested & IoT Monitored",
+        farmer: selectedFarmer,
+        batch: {
+          batchId: newBatchId,
+          farmerId: selectedFarmer.farmerId,
+          harvestTimestamp: Math.floor(Date.now() / 1000),
+          ipfsMetadataHash: "bafybeic" + Array.from({ length: 50 }, () => "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]).join(""),
+          qualityScore: aiScore,
+          grade: aiGrade,
+          isAuthentic: true,
+          isRevoked: false,
         },
-        {
-          actor: "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-          entity: "KVIC Regional Honey Processing Center",
-          timestamp: Math.floor(Date.now() / 1000) + 3600,
-          action: `Cold Filtration & FSSAI AI Testing Passed (Score: ${aiScore}/100)`,
-        }
-      ],
-      labReport: {
-        moisturePercent: moisture,
-        brixPercent: brix,
-        hmfMgPerKg: hmf,
-        diastaseNumber: diastase,
-        electricalConductivity: conductivity,
-        purityScore: aiScore,
+        custodyChain: [
+          {
+            actor: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+            entity: `Apiary Site (${selectedFarmer.location})`,
+            timestamp: Math.floor(Date.now() / 1000),
+            action: `Harvest logged (${yieldKg} kg) and sealed in food-grade drums`,
+          },
+          {
+            actor: "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            entity: "KVIC Regional Honey Processing Center",
+            timestamp: Math.floor(Date.now() / 1000) + 3600,
+            action: `Cold Filtration & FSSAI AI Testing Passed (Score: ${aiScore}/100)`,
+          },
+        ],
+        labReport: {
+          moisturePercent: moisture,
+          brixPercent: brix,
+          hmfMgPerKg: hmf,
+          diastaseNumber: diastase,
+          electricalConductivity: conductivity,
+          purityScore: aiScore,
+          grade: aiGrade,
+          passedFSSAI: aiScore >= 70,
+          testedAt: new Date().toISOString().split("T")[0],
+        },
+        qrToken: generatedToken,
+        txHash: generatedTx,
+      };
+
+      await saveCustomBatch(newBatchRecord);
+
+      setSuccessData({
+        batchId: newBatchId,
+        score: aiScore,
         grade: aiGrade,
-        passedFSSAI: aiScore >= 70,
-        testedAt: new Date().toISOString().split("T")[0],
-      },
-      qrToken: generatedToken,
-      txHash: generatedTx,
-    };
+        qrToken: generatedToken,
+        txHash: generatedTx,
+      });
 
-    await saveCustomBatch(newBatchRecord);
-    setLoading(false);
-
-    setSuccessData({
-      batchId: newBatchId,
-      score: aiScore,
-      grade: aiGrade,
-      qrToken: generatedToken,
-      txHash: generatedTx,
-    });
-
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ["#D4AF37", "#1A1A1A", "#FFFFFF"],
-    });
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ["#D4AF37", "#1A1A1A", "#FFFFFF"],
+      });
+    } catch (err) {
+      console.error("Mint error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

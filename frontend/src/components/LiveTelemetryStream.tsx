@@ -31,6 +31,8 @@ export default function LiveTelemetryStream() {
     let eventSource: EventSource | null = null;
     const aiUrl = process.env.NEXT_PUBLIC_AI_SERVICE_URL || "http://localhost:8000";
 
+    let fallbackInterval: NodeJS.Timeout | null = null;
+
     try {
       eventSource = new EventSource(`${aiUrl}/api/iot/stream`);
       eventSource.onopen = () => setConnected(true);
@@ -49,8 +51,21 @@ export default function LiveTelemetryStream() {
       console.warn("EventSource not supported or failed:", e);
     }
 
+    // Fallback simulation when SSE backend is not running
+    fallbackInterval = setInterval(() => {
+      setData((prev) => ({
+        ...prev,
+        weight_kg: Number((45.2 + Math.sin(Date.now() / 5000) * 0.15).toFixed(2)),
+        internal_temp_c: Number((34.8 + Math.cos(Date.now() / 4000) * 0.2).toFixed(1)),
+        humidity_percent: Number((63.5 + Math.sin(Date.now() / 6000) * 0.4).toFixed(1)),
+        acoustic_frequency_hz: Number((235.0 + Math.cos(Date.now() / 3000) * 1.5).toFixed(1)),
+        timestamp: Math.floor(Date.now() / 1000),
+      }));
+    }, 2500);
+
     return () => {
       if (eventSource) eventSource.close();
+      if (fallbackInterval) clearInterval(fallbackInterval);
     };
   }, []);
 

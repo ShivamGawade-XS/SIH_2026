@@ -45,9 +45,22 @@ export async function getSignerContract(): Promise<{ contract: ethers.Contract; 
 }
 
 /**
- * Fetch batch metadata by QR token with fallback to demo registry
+ * Fetch batch metadata by QR token with fallback cascade: DB API -> Smart Contract -> LocalStorage -> Demo
  */
 export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
+  // 1. Try DB API first (matches either numeric ID or QR token string)
+  if (typeof window !== "undefined") {
+    try {
+      const res = await fetch(`/api/batches/${encodeURIComponent(qrToken)}`, { cache: "no-store" });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.batch) return data.batch;
+      }
+    } catch {
+      // Continue to next fallback
+    }
+  }
+
   const customList = getCustomBatches();
   const localMatch = customList.find(
     (b) =>
@@ -57,14 +70,14 @@ export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
 
   try {
     const contract = getReadOnlyContract();
-    // 1. Get Batch by QR Token
+    // 2. Get Batch by QR Token on Smart Contract
     const rawBatch = await withTimeout(contract.getBatchByQR(qrToken), 4000);
     const batchId = Number(rawBatch.batchId);
     if (!batchId || batchId === 0) {
       return localMatch || customList[0] || DEMO_BATCHES[0];
     }
 
-    // 2. Get Farmer & Custody
+    // Get Farmer & Custody
     const rawFarmer = await withTimeout(contract.getFarmer(Number(rawBatch.farmerId)), 3000);
     const rawCustody: Array<{ actor: string; entity: string; timestamp: bigint; action: string }> =
       await withTimeout(contract.getCustodyChain(batchId), 3000).catch(() => []);
@@ -123,9 +136,22 @@ export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
 }
 
 /**
- * Fetch batch metadata by Batch ID
+ * Fetch batch metadata by Batch ID with fallback cascade: DB API -> Smart Contract -> LocalStorage -> Demo
  */
 export async function fetchBatchById(batchId: number): Promise<BatchMetadata> {
+  // 1. Try DB API first
+  if (typeof window !== "undefined") {
+    try {
+      const res = await fetch(`/api/batches/${batchId}`, { cache: "no-store" });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.batch) return data.batch;
+      }
+    } catch {
+      // Continue to next fallback
+    }
+  }
+
   const customList = getCustomBatches();
   const localMatch = customList.find((b) => Number(b.batchId) === Number(batchId));
 

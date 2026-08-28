@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -19,13 +19,21 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { DEMO_BATCHES } from "@/lib/constants";
-import { getCustomBatches } from "@/lib/registry";
+import { getCustomBatches, fetchBatchesFromDB } from "@/lib/registry";
+import { BatchMetadata } from "@/lib/types";
 
 export default function QualityLabPage() {
-  const batches = getCustomBatches();
+  const [batches, setBatches] = useState<BatchMetadata[]>(DEMO_BATCHES);
+
+  useEffect(() => {
+    fetchBatchesFromDB().then((b) => {
+      setBatches(b);
+      if (b.length > 0) setSelectedBatchId(b[0].batchId);
+    });
+  }, []);
 
   // Test parameters state
-  const [selectedBatchId, setSelectedBatchId] = useState<number>(batches[0]?.batchId || 1);
+  const [selectedBatchId, setSelectedBatchId] = useState<number>(1);
   const [moisture, setMoisture] = useState<number>(17.2);
   const [brix, setBrix] = useState<number>(81.5);
   const [hmf, setHmf] = useState<number>(14.2);
