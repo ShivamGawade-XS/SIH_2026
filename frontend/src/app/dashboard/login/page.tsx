@@ -111,8 +111,18 @@ export default function LoginPage() {
                 className="w-full h-14 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2 mt-8"
               >
                 <Lock className="w-3.5 h-3.5" />
-                <span>{loading ? "Authenticating..." : "Access Dashboard"}</span>
+                <span>{loading ? "Authenticating via Database..." : "Access Dashboard"}</span>
               </button>
+
+              <div className="flex justify-between items-center text-xs pt-2">
+                <span className="text-warm-grey">New field inspector or lab technician?</span>
+                <Link
+                  href="/dashboard/register-account"
+                  className="font-bold text-charcoal hover:text-gold transition-colors underline uppercase tracking-wider text-[11px]"
+                >
+                  Register New Account →
+                </Link>
+              </div>
             </form>
 
             {/* Quick Demo Access Buttons */}

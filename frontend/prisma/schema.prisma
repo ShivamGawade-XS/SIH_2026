@@ -1,0 +1,170 @@
+// Prisma Schema for HoneyChain by TrueTag — SIH 2026
+// Production database schema with full relational model
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── User & Auth ────────────────────────────────────────────────────────────
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  passwordHash    String
+  name            String
+  role            String    @default("FIELD_OFFICER") // ADMIN | FIELD_OFFICER | LAB_ANALYST
+  phone           String?
+  cooperative     String?
+  isEmailVerified Boolean   @default(false)
+  isPhoneVerified Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  registeredFarmers Farmer[]  @relation("RegisteredBy")
+  labTests          LabTest[] @relation("TestedBy")
+}
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  target    String   // email or phone number
+  code      String   // 6-digit OTP
+  type      String   // EMAIL | PHONE
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+// ─── Farmer / Beekeeper Registry ────────────────────────────────────────────
+
+model Farmer {
+  id              Int       @id @default(autoincrement())
+  name            String
+  location        String
+  cooperativeId   String
+  gpsLat          Float?
+  gpsLng          Float?
+  ipfsProfileHash String    @default("")
+  upiVpa          String?
+  isVerified      Boolean   @default(true)
+  registeredAt    DateTime  @default(now())
+
+  // Relations
+  registeredById  String?
+  registeredBy    User?     @relation("RegisteredBy", fields: [registeredById], references: [id])
+  batches         Batch[]
+  tips            TipPayment[]
+}
+
+// ─── Honey Batch (Minted Token) ─────────────────────────────────────────────
+
+model Batch {
+  id                Int       @id @default(autoincrement())
+  farmerId          Int
+  harvestTimestamp   DateTime  @default(now())
+  ipfsMetadataHash  String    @default("")
+  qualityScore      Int       @default(0)
+  grade             String    @default("")
+  isAuthentic       Boolean   @default(true)
+  isRevoked         Boolean   @default(false)
+  isDisputed        Boolean   @default(false)
+  disputeReason     String?
+  qrToken           String    @unique
+  txHash            String?
+  blockNumber       Int?
+  botanicalFlora    String?
+  createdAt         DateTime  @default(now())
+
+  // Relations
+  farmer            Farmer       @relation(fields: [farmerId], references: [id])
+  custodyLogs       CustodyLog[]
+  labTests          LabTest[]
+  complaints        Complaint[]
+  tips              TipPayment[]
+}
+
+// ─── Chain of Custody ───────────────────────────────────────────────────────
+
+model CustodyLog {
+  id        Int      @id @default(autoincrement())
+  batchId   Int
+  actor     String
+  entity    String
+  action    String
+  timestamp DateTime @default(now())
+
+  batch     Batch    @relation(fields: [batchId], references: [id])
+}
+
+// ─── Lab Test / Quality Report ──────────────────────────────────────────────
+
+model LabTest {
+  id                     Int      @id @default(autoincrement())
+  batchId                Int
+  moisturePercent        Float
+  brixIndex              Float
+  hmfMgKg                Float
+  diastaseActivity       Float
+  electricalConductivity Float    @default(0.45)
+  c13IsotopeDelta        Float    @default(-26.2)
+  c4SugarPercent         Float    @default(1.2)
+  smrMarker              Float    @default(0.02)
+  purityScore            Int
+  grade                  String
+  engine                 String   @default("FSSAI IS 4941 Physics Engine")
+  passedFSSAI            Boolean  @default(true)
+  testedAt               DateTime @default(now())
+
+  // Relations
+  testedById             String?
+  testedBy               User?    @relation("TestedBy", fields: [testedById], references: [id])
+  batch                  Batch    @relation(fields: [batchId], references: [id])
+}
+
+// ─── Consumer Complaint ─────────────────────────────────────────────────────
+
+model Complaint {
+  id         String   @id @default(cuid())
+  batchId    Int
+  qrToken    String
+  reportedBy String
+  reason     String
+  status     String   @default("Under Review")
+  date       String
+  createdAt  DateTime @default(now())
+
+  batch      Batch    @relation(fields: [batchId], references: [id])
+}
+
+// ─── UPI Tip Payment ────────────────────────────────────────────────────────
+
+model TipPayment {
+  id         String   @id @default(cuid())
+  batchId    Int
+  farmerId   Int
+  amount     Float
+  utrNumber  String?  // UPI Transaction Reference Number
+  tipperName String   @default("Anonymous Consumer")
+  status     String   @default("PENDING") // PENDING | CONFIRMED | FAILED
+  createdAt  DateTime @default(now())
+
+  batch      Batch    @relation(fields: [batchId], references: [id])
+  farmer     Farmer   @relation(fields: [farmerId], references: [id])
+}
+
+// ─── IoT Hive Alert Log ─────────────────────────────────────────────────────
+
+model IoTAlert {
+  id         Int       @id @default(autoincrement())
+  hiveId     String
+  alertType  String
+  message    String
+  severity   String    @default("WARNING") // INFO | WARNING | CRITICAL
+  resolvedAt DateTime?
+  createdAt  DateTime  @default(now())
+}

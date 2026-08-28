@@ -1,17 +1,26 @@
 {
   "name": "honeychain-frontend",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "npx tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma db push --force-reset && npx tsx prisma/seed.ts",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@google/genai": "^1.0.0",
+    "@prisma/client": "^6.5.0",
     "@types/papaparse": "^5.5.2",
     "@upstash/ratelimit": "^2.0.3",
     "@upstash/redis": "^1.34.3",
+    "bcryptjs": "^2.4.3",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.0",
     "ethers": "^6.11.1",
@@ -20,6 +29,7 @@
     "jspdf": "^4.2.1",
     "lucide-react": "^0.453.0",
     "next": "^14.2.15",
+    "nodemailer": "^6.9.15",
     "papaparse": "^5.7.0",
     "qrcode.react": "^3.1.0",
     "react": "^18.3.1",
@@ -28,13 +38,17 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/canvas-confetti": "^1.6.4",
     "@types/node": "^20.17.0",
+    "@types/nodemailer": "^6.4.16",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
+    "prisma": "^6.5.0",
     "tailwindcss": "^3.4.14",
+    "tsx": "^4.19.0",
     "typescript": "^5.6.3"
   }
 }

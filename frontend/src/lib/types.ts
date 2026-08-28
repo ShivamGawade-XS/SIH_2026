@@ -8,7 +8,10 @@ export interface Farmer {
   name: string;
   location: string;
   cooperativeId: string;
+  gpsLat?: number | null;
+  gpsLng?: number | null;
   ipfsProfileHash: string;
+  upiVpa?: string | null;
   isVerified: boolean;
   registeredAt: number;
 }
@@ -22,6 +25,8 @@ export interface HoneyBatch {
   grade: string;
   isAuthentic: boolean;
   isRevoked: boolean;
+  isDisputed?: boolean;
+  disputeReason?: string | null;
 }
 
 export interface CustodyEntry {
@@ -37,10 +42,14 @@ export interface LabQualityReport {
   hmfMgPerKg: number;         // FSSAI limit: max 80 mg/kg
   diastaseNumber: number;     // FSSAI limit: min 8 DN
   electricalConductivity: number; // FSSAI limit: max 0.8 mS/cm
+  c13IsotopeDelta?: number;
+  c4SugarPercent?: number;
+  smrMarker?: number;
   purityScore: number;        // 0 - 100
   grade: string;
   passedFSSAI: boolean;
   testedAt: string;
+  engine?: string;
 }
 
 export interface BatchMetadata {
@@ -56,9 +65,12 @@ export interface BatchMetadata {
 }
 
 export interface UserSession {
+  id?: string;
   address?: string;
   email?: string;
   role: 'ADMIN' | 'FIELD_OFFICER' | 'LAB_ANALYST' | 'CONSUMER';
   name: string;
+  cooperative?: string;
   exp: number;
 }
+

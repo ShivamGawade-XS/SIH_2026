@@ -17,7 +17,7 @@ import { generateCertificatePDF } from "@/lib/pdf-certificate";
 import { generateExportPassportPDF } from "@/lib/export-passport";
 import { saveComplaint, subscribeToBatchUpdates } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
-import { TRANSLATIONS, Language } from "@/lib/i18n";
+import { useLanguage } from "@/lib/LanguageContext";
 import confetti from "canvas-confetti";
 import {
   ShieldCheck,
@@ -25,16 +25,10 @@ import {
   Copy,
   Download,
   ExternalLink,
-  Sparkles,
-  Award,
-  Calendar,
-  Layers,
-  FileText,
-  FileCheck,
   Volume2,
   Heart,
   Globe,
-  FileDown,
+  FileText,
 } from "lucide-react";
 
 export default function ConsumerVerificationPage() {
@@ -44,7 +38,7 @@ export default function ConsumerVerificationPage() {
   const batchIdNum = Number(params.batchId) || 1;
 
   const [data, setData] = useState<BatchMetadata | null>(null);
-  const [lang, setLang] = useState<Language>("en");
+  const { lang, t } = useLanguage();
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [copiedTx, setCopiedTx] = useState(false);
   const [copiedIpfs, setCopiedIpfs] = useState(false);
@@ -60,16 +54,6 @@ export default function ConsumerVerificationPage() {
       fetchBatchById(batchIdNum).then((res) => setData(res));
     }
 
-    const saved = localStorage.getItem("honeychain_lang") as Language;
-    if (saved) setLang(saved);
-
-    const onLangChange = () => {
-      const current = localStorage.getItem("honeychain_lang") as Language;
-      if (current) setLang(current);
-    };
-    window.addEventListener("honeychain_lang_changed", onLangChange);
-
-    // Cross-tab real-time sync for recall / dispute status
     const unsubscribe = subscribeToBatchUpdates((updated) => {
       setData((prev) => {
         if (!prev) return updated;
@@ -81,7 +65,6 @@ export default function ConsumerVerificationPage() {
     });
 
     return () => {
-      window.removeEventListener("honeychain_lang_changed", onLangChange);
       unsubscribe();
     };
   }, [batchIdNum, qrParam]);
@@ -140,12 +123,15 @@ export default function ConsumerVerificationPage() {
     );
   }
 
-  const { batch, farmer, custodyChain, labReport, txHash, qrToken } = data;
-  const harvestDate = new Date(batch.harvestTimestamp * 1000).toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
+  const { farmer, batch, custodyChain, labReport, qrToken, txHash } = data;
+  const harvestDate = new Date(batch.harvestTimestamp * 1000).toLocaleDateString(
+    lang === "hi" ? "hi-IN" : "en-US",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }
+  );
 
   const handleCopyTx = () => {
     if (txHash) {
@@ -194,8 +180,6 @@ export default function ConsumerVerificationPage() {
     });
   };
 
-  const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
-
   return (
     <div className="min-h-screen flex flex-col justify-between">
       <Navbar />
@@ -209,12 +193,17 @@ export default function ConsumerVerificationPage() {
                 <div className="flex flex-wrap items-center gap-3 mb-4">
                   <span className="h-px w-8 bg-gold" />
                   <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">
-                    {t.heroTag} • {qrToken}
+                    KVIC • National Bee Board • {qrToken}
                   </span>
-                  <GITagBadge location={farmer.location} batchId={batch.batchId} />
+                  <GITagBadge
+                    location={farmer.location}
+                    batchId={batch.batchId}
+                    gpsLat={farmer.gpsLat}
+                    gpsLng={farmer.gpsLng}
+                  />
                 </div>
                 <h1 className="text-6xl md:text-8xl serif text-charcoal font-normal leading-[0.95]">
-                  {t.heroTitle1} <span className="italic text-gold">{t.heroTitle2}</span> {t.heroTitle3}
+                  {t("heroSubtitle1")} <span className="italic text-gold">{t("heroSubtitle2")}</span> {t("heroSubtitle3")}
                 </h1>
 
                 {/* Actions: Audio Narration & Direct UPI Tip */}
@@ -237,9 +226,9 @@ export default function ConsumerVerificationPage() {
                 </div>
               </div>
               <div className="text-left md:text-right">
-                <p className="text-xs uppercase tracking-widest text-warm-grey">{t.batchId}</p>
+                <p className="text-xs uppercase tracking-widest text-warm-grey">{t("batchId")}</p>
                 <p className="text-3xl font-serif font-bold text-charcoal">#00{batch.batchId}</p>
-                <p className="text-[10px] text-warm-grey mt-1">{t.registryToken}: {qrToken}</p>
+                <p className="text-[10px] text-warm-grey mt-1">{t("registryToken")}: {qrToken}</p>
               </div>
             </div>
           </div>
@@ -256,11 +245,11 @@ export default function ConsumerVerificationPage() {
                 <div className="flex items-center gap-2 mb-1">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   <span className="text-[10px] uppercase tracking-widest text-gold font-semibold">
-                    {t.authenticBadge}
+                    {t("authenticBadge")}
                   </span>
                 </div>
                 <h2 className="text-3xl serif text-alabaster font-normal mb-2">
-                  {t.complianceBadge}
+                  {t("complianceBadge")}
                 </h2>
                 <p className="text-xs text-warm-grey max-w-md">
                   Cryptographically secured by KVIC Regional Honey Protocol. Batch records are anchored to Polygon PoS and IPFS storage.
@@ -270,14 +259,14 @@ export default function ConsumerVerificationPage() {
 
             <div className="text-right border-l-0 md:border-l border-white/10 pl-0 md:pl-12 w-full md:w-auto">
               <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold block mb-1">
-                {t.aiPurityScore}
+                {t("aiPurityScore")}
               </span>
               <div className="flex items-baseline justify-start md:justify-end gap-2">
                 <span className="text-6xl font-serif text-gold font-normal">{batch.qualityScore}</span>
                 <span className="text-xl text-warm-grey font-serif">/100</span>
               </div>
               <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold block mt-1">
-                {batch.grade || t.gradeACertified}
+                {batch.grade || t("gradeACertified")}
               </span>
             </div>
           </div>
@@ -294,27 +283,27 @@ export default function ConsumerVerificationPage() {
         {/* 4. HARVEST METRICS */}
         <section className="py-20 px-6 md:px-12 lg:px-24 bg-charcoal text-alabaster border-b border-charcoal">
           <div className="max-w-6xl mx-auto">
-            <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">Harvest Record</p>
-            <h3 className="text-4xl serif mb-12 font-normal text-alabaster">Field Telemetry</h3>
+            <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">{t("harvestRecord")}</p>
+            <h3 className="text-4xl serif mb-12 font-normal text-alabaster">{t("fieldTelemetry")}</h3>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="border-t border-white/10 pt-6">
-                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">Harvest Date</span>
+                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("harvestDate")}</span>
                 <span className="text-2xl font-serif text-alabaster block">{harvestDate}</span>
                 <span className="text-[10px] text-taupe/60 mt-1 block">Optimal Moon Phase</span>
               </div>
               <div className="border-t border-white/10 pt-6">
-                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">Brix Sugar Index</span>
+                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("brixIndex")}</span>
                 <span className="text-2xl font-serif text-gold block">{labReport.brixPercent}°Bx</span>
                 <span className="text-[10px] text-emerald-400 mt-1 block">Exceeds FSSAI Standard</span>
               </div>
               <div className="border-t border-white/10 pt-6">
-                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">Moisture Level</span>
+                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("moistureLevel")}</span>
                 <span className="text-2xl font-serif text-alabaster block">{labReport.moisturePercent}%</span>
                 <span className="text-[10px] text-emerald-400 mt-1 block">Optimal Low Moisture</span>
               </div>
               <div className="border-t border-white/10 pt-6">
-                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">Freshness (HMF)</span>
+                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("hmfFreshness")}</span>
                 <span className="text-2xl font-serif text-alabaster block">{labReport.hmfMgPerKg} mg/kg</span>
                 <span className="text-[10px] text-taupe/60 mt-1 block">Unheated Raw Quality</span>
               </div>
@@ -336,8 +325,8 @@ export default function ConsumerVerificationPage() {
             <div className="flex flex-col lg:flex-row gap-20">
               {/* Left Col: Cryptographic Proof */}
               <div className="w-full lg:w-1/2">
-                <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">Chain of Trust</p>
-                <h3 className="text-4xl md:text-5xl serif text-charcoal mb-8 font-normal">Immutable Evidence</h3>
+                <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">{t("chainOfTrust")}</p>
+                <h3 className="text-4xl md:text-5xl serif text-charcoal mb-8 font-normal">{t("immutableEvidence")}</h3>
                 <p className="text-xs text-warm-grey leading-relaxed mb-10">
                   Every honey batch is permanently anchored onto the Polygon PoS blockchain with cryptographic hashes matching the physical micro-QR seal on the jar.
                 </p>
@@ -347,7 +336,7 @@ export default function ConsumerVerificationPage() {
                   <div className="p-6 border border-charcoal/15 bg-white">
                     <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-2">Polygon Transaction Hash</p>
                     <div className="flex items-center justify-between font-mono text-xs text-charcoal">
-                      <span className="truncate pr-4">{txHash || "0x8f2d9c4e7b1a56209ef43c8b1a32d67e891c345a2f"}</span>
+                      <span className="truncate pr-4">{txHash || "0x98f4c2b1e7a6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0"}</span>
                       <button
                         onClick={handleCopyTx}
                         className="text-gold hover:text-charcoal transition-colors flex items-center gap-1 text-[10px] uppercase font-semibold flex-shrink-0"
@@ -381,24 +370,24 @@ export default function ConsumerVerificationPage() {
                     className="flex-1 py-4 px-6 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
                   >
                     <FileText className="w-4 h-4 text-gold" />
-                    <span>KVIC Certificate (PDF)</span>
+                    <span>{t("downloadPDF")}</span>
                   </button>
                   <button
                     onClick={handleDownloadAPEDA}
                     className="py-4 px-6 text-xs uppercase tracking-widest font-semibold border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal flex items-center justify-center gap-2 transition-colors"
                   >
                     <Globe className="w-4 h-4 text-gold" />
-                    <span>APEDA Export Passport</span>
+                    <span>{t("apedaPassport")}</span>
                   </button>
                   <button
                     onClick={handleDownloadVC}
                     className="py-4 px-6 text-xs uppercase tracking-widest font-semibold btn-outline-luxury flex items-center justify-center gap-2"
                   >
                     <Download className="w-4 h-4" />
-                    <span>W3C JSON-LD</span>
+                    <span>{t("downloadVC")}</span>
                   </button>
                   <a
-                    href={`https://amoy.polygonscan.com/tx/${txHash}`}
+                    href={`https://amoy.polygonscan.com/tx/${txHash || "0x98f4c2b1e7a6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0"}`}
                     target="_blank"
                     rel="noreferrer"
                     className="py-4 px-6 text-xs uppercase tracking-widest font-semibold btn-outline-luxury flex items-center justify-center gap-2"
@@ -415,7 +404,7 @@ export default function ConsumerVerificationPage() {
                     onClick={() => setShowReportModal(true)}
                     className="text-[10px] uppercase tracking-widest font-semibold text-rose-700 hover:text-rose-900 transition-colors underline"
                   >
-                    Report Tampering
+                    {t("reportTamper")}
                   </button>
                 </div>
               </div>
@@ -423,7 +412,7 @@ export default function ConsumerVerificationPage() {
               {/* Right Col: Custody Timeline */}
               <div className="w-full lg:w-1/2">
                 <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">Supply Chain Timeline</p>
-                <h3 className="text-4xl serif text-charcoal mb-8 font-normal">Chain of Custody</h3>
+                <h3 className="text-4xl serif text-charcoal mb-8 font-normal">{t("chainOfCustody")}</h3>
                 <div className="border border-charcoal/10 bg-white p-8 md:p-12">
                   <CustodyTimeline chain={custodyChain} />
                 </div>
@@ -458,10 +447,10 @@ export default function ConsumerVerificationPage() {
                 </div>
               ) : (
                 <form
-                  onSubmit={(e) => {
+                  onSubmit={async (e) => {
                     e.preventDefault();
                     const ticketId = `CMP-2026-${Math.floor(Math.random() * 800 + 100)}`;
-                    saveComplaint({
+                    await saveComplaint({
                       id: ticketId,
                       batchId: batch.batchId,
                       qrToken: qrToken,
@@ -525,7 +514,7 @@ export default function ConsumerVerificationPage() {
           farmerLocation={farmer.location}
           cooperativeId={farmer.cooperativeId}
           batchId={batch.batchId}
-          farmerVpa={`${farmer.name.toLowerCase().replace(/\s+/g, ".")}@sbi`}
+          farmerVpa={farmer.upiVpa || `${farmer.name.toLowerCase().replace(/\s+/g, ".")}@sbi`}
         />
       </main>
 

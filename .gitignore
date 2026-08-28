@@ -38,6 +38,14 @@ ENV/
 .env.production.local
 *.pem
 
+# SQLite & Local Databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+dev.db
+frontend/prisma/dev.db
+
 # IDE & OS
 .vscode/
 .idea/
@@ -45,3 +53,4 @@ ENV/
 *.swo
 .DS_Store
 Thumbs.db
+

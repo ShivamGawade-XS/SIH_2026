@@ -1,10 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ShieldCheck, Sparkles, QrCode, ArrowRight, Layers, Award, Activity, CheckCircle2, ChevronRight } from "lucide-react";
 import { DEMO_BATCHES } from "@/lib/constants";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function HomePage() {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#F9F8F6]">
       <Navbar />
@@ -24,11 +29,11 @@ export default function HomePage() {
                 </span>
               </div>
               <h1 className="text-6xl sm:text-7xl md:text-8xl serif text-charcoal font-normal leading-[0.95] tracking-tight mb-8">
-                Purity, <br />
-                <span className="italic text-gold">Proven</span> On-Chain.
+                {t("heroSubtitle1")} <br />
+                <span className="italic text-gold">{t("heroSubtitle2")}</span> {t("heroSubtitle3")}
               </h1>
               <p className="text-base md:text-lg text-warm-grey font-normal leading-relaxed mb-10 max-w-2xl">
-                India’s decentralized honey provenance infrastructure. Eliminating adulteration through physical tamper-evident micro-QR seals, Polygon PoS immutable custody, and AI spectrometry scoring.
+                {t("heroDescription")}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -37,13 +42,13 @@ export default function HomePage() {
                   className="h-14 px-8 text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center justify-center gap-3 shadow-md"
                 >
                   <QrCode className="w-4 h-4 text-gold" />
-                  <span>Verify A Honey Jar</span>
+                  <span>{t("verifyJarBtn")}</span>
                 </Link>
                 <Link
                   href="/dashboard"
                   className="h-14 px-8 text-xs uppercase tracking-widest font-bold btn-outline-luxury flex items-center justify-center gap-3 shadow-xs"
                 >
-                  <span>Field Officer Login</span>
+                  <span>{t("fieldLoginBtn")}</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -57,29 +62,29 @@ export default function HomePage() {
             <div className="flex items-center gap-2 mb-6">
               <span className="w-1.5 h-1.5 bg-gold rounded-full" />
               <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-mono">
-                National Deployment Target (KVIC & National Bee Board 2026–27 Scheme)
+                {t("statsHeader")}
               </span>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="border-t border-white/15 pt-6">
-                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Registered Beekeepers</p>
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">{t("statsBeekeepers")}</p>
                 <p className="text-4xl serif text-gold font-bold">14,240+</p>
-                <p className="text-[10px] text-taupe/70 mt-1 font-mono">Across 18 State Clusters</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">{t("statsBeekeepersSub")}</p>
               </div>
               <div className="border-t border-white/15 pt-6">
-                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Target Batches</p>
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">{t("statsBatches")}</p>
                 <p className="text-4xl serif text-alabaster font-bold">1.8M+</p>
-                <p className="text-[10px] text-taupe/70 mt-1 font-mono">Polygon PoS Tokenized</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">{t("statsBatchesSub")}</p>
               </div>
               <div className="border-t border-white/15 pt-6">
-                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">FSSAI Compliance</p>
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">{t("statsCompliance")}</p>
                 <p className="text-4xl serif text-emerald-400 font-bold">99.4%</p>
-                <p className="text-[10px] text-taupe/70 mt-1 font-mono">IS 4941:2020 Standard</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">{t("statsComplianceSub")}</p>
               </div>
               <div className="border-t border-white/15 pt-6">
-                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Consumer Scans</p>
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">{t("statsScans")}</p>
                 <p className="text-4xl serif text-gold font-bold">4.2M+</p>
-                <p className="text-[10px] text-taupe/70 mt-1 font-mono">Zero Consumer Gas Fee</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">{t("statsScansSub")}</p>
               </div>
             </div>
           </div>
@@ -89,9 +94,9 @@ export default function HomePage() {
         <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#F9F8F6] border-b-2 border-charcoal/10">
           <div className="max-w-6xl mx-auto">
             <div className="text-left mb-16">
-              <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-bold">The TrueTag Architecture</p>
+              <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-bold">{t("archTag")}</p>
               <h2 className="text-4xl md:text-5xl serif font-normal text-charcoal">
-                Engineered For <span className="italic text-gold font-serif">Zero Trust</span>
+                {t("archTitle")}
               </h2>
             </div>
 
@@ -102,9 +107,9 @@ export default function HomePage() {
                   <div className="w-12 h-12 border border-charcoal bg-charcoal text-gold flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
                     <ShieldCheck className="w-6 h-6" />
                   </div>
-                  <h3 className="text-2xl serif text-charcoal mb-3">Polygon Immutable Ledger</h3>
+                  <h3 className="text-2xl serif text-charcoal mb-3">{t("pillar1Title")}</h3>
                   <p className="text-xs text-warm-grey leading-relaxed">
-                    Harvest events, custody transfers, and lab test results are minted permanently onto the Polygon PoS network. Tamper-evident and independently auditable.
+                    {t("pillar1Desc")}
                   </p>
                 </div>
                 <div className="mt-8 pt-4 border-t border-charcoal/10 text-[10px] uppercase tracking-widest text-charcoal font-semibold font-mono">
@@ -118,9 +123,9 @@ export default function HomePage() {
                   <div className="w-12 h-12 border border-charcoal bg-charcoal text-gold flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
                     <Sparkles className="w-6 h-6" />
                   </div>
-                  <h3 className="text-2xl serif text-charcoal mb-3">AI Purity & NMR Classifier</h3>
+                  <h3 className="text-2xl serif text-charcoal mb-3">{t("pillar2Title")}</h3>
                   <p className="text-xs text-warm-grey leading-relaxed">
-                    FastAPI microservice trained on thousands of FSSAI spectrometry samples evaluates moisture, Brix index, HMF freshness, and 13C Carbon Isotope sugar peaks in real-time.
+                    {t("pillar2Desc")}
                   </p>
                 </div>
                 <div className="mt-8 pt-4 border-t border-charcoal/10 text-[10px] uppercase tracking-widest text-charcoal font-semibold font-mono">
@@ -134,9 +139,9 @@ export default function HomePage() {
                   <div className="w-12 h-12 border border-charcoal bg-charcoal text-gold flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
                     <Award className="w-6 h-6" />
                   </div>
-                  <h3 className="text-2xl serif text-charcoal mb-3">Direct Beekeeper Identity</h3>
+                  <h3 className="text-2xl serif text-charcoal mb-3">{t("pillar3Title")}</h3>
                   <p className="text-xs text-warm-grey leading-relaxed">
-                    Consumers scan a jar to see the beekeeper’s face, cooperative affiliation, GPS village location, and harvest timestamp—ensuring fair compensation.
+                    {t("pillar3Desc")}
                   </p>
                 </div>
                 <div className="mt-8 pt-4 border-t border-charcoal/10 text-[10px] uppercase tracking-widest text-charcoal font-semibold font-mono">
@@ -152,14 +157,14 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 pb-6 border-b border-charcoal/10">
               <div>
-                <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-1 font-bold">Live Ledger Explorer</p>
-                <h2 className="text-3xl md:text-4xl serif text-charcoal font-normal">Recent Verified Batches</h2>
+                <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-1 font-bold">{t("explorerTag")}</p>
+                <h2 className="text-3xl md:text-4xl serif text-charcoal font-normal">{t("explorerTitle")}</h2>
               </div>
               <Link
                 href="/verify"
                 className="text-xs uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors flex items-center gap-1.5"
               >
-                <span>Search All Batches</span>
+                <span>{t("searchAllBatches")}</span>
                 <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
@@ -179,7 +184,7 @@ export default function HomePage() {
                       <p className="text-xs text-warm-grey">{batch.farmer.location}</p>
                     </div>
                     <div className="text-right">
-                      <span className="text-[9px] uppercase tracking-widest text-warm-grey block">Purity</span>
+                      <span className="text-[9px] uppercase tracking-widest text-warm-grey block">{t("batchPurity")}</span>
                       <span className="text-2xl font-serif font-bold text-gold">{batch.batch.qualityScore}/100</span>
                     </div>
                   </div>
@@ -190,8 +195,7 @@ export default function HomePage() {
                       href={`/verify/${batch.batchId}`}
                       className="text-xs uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors flex items-center gap-1"
                     >
-                      <span>Verify Jar</span>
-                      <span>→</span>
+                      <span>{t("verifyJarLink")}</span>
                     </Link>
                   </div>
                 </div>

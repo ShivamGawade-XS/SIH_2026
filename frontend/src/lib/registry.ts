@@ -1,11 +1,11 @@
 /**
  * Dynamic Batch & Farmer Registry Manager
- * Synchronizes on-chain state, memory, and browser storage for live hackathon demos
+ * Synchronizes SQLite database, memory, and browser storage for seamless persistence
  * Author: Shivam Gawade (@ShivamGawade-XS)
  */
 
 import { DEMO_BATCHES } from "./constants";
-import { BatchMetadata, Farmer, HoneyBatch } from "./types";
+import { BatchMetadata, Farmer } from "./types";
 
 const STORAGE_KEY_BATCHES = "honeychain_custom_batches";
 const STORAGE_KEY_FARMERS = "honeychain_custom_farmers";
@@ -51,38 +51,87 @@ const INITIAL_COMPLAINTS: ConsumerComplaint[] = [
   },
 ];
 
+/**
+ * Fetch batches asynchronously from Database API with synchronous fallback
+ */
+export async function fetchBatchesFromDB(): Promise<BatchMetadata[]> {
+  try {
+    const res = await fetch("/api/batches", { cache: "no-store" });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.batches && data.batches.length > 0) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem(STORAGE_KEY_BATCHES, JSON.stringify(data.batches));
+        }
+        return data.batches;
+      }
+    }
+  } catch (err) {
+    console.warn("DB batch fetch failed, using local cache:", err);
+  }
+  return getCustomBatches();
+}
+
 export function getCustomBatches(): BatchMetadata[] {
   if (typeof window === "undefined") return DEMO_BATCHES;
   try {
     const raw = localStorage.getItem(STORAGE_KEY_BATCHES);
     if (!raw) return DEMO_BATCHES;
     const parsed = JSON.parse(raw);
-    return [...DEMO_BATCHES, ...parsed];
+    return parsed.length > 0 ? parsed : DEMO_BATCHES;
   } catch {
     return DEMO_BATCHES;
   }
 }
 
-export function saveCustomBatch(batch: BatchMetadata): void {
-  if (typeof window === "undefined") return;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY_BATCHES);
-    const list: BatchMetadata[] = raw ? JSON.parse(raw) : [];
-    const index = list.findIndex((b) => b.batchId === batch.batchId);
-    if (index >= 0) {
-      list[index] = batch;
-    } else {
-      list.unshift(batch);
-    }
-    localStorage.setItem(STORAGE_KEY_BATCHES, JSON.stringify(list));
+export async function saveCustomBatch(batch: BatchMetadata): Promise<void> {
+  // 1. Optimistic local update
+  if (typeof window !== "undefined") {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_BATCHES);
+      const list: BatchMetadata[] = raw ? JSON.parse(raw) : [...DEMO_BATCHES];
+      const index = list.findIndex((b) => b.batchId === batch.batchId);
+      if (index >= 0) {
+        list[index] = batch;
+      } else {
+        list.unshift(batch);
+      }
+      localStorage.setItem(STORAGE_KEY_BATCHES, JSON.stringify(list));
 
-    // Broadcast update across tabs
-    if (syncChannel) {
-      syncChannel.postMessage({ type: "BATCH_UPDATED", batchId: batch.batchId, batch });
+      if (syncChannel) {
+        syncChannel.postMessage({ type: "BATCH_UPDATED", batchId: batch.batchId, batch });
+      }
+      window.dispatchEvent(new CustomEvent("honeychain_batch_updated", { detail: batch }));
+    } catch (e) {
+      console.warn("Local storage write failed:", e);
     }
-    window.dispatchEvent(new CustomEvent("honeychain_batch_updated", { detail: batch }));
-  } catch (e) {
-    console.warn("Failed to persist batch locally:", e);
+  }
+
+  // 2. Persist to SQLite Database via API
+  try {
+    await fetch("/api/batches", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        farmerId: batch.farmer.farmerId,
+        botanicalFlora: batch.botanicalFlora,
+        qualityScore: batch.batch.qualityScore,
+        grade: batch.batch.grade,
+        moisture: batch.labReport?.moisturePercent,
+        brix: batch.labReport?.brixPercent,
+        hmf: batch.labReport?.hmfMgPerKg,
+        diastase: batch.labReport?.diastaseNumber,
+        conductivity: batch.labReport?.electricalConductivity,
+        c13Delta: batch.labReport?.c13IsotopeDelta,
+        c4Sugar: batch.labReport?.c4SugarPercent,
+        smrMarker: batch.labReport?.smrMarker,
+        ipfsMetadataHash: batch.batch.ipfsMetadataHash,
+        txHash: batch.txHash,
+        blockNumber: batch.blockNumber,
+      }),
+    });
+  } catch (err) {
+    console.warn("DB batch persistence background call:", err);
   }
 }
 
@@ -124,6 +173,24 @@ export function subscribeToBatchUpdates(callback: (batch: BatchMetadata) => void
   };
 }
 
+export async function fetchFarmersFromDB(): Promise<Farmer[]> {
+  try {
+    const res = await fetch("/api/farmers", { cache: "no-store" });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.farmers && data.farmers.length > 0) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem(STORAGE_KEY_FARMERS, JSON.stringify(data.farmers));
+        }
+        return data.farmers;
+      }
+    }
+  } catch (err) {
+    console.warn("DB farmer fetch failed, using fallback:", err);
+  }
+  return getCustomFarmers();
+}
+
 export function getCustomFarmers(): Farmer[] {
   const initialFarmers: Farmer[] = DEMO_BATCHES.map((b) => b.farmer);
   if (typeof window === "undefined") return initialFarmers;
@@ -131,26 +198,63 @@ export function getCustomFarmers(): Farmer[] {
     const raw = localStorage.getItem(STORAGE_KEY_FARMERS);
     if (!raw) return initialFarmers;
     const parsed = JSON.parse(raw);
-    return [...initialFarmers, ...parsed];
+    return parsed.length > 0 ? parsed : initialFarmers;
   } catch {
     return initialFarmers;
   }
 }
 
-export function saveCustomFarmer(farmer: Farmer): void {
-  if (typeof window === "undefined") return;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY_FARMERS);
-    const list: Farmer[] = raw ? JSON.parse(raw) : [];
-    list.push(farmer);
-    localStorage.setItem(STORAGE_KEY_FARMERS, JSON.stringify(list));
+export async function saveCustomFarmer(farmer: Farmer): Promise<void> {
+  if (typeof window !== "undefined") {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_FARMERS);
+      const list: Farmer[] = raw ? JSON.parse(raw) : getCustomFarmers();
+      list.push(farmer);
+      localStorage.setItem(STORAGE_KEY_FARMERS, JSON.stringify(list));
 
-    if (syncChannel) {
-      syncChannel.postMessage({ type: "FARMER_REGISTERED", farmer });
+      if (syncChannel) {
+        syncChannel.postMessage({ type: "FARMER_REGISTERED", farmer });
+      }
+    } catch (e) {
+      console.warn("Local farmer storage failed:", e);
     }
-  } catch (e) {
-    console.warn("Failed to persist farmer locally:", e);
   }
+
+  try {
+    await fetch("/api/farmers/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: farmer.name,
+        location: farmer.location,
+        cooperativeId: farmer.cooperativeId,
+        gpsLat: farmer.gpsLat,
+        gpsLng: farmer.gpsLng,
+        ipfsProfileHash: farmer.ipfsProfileHash,
+        upiVpa: farmer.upiVpa,
+      }),
+    });
+  } catch (err) {
+    console.warn("DB farmer registration call:", err);
+  }
+}
+
+export async function fetchComplaintsFromDB(): Promise<ConsumerComplaint[]> {
+  try {
+    const res = await fetch("/api/complaints", { cache: "no-store" });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.complaints && data.complaints.length > 0) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem(STORAGE_KEY_COMPLAINTS, JSON.stringify(data.complaints));
+        }
+        return data.complaints;
+      }
+    }
+  } catch (err) {
+    console.warn("DB complaint fetch failed:", err);
+  }
+  return getComplaints();
 }
 
 export function getComplaints(): ConsumerComplaint[] {
@@ -164,13 +268,24 @@ export function getComplaints(): ConsumerComplaint[] {
   }
 }
 
-export function saveComplaint(complaint: ConsumerComplaint): void {
-  if (typeof window === "undefined") return;
+export async function saveComplaint(complaint: ConsumerComplaint): Promise<void> {
+  if (typeof window !== "undefined") {
+    try {
+      const list = getComplaints();
+      list.unshift(complaint);
+      localStorage.setItem(STORAGE_KEY_COMPLAINTS, JSON.stringify(list));
+    } catch (e) {
+      console.warn("Local complaint storage failed:", e);
+    }
+  }
+
   try {
-    const list = getComplaints();
-    list.unshift(complaint);
-    localStorage.setItem(STORAGE_KEY_COMPLAINTS, JSON.stringify(list));
-  } catch (e) {
-    console.warn("Failed to persist complaint locally:", e);
+    await fetch("/api/complaints", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(complaint),
+    });
+  } catch (err) {
+    console.warn("DB complaint submission failed:", err);
   }
 }

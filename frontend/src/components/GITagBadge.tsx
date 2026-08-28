@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Award, ShieldCheck, MapPin, Sparkles, X, ExternalLink, Leaf } from "lucide-react";
+import { Award, ShieldCheck, MapPin, Sparkles, X, ExternalLink, Leaf, Compass } from "lucide-react";
+import { checkGIZone, GI_ZONES } from "@/lib/geo";
 
 interface GITagData {
   region: string;
@@ -12,6 +13,7 @@ interface GITagData {
   kvicCluster: string;
   description: string;
   harvestWindow: string;
+  coordinates: string;
 }
 
 const GI_REGISTRY: Record<string, GITagData> = {
@@ -24,6 +26,7 @@ const GI_REGISTRY: Record<string, GITagData> = {
     kvicCluster: "KVIC-BH-NORTH-01",
     description: "Harvested exclusively during the 21-day flowering bloom of GI-tagged Shahi Litchi orchards in North Bihar. Light amber hue with delicate floral aromatic notes.",
     harvestWindow: "April – May (Annual Bloom)",
+    coordinates: "26.1209° N, 85.3647° E",
   },
   "sundarbans": {
     region: "Sundarbans Biosphere Reserve, West Bengal",
@@ -34,6 +37,7 @@ const GI_REGISTRY: Record<string, GITagData> = {
     kvicCluster: "KVIC-WB-COASTAL-03",
     description: "Wild-foraged by traditional 'Mouli' honey collectors in the tidal mangrove delta. Rich in natural antioxidants and distinctive salinity-balanced mineral undertones.",
     harvestWindow: "March – June (Tidal Delta Harvest)",
+    coordinates: "21.9497° N, 89.1833° E",
   },
   "kashmir": {
     region: "Kashmir Valley, Jammu & Kashmir",
@@ -44,6 +48,7 @@ const GI_REGISTRY: Record<string, GITagData> = {
     kvicCluster: "KVIC-JK-ALPINE-02",
     description: "High-altitude pristine honey harvested from temperate Himalayan acacia groves. Water-white clarity with slow crystallization and a mild sweet profile.",
     harvestWindow: "May – July (Himalayan Summer)",
+    coordinates: "34.0837° N, 74.7973° E",
   },
   "nilgiris": {
     region: "Nilgiris Biosphere Reserve, Tamil Nadu",
@@ -54,6 +59,7 @@ const GI_REGISTRY: Record<string, GITagData> = {
     kvicCluster: "KVIC-TN-GHATS-05",
     description: "Harvested by indigenous Toda and Kurumba beekeepers from ancient montane Shola forests. Dark amber with medicinal herbal properties.",
     harvestWindow: "September – November (Post-Monsoon)",
+    coordinates: "11.4102° N, 76.6950° E",
   },
   "coorg": {
     region: "Kodagu (Coorg), Karnataka",
@@ -64,26 +70,42 @@ const GI_REGISTRY: Record<string, GITagData> = {
     kvicCluster: "KVIC-KA-WEST-04",
     description: "Collected during the brief white blossom surge of shade-grown Western Ghats coffee plantations. Golden amber with caramel undertones.",
     harvestWindow: "March – April (Blossom Surge)",
+    coordinates: "12.3375° N, 75.8069° E",
   },
 };
 
 interface GITagBadgeProps {
   location: string;
   batchId?: number;
+  gpsLat?: number | null;
+  gpsLng?: number | null;
 }
 
-export default function GITagBadge({ location, batchId }: GITagBadgeProps) {
+export default function GITagBadge({ location, batchId, gpsLat, gpsLng }: GITagBadgeProps) {
   const [showModal, setShowModal] = useState(false);
 
-  // Match location keyword to GI registry entry
-  const locLower = location.toLowerCase();
-  let key = "muzaffarpur";
-  if (locLower.includes("sundarban") || locLower.includes("bengal")) key = "sundarbans";
-  else if (locLower.includes("kashmir") || locLower.includes("j&k")) key = "kashmir";
-  else if (locLower.includes("nilgiri") || locLower.includes("tamil")) key = "nilgiris";
-  else if (locLower.includes("coorg") || locLower.includes("karnataka")) key = "coorg";
+  // 1. If GPS coordinates provided, verify via polygon geofencing
+  let isGpsVerified = false;
+  let matchedKey = "muzaffarpur";
 
-  const giData = GI_REGISTRY[key];
+  if (gpsLat != null && gpsLng != null) {
+    const geoZone = checkGIZone(gpsLat, gpsLng);
+    if (geoZone) {
+      isGpsVerified = true;
+      matchedKey = geoZone.key;
+    }
+  }
+
+  // 2. Fallback to location string matching
+  if (!isGpsVerified) {
+    const locLower = (location || "").toLowerCase();
+    if (locLower.includes("sundarban") || locLower.includes("bengal")) matchedKey = "sundarbans";
+    else if (locLower.includes("kashmir") || locLower.includes("j&k") || locLower.includes("anantnag")) matchedKey = "kashmir";
+    else if (locLower.includes("nilgiri") || locLower.includes("tamil")) matchedKey = "nilgiris";
+    else if (locLower.includes("coorg") || locLower.includes("karnataka") || locLower.includes("kodagu")) matchedKey = "coorg";
+  }
+
+  const giData = GI_REGISTRY[matchedKey] || GI_REGISTRY.muzaffarpur;
 
   return (
     <>
@@ -95,7 +117,7 @@ export default function GITagBadge({ location, batchId }: GITagBadgeProps) {
         <Award className="w-4 h-4 text-gold group-hover:text-charcoal shrink-0" />
         <div>
           <span className="text-[9px] uppercase tracking-ultra font-bold text-warm-grey group-hover:text-charcoal block">
-            GI-Tag Certified Heritage Honey
+            {isGpsVerified ? "🛰️ GPS-Verified GI Heritage" : "GI-Tag Certified Heritage Honey"}
           </span>
           <span className="text-xs font-serif font-bold text-charcoal group-hover:text-charcoal">
             {giData.flora}
@@ -103,9 +125,10 @@ export default function GITagBadge({ location, batchId }: GITagBadgeProps) {
         </div>
       </button>
 
+      {/* GI Dossier Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 bg-charcoal/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="border-2 border-gold bg-white max-w-xl w-full p-8 md:p-10 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+          <div className="border-2 border-gold bg-white max-w-xl w-full p-8 md:p-10 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setShowModal(false)}
               className="absolute top-6 right-6 text-charcoal/40 hover:text-charcoal transition-colors"
@@ -114,62 +137,79 @@ export default function GITagBadge({ location, batchId }: GITagBadgeProps) {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Header */}
+            {/* Modal Header */}
             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-charcoal/10">
-              <div className="w-12 h-12 bg-gold/10 border border-gold flex items-center justify-center text-gold">
+              <div className="w-12 h-12 bg-gold/10 border-2 border-gold flex items-center justify-center text-gold">
                 <Award className="w-6 h-6" />
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
-                  Geographical Indication (GI) Registry of India
+                  Geographical Indication (GI) Certificate Dossier
                 </p>
-                <h3 className="text-2xl serif text-charcoal font-bold">
-                  {giData.flora}
-                </h3>
+                <h3 className="text-2xl serif text-charcoal font-bold">{giData.flora}</h3>
               </div>
             </div>
 
-            <p className="text-xs text-warm-grey leading-relaxed mb-6">
-              {giData.description}
-            </p>
-
-            {/* GI Dossier Details */}
-            <div className="p-5 bg-[#F9F8F6] border border-charcoal/10 space-y-3 mb-6 text-xs">
-              <div className="flex justify-between pb-2 border-b border-charcoal/5">
-                <span className="text-warm-grey font-bold uppercase text-[10px]">GI Registration ID:</span>
-                <span className="font-mono font-bold text-charcoal">{giData.giCertNo}</span>
+            {/* Verification Status Banner */}
+            <div className={`p-4 border mb-6 flex items-center gap-3 ${
+              isGpsVerified ? "border-emerald-300 bg-emerald-50 text-emerald-900" : "border-gold/30 bg-gold/5 text-charcoal"
+            }`}>
+              <ShieldCheck className={`w-5 h-5 ${isGpsVerified ? "text-emerald-600" : "text-gold"}`} />
+              <div className="text-xs">
+                <p className="font-bold uppercase tracking-wider text-[10px]">
+                  {isGpsVerified ? "🛰️ Real-Time GPS Polygon Match Confirmed" : "Official KVIC Heritage Registered"}
+                </p>
+                <p className="text-[11px] opacity-85">
+                  Certificate No: <strong className="font-mono">{giData.giCertNo}</strong> under the GI of Goods Act 1999.
+                </p>
               </div>
-              <div className="flex justify-between pb-2 border-b border-charcoal/5">
-                <span className="text-warm-grey font-bold uppercase text-[10px]">Botanical Taxon:</span>
+            </div>
+
+            {/* Botanical Details Grid */}
+            <div className="grid grid-cols-2 gap-4 mb-6 text-xs">
+              <div className="p-3 bg-[#F9F8F6] border border-charcoal/10">
+                <span className="text-[9px] uppercase tracking-widest text-warm-grey block mb-1">Botanical Taxon</span>
                 <span className="font-serif italic font-bold text-charcoal">{giData.botanicalName}</span>
               </div>
-              <div className="flex justify-between pb-2 border-b border-charcoal/5">
-                <span className="text-warm-grey font-bold uppercase text-[10px]">Melissopalynology Index:</span>
-                <span className="font-mono font-bold text-emerald-700">{giData.pollenPurity}</span>
+              <div className="p-3 bg-[#F9F8F6] border border-charcoal/10">
+                <span className="text-[9px] uppercase tracking-widest text-warm-grey block mb-1">Pollen Analysis</span>
+                <span className="font-bold text-charcoal">{giData.pollenPurity}</span>
               </div>
-              <div className="flex justify-between pb-2 border-b border-charcoal/5">
-                <span className="text-warm-grey font-bold uppercase text-[10px]">KVIC Protected Cluster:</span>
-                <span className="font-mono text-charcoal">{giData.kvicCluster}</span>
+              <div className="p-3 bg-[#F9F8F6] border border-charcoal/10">
+                <span className="text-[9px] uppercase tracking-widest text-warm-grey block mb-1">Harvest Window</span>
+                <span className="font-bold text-charcoal">{giData.harvestWindow}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-warm-grey font-bold uppercase text-[10px]">Harvest Period:</span>
-                <span className="font-medium text-charcoal">{giData.harvestWindow}</span>
+              <div className="p-3 bg-[#F9F8F6] border border-charcoal/10">
+                <span className="text-[9px] uppercase tracking-widest text-warm-grey block mb-1">KVIC Production Cluster</span>
+                <span className="font-mono font-bold text-charcoal">{giData.kvicCluster}</span>
               </div>
             </div>
 
-            {/* Legal Protection Seal */}
-            <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-3 mb-6">
-              <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
-              <span>
-                Protected under the <strong>Geographical Indications of Goods (Registration and Protection) Act, 1999</strong>. Verified on-chain via KVIC HoneyChain ledger.
+            {/* Terroir Description */}
+            <div className="mb-6">
+              <h4 className="text-[10px] uppercase tracking-widest font-bold text-charcoal mb-2">Terroir & Ecosystem Characteristics:</h4>
+              <p className="text-xs text-warm-grey leading-relaxed bg-[#F9F8F6] p-4 border border-charcoal/10">
+                {giData.description}
+              </p>
+            </div>
+
+            {/* GPS Coordinates */}
+            <div className="flex items-center justify-between p-3 bg-charcoal text-alabaster text-xs font-mono mb-6">
+              <div className="flex items-center gap-2">
+                <Compass className="w-4 h-4 text-gold" />
+                <span>Apiary Coordinates:</span>
+              </div>
+              <span className="text-gold font-bold">
+                {gpsLat && gpsLng ? `${gpsLat.toFixed(4)}° N, ${gpsLng.toFixed(4)}° E` : giData.coordinates}
               </span>
             </div>
 
             <button
+              type="button"
               onClick={() => setShowModal(false)}
-              className="w-full h-11 bg-charcoal text-alabaster uppercase tracking-widest text-xs font-bold btn-gold-slide flex items-center justify-center"
+              className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-xs font-bold btn-gold-slide flex items-center justify-center"
             >
-              Close GI Dossier
+              Close Dossier
             </button>
           </div>
         </div>

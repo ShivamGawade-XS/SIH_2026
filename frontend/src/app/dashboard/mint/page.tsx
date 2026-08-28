@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import confetti from "canvas-confetti";
 import { Layers, ArrowLeft, Sparkles, CheckCircle2, QrCode, ExternalLink, ShieldCheck, Activity } from "lucide-react";
 
-import { saveCustomBatch, getCustomFarmers, getCustomBatches } from "@/lib/registry";
+import { saveCustomBatch, getCustomFarmers, getCustomBatches, fetchFarmersFromDB } from "@/lib/registry";
 
 export default function MintBatchPage() {
   const [farmersList, setFarmersList] = useState(getCustomFarmers());
@@ -20,7 +20,12 @@ export default function MintBatchPage() {
   const [yieldKg, setYieldKg] = useState(120);
 
   useEffect(() => {
-    setFarmersList(getCustomFarmers());
+    fetchFarmersFromDB().then((f) => {
+      if (f && f.length > 0) {
+        setFarmersList(f);
+        setFarmerId(String(f[0].farmerId));
+      }
+    });
   }, []);
 
   // Live AI Microservice Prediction State
@@ -70,79 +75,77 @@ export default function MintBatchPage() {
     return () => clearTimeout(timer);
   }, [moisture, brix, hmf, diastase, conductivity]);
 
-  const handleMint = (e: React.FormEvent) => {
+  const handleMint = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      const allBatches = getCustomBatches();
-      const newBatchId = allBatches.length + 1;
-      const generatedToken = `TT-2026-0000${newBatchId}`;
-      const generatedTx = "0x" + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
-      
-      const selectedFarmer = farmersList.find(f => f.farmerId === Number(farmerId)) || farmersList[0];
+    const allBatches = getCustomBatches();
+    const newBatchId = allBatches.length + 1;
+    const generatedToken = `TT-2026-0000${newBatchId}`;
+    const generatedTx = "0x" + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
+    
+    const selectedFarmer = farmersList.find(f => f.farmerId === Number(farmerId)) || farmersList[0];
 
-      // Construct BatchMetadata object and save
-      const newBatchRecord = {
+    // Construct BatchMetadata object and save
+    const newBatchRecord = {
+      batchId: newBatchId,
+      farmer: selectedFarmer,
+      batch: {
         batchId: newBatchId,
-        farmer: selectedFarmer,
-        batch: {
-          batchId: newBatchId,
-          farmerId: selectedFarmer.farmerId,
-          harvestTimestamp: Math.floor(Date.now() / 1000),
-          ipfsMetadataHash: "bafybeic" + Array.from({ length: 50 }, () => "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]).join(""),
-          qualityScore: aiScore,
-          grade: aiGrade,
-          isAuthentic: true,
-          isRevoked: false,
-        },
-        custodyChain: [
-          {
-            actor: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-            entity: `Apiary Site (${selectedFarmer.location})`,
-            timestamp: Math.floor(Date.now() / 1000),
-            action: "Harvested & IoT Monitored",
-          },
-          {
-            actor: "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-            entity: "KVIC Regional Honey Processing Center",
-            timestamp: Math.floor(Date.now() / 1000) + 3600,
-            action: `Cold Filtration & FSSAI AI Testing Passed (Score: ${aiScore}/100)`,
-          }
-        ],
-        labReport: {
-          moisturePercent: moisture,
-          brixPercent: brix,
-          hmfMgPerKg: hmf,
-          diastaseNumber: diastase,
-          electricalConductivity: conductivity,
-          purityScore: aiScore,
-          grade: aiGrade,
-          passedFSSAI: aiScore >= 70,
-          testedAt: new Date().toISOString().split("T")[0],
-        },
-        qrToken: generatedToken,
-        txHash: generatedTx,
-      };
-
-      saveCustomBatch(newBatchRecord);
-
-      setSuccessData({
-        batchId: newBatchId,
-        score: aiScore,
+        farmerId: selectedFarmer.farmerId,
+        harvestTimestamp: Math.floor(Date.now() / 1000),
+        ipfsMetadataHash: "bafybeic" + Array.from({ length: 50 }, () => "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]).join(""),
+        qualityScore: aiScore,
         grade: aiGrade,
-        qrToken: generatedToken,
-        txHash: generatedTx,
-      });
+        isAuthentic: true,
+        isRevoked: false,
+      },
+      custodyChain: [
+        {
+          actor: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+          entity: `Apiary Site (${selectedFarmer.location})`,
+          timestamp: Math.floor(Date.now() / 1000),
+          action: "Harvested & IoT Monitored",
+        },
+        {
+          actor: "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+          entity: "KVIC Regional Honey Processing Center",
+          timestamp: Math.floor(Date.now() / 1000) + 3600,
+          action: `Cold Filtration & FSSAI AI Testing Passed (Score: ${aiScore}/100)`,
+        }
+      ],
+      labReport: {
+        moisturePercent: moisture,
+        brixPercent: brix,
+        hmfMgPerKg: hmf,
+        diastaseNumber: diastase,
+        electricalConductivity: conductivity,
+        purityScore: aiScore,
+        grade: aiGrade,
+        passedFSSAI: aiScore >= 70,
+        testedAt: new Date().toISOString().split("T")[0],
+      },
+      qrToken: generatedToken,
+      txHash: generatedTx,
+    };
 
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ["#D4AF37", "#1A1A1A", "#FFFFFF"],
-      });
-    }, 1200);
+    await saveCustomBatch(newBatchRecord);
+    setLoading(false);
+
+    setSuccessData({
+      batchId: newBatchId,
+      score: aiScore,
+      grade: aiGrade,
+      qrToken: generatedToken,
+      txHash: generatedTx,
+    });
+
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ["#D4AF37", "#1A1A1A", "#FFFFFF"],
+    });
   };
 
   return (

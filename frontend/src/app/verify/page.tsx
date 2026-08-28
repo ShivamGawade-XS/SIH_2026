@@ -9,12 +9,14 @@ import OfflineSMSSimulator from "@/components/OfflineSMSSimulator";
 import { QrCode, Search, Sparkles, ArrowRight, Camera, ShieldCheck, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { getCustomBatches } from "@/lib/registry";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function VerifySearchPage() {
   const [tokenInput, setTokenInput] = useState("");
   const [showScanner, setShowScanner] = useState(false);
   const [showSmsModal, setShowSmsModal] = useState(false);
   const router = useRouter();
+  const { t } = useLanguage();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,7 +93,7 @@ export default function VerifySearchPage() {
             Verify Your <span className="italic text-gold font-serif">Honey</span>
           </h1>
           <p className="text-sm md:text-base text-warm-grey max-w-xl mx-auto leading-relaxed font-normal">
-            Scan the TrueTag QR code on your honey jar with your camera, enter the batch token manually, or test rural offline SMS / USSD shortcode verification.
+            {t("heroDescription")}
           </p>
         </div>
 
@@ -103,7 +105,7 @@ export default function VerifySearchPage() {
               className="h-14 px-6 text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center justify-center gap-3 shadow-sm"
             >
               <Camera className="w-5 h-5 text-gold" />
-              <span>Scan Jar With Camera</span>
+              <span>{t("scanWithCamera")}</span>
             </button>
 
             <button
@@ -111,7 +113,7 @@ export default function VerifySearchPage() {
               className="h-14 px-6 text-xs uppercase tracking-widest font-bold border-2 border-charcoal bg-alabaster hover:bg-charcoal hover:text-gold text-charcoal flex items-center justify-center gap-2.5 transition-colors shadow-sm"
             >
               <MessageSquare className="w-4 h-4 text-gold" />
-              <span>Offline SMS / USSD Mode</span>
+              <span>{t("offlineSms")}</span>
             </button>
           </div>
 
@@ -141,31 +143,44 @@ export default function VerifySearchPage() {
           </form>
         </div>
 
-        {/* Sample Batches */}
+        {/* Quick Sample Batches */}
         <div>
-          <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-6 text-center font-bold">
-            Or Inspect Pre-Authenticated KVIC Batches
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {sampleBatches.map((b) => (
+          <div className="flex items-center gap-2 mb-6">
+            <Sparkles className="w-3.5 h-3.5 text-gold" />
+            <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">
+              Instant Verified Batch Samples (Click to Inspect)
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {sampleBatches.map((batch) => (
               <Link
-                key={b.id}
-                href={`/verify/${b.id}`}
-                className="p-6 border-2 border-charcoal/15 bg-white hover:border-gold transition-all duration-400 group flex justify-between items-center shadow-xs hover:shadow-md"
+                key={batch.id}
+                href={`/verify/${batch.id}?qr=${batch.qr}` }
+                className="p-6 border-2 border-charcoal/15 bg-white hover:border-gold transition-all block group shadow-xs hover:shadow-md"
               >
-                <div>
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-[10px] uppercase tracking-widest text-charcoal font-bold font-mono">{b.qr}</span>
-                    <span className="text-[10px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-300 font-bold">
-                      Score: {b.score}/100
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <span className="text-[10px] font-mono text-warm-grey uppercase tracking-widest block font-bold">
+                      {batch.qr}
+                    </span>
+                    <h3 className="text-xl serif text-charcoal font-bold group-hover:text-gold transition-colors">
+                      {batch.name}
+                    </h3>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-1 border border-emerald-300">
+                      Score: {batch.score}/100
                     </span>
                   </div>
-                  <h3 className="font-serif text-lg text-charcoal font-bold group-hover:text-gold transition-colors duration-300">
-                    {b.name}
-                  </h3>
-                  <p className="text-xs text-warm-grey mt-1">{b.farmer}</p>
                 </div>
-                <ArrowRight className="w-5 h-5 text-charcoal group-hover:translate-x-1.5 group-hover:text-gold transition-all duration-300" />
+
+                <div className="flex items-center justify-between text-xs text-warm-grey pt-3 border-t border-charcoal/10">
+                  <span>{batch.farmer}</span>
+                  <span className="text-charcoal font-bold uppercase tracking-wider text-[10px] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                    {t("verifyJarLink")}
+                  </span>
+                </div>
               </Link>
             ))}
           </div>

@@ -174,6 +174,29 @@ export default function QualityLabPage() {
           </p>
         </div>
 
+        {/* Gemini AI OCR Fast Extract Banner */}
+        <div className="mb-8 p-4 border-2 border-gold bg-gold/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gold/20 border border-gold flex items-center justify-center text-gold shrink-0">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-ultra font-bold text-charcoal">
+                ✨ Gemini 2.0 Multimodal OCR Certificate Scanner
+              </p>
+              <p className="text-xs text-warm-grey">
+                Upload physical lab certificates or NMR spectrometry charts for automated parameter extraction and fraud diagnostics.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/dashboard/quality/upload"
+            className="px-5 py-2.5 bg-charcoal text-alabaster hover:bg-gold hover:text-charcoal text-xs uppercase tracking-wider font-bold shrink-0 transition-colors shadow-xs"
+          >
+            Upload Certificate Photo →
+          </Link>
+        </div>
+
         {/* Batch Quick-Selector Bar */}
         <div className="mb-8 p-4 border-2 border-charcoal/15 bg-white shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

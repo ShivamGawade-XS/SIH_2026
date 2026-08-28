@@ -1,23 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShieldCheck, Sparkles, LayoutDashboard, QrCode, Globe } from "lucide-react";
-import { Language } from "@/lib/i18n";
+import { LayoutDashboard, QrCode } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function Navbar() {
-  const [lang, setLang] = useState<Language>("en");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("honeychain_lang") as Language;
-    if (saved) setLang(saved);
-  }, []);
-
-  const handleLangChange = (newLang: Language) => {
-    setLang(newLang);
-    localStorage.setItem("honeychain_lang", newLang);
-    window.dispatchEvent(new Event("honeychain_lang_changed"));
-  };
+  const { lang, setLang, t } = useLanguage();
 
   return (
     <header className="border-b-2 border-charcoal/15 bg-[#F9F8F6]/95 backdrop-blur-md sticky top-0 z-40 shadow-sm transition-all duration-300">
@@ -28,47 +16,47 @@ export default function Navbar() {
             <span className="font-serif italic text-gold text-lg">H</span>
           </div>
           <div>
-            <span className="text-sm font-bold tracking-widest uppercase block text-charcoal">HoneyChain</span>
-            <span className="text-[10px] text-warm-grey uppercase tracking-widest block font-medium">by TrueTag • KVIC</span>
+            <span className="text-sm font-bold tracking-widest uppercase block text-charcoal">{t("brandName")}</span>
+            <span className="text-[10px] text-warm-grey uppercase tracking-widest block font-medium">{t("brandTag")}</span>
           </div>
         </Link>
 
         {/* Center Pill: Live Status */}
         <div className="hidden md:flex items-center gap-2 px-3 py-1.5 border border-charcoal/20 bg-white text-[10px] uppercase tracking-widest text-charcoal font-semibold shadow-xs">
           <span className="w-2 h-2 bg-emerald-500 animate-pulse" />
-          <span>Polygon PoS • Live Provenance</span>
+          <span>{t("liveStatus")}</span>
         </div>
 
         {/* Right Navigation + Language Switcher */}
         <nav className="flex items-center gap-3 sm:gap-6">
-          {/* Indic Language Switcher */}
+          {/* Indic Language Switcher — Connected to LanguageContext */}
           <div className="flex items-center border border-charcoal/30 bg-white text-[10px] font-bold shadow-xs overflow-x-auto">
             <button
-              onClick={() => handleLangChange("en")}
+              onClick={() => setLang("en")}
               className={`px-2 py-1 transition-colors ${lang === "en" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
             >
               EN
             </button>
             <button
-              onClick={() => handleLangChange("hi")}
+              onClick={() => setLang("hi")}
               className={`px-2 py-1 transition-colors ${lang === "hi" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
             >
               हिंदी
             </button>
             <button
-              onClick={() => handleLangChange("bn")}
+              onClick={() => setLang("bn")}
               className={`px-2 py-1 transition-colors ${lang === "bn" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
             >
               বাংলা
             </button>
             <button
-              onClick={() => handleLangChange("ta")}
+              onClick={() => setLang("ta")}
               className={`px-2 py-1 transition-colors ${lang === "ta" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
             >
               தமிழ்
             </button>
             <button
-              onClick={() => handleLangChange("kn")}
+              onClick={() => setLang("kn")}
               className={`px-2 py-1 transition-colors ${lang === "kn" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
             >
               ಕನ್ನಡ
@@ -80,7 +68,7 @@ export default function Navbar() {
             className="text-xs uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors duration-300 flex items-center gap-1.5"
           >
             <QrCode className="w-3.5 h-3.5 text-gold" />
-            <span className="hidden sm:inline">Verify Jar</span>
+            <span className="hidden sm:inline">{t("verifyNav")}</span>
           </Link>
           <Link
             href="/dashboard"

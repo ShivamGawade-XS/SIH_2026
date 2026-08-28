@@ -7,7 +7,16 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LiveTelemetryStream from "@/components/LiveTelemetryStream";
 import { DEMO_BATCHES } from "@/lib/constants";
-import { getCustomBatches, getCustomFarmers, getComplaints, ConsumerComplaint, subscribeToBatchUpdates } from "@/lib/registry";
+import {
+  getCustomBatches,
+  getCustomFarmers,
+  getComplaints,
+  fetchBatchesFromDB,
+  fetchFarmersFromDB,
+  fetchComplaintsFromDB,
+  ConsumerComplaint,
+  subscribeToBatchUpdates,
+} from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
 import {
   Users, Layers, Sparkles, Activity, PlusCircle, Truck, QrCode,
@@ -60,15 +69,14 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
   }, [user]);
 
   useEffect(() => {
-    const list = getCustomBatches();
-    const farmers = getCustomFarmers();
-    setBatchesList(list);
-    setFarmerCount(14240 + (farmers.length - 2));
-    setComplaints(getComplaints());
+    // Initial sync from DB
+    fetchBatchesFromDB().then((b) => setBatchesList(b));
+    fetchFarmersFromDB().then((f) => setFarmerCount(14240 + Math.max(0, f.length - 2)));
+    fetchComplaintsFromDB().then((c) => setComplaints(c));
 
     const unsubscribe = subscribeToBatchUpdates(() => {
-      setBatchesList(getCustomBatches());
-      setComplaints(getComplaints());
+      fetchBatchesFromDB().then((b) => setBatchesList(b));
+      fetchComplaintsFromDB().then((c) => setComplaints(c));
     });
 
     return () => unsubscribe();
