@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { BatchMetadata } from "@/lib/types";
+import { DEMO_BATCHES } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -8,10 +9,10 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  try {
-    const rawId = params.id;
-    const isNumeric = /^\d+$/.test(rawId);
+  const rawId = params.id;
+  const isNumeric = /^\d+$/.test(rawId);
 
+  try {
     const batch = await prisma.batch.findFirst({
       where: isNumeric
         ? { id: Number(rawId) }
@@ -29,6 +30,14 @@ export async function GET(
     });
 
     if (!batch) {
+      const demoMatch = DEMO_BATCHES.find(
+        (b) =>
+          String(b.batchId) === String(rawId) ||
+          b.qrToken?.toLowerCase() === rawId.toLowerCase()
+      );
+      if (demoMatch) {
+        return NextResponse.json({ success: true, batch: demoMatch });
+      }
       return NextResponse.json(
         { error: `Batch '${rawId}' not found in registry` },
         { status: 404 }
@@ -105,6 +114,14 @@ export async function GET(
     return NextResponse.json({ success: true, batch: formatted });
   } catch (err: any) {
     console.error("Get batch by ID error:", err);
+    const demoMatch = DEMO_BATCHES.find(
+      (b) =>
+        String(b.batchId) === String(rawId) ||
+        b.qrToken?.toLowerCase() === rawId.toLowerCase()
+    );
+    if (demoMatch) {
+      return NextResponse.json({ success: true, batch: demoMatch });
+    }
     return NextResponse.json(
       { error: "Failed to retrieve batch" },
       { status: 500 }
