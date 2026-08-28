@@ -99,6 +99,12 @@ export default function ConsumerVerificationPage() {
     } else if (lang === "bn") {
       textToSpeak = `ব্যাচ নম্বর ${data.batch.batchId}, যা মৌচাষী ${data.farmer.name} দ্বারা ${data.farmer.location}-এ উৎপাদিত, ১০০-তে ${data.batch.qualityScore} বিশুদ্ধতা স্কোর সহ সম্পূর্ণ খাঁটি।`;
       voiceLang = "bn-IN";
+    } else if (lang === "ta") {
+      textToSpeak = `தொகுதி எண் ${data.batch.batchId}, தேனீ வளர்ப்பாளர் ${data.farmer.name} அவர்களால் ${data.farmer.location} பகுதியில் உற்பத்தி செய்யப்பட்டு, நூற்றுக்கு ${data.batch.qualityScore} AI தூய்மை மதிப்பெண்ணுடன் சான்றளிக்கப்பட்டது.`;
+      voiceLang = "ta-IN";
+    } else if (lang === "kn") {
+      textToSpeak = `ಬ್ಯಾಚ್ ಸಂಖ್ಯೆ ${data.batch.batchId}, ಜೇನುಸಾಕಣೆದಾರ ${data.farmer.name} ಅವರಿಂದ ${data.farmer.location} ನಲ್ಲಿ ಉತ್ಪಾದಿಸಲ್ಪಟ್ಟಿದೆ ಮತ್ತು ನೂರಕ್ಕೆ ${data.batch.qualityScore} AI ಶುದ್ಧತೆಯೊಂದಿಗೆ ದೃಢೀಕರಿಸಲ್ಪಟ್ಟಿದೆ.`;
+      voiceLang = "kn-IN";
     } else {
       textToSpeak = `Batch number 00${data.batch.batchId}, harvested by master beekeeper ${data.farmer.name} in ${data.farmer.location}, is verified authentic on Polygon blockchain with an AI purity score of ${data.batch.qualityScore} out of 100.`;
       voiceLang = "en-US";

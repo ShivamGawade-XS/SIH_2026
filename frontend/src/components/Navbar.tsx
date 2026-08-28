@@ -42,24 +42,36 @@ export default function Navbar() {
         {/* Right Navigation + Language Switcher */}
         <nav className="flex items-center gap-3 sm:gap-6">
           {/* Indic Language Switcher */}
-          <div className="flex items-center border border-charcoal/30 bg-white text-[10px] font-bold shadow-xs">
+          <div className="flex items-center border border-charcoal/30 bg-white text-[10px] font-bold shadow-xs overflow-x-auto">
             <button
               onClick={() => handleLangChange("en")}
-              className={`px-2.5 py-1 transition-colors ${lang === "en" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
+              className={`px-2 py-1 transition-colors ${lang === "en" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
             >
               EN
             </button>
             <button
               onClick={() => handleLangChange("hi")}
-              className={`px-2.5 py-1 transition-colors ${lang === "hi" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
+              className={`px-2 py-1 transition-colors ${lang === "hi" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
             >
               हिंदी
             </button>
             <button
               onClick={() => handleLangChange("bn")}
-              className={`px-2.5 py-1 transition-colors ${lang === "bn" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
+              className={`px-2 py-1 transition-colors ${lang === "bn" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
             >
               বাংলা
+            </button>
+            <button
+              onClick={() => handleLangChange("ta")}
+              className={`px-2 py-1 transition-colors ${lang === "ta" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
+            >
+              தமிழ்
+            </button>
+            <button
+              onClick={() => handleLangChange("kn")}
+              className={`px-2 py-1 transition-colors ${lang === "kn" ? "bg-charcoal text-gold" : "text-charcoal hover:bg-alabaster"}`}
+            >
+              ಕನ್ನಡ
             </button>
           </div>
 

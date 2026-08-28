@@ -3,6 +3,7 @@ import { Playfair_Display, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import GridLines from "@/components/GridLines";
+import IoTStageController from "@/components/IoTStageController";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -54,6 +55,7 @@ export default function RootLayout({
         <NoiseOverlay />
         <GridLines />
         <div className="relative z-10">{children}</div>
+        <IoTStageController />
         <script
           dangerouslySetInnerHTML={{
             __html: `
