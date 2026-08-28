@@ -29,7 +29,6 @@
   /* Prevent awkward mobile tap flashes */
   * {
     -webkit-tap-highlight-color: transparent;
-    border-radius: 0px !important;
   }
 
   h1, h2, h3, h4, .serif {

@@ -12,8 +12,11 @@ export async function middleware(req: NextRequest) {
     (path) => pathname === path || pathname.startsWith(path + "/")
   );
 
-  // Allow login page inside dashboard without auth loop
-  if (pathname === "/dashboard/login") {
+  // Allow public auth pages without auth loop
+  if (
+    pathname === "/dashboard/login" ||
+    pathname === "/dashboard/register-account"
+  ) {
     return NextResponse.next();
   }
 

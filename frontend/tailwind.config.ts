@@ -33,17 +33,6 @@ const config: Config = {
         sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
       },
-      borderRadius: {
-        none: "0px",
-        DEFAULT: "0px",
-        sm: "0px",
-        md: "0px",
-        lg: "0px",
-        xl: "0px",
-        "2xl": "0px",
-        "3xl": "0px",
-        full: "0px",
-      },
       letterSpacing: {
         widest: "0.25em",
         ultra: "0.3em",
