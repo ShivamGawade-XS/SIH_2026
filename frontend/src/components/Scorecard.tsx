@@ -63,7 +63,7 @@ export default function Scorecard({ report }: ScorecardProps) {
       </div>
 
       {/* Adulteration Fingerprint Banner */}
-      <div className={`p-5 mb-8 border flex items-center justify-between gap-4 ${
+      <div className={`p-5 mb-8 border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
         isPure ? "border-emerald-200 bg-emerald-50/50" : "border-rose-300 bg-rose-50/70"
       }`}>
         <div className="flex items-center gap-3">

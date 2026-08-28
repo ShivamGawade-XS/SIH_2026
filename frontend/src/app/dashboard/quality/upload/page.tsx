@@ -154,7 +154,7 @@ CONCLUSION: Sample conforms to Grade A+ Premium Raw Organic Honey standards.`);
 
             {/* Paste Report Text Alternative */}
             <div>
-              <div className="flex justify-between items-center mb-2">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
                 <label className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">
                   2. Or Paste Raw Lab Test Transcript / Text
                 </label>

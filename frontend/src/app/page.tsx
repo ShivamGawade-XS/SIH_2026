@@ -28,11 +28,11 @@ export default function HomePage() {
                   KVIC • National Bee Board • TrueTag Platform
                 </span>
               </div>
-              <h1 className="text-6xl sm:text-7xl md:text-8xl serif text-charcoal font-normal leading-[0.95] tracking-tight mb-8">
+              <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl serif text-charcoal font-normal leading-[1.02] tracking-tight mb-8 break-words">
                 {t("heroSubtitle1")} <br />
                 <span className="italic text-gold">{t("heroSubtitle2")}</span> {t("heroSubtitle3")}
               </h1>
-              <p className="text-base md:text-lg text-warm-grey font-normal leading-relaxed mb-10 max-w-2xl">
+              <p className="text-sm sm:text-base md:text-lg text-warm-grey font-normal leading-relaxed mb-10 max-w-2xl">
                 {t("heroDescription")}
               </p>
 

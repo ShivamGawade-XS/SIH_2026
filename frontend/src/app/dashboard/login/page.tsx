@@ -114,7 +114,7 @@ export default function LoginPage() {
                 <span>{loading ? "Authenticating via Database..." : "Access Dashboard"}</span>
               </button>
 
-              <div className="flex justify-between items-center text-xs pt-2">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs pt-2">
                 <span className="text-warm-grey">New field inspector or lab technician?</span>
                 <Link
                   href="/dashboard/register-account"

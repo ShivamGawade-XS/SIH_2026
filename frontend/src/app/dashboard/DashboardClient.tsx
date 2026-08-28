@@ -169,13 +169,13 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
                 {ROLE_LABEL[role]}
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl serif text-charcoal font-normal">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl serif text-charcoal font-normal">
               Welcome, <span className="italic text-gold font-serif">{currentUser.name.split(" ")[0]}</span>
             </h1>
-            <p className="text-sm text-warm-grey mt-1 font-mono">{currentUser.email}</p>
+            <p className="text-xs sm:text-sm text-warm-grey mt-1 font-mono">{currentUser.email}</p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             {role === "ADMIN" && (
               <Link href="/dashboard/admin" className="px-4 py-2 text-xs uppercase tracking-widest font-bold border-2 border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 flex items-center gap-1.5 transition-colors shadow-xs">
                 <ShieldAlert className="w-3.5 h-3.5" />

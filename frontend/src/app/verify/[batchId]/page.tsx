@@ -202,7 +202,7 @@ export default function ConsumerVerificationPage() {
                     gpsLng={farmer.gpsLng}
                   />
                 </div>
-                <h1 className="text-6xl md:text-8xl serif text-charcoal font-normal leading-[0.95]">
+                <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-8xl serif text-charcoal font-normal leading-[1.02] break-words">
                   {t("heroSubtitle1")} <span className="italic text-gold">{t("heroSubtitle2")}</span> {t("heroSubtitle3")}
                 </h1>
 
