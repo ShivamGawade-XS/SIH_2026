@@ -29,7 +29,7 @@ export default function LiveTelemetryStream() {
 
   useEffect(() => {
     let eventSource: EventSource | null = null;
-    const aiUrl = process.env.NEXT_PUBLIC_AI_SERVICE_URL || "http://localhost:8000";
+    const aiUrl = process.env.NEXT_PUBLIC_AI_SERVICE_URL || "https://honeychain-ai-service.onrender.com";
 
     let fallbackInterval: NodeJS.Timeout | null = null;
 
@@ -40,6 +40,7 @@ export default function LiveTelemetryStream() {
         try {
           const parsed = JSON.parse(event.data);
           setData(parsed);
+          setConnected(true);
         } catch (err) {
           console.error("Error parsing telemetry packet:", err);
         }
@@ -51,21 +52,35 @@ export default function LiveTelemetryStream() {
       console.warn("EventSource not supported or failed:", e);
     }
 
-    // Fallback simulation when SSE backend is not running
+    // Handle local controller event dispatching
+    const handleLocalUpdate = (e: Event) => {
+      const custom = e as CustomEvent<TelemetryPacket>;
+      if (custom.detail) {
+        setData(custom.detail);
+        setConnected(true);
+      }
+    };
+    window.addEventListener("honeychain_iot_telemetry_update", handleLocalUpdate);
+
+    // Fallback simulation when SSE backend is not connected
     fallbackInterval = setInterval(() => {
-      setData((prev) => ({
-        ...prev,
-        weight_kg: Number((45.2 + Math.sin(Date.now() / 5000) * 0.15).toFixed(2)),
-        internal_temp_c: Number((34.8 + Math.cos(Date.now() / 4000) * 0.2).toFixed(1)),
-        humidity_percent: Number((63.5 + Math.sin(Date.now() / 6000) * 0.4).toFixed(1)),
-        acoustic_frequency_hz: Number((235.0 + Math.cos(Date.now() / 3000) * 1.5).toFixed(1)),
-        timestamp: Math.floor(Date.now() / 1000),
-      }));
+      setData((prev) => {
+        if (prev.has_alert) return prev;
+        return {
+          ...prev,
+          weight_kg: Number((45.2 + Math.sin(Date.now() / 5000) * 0.15).toFixed(2)),
+          internal_temp_c: Number((34.8 + Math.cos(Date.now() / 4000) * 0.2).toFixed(1)),
+          humidity_percent: Number((63.5 + Math.sin(Date.now() / 6000) * 0.4).toFixed(1)),
+          acoustic_frequency_hz: Number((235.0 + Math.cos(Date.now() / 3000) * 1.5).toFixed(1)),
+          timestamp: Math.floor(Date.now() / 1000),
+        };
+      });
     }, 2500);
 
     return () => {
       if (eventSource) eventSource.close();
       if (fallbackInterval) clearInterval(fallbackInterval);
+      window.removeEventListener("honeychain_iot_telemetry_update", handleLocalUpdate);
     };
   }, []);
 
