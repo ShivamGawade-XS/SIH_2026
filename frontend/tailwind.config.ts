@@ -34,8 +34,10 @@ const config: Config = {
         mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
       },
       letterSpacing: {
-        widest: "0.25em",
-        ultra: "0.3em",
+        wide: "0.05em",
+        wider: "0.08em",
+        widest: "0.12em",
+        ultra: "0.22em",
       },
       boxShadow: {
         "luxury-hero": "0 8px 32px rgba(0, 0, 0, 0.12)",

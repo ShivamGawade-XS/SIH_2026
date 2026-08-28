@@ -383,35 +383,35 @@ export default function ConsumerVerificationPage() {
                 </div>
 
                 {/* Download Certificate Buttons */}
-                <div className="mt-10 flex flex-wrap gap-4">
+                <div className="mt-10 flex flex-wrap gap-3">
                   <button
                     onClick={handleDownloadPDF}
-                    className="flex-1 py-4 px-6 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
+                    className="py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-gold-slide gap-2"
                   >
-                    <FileText className="w-4 h-4 text-gold" />
+                    <FileText className="w-4 h-4 text-gold shrink-0" />
                     <span>{t("downloadPDF")}</span>
                   </button>
                   <button
                     onClick={handleDownloadAPEDA}
-                    className="py-4 px-6 text-xs uppercase tracking-widest font-semibold border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal flex items-center justify-center gap-2 transition-colors"
+                    className="py-3 px-5 text-[11px] uppercase tracking-wider font-bold border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal inline-flex items-center gap-2 transition-colors whitespace-nowrap"
                   >
-                    <Globe className="w-4 h-4 text-gold" />
+                    <Globe className="w-4 h-4 text-gold shrink-0" />
                     <span>{t("apedaPassport")}</span>
                   </button>
                   <button
                     onClick={handleDownloadVC}
-                    className="py-4 px-6 text-xs uppercase tracking-widest font-semibold btn-outline-luxury flex items-center justify-center gap-2"
+                    className="py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-outline-luxury gap-2"
                   >
-                    <Download className="w-4 h-4" />
+                    <Download className="w-4 h-4 shrink-0" />
                     <span>{t("downloadVC")}</span>
                   </button>
                   <a
                     href={`https://amoy.polygonscan.com/tx/${txHash || "0x98f4c2b1e7a6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0"}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="py-4 px-6 text-xs uppercase tracking-widest font-semibold btn-outline-luxury flex items-center justify-center gap-2"
+                    className="py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-outline-luxury gap-2"
                   >
-                    <ExternalLink className="w-4 h-4" />
+                    <ExternalLink className="w-4 h-4 shrink-0" />
                     <span>Explorer</span>
                   </a>
                 </div>
@@ -507,14 +507,14 @@ export default function ConsumerVerificationPage() {
                   <div className="flex gap-3 pt-4">
                     <button
                       type="submit"
-                      className="flex-1 py-3 text-xs uppercase tracking-widest font-semibold btn-gold-slide"
+                      className="flex-1 py-3 text-[11px] uppercase tracking-wider font-bold btn-gold-slide justify-center"
                     >
                       Submit Report
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowReportModal(false)}
-                      className="px-6 py-3 text-xs uppercase tracking-widest font-semibold btn-outline-luxury"
+                      className="px-6 py-3 text-[11px] uppercase tracking-wider font-bold btn-outline-luxury"
                     >
                       Cancel
                     </button>
