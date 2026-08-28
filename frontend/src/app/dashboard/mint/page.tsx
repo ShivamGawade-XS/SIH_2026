@@ -185,23 +185,23 @@ export default function MintBatchPage() {
     <div className="min-h-screen flex flex-col justify-between">
       <Navbar />
 
-      <main className="py-16 px-6 md:px-12 max-w-5xl mx-auto w-full flex-1">
+      <main className="py-8 sm:py-16 px-4 sm:px-6 md:px-12 max-w-5xl mx-auto w-full flex-1">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Operations Dashboard</span>
         </Link>
 
-        <div className="border border-charcoal/20 bg-white p-8 md:p-12 shadow-luxury-card">
-          <div className="flex items-center gap-4 mb-8 pb-6 border-b border-charcoal/10">
-            <div className="w-12 h-12 border border-charcoal bg-charcoal text-gold flex items-center justify-center">
-              <Layers className="w-6 h-6" />
+        <div className="border border-charcoal/20 bg-white p-5 sm:p-8 md:p-12 shadow-luxury-card">
+          <div className="flex items-center gap-4 mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-charcoal/10">
+            <div className="w-10 sm:w-12 h-10 sm:h-12 border border-charcoal bg-charcoal text-gold flex items-center justify-center shrink-0">
+              <Layers className="w-5 sm:w-6 h-5 sm:h-6" />
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-ultra text-warm-grey">Polygon PoS Ledger</p>
-              <h1 className="text-3xl md:text-4xl serif text-charcoal font-normal">Mint Honey Harvest Batch</h1>
+              <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">Polygon PoS Ledger</p>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl serif text-charcoal font-normal">Mint Honey Harvest Batch</h1>
             </div>
           </div>
 

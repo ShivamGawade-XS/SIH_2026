@@ -14,21 +14,27 @@
     --gold-light: #F3E5AB;
   }
 
-  body {
+  html, body {
     background-color: var(--alabaster);
     color: var(--charcoal);
     font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+    touch-action: manipulation;
+  }
+
+  /* Prevent awkward mobile tap flashes */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 0px !important;
   }
 
   h1, h2, h3, h4, .serif {
     font-family: var(--font-playfair), "Playfair Display", Georgia, serif;
     letter-spacing: -0.01em;
-  }
-
-  * {
-    border-radius: 0px !important;
   }
 }
 

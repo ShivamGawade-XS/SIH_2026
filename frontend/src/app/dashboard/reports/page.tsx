@@ -131,9 +131,9 @@ export default function ReportsPage() {
     <div className="min-h-screen flex flex-col justify-between bg-[#F9F8F6]">
       <Navbar />
 
-      <main className="py-12 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto w-full flex-1">
+      <main className="py-8 sm:py-12 px-4 sm:px-6 md:px-12 lg:px-24 max-w-7xl mx-auto w-full flex-1">
         {/* Breadcrumbs */}
-        <div className="flex items-center justify-between gap-4 mb-8">
+        <div className="flex items-center justify-between gap-4 mb-6 sm:mb-8">
           <Link
             href="/dashboard"
             className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors"
@@ -141,15 +141,15 @@ export default function ReportsPage() {
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Dashboard</span>
           </Link>
-          <div className="flex items-center gap-2 text-[10px] uppercase tracking-ultra font-bold text-warm-grey">
-            <span>Audit & Compliance Center</span>
+          <div className="hidden xs:flex items-center gap-2 text-[10px] uppercase tracking-ultra font-bold text-warm-grey">
+            <span>Audit & Compliance</span>
             <span>•</span>
-            <span className="text-emerald-700">FSSAI / KVIC Format</span>
+            <span className="text-emerald-700">FSSAI Format</span>
           </div>
         </div>
 
         {/* Page Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b-2 border-charcoal/10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-10 pb-6 border-b-2 border-charcoal/10">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2.5 h-2.5 bg-gold rounded-full" />
@@ -157,7 +157,7 @@ export default function ReportsPage() {
                 Quality Documentation & Ministry Exports
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl serif text-charcoal font-normal">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl serif text-charcoal font-normal">
               Audit & Lab <span className="italic text-gold font-serif">Reports</span>
             </h1>
             <p className="text-xs text-warm-grey mt-1">

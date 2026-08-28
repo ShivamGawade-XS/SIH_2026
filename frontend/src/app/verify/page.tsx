@@ -80,16 +80,16 @@ export default function VerifySearchPage() {
         onClose={() => setShowSmsModal(false)}
       />
 
-      <main className="py-24 px-6 md:px-12 max-w-4xl mx-auto w-full flex-1">
+      <main className="py-12 sm:py-20 px-4 sm:px-6 md:px-12 max-w-4xl mx-auto w-full flex-1">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 border border-charcoal/20 bg-white mb-4 shadow-xs">
             <ShieldCheck className="w-3.5 h-3.5 text-gold" />
             <span className="text-[10px] uppercase tracking-ultra text-charcoal font-bold">
               TrueTag Universal Authentication
             </span>
           </div>
-          <h1 className="text-5xl md:text-7xl serif text-charcoal mb-6 font-normal">
+          <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl serif text-charcoal mb-6 font-normal break-words">
             Verify Your <span className="italic text-gold font-serif">Honey</span>
           </h1>
           <p className="text-sm md:text-base text-warm-grey max-w-xl mx-auto leading-relaxed font-normal">

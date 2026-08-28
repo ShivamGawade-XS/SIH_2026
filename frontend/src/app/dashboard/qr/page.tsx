@@ -34,20 +34,20 @@ export default function QrLabelsPage() {
         <Navbar />
       </div>
 
-      <main className="py-16 px-6 md:px-12 max-w-6xl mx-auto w-full flex-1">
+      <main className="py-8 sm:py-16 px-4 sm:px-6 md:px-12 max-w-6xl mx-auto w-full flex-1">
         <div className="print:hidden">
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Operations Dashboard</span>
           </Link>
 
-          <div className="border border-charcoal/20 bg-white p-8 mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="border border-charcoal/20 bg-white p-5 sm:p-8 mb-8 sm:mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
-              <p className="text-[10px] uppercase tracking-ultra text-warm-grey">Tamper-Evident Physical Security</p>
-              <h1 className="text-3xl serif text-charcoal font-normal">Printable Honey Jar QR Labels</h1>
+              <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">Tamper-Evident Physical Security</p>
+              <h1 className="text-2xl sm:text-3xl serif text-charcoal font-normal">Printable Honey Jar QR Labels</h1>
               <p className="text-xs text-warm-grey mt-1">
                 Attach these cryptographic QR stickers onto the honey jar lids before dispatching from processing units.
               </p>

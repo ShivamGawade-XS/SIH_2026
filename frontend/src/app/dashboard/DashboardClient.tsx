@@ -194,11 +194,11 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
         {/* ════════════════════════════════════════════════════════════════ */}
         {role === "FIELD_OFFICER" && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              <StatCard icon={<Users className="w-5 h-5 text-gold" />} label="Registered Beekeepers" value={farmerCount.toLocaleString()} sub="+12 verified this week" />
-              <StatCard icon={<Layers className="w-5 h-5 text-gold" />} label="Minted Batches" value={(18920 + batchesList.length - 2).toLocaleString()} sub="100% on Polygon PoS" />
-              <StatCard icon={<Sparkles className="w-5 h-5 text-gold" />} label="Avg. AI Purity Score" value="92.8" sub="Grade A+ Average" suffix="/100" />
-              <StatCard icon={<Activity className="w-5 h-5 text-gold" />} label="Pending Approvals" value="7" sub="Awaiting field inspection" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
+              <StatCard icon={<Users className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Registered Beekeepers" value={farmerCount.toLocaleString()} sub="+12 verified" />
+              <StatCard icon={<Layers className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Minted Batches" value={(18920 + batchesList.length - 2).toLocaleString()} sub="Polygon PoS" />
+              <StatCard icon={<Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Avg. Purity" value="92.8" sub="Grade A+" suffix="/100" />
+              <StatCard icon={<Activity className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Pending" value="7" sub="Inspection" />
             </div>
 
             <SectionLabel>Field Officer Actions</SectionLabel>
@@ -220,21 +220,21 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
         {/* ════════════════════════════════════════════════════════════════ */}
         {role === "LAB_ANALYST" && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              <StatCard icon={<FlaskConical className="w-5 h-5 text-gold" />} label="Samples Tested (Month)" value="1,284" sub="FSSAI IS 4941:2020 compliant" />
-              <StatCard icon={<Sparkles className="w-5 h-5 text-gold" />} label="Avg. Purity Score" value="91.4" sub="/100 across all batches" />
-              <StatCard icon={<AlertTriangle className="w-5 h-5 text-rose-500" />} label="Adulteration Flags" value="18" sub="C4 / rice syrup anomalies" />
-              <StatCard icon={<ShieldCheck className="w-5 h-5 text-emerald-500" />} label="NABL Certs Issued" value="3,410" sub="This financial year" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
+              <StatCard icon={<FlaskConical className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Tested (Month)" value="1,284" sub="FSSAI IS 4941" />
+              <StatCard icon={<Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Avg. Purity" value="91.4" sub="All batches" suffix="/100" />
+              <StatCard icon={<AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />} label="Flags" value="18" sub="Syrup anomalies" />
+              <StatCard icon={<ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500" />} label="NABL Certs" value="3,410" sub="This year" />
             </div>
 
             <SectionLabel>Lab Analyst Actions</SectionLabel>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16">
               <DarkCard href="/dashboard/quality" icon={<Microscope className="w-7 h-7 text-gold" />} title="Run AI Quality Analysis" desc="Submit batch ID for NMR spectrometry & adulterant classifier." cta="Analyse Batch" />
               <DarkCard href="/dashboard/custody" icon={<ClipboardList className="w-7 h-7 text-gold" />} title="Lab Certification Log" desc="Record FSSAI IS 4941 & NMR fingerprint results on-chain." cta="Log Certification" />
               <DarkCard href="/dashboard/reports" icon={<FileText className="w-7 h-7 text-gold" />} title="Download Lab Reports" desc="Export batch-wise PDF test certificates and W3C VC credentials." cta="Export Reports" />
             </div>
 
-            <div className="border-2 border-rose-200 bg-rose-50 p-8 shadow-sm mb-12">
+            <div className="border-2 border-rose-200 bg-rose-50 p-4 sm:p-8 shadow-sm mb-12">
               <div className="flex items-center gap-3 mb-6 pb-4 border-b border-rose-200">
                 <AlertTriangle className="w-5 h-5 text-rose-600" />
                 <h3 className="text-xl serif text-charcoal font-bold">Adulteration Alert Queue</h3>
@@ -272,11 +272,11 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
         {/* ════════════════════════════════════════════════════════════════ */}
         {role === "ADMIN" && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              <StatCard icon={<Users className="w-5 h-5 text-gold" />} label="Total Beekeepers" value={farmerCount.toLocaleString()} sub="Across 29 states" />
-              <StatCard icon={<Layers className="w-5 h-5 text-gold" />} label="Total Batches" value={(18920 + batchesList.length - 2).toLocaleString()} sub="On Polygon PoS" />
-              <StatCard icon={<AlertTriangle className="w-5 h-5 text-rose-500" />} label="Citizen Complaints" value={complaints.length.toString()} sub="Pending review" />
-              <StatCard icon={<ShieldAlert className="w-5 h-5 text-rose-600" />} label="Batches Revoked" value="3" sub="Emergency recalls" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
+              <StatCard icon={<Users className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Total Beekeepers" value={farmerCount.toLocaleString()} sub="29 states" />
+              <StatCard icon={<Layers className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Total Batches" value={(18920 + batchesList.length - 2).toLocaleString()} sub="Polygon PoS" />
+              <StatCard icon={<AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />} label="Complaints" value={complaints.length.toString()} sub="Review" />
+              <StatCard icon={<ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-rose-600" />} label="Revoked" value="3" sub="Recalls" />
             </div>
 
             <div className="p-6 border-2 border-emerald-300 bg-emerald-50 mb-10 flex items-center gap-4">
@@ -377,15 +377,15 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 function StatCard({ icon, label, value, sub, suffix = "" }: { icon: React.ReactNode; label: string; value: string; sub: string; suffix?: string }) {
   return (
-    <div className="p-6 border-2 border-charcoal/15 bg-white shadow-xs hover:border-gold transition-all duration-300">
-      <div className="flex justify-between items-start mb-4">
-        <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">{label}</span>
+    <div className="p-3.5 sm:p-6 border-2 border-charcoal/15 bg-white shadow-xs hover:border-gold transition-all duration-300">
+      <div className="flex justify-between items-start mb-2 sm:mb-4">
+        <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-warm-grey font-bold truncate max-w-[100px] sm:max-w-none">{label}</span>
         {icon}
       </div>
-      <p className="text-3xl font-serif text-charcoal font-bold">
-        {value}{suffix && <span className="text-sm font-sans font-normal text-warm-grey">{suffix}</span>}
+      <p className="text-xl sm:text-3xl font-serif text-charcoal font-bold truncate">
+        {value}{suffix && <span className="text-xs sm:text-sm font-sans font-normal text-warm-grey">{suffix}</span>}
       </p>
-      <p className="text-[10px] text-emerald-800 mt-2 font-bold font-mono">{sub}</p>
+      <p className="text-[8px] sm:text-[10px] text-emerald-800 mt-1 sm:mt-2 font-bold font-mono truncate">{sub}</p>
     </div>
   );
 }

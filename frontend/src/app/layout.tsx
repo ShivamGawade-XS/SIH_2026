@@ -4,6 +4,7 @@ import "./globals.css";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import GridLines from "@/components/GridLines";
 import IoTStageController from "@/components/IoTStageController";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import { LanguageProvider } from "@/lib/LanguageContext";
 
 const playfair = Playfair_Display({
@@ -56,7 +57,8 @@ export default function RootLayout({
         <LanguageProvider>
           <NoiseOverlay />
           <GridLines />
-          <div className="relative z-10">{children}</div>
+          <div className="relative z-10 pb-20 md:pb-0">{children}</div>
+          <MobileBottomNav />
           <IoTStageController />
         </LanguageProvider>
         <script
