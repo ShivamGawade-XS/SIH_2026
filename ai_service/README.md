@@ -31,7 +31,7 @@ The **HoneyChain AI Microservice** is a high-performance Python FastAPI service 
 
 ## 👥 Authors & Contributors — Team Crimson Syndicate (CS Syndicate)
 
-- **Shivam Gawade** (Team Lead)
+- **Shivam Gawade**
 - **Rahul Rathod**
 - **Rehan Harmalkar**
 - **Avneesh Walwalkar**

@@ -12,7 +12,7 @@
 | PS ID | SIH26021 |
 | PS Title | Honey Chain — Blockchain-Based Honey Traceability & Smart Beekeeping |
 | Team Name | Crimson Syndicate (CS Syndicate) |
-| Team Members | Shivam Gawade (Lead), Rahul Rathod, Rehan Harmalkar, Avneesh Walwalkar, Sunehri Sonar, Shaunak Pai |
+| Team Members | Shivam Gawade · Rahul Rathod · Rehan Harmalkar · Avneesh Walwalkar · Sunehri Sonar · Shaunak Pai |
 | Product Name | HoneyChain (product) by TrueTag (platform) |
 | Ministry | Ministry of MSME — KVIC + National Bee Board |
 | Category | Software |

@@ -18,7 +18,7 @@ The HoneyChain frontend is built with **Next.js 14 (App Router)** and styled usi
 
 ## 👥 Authors & Contributors — Team Crimson Syndicate (CS Syndicate)
 
-- **Shivam Gawade** (Team Lead)
+- **Shivam Gawade**
 - **Rahul Rathod**
 - **Rehan Harmalkar**
 - **Avneesh Walwalkar**

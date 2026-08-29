@@ -14,7 +14,7 @@ The **HoneyChain IoT Telemetry Simulator** simulates real-time smart hive sensor
 
 ## 👥 Authors & Contributors — Team Crimson Syndicate (CS Syndicate)
 
-- **Shivam Gawade** (Team Lead)
+- **Shivam Gawade**
 - **Rahul Rathod**
 - **Rehan Harmalkar**
 - **Avneesh Walwalkar**

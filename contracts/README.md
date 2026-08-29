@@ -28,7 +28,7 @@ The smart contracts layer anchors every honey batch onto the **Polygon PoS (Amoy
 
 ## 👥 Authors & Contributors — Team Crimson Syndicate (CS Syndicate)
 
-- **Shivam Gawade** (Team Lead)
+- **Shivam Gawade**
 - **Rahul Rathod**
 - **Rehan Harmalkar**
 - **Avneesh Walwalkar**

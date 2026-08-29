@@ -15,8 +15,7 @@
 ---
 
 **Team:** **Crimson Syndicate (CS Syndicate)**  
-**Team Lead:** [Shivam Gawade](https://github.com/ShivamGawade-XS) ([@ShivamGawade-XS](https://github.com/ShivamGawade-XS))  
-**Team Members:** Shivam Gawade, Rahul Rathod, Rehan Harmalkar, Avneesh Walwalkar, Sunehri Sonar, Shaunak Pai  
+**Members:** Shivam Gawade · Rahul Rathod · Rehan Harmalkar · Avneesh Walwalkar · Sunehri Sonar · Shaunak Pai  
 
 ![HoneyChain by TrueTag Banner](./assets/hero_banner.jpg)
 
