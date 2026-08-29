@@ -124,9 +124,9 @@ CONCLUSION: Sample conforms to Grade A+ Premium Raw Organic Honey standards.`);
           <form onSubmit={handleAnalyze} className="space-y-8">
             {/* File Upload Dropzone */}
             <div>
-              <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-bold">
+              <div className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-bold">
                 1. Upload Physical Lab Certificate or NMR Spectrometry Chart (JPG / PNG / PDF)
-              </label>
+              </div>
               <div className="border-2 border-dashed border-charcoal/30 hover:border-gold p-8 text-center bg-alabaster/40 transition-colors">
                 <input
                   type="file"
@@ -156,7 +156,7 @@ CONCLUSION: Sample conforms to Grade A+ Premium Raw Organic Honey standards.`);
             {/* Paste Report Text Alternative */}
             <div>
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
-                <label className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">
+                <label htmlFor="labTranscript" className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">
                   2. Or Paste Raw Lab Test Transcript / Text
                 </label>
                 <button
@@ -168,6 +168,9 @@ CONCLUSION: Sample conforms to Grade A+ Premium Raw Organic Honey standards.`);
                 </button>
               </div>
               <textarea
+                id="labTranscript"
+                name="labTranscript"
+                aria-label="Raw laboratory test transcript text"
                 rows={4}
                 value={sampleText}
                 onChange={(e) => setSampleText(e.target.value)}

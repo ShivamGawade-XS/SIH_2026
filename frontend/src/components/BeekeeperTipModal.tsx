@@ -185,9 +185,9 @@ export default function BeekeeperTipModal({
 
             {/* Amount Selection Chips */}
             <div className="mb-6">
-              <label className="block text-[10px] uppercase tracking-widest text-charcoal font-bold mb-2">
+              <div className="block text-[10px] uppercase tracking-widest text-charcoal font-bold mb-2">
                 Select Micro-Patronage Amount:
-              </label>
+              </div>
               <div className="grid grid-cols-4 gap-2 mb-3">
                 {PRESET_AMOUNTS.map((amt) => (
                   <button

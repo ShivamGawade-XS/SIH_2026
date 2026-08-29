@@ -240,10 +240,10 @@ export default function MigratoryRoutePlanner() {
         {/* Month Selector Bar */}
         <div>
           <div className="flex justify-between items-center mb-3">
-            <label className="text-[10px] uppercase tracking-widest text-warm-grey font-bold font-mono flex items-center gap-1.5">
+            <div className="text-[10px] uppercase tracking-widest text-warm-grey font-bold font-mono flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-gold" />
               <span>Select Flowering Calendar Month (Active Blooming Seasons):</span>
-            </label>
+            </div>
             <span className="text-xs font-mono font-bold text-charcoal bg-alabaster px-2.5 py-1 border border-charcoal/15">
               Selected: <strong className="text-gold font-sans">{months[selectedMonth]}</strong>
             </span>

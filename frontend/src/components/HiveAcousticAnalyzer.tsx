@@ -387,9 +387,9 @@ export default function HiveAcousticAnalyzer() {
         {/* Left Column: Preset Selector & Spectrogram Canvas (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
           <div>
-            <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-bold font-mono">
+            <div className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-bold font-mono">
               Select Acoustic Sound Preset:
-            </label>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {Object.values(PROFILES).map((p) => {
                 const isSelected = selectedProfileKey === p.id;
