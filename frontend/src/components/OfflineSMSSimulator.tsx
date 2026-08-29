@@ -179,7 +179,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
               </div>
             ) : (
               <p className="text-center text-[#4A7F4A] italic text-[11px] pt-4">
-                Press "Send" above to simulate mobile network carrier query...
+                Press &quot;Send&quot; above to simulate mobile network carrier query...
               </p>
             )}
           </div>

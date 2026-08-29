@@ -48,11 +48,13 @@ ENV/
 dev.db
 frontend/prisma/dev.db
 
-# IDE & OS
+# IDE, Testing & OS
 .vscode/
 .idea/
 *.swp
 *.swo
 .DS_Store
 Thumbs.db
+.playwright-mcp/
+
 
