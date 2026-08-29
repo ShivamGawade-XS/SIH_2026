@@ -57,4 +57,9 @@ frontend/prisma/dev.db
 Thumbs.db
 .playwright-mcp/
 
+# TypeScript Incremental Build Cache
+*.tsbuildinfo
 
+# Redundant duplicate brand sub-folders
+assets/brand/
+frontend/public/brand/
