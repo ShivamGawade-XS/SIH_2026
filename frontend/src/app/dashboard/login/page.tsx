@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import HoneyChainLogo from "@/components/HoneyChainLogo";
 import { DEMO_OFFICERS } from "@/lib/auth-constants";
 import { ShieldCheck, Lock, ArrowRight, UserCheck } from "lucide-react";
 
@@ -57,14 +58,9 @@ export default function LoginPage() {
       <main className="py-20 px-6 md:px-12 max-w-4xl mx-auto w-full flex-1 flex flex-col justify-center">
         <div className="border border-charcoal/20 bg-white p-8 md:p-16 shadow-luxury-card">
           <div className="max-w-xl mx-auto">
-            <div className="text-center mb-10">
-              <div className="w-12 h-12 border border-charcoal bg-charcoal text-gold mx-auto flex items-center justify-center mb-4">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-1">
-                KVIC & National Bee Board
-              </p>
-              <h1 className="text-4xl serif text-charcoal font-normal">Officer Portal Login</h1>
+            <div className="text-center mb-10 flex flex-col items-center">
+              <HoneyChainLogo variant="stacked" size="lg" className="mb-4" />
+              <h1 className="text-3xl serif text-charcoal font-normal">Officer Portal Login</h1>
               <p className="text-xs text-warm-grey mt-2">
                 Restricted to authorized field officers, certified testing laboratories, and registry admins.
               </p>

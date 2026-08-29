@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import HoneyChainLogo from "@/components/HoneyChainLogo";
 import confetti from "canvas-confetti";
 import {
   UserCheck,
@@ -138,9 +139,7 @@ export default function RegisterAccountPage() {
         <div className="border-2 border-charcoal/20 bg-white p-5 sm:p-8 md:p-12 shadow-luxury-card">
           {/* Header */}
           <div className="flex items-center gap-4 mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-charcoal/10">
-            <div className="w-10 sm:w-12 h-10 sm:h-12 border-2 border-charcoal bg-charcoal text-gold flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-5 sm:w-6 h-5 sm:h-6" />
-            </div>
+            <HoneyChainLogo variant="badge" size="md" />
             <div>
               <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">KVIC Access Control</p>
               <h1 className="text-2xl sm:text-3xl serif text-charcoal font-normal">Officer & Lab Registration</h1>
