@@ -57,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${mono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/honeychain_app_icon.jpg" type="image/jpeg" />
         <link rel="shortcut icon" href="/honeychain_app_icon.jpg" type="image/jpeg" />
@@ -65,7 +65,10 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0F0F0F" />
       </head>
-      <body className="min-h-screen bg-background text-text-primary relative selection:bg-brand-amber selection:text-black">
+      <body
+        className="min-h-screen bg-background text-text-primary relative selection:bg-brand-amber selection:text-black"
+        suppressHydrationWarning
+      >
         <LanguageProvider>
           <NoiseOverlay />
           <GridLines />

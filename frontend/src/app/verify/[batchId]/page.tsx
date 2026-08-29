@@ -50,6 +50,7 @@ export default function ConsumerVerificationPage() {
   const [showTipModal, setShowTipModal] = useState(false);
   const [reportSubmitted, setReportSubmitted] = useState(false);
   const [reportReason, setReportReason] = useState("Broken or damaged QR seal on lid");
+  const [reportTicketId, setReportTicketId] = useState("CMP-2026-482");
 
   useEffect(() => {
     if (qrParam) {
@@ -462,7 +463,7 @@ export default function ConsumerVerificationPage() {
                 <div className="p-6 border border-emerald-300 bg-emerald-50 text-center">
                   <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
                   <p className="text-sm font-serif font-bold text-charcoal">Report Successfully Logged</p>
-                  <p className="text-xs text-warm-grey mt-1">Inspection Ticket: CMP-2026-{Math.floor(Math.random() * 800 + 100)}</p>
+                  <p className="text-xs text-warm-grey mt-1">Inspection Ticket: {reportTicketId}</p>
                   <button
                     onClick={() => {
                       setShowReportModal(false);
@@ -478,6 +479,7 @@ export default function ConsumerVerificationPage() {
                   onSubmit={async (e) => {
                     e.preventDefault();
                     const ticketId = `CMP-2026-${Math.floor(Math.random() * 800 + 100)}`;
+                    setReportTicketId(ticketId);
                     await saveComplaint({
                       id: ticketId,
                       batchId: batch.batchId,

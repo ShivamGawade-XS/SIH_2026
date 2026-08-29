@@ -12,7 +12,7 @@ export default function GovtInteroperabilityCard() {
   // MOCK: Government data gateway synchronization federation telemetry
   const mockPayload = {
     standard: "National Honey Mission Data Interoperability Standard v2.4",
-    syncTimestamp: new Date().toISOString(),
+    syncTimestamp: "2026-08-29T08:00:00.000Z",
     gateways: {
       madhuKranti: {
         endpoint: "https://madhukranti.gov.in/api/v1/batches/sync",

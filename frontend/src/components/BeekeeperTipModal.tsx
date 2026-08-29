@@ -144,7 +144,7 @@ export default function BeekeeperTipModal({
               </p>
               <p className="flex justify-between">
                 <span className="text-warm-grey">Transaction ID / UTR:</span>
-                <span className="font-bold text-gold">{utrNumber.trim() || `UTR-${Date.now().toString().slice(-8)}`}</span>
+                <span className="font-bold text-gold">{savedTipId || utrNumber.trim() || "UTR-2026-PENDING"}</span>
               </p>
               <p className="flex justify-between">
                 <span className="text-warm-grey">Platform Commission:</span>
