@@ -15,6 +15,7 @@ import GITagBadge from "@/components/GITagBadge";
 import SupplyChainMapReplay from "@/components/SupplyChainMapReplay";
 import PollenInspector from "@/components/PollenInspector";
 import DBTPayoutCard from "@/components/DBTPayoutCard";
+import VerifiableCredentialModal from "@/components/VerifiableCredentialModal";
 import { fetchBatchById, fetchBatchByQR } from "@/lib/contract";
 import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
 import { generateCertificatePDF } from "@/lib/pdf-certificate";
@@ -48,6 +49,7 @@ export default function ConsumerVerificationPage() {
   const [copiedIpfs, setCopiedIpfs] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
   const [showTipModal, setShowTipModal] = useState(false);
+  const [showVCModal, setShowVCModal] = useState(false);
   const [reportSubmitted, setReportSubmitted] = useState(false);
   const [reportReason, setReportReason] = useState("Broken or damaged QR seal on lid");
   const [reportTicketId, setReportTicketId] = useState("CMP-2026-482");
@@ -409,11 +411,11 @@ export default function ConsumerVerificationPage() {
                     <span>{t("apedaPassport")}</span>
                   </button>
                   <button
-                    onClick={handleDownloadVC}
+                    onClick={() => setShowVCModal(true)}
                     className="py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-outline-luxury gap-2"
                   >
                     <Download className="w-4 h-4 shrink-0" />
-                    <span>{t("downloadVC")}</span>
+                    <span>W3C Credential (JSON-LD)</span>
                   </button>
                   <a
                     href={`https://amoy.polygonscan.com/tx/${txHash || "0x98f4c2b1e7a6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0"}`}
@@ -550,6 +552,13 @@ export default function ConsumerVerificationPage() {
           batchId={batch.batchId}
           farmerId={farmer.farmerId}
           farmerVpa={farmer.upiVpa || `${farmer.name.toLowerCase().replace(/\s+/g, ".")}@sbi`}
+        />
+
+        {/* W3C VERIFIABLE CREDENTIAL JSON-LD MODAL */}
+        <VerifiableCredentialModal
+          isOpen={showVCModal}
+          onClose={() => setShowVCModal(false)}
+          batch={data}
         />
       </main>
 

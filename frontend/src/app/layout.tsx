@@ -4,6 +4,7 @@ import "./globals.css";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import GridLines from "@/components/GridLines";
 import IoTStageController from "@/components/IoTStageController";
+import JudgeEvaluationBrief from "@/components/JudgeEvaluationBrief";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { Toaster } from "@/components/ui/sonner";
@@ -75,6 +76,7 @@ export default function RootLayout({
           <div className="relative z-10 pb-20 md:pb-0">{children}</div>
           <MobileBottomNav />
           <IoTStageController />
+          <JudgeEvaluationBrief />
           <Toaster position="top-right" />
         </LanguageProvider>
         <script

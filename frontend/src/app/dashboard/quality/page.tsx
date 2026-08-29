@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NMRSpectrumViewer from "@/components/NMRSpectrumViewer";
 import Scorecard from "@/components/Scorecard";
+import AdulterationComparisonLab from "@/components/AdulterationComparisonLab";
 import {
   FlaskConical,
   Microscope,
@@ -501,6 +502,11 @@ export default function QualityLabPage() {
             purityScore={result?.score ?? 94}
             adulterantClass={result?.adulterant ?? "Pure Unadulterated"}
           />
+        </div>
+
+        {/* Interactive Pure vs. Adulterated Laboratory Comparison Lab */}
+        <div className="mb-12">
+          <AdulterationComparisonLab />
         </div>
       </main>
 
