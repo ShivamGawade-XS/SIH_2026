@@ -13,10 +13,6 @@ import {
   Layers,
   Scale,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 
 interface HoneySample {
   id: string;
@@ -51,17 +47,17 @@ const PRESET_SAMPLES: HoneySample[] = [
     c13Delta: -26.8,
     c4Sugar: 0.8,
     smrMarker: 0.01,
-    score: 96,
-    grade: "Grade A+ (Export Premium)",
-    adulterant: "None (100% Unadulterated Natural Honey)",
+    score: 96.2,
+    grade: "Grade A+ (Premium Raw Floral)",
+    adulterant: "100% Pure Floral Nectar",
     fssaiViolations: [],
   },
   {
-    id: "SAMPLE-ADULT-01",
-    name: "18% High-Fructose Rice/Corn Syrup Blend",
+    id: "SAMPLE-ADULT-02",
+    name: "18% Invert Sugar Syrup Commercial Blend",
     type: "ADULTERATED",
-    flora: "Synthetic Fructose/Glucose Matrix",
-    location: "Commercial Invert Refinery Batch",
+    flora: "Multi-Flora Commercial (Adulterated)",
+    location: "Industrial Processing Batch #409",
     moisture: 21.4,
     brix: 76.2,
     hmf: 54.0,
@@ -69,14 +65,14 @@ const PRESET_SAMPLES: HoneySample[] = [
     c13Delta: -14.2,
     c4Sugar: 16.4,
     smrMarker: 0.19,
-    score: 12,
-    grade: "NON-COMPLIANT (Adulterated)",
-    adulterant: "Exogenous C4 Corn & SMR Rice Oligosaccharide Syrup",
+    score: 12.4,
+    grade: "Non-Compliant (Adulterated)",
+    adulterant: "Acid-Inverted C4 Cane Syrup (18.4% by Mass)",
     fssaiViolations: [
-      "Moisture 21.4% exceeds FSSAI max threshold of 20.0%",
-      "C13 Isotope Delta -14.2‰ exceeds natural C3 range (-23.5‰ to -27.5‰)",
-      "C4 Exogenous Cane/Corn Sugar 16.4% exceeds 7.0% limit",
-      "SMR (Specific Marker for Rice Syrup) positive (0.19 > 0.05)",
+      "C4 Cane Sugar 16.4% violates FSSAI max threshold of 7.0%",
+      "δ13C VPDB -14.2‰ indicates C4 photosynthetic plant carbon",
+      "SMR (Specific Marker for Rice) 0.19 exceeds 0.05 limit",
+      "Moisture 21.4% exceeds FSSAI max 20.0%",
       "HMF 54.0 mg/kg exceeds tropical threshold of 40 mg/kg",
       "Diastase Activity 4.2 Schade units falls below minimum 8.0",
     ],
@@ -92,24 +88,26 @@ export default function AdulterationComparisonLab() {
     setTimeout(() => {
       setSelectedSample(sample);
       setIsSimulating(false);
-    }, 250);
+    }, 200);
   };
 
   return (
-    <Card className="bg-surface border-border text-text-primary overflow-hidden">
-      <div className="p-6 border-b border-border bg-surface-raised flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="border-2 border-charcoal/15 bg-white p-6 sm:p-8 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-charcoal/10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-brand-amber/10 border border-brand-amber/30 rounded-lg flex items-center justify-center text-brand-amber">
+          <div className="w-10 h-10 bg-gold/10 border border-gold flex items-center justify-center text-gold">
             <FlaskConical className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold text-text-primary">FSSAI IS 4941 Adulteration Lab Stress-Tester</h3>
-              <Badge variant="outline" className="text-brand-amber border-brand-amber text-[10px]">
-                Interactive Tool
-              </Badge>
+              <h3 className="text-xl sm:text-2xl serif text-charcoal font-bold">
+                FSSAI IS 4941 Adulteration Lab Stress-Tester
+              </h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 border border-gold/40 bg-gold/10 text-charcoal font-bold uppercase">
+                Interactive
+              </span>
             </div>
-            <p className="text-xs text-text-secondary">
+            <p className="text-xs text-warm-grey mt-1">
               Side-by-side comparison of 100% pure raw honey vs. modern synthetic syrup adulteration vectors.
             </p>
           </div>
@@ -120,146 +118,132 @@ export default function AdulterationComparisonLab() {
           {PRESET_SAMPLES.map((s) => {
             const isSelected = selectedSample.id === s.id;
             return (
-              <Button
+              <button
                 key={s.id}
-                size="sm"
-                variant={isSelected ? "default" : "outline"}
+                type="button"
                 onClick={() => handleSelect(s)}
-                className={`text-xs font-semibold ${
+                className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 border transition-all ${
                   isSelected
                     ? s.type === "PURE"
-                      ? "bg-success text-white hover:bg-success/90"
-                      : "bg-danger text-white hover:bg-danger/90"
-                    : "border-border text-text-secondary hover:text-text-primary"
+                      ? "bg-emerald-700 text-white border-emerald-800 shadow-xs"
+                      : "bg-rose-700 text-white border-rose-800 shadow-xs"
+                    : "border-charcoal/20 bg-[#F9F8F6] text-charcoal hover:border-gold"
                 }`}
               >
-                {s.type === "PURE" ? <CheckCircle className="w-3.5 h-3.5 mr-1.5" /> : <XCircle className="w-3.5 h-3.5 mr-1.5" />}
-                {s.type === "PURE" ? "Pure Acacia" : "18% Invert Blend"}
-              </Button>
+                {s.type === "PURE" ? <CheckCircle className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
+                <span>{s.type === "PURE" ? "Pure Acacia" : "18% Invert Blend"}</span>
+              </button>
             );
           })}
         </div>
       </div>
 
-      <CardContent className="p-6 space-y-6">
+      <div className="space-y-6">
         {/* Sample Profile Header */}
-        <div className="p-4 bg-surface-raised border border-border rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="p-5 bg-[#F9F8F6] border border-charcoal/15 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Badge
-                variant="outline"
-                className={
+            <div className="flex items-center gap-2 mb-1.5">
+              <span
+                className={`px-2.5 py-0.5 text-[9px] font-mono font-bold uppercase tracking-widest border ${
                   selectedSample.type === "PURE"
-                    ? "bg-success/10 text-success border-success/30"
-                    : "bg-danger/10 text-danger border-danger/30"
-                }
+                    ? "bg-emerald-100 text-emerald-800 border-emerald-300"
+                    : "bg-rose-100 text-rose-800 border-rose-300"
+                }`}
               >
                 {selectedSample.type === "PURE" ? "VERIFIED AUTHENTIC" : "ADULTERATED SAMPLE"}
-              </Badge>
-              <span className="text-xs font-mono text-text-muted">{selectedSample.id}</span>
+              </span>
+              <span className="text-xs font-mono text-warm-grey">{selectedSample.id}</span>
             </div>
-            <h4 className="text-base font-bold text-text-primary">{selectedSample.name}</h4>
-            <p className="text-xs text-text-secondary mt-0.5">{selectedSample.location} · {selectedSample.flora}</p>
+            <h4 className="text-xl serif font-bold text-charcoal">{selectedSample.name}</h4>
+            <p className="text-xs text-warm-grey mt-0.5">{selectedSample.location} · {selectedSample.flora}</p>
           </div>
 
           <div className="text-left md:text-right">
-            <p className="text-xs uppercase tracking-wider text-text-muted font-mono">FSSAI Purity Score</p>
-            <p className={`text-3xl font-bold font-mono ${
-              selectedSample.score >= 85 ? "text-success" : "text-danger"
+            <p className="text-[10px] uppercase tracking-widest text-warm-grey font-mono font-bold">FSSAI Purity Score</p>
+            <p className={`text-3xl font-serif font-bold ${
+              selectedSample.score >= 85 ? "text-emerald-700" : "text-rose-700"
             }`}>
-              {selectedSample.score} / 100
+              {selectedSample.score} <span className="text-base font-sans font-normal text-warm-grey">/ 100</span>
             </p>
-            <p className="text-xs font-semibold text-text-secondary">{selectedSample.grade}</p>
+            <p className="text-xs font-semibold text-warm-grey">{selectedSample.grade}</p>
           </div>
         </div>
 
         {/* 6 Key Laboratory Parameters Table */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          <div className="p-3 bg-surface-raised border border-border rounded-lg">
-            <p className="text-[10px] uppercase font-mono text-text-muted font-bold">Moisture %</p>
-            <p className={`text-lg font-bold font-mono ${selectedSample.moisture <= 20 ? "text-text-primary" : "text-danger"}`}>
+          <div className="p-3.5 bg-[#F9F8F6] border border-charcoal/10">
+            <p className="text-[9px] uppercase font-mono text-warm-grey font-bold">Moisture %</p>
+            <p className={`text-xl font-bold font-mono ${selectedSample.moisture <= 20 ? "text-charcoal" : "text-rose-700"}`}>
               {selectedSample.moisture}%
             </p>
-            <p className="text-[10px] text-text-muted mt-1">FSSAI: &le; 20.0%</p>
+            <p className="text-[10px] text-warm-grey mt-1">FSSAI: &le; 20.0%</p>
           </div>
 
-          <div className="p-3 bg-surface-raised border border-border rounded-lg">
-            <p className="text-[10px] uppercase font-mono text-text-muted font-bold">Brix Index</p>
-            <p className={`text-lg font-bold font-mono ${selectedSample.brix >= 80 ? "text-text-primary" : "text-danger"}`}>
+          <div className="p-3.5 bg-[#F9F8F6] border border-charcoal/10">
+            <p className="text-[9px] uppercase font-mono text-warm-grey font-bold">Brix Index</p>
+            <p className={`text-xl font-bold font-mono ${selectedSample.brix >= 80 ? "text-charcoal" : "text-rose-700"}`}>
               {selectedSample.brix}°
             </p>
-            <p className="text-[10px] text-text-muted mt-1">FSSAI: &ge; 80.0°</p>
+            <p className="text-[10px] text-warm-grey mt-1">FSSAI: &ge; 80.0°</p>
           </div>
 
-          <div className="p-3 bg-surface-raised border border-border rounded-lg">
-            <p className="text-[10px] uppercase font-mono text-text-muted font-bold">HMF Level</p>
-            <p className={`text-lg font-bold font-mono ${selectedSample.hmf <= 40 ? "text-text-primary" : "text-danger"}`}>
-              {selectedSample.hmf} <span className="text-xs font-normal">mg/kg</span>
+          <div className="p-3.5 bg-[#F9F8F6] border border-charcoal/10">
+            <p className="text-[9px] uppercase font-mono text-warm-grey font-bold">HMF Level</p>
+            <p className={`text-xl font-bold font-mono ${selectedSample.hmf <= 40 ? "text-charcoal" : "text-rose-700"}`}>
+              {selectedSample.hmf} <span className="text-xs font-normal text-warm-grey">mg/kg</span>
             </p>
-            <p className="text-[10px] text-text-muted mt-1">FSSAI: &le; 40.0</p>
+            <p className="text-[10px] text-warm-grey mt-1">FSSAI: &le; 40.0</p>
           </div>
 
-          <div className="p-3 bg-surface-raised border border-border rounded-lg">
-            <p className="text-[10px] uppercase font-mono text-text-muted font-bold">Diastase No.</p>
-            <p className={`text-lg font-bold font-mono ${selectedSample.diastase >= 8 ? "text-text-primary" : "text-danger"}`}>
-              {selectedSample.diastase} <span className="text-xs font-normal">DN</span>
+          <div className="p-3.5 bg-[#F9F8F6] border border-charcoal/10">
+            <p className="text-[9px] uppercase font-mono text-warm-grey font-bold">Diastase (DN)</p>
+            <p className={`text-xl font-bold font-mono ${selectedSample.diastase >= 8 ? "text-charcoal" : "text-rose-700"}`}>
+              {selectedSample.diastase}
             </p>
-            <p className="text-[10px] text-text-muted mt-1">FSSAI: &ge; 8.0</p>
+            <p className="text-[10px] text-warm-grey mt-1">FSSAI: &ge; 8.0 DN</p>
           </div>
 
-          <div className="p-3 bg-surface-raised border border-border rounded-lg">
-            <p className="text-[10px] uppercase font-mono text-text-muted font-bold">&delta;13C Isotope</p>
-            <p className={`text-lg font-bold font-mono ${selectedSample.c13Delta <= -23.5 ? "text-text-primary" : "text-danger"}`}>
-              {selectedSample.c13Delta} <span className="text-xs font-normal">‰</span>
+          <div className="p-3.5 bg-[#F9F8F6] border border-charcoal/10">
+            <p className="text-[9px] uppercase font-mono text-warm-grey font-bold">&delta;13C Isotope</p>
+            <p className={`text-xl font-bold font-mono ${selectedSample.c13Delta <= -23.5 ? "text-charcoal" : "text-rose-700"}`}>
+              {selectedSample.c13Delta} <span className="text-xs font-normal text-warm-grey">‰</span>
             </p>
-            <p className="text-[10px] text-text-muted mt-1">Range: -23.5 to -27.5</p>
+            <p className="text-[10px] text-warm-grey mt-1">EA-IRMS: &le; -23.5</p>
           </div>
 
-          <div className="p-3 bg-surface-raised border border-border rounded-lg">
-            <p className="text-[10px] uppercase font-mono text-text-muted font-bold">C4 Sugar %</p>
-            <p className={`text-lg font-bold font-mono ${selectedSample.c4Sugar <= 7 ? "text-text-primary" : "text-danger"}`}>
+          <div className="p-3.5 bg-[#F9F8F6] border border-charcoal/10">
+            <p className="text-[9px] uppercase font-mono text-warm-grey font-bold">C4 Sugar %</p>
+            <p className={`text-xl font-bold font-mono ${selectedSample.c4Sugar <= 7.0 ? "text-charcoal" : "text-rose-700"}`}>
               {selectedSample.c4Sugar}%
             </p>
-            <p className="text-[10px] text-text-muted mt-1">FSSAI: &le; 7.0%</p>
+            <p className="text-[10px] text-warm-grey mt-1">FSSAI: &le; 7.0%</p>
           </div>
         </div>
 
-        {/* Adulteration Analysis & Violations */}
-        {selectedSample.type === "ADULTERATED" ? (
-          <div className="p-4 bg-danger/10 border border-danger/30 rounded-lg space-y-2">
-            <div className="flex items-center gap-2 text-danger font-bold text-xs uppercase tracking-wider">
-              <AlertTriangle className="w-4 h-4" />
-              <span>Critical Adulteration Flags Detected ({selectedSample.fssaiViolations.length} Violations)</span>
+        {/* Violations / Compliance Audit Card */}
+        {selectedSample.fssaiViolations.length > 0 ? (
+          <div className="p-4 bg-rose-50 border-2 border-rose-300">
+            <div className="flex items-center gap-2 mb-2">
+              <AlertTriangle className="w-4 h-4 text-rose-700" />
+              <p className="text-xs uppercase font-mono font-bold text-rose-800 tracking-wider">
+                Non-Compliance Violations Detected ({selectedSample.fssaiViolations.length} Parameters Failed)
+              </p>
             </div>
-            <ul className="space-y-1.5 text-xs text-text-primary pt-1">
+            <ul className="space-y-1.5 pl-6 list-disc text-xs text-rose-900 font-mono">
               {selectedSample.fssaiViolations.map((v, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-danger font-bold">✕</span>
-                  <span>{v}</span>
-                </li>
+                <li key={i}>{v}</li>
               ))}
             </ul>
-            <div className="mt-3 pt-3 border-t border-danger/20 flex items-center justify-between text-xs font-mono text-danger">
-              <span>Classifier Label: {selectedSample.adulterant}</span>
-              <span className="font-bold">STATUS: REJECTED FROM BLOCKCHAIN MINTING</span>
-            </div>
           </div>
         ) : (
-          <div className="p-4 bg-success/10 border border-success/30 rounded-lg space-y-2">
-            <div className="flex items-center gap-2 text-success font-bold text-xs uppercase tracking-wider">
-              <CheckCircle className="w-4 h-4" />
-              <span>100% FSSAI IS 4941 & NMR Spectroscopy Compliance Passed</span>
-            </div>
-            <p className="text-xs text-text-secondary leading-relaxed">
-              Sample exhibits natural unheated enzyme kinetics (Diastase 16.4), pure C3 botanical photosynthetic isotope signature (&delta;13C -26.8‰), and complete absence of industrial C4 corn or rice oligosaccharide markers.
+          <div className="p-4 bg-emerald-50 border-2 border-emerald-300 flex items-center gap-2.5">
+            <CheckCircle className="w-4 h-4 text-emerald-700 shrink-0" />
+            <p className="text-xs font-mono text-emerald-900 font-bold">
+              100% Passed: Sample strictly satisfies all FSSAI IS 4941:2019, IRMS &delta;13C, and SMR rice syrup standards. Qualified for Polygon PoS on-chain minting.
             </p>
-            <div className="mt-2 pt-2 border-t border-success/20 flex items-center justify-between text-xs font-mono text-success">
-              <span>Classifier: Unadulterated Natural Raw Honey</span>
-              <span className="font-bold">STATUS: QUALIFIED FOR POLYGON ON-CHAIN MINT</span>
-            </div>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
