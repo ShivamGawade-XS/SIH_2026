@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { QRCodeSVG } from "qrcode.react";
@@ -306,7 +307,7 @@ export default function QrLabelsPage() {
 
                   {/* Security Watermark in Label Background */}
                   <div className="absolute right-[-20px] bottom-8 w-44 h-44 opacity-[0.08] pointer-events-none select-none mix-blend-multiply">
-                    <img src="/honeychain_logo_badge.jpg" alt="" className="w-full h-full object-contain" />
+                    <Image src="/honeychain_logo_badge.jpg" alt="" width={176} height={176} className="w-full h-full object-contain" />
                   </div>
 
                   {/* Top Brand Header */}
@@ -380,7 +381,7 @@ export default function QrLabelsPage() {
                 >
                   {/* Security Watermark in Drum Tag Background */}
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 w-56 h-56 opacity-[0.07] pointer-events-none select-none">
-                    <img src="/honeychain_logo_badge.jpg" alt="" className="w-full h-full object-contain" />
+                    <Image src="/honeychain_logo_badge.jpg" alt="" width={224} height={224} className="w-full h-full object-contain" />
                   </div>
 
                   <div className="flex justify-between items-start border-b border-white/20 pb-4 relative z-10">

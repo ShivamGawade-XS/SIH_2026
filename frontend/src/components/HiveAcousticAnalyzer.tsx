@@ -210,6 +210,7 @@ export default function HiveAcousticAnalyzer() {
     if (gainNodeRef.current && audioCtxRef.current) {
       gainNodeRef.current.gain.setValueAtTime(volume, audioCtxRef.current.currentTime);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [volume]);
 
   // Restart audio when profile changes if currently playing
@@ -218,6 +219,7 @@ export default function HiveAcousticAnalyzer() {
       startAudio();
     }
     setAlertSent(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProfileKey]);
 
   // Canvas visualizer loop
@@ -327,6 +329,7 @@ export default function HiveAcousticAnalyzer() {
         cancelAnimationFrame(animFrameIdRef.current);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying, selectedProfileKey]);
 
   // Clean up audio on unmount
