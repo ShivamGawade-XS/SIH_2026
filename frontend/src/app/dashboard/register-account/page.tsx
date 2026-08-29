@@ -52,6 +52,8 @@ export default function RegisterAccountPage() {
 
       const data = await res.json();
       if (res.ok) {
+        // In Vercel demo mode, the OTP is returned directly in the response
+        if (data.demoOtp) setDevOtpHint(data.demoOtp);
         setStep("VERIFY_EMAIL");
       } else {
         setErrorMsg(data.error || "Failed to register account");
@@ -301,9 +303,15 @@ export default function RegisterAccountPage() {
                   We sent a 6-digit verification code to:
                 </p>
                 <p className="font-mono font-bold text-charcoal">{formData.email}</p>
-                <p className="text-[10px] text-warm-grey mt-2">
-                  (In dev mode, check terminal/console logs for the generated OTP code)
-                </p>
+                {devOtpHint ? (
+                  <p className="text-[11px] font-mono text-emerald-800 mt-2 bg-emerald-50 p-2 border border-emerald-300">
+                    💡 Demo OTP (Vercel): <strong>{devOtpHint}</strong>
+                  </p>
+                ) : (
+                  <p className="text-[10px] text-warm-grey mt-2">
+                    (In dev mode, check terminal/console logs for the generated OTP code)
+                  </p>
+                )}
               </div>
 
               <div>
