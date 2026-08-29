@@ -108,8 +108,8 @@ export default function BeekeeperTipModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-charcoal/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="border-2 border-gold bg-white max-w-lg w-full p-8 md:p-10 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-charcoal/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+      <div className="border-2 border-gold bg-white max-w-lg w-full p-4 sm:p-8 md:p-10 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-6 right-6 text-charcoal/40 hover:text-charcoal transition-colors"

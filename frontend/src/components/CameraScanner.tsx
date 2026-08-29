@@ -71,8 +71,8 @@ export default function CameraScanner({ onScanSuccess, onClose }: CameraScannerP
   }, [onScanSuccess]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-charcoal/90 backdrop-blur-md flex items-center justify-center p-6">
-      <div className="border border-charcoal/30 bg-alabaster max-w-md w-full p-6 md:p-8 relative shadow-2xl">
+    <div className="fixed inset-0 z-50 bg-charcoal/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6">
+      <div className="border border-charcoal/30 bg-alabaster max-w-md w-full p-4 sm:p-6 md:p-8 relative shadow-2xl">
         {/* Header */}
         <div className="flex justify-between items-center pb-4 mb-6 border-b border-charcoal/10">
           <div className="flex items-center gap-2">

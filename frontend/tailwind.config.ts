@@ -10,6 +10,14 @@ const config: Config = {
   darkMode: "class",
   theme: {
     extend: {
+      screens: {
+        xs: "480px",
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
+      },
       colors: {
         // Luxury / Editorial Design Tokens
         alabaster: "#F9F8F6",
@@ -40,12 +48,16 @@ const config: Config = {
         ultra: "0.22em",
       },
       boxShadow: {
+        xs: "0 1px 2px rgba(0, 0, 0, 0.05)",
         "luxury-hero": "0 8px 32px rgba(0, 0, 0, 0.12)",
         "luxury-card": "0 2px 8px rgba(0, 0, 0, 0.02)",
         "luxury-card-hover": "0 8px 24px rgba(0, 0, 0, 0.06)",
         "luxury-btn": "0 4px 16px rgba(0, 0, 0, 0.15)",
         "luxury-btn-hover": "0 8px 24px rgba(0, 0, 0, 0.25)",
         "inner-border": "inset 0 0 0 1px rgba(0, 0, 0, 0.06)",
+      },
+      animation: {
+        "spin-slow": "spin 8s linear infinite",
       },
       transitionDuration: {
         "1500": "1500ms",
