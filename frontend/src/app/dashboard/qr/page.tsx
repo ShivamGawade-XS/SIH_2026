@@ -293,14 +293,15 @@ export default function QrLabelsPage() {
                   <div className="absolute inset-1.5 border border-gold/60 pointer-events-none" />
 
                   {/* Top Brand Header */}
-                  <div className="text-center z-10 border-b border-charcoal/15 pb-3">
-                    <span className="text-[8px] uppercase tracking-ultra text-warm-grey font-bold block mb-0.5">
+                  <div className="text-center z-10 border-b border-charcoal/15 pb-2 flex flex-col items-center">
+                    <span className="text-[8px] uppercase tracking-ultra text-warm-grey font-bold block mb-1">
                       Govt. of India • Ministry of MSME
                     </span>
-                    <h3 className="text-xl serif font-bold text-charcoal tracking-wide">
+                    <HoneyChainLogo size="sm" variant="icon" />
+                    <h3 className="text-lg serif font-bold text-charcoal tracking-wide mt-1">
                       Honey<span className="text-gold">Chain</span>
                     </h3>
-                    <p className="text-[9px] font-serif italic text-warm-grey">
+                    <p className="text-[8px] font-serif italic text-warm-grey">
                       100% Certified Organic Raw Nectar
                     </p>
                   </div>

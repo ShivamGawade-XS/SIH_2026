@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="py-24 px-6 md:px-12 lg:px-24 bg-charcoal text-alabaster border-t border-charcoal">
       <div className="max-w-6xl mx-auto">
         <div className="mb-12">
-          <HoneyChainLogo size="lg" variant="full" />
+          <HoneyChainLogo size="lg" variant="full" theme="dark" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-20">
           {/* Col 1 */}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import HoneyChainLogo from "@/components/HoneyChainLogo";
 import { ShieldCheck, Sparkles, QrCode, ArrowRight, Layers, Award, Activity, CheckCircle2, ChevronRight } from "lucide-react";
 import { DEMO_BATCHES } from "@/lib/constants";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -16,11 +17,11 @@ export default function HomePage() {
 
       <main className="flex-1">
         {/* 1. HERO SECTION */}
-        <section className="py-28 px-6 md:px-12 lg:px-24 border-b-2 border-charcoal/10 relative overflow-hidden bg-[#F9F8F6]">
+        <section className="py-20 sm:py-28 px-6 md:px-12 lg:px-24 border-b-2 border-charcoal/10 relative overflow-hidden bg-[#F9F8F6]">
           {/* Subtle gold decorative gradient corner */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 blur-3xl pointer-events-none" />
 
-          <div className="max-w-6xl mx-auto relative z-10">
+          <div className="max-w-6xl mx-auto relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-3 px-3 py-1.5 border border-charcoal/20 bg-white mb-6 shadow-xs">
                 <span className="h-2 w-2 bg-gold" />
@@ -52,6 +53,11 @@ export default function HomePage() {
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
+            </div>
+
+            {/* Desktop Brand Seal Emblem */}
+            <div className="hidden lg:flex flex-col items-center justify-center shrink-0">
+              <HoneyChainLogo size="xl" variant="seal" />
             </div>
           </div>
         </section>

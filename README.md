@@ -1,6 +1,6 @@
 <div align="center">
 
-![HoneyChain by TrueTag Banner](./assets/hero_banner.jpg)
+<img src="./assets/honeychain_logo_badge.jpg" alt="HoneyChain Brand Emblem" width="140" style="border-radius: 20px; margin-bottom: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);" />
 
 # 🍯 HoneyChain by TrueTag
 ### Smart India Hackathon (SIH) 2026 — Problem Statement: SIH26021
@@ -16,6 +16,10 @@
 ---
 
 **Contributor & Lead:** [Shivam Gawade](https://github.com/ShivamGawade-XS) ([@ShivamGawade-XS](https://github.com/ShivamGawade-XS))
+
+<br/>
+
+![HoneyChain by TrueTag Banner](./assets/hero_banner.jpg)
 
 </div>
 
