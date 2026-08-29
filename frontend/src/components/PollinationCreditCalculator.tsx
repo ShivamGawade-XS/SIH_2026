@@ -327,18 +327,18 @@ export default function PollinationCreditCalculator() {
       {/* ─── Certificate Modal ──────────────────────────────────────────── */}
       {showCertificate && (
         <div className="fixed inset-0 z-50 bg-charcoal/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="border-4 border-charcoal bg-[#FDFCF7] max-w-2xl w-full p-8 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
+          <div className="border-4 border-charcoal bg-[#FDFCF7] max-w-2xl w-full p-4 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
             <div className="absolute inset-2 border border-gold/50 pointer-events-none" />
             <div className="absolute inset-4 border border-gold/20 pointer-events-none" />
 
-            <div className="text-center border-b-2 border-charcoal/20 pb-5 mb-5">
+            <div className="text-center border-b-2 border-charcoal/20 pb-4 sm:pb-5 mb-4 sm:mb-5">
               <div className="flex justify-center mb-2">
                 <HoneyChainLogo size="sm" variant="icon" />
               </div>
               <p className="text-[9px] uppercase tracking-ultra text-warm-grey font-bold">
                 Government of India • Ministry of MSME • KVIC • National Bee Board
               </p>
-              <h3 className="text-2xl serif font-bold text-charcoal mt-1">
+              <h3 className="text-xl sm:text-2xl serif font-bold text-charcoal mt-1">
                 Green Pollination Credit Certificate
               </h3>
               <p className="text-[10px] font-mono text-gold font-bold">
@@ -346,8 +346,8 @@ export default function PollinationCreditCalculator() {
               </p>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 mb-6">
-              <div className="col-span-2 space-y-2 text-xs font-mono">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
+              <div className="sm:col-span-2 space-y-2 text-xs font-mono">
                 <p><span className="text-warm-grey">Beekeeper / Farmer:</span> <strong className="text-charcoal">{input.farmerName}</strong></p>
                 <p><span className="text-warm-grey">KVIC Cooperative Code:</span> <strong className="text-charcoal">{input.cooperativeCode}</strong></p>
                 <p><span className="text-warm-grey">State / UT:</span> <strong className="text-charcoal">{input.stateName}</strong></p>

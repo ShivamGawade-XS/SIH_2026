@@ -230,6 +230,9 @@ export default function HiveAcousticAnalyzer() {
     let phase = 0;
 
     const render = () => {
+      if (canvas.parentElement && canvas.width !== canvas.parentElement.clientWidth) {
+        canvas.width = canvas.parentElement.clientWidth || 560;
+      }
       const width = canvas.width;
       const height = canvas.height;
 

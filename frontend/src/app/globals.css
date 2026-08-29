@@ -158,3 +158,17 @@
   width: 1px;
   background: rgba(18, 18, 18, 0.2);
 }
+
+/* Mobile Safe Area & Scrollbar Utilities */
+.safe-area-bottom {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

@@ -197,8 +197,8 @@ export default function PollenVisionAnalyzer() {
   return (
     <div className="border-2 border-charcoal/20 bg-white shadow-luxury-card overflow-hidden">
       {/* Header */}
-      <div className="p-6 bg-charcoal text-alabaster border-b border-charcoal flex items-center gap-3">
-        <div className="w-10 h-10 border border-gold bg-[#121212] rounded-xl flex items-center justify-center text-gold">
+      <div className="p-4 sm:p-6 bg-charcoal text-alabaster border-b border-charcoal flex flex-col sm:flex-row sm:items-center gap-3">
+        <div className="w-10 h-10 border border-gold bg-[#121212] rounded-xl flex items-center justify-center text-gold shrink-0">
           <Microscope className="w-5 h-5" />
         </div>
         <div>
@@ -210,13 +210,13 @@ export default function PollenVisionAnalyzer() {
               6 Indian Floral Families
             </span>
           </div>
-          <h2 className="text-xl serif text-alabaster font-normal">
+          <h2 className="text-lg sm:text-xl serif text-alabaster font-normal">
             Live Microscope Pollen Grain Vision AI — Floral Botanical Origin Classifier
           </h2>
         </div>
       </div>
 
-      <div className="p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
         {/* ─── Left: Upload / Sample Presets ──────────────────────────────── */}
         <div className="lg:col-span-5 space-y-5">
           {/* Drag & Drop Area */}
@@ -325,7 +325,7 @@ export default function PollenVisionAnalyzer() {
               </div>
 
               {/* Morphological Details */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="p-4 border-2 border-charcoal/15 bg-[#F9F8F6] space-y-1.5 text-xs font-mono">
                   <p className="text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-2">Grain Morphology</p>
                   <p><span className="text-warm-grey">Shape:</span> <strong className="text-charcoal">{result.dominantPollen.shape}</strong></p>

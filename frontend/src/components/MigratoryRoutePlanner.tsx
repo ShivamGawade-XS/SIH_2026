@@ -426,7 +426,7 @@ export default function MigratoryRoutePlanner() {
       {/* ─── KVIC MIGRATION TRANSIT PASS MODAL ──────────────────────────── */}
       {showPassModal && (
         <div className="fixed inset-0 z-50 bg-charcoal/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="border-4 border-charcoal bg-[#FDFCF7] max-w-xl w-full p-8 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
+          <div className="border-4 border-charcoal bg-[#FDFCF7] max-w-xl w-full p-4 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
             {/* Outer Security Border Trim */}
             <div className="absolute inset-2 border border-gold/60 pointer-events-none" />
 
@@ -445,8 +445,8 @@ export default function MigratoryRoutePlanner() {
               </p>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="col-span-2 space-y-2 text-xs font-mono">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+              <div className="sm:col-span-2 space-y-2 text-xs font-mono">
                 <p><span className="text-warm-grey">Origin:</span> <strong className="text-charcoal">{selectedRoute.origin}</strong></p>
                 <p><span className="text-warm-grey">Destination:</span> <strong className="text-charcoal">{selectedRoute.destination}</strong></p>
                 <p><span className="text-warm-grey">Transit Route:</span> <strong className="text-charcoal">{selectedRoute.name}</strong></p>

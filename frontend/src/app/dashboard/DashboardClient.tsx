@@ -425,7 +425,7 @@ function PendingRequestsTable() {
     { id: "REQ-083", farmer: "Rajesh Patel", location: "Anand, Gujarat", flora: "Ajwain", qty: 200, submitted: "26 Aug 2026" },
   ];
   return (
-    <div className="border-2 border-amber-200 bg-amber-50 p-8 shadow-sm mb-12">
+    <div className="border-2 border-amber-200 bg-amber-50 p-4 sm:p-8 shadow-sm mb-12">
       <div className="flex items-center gap-3 mb-6 pb-4 border-b border-amber-200">
         <ClipboardList className="w-5 h-5 text-amber-600" />
         <h3 className="text-xl serif text-charcoal font-bold">Pending Harvest Submissions</h3>
@@ -473,7 +473,7 @@ function PendingRequestsTable() {
 
 function RecentBatchesTable({ batchesList }: { batchesList: BatchMetadata[] }) {
   return (
-    <div className="border-2 border-charcoal/15 bg-white p-8 shadow-sm mt-8">
+    <div className="border-2 border-charcoal/15 bg-white p-4 sm:p-8 shadow-sm mt-8">
       <div className="flex justify-between items-center mb-6 pb-4 border-b border-charcoal/10">
         <h3 className="text-2xl serif text-charcoal font-bold">Recent Authenticated Batches</h3>
         <span className="text-[10px] uppercase tracking-widest text-charcoal font-mono font-bold">Polygon PoS</span>

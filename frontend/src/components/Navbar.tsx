@@ -144,13 +144,37 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="/dashboard/quality"
+              href="/dashboard/migration"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-xs font-bold text-charcoal uppercase tracking-wider"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-sm">🗺️</span>
+                <span>Migratory Bloom Planner</span>
+              </div>
+              <span className="text-gold">→</span>
+            </Link>
+
+            <Link
+              href="/dashboard/credits"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-xs font-bold text-charcoal uppercase tracking-wider"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-sm">🌿</span>
+                <span>Green Pollination Credits</span>
+              </div>
+              <span className="text-gold">→</span>
+            </Link>
+
+            <Link
+              href="/dashboard/pollen"
               onClick={() => setMobileMenuOpen(false)}
               className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-xs font-bold text-charcoal uppercase tracking-wider"
             >
               <div className="flex items-center gap-2">
                 <Microscope className="w-4 h-4 text-gold" />
-                <span>AI Lab & Spectrometry</span>
+                <span>Pollen Vision AI</span>
               </div>
               <span className="text-gold">→</span>
             </Link>

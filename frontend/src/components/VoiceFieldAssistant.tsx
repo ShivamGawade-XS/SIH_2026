@@ -258,12 +258,12 @@ export default function VoiceFieldAssistant() {
         </div>
 
         {/* Language Selector */}
-        <div className="flex flex-wrap gap-1.5 self-start md:self-auto">
+        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 sm:pb-0 scrollbar-none self-start md:self-auto">
           {LANGUAGES.map((lang) => (
             <button
               key={lang.code}
               onClick={() => setSelectedLang(lang)}
-              className={`px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-widest border transition-all ${
+              className={`px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-widest border shrink-0 transition-all ${
                 selectedLang.code === lang.code
                   ? "bg-gold text-charcoal border-gold"
                   : "bg-transparent text-warm-grey border-charcoal/40 hover:border-gold hover:text-gold"
@@ -276,19 +276,19 @@ export default function VoiceFieldAssistant() {
       </div>
 
       {/* Chat Window */}
-      <div className="h-72 overflow-y-auto bg-[#F9F8F6] p-5 space-y-4 flex flex-col">
+      <div className="h-72 overflow-y-auto bg-[#F9F8F6] p-4 sm:p-5 space-y-3 sm:space-y-4 flex flex-col">
         {messages.map((msg) => (
           <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
-              className={`max-w-[85%] p-4 text-sm leading-relaxed ${
+              className={`max-w-[90%] sm:max-w-[85%] p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed ${
                 msg.role === "user"
                   ? "bg-charcoal text-alabaster"
                   : "bg-white border-2 border-charcoal/15 text-charcoal shadow-xs"
               }`}
             >
               {msg.text}
-              <p className={`text-[9px] font-mono mt-2 ${msg.role === "user" ? "text-warm-grey/60" : "text-warm-grey/80"}`}>
-                {msg.timestamp.toLocaleTimeString()}
+              <p className={`text-[9px] font-mono mt-1.5 ${msg.role === "user" ? "text-warm-grey/60" : "text-warm-grey/80"}`}>
+                {msg.timestamp.toLocaleTimeString("en-IN")}
               </p>
             </div>
           </div>

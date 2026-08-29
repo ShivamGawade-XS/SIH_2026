@@ -190,7 +190,7 @@ export default function ConsumerVerificationPage() {
 
       <main className="flex-1">
         {/* 1. HERO SECTION */}
-        <section className="py-24 px-6 md:px-12 lg:px-24 border-b border-charcoal/10">
+        <section className="py-12 sm:py-20 md:py-24 px-4 sm:px-6 md:px-12 lg:px-24 border-b border-charcoal/10">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
               <div>
@@ -239,7 +239,7 @@ export default function ConsumerVerificationPage() {
         </section>
 
         {/* 2. AUTHENTICITY BADGE SECTION (Dark Charcoal) */}
-        <section className="py-20 px-6 md:px-12 lg:px-24 bg-charcoal text-alabaster border-b border-charcoal">
+        <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 lg:px-24 bg-charcoal text-alabaster border-b border-charcoal">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="flex items-center gap-6">
               <div className="w-20 h-20 relative rounded-2xl overflow-hidden border-2 border-gold/70 shadow-lg shrink-0 bg-[#121212] group">
@@ -285,7 +285,7 @@ export default function ConsumerVerificationPage() {
         </section>
 
         {/* 3. FARMER PROVENANCE & GEOGRAPHIC TERROIR */}
-        <section className="py-24 px-6 md:px-12 lg:px-24 border-b border-charcoal/10 bg-alabaster">
+        <section className="py-12 sm:py-20 md:py-24 px-4 sm:px-6 md:px-12 lg:px-24 border-b border-charcoal/10 bg-alabaster">
           <div className="max-w-6xl mx-auto">
             <FarmerProfile farmer={farmer} />
             <ApiaryMap farmer={farmer} batchId={batch.batchId} />
@@ -293,7 +293,7 @@ export default function ConsumerVerificationPage() {
         </section>
 
         {/* 4. HARVEST METRICS */}
-        <section className="py-20 px-6 md:px-12 lg:px-24 bg-charcoal text-alabaster border-b border-charcoal">
+        <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 lg:px-24 bg-charcoal text-alabaster border-b border-charcoal">
           <div className="max-w-6xl mx-auto">
             <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">{t("harvestRecord")}</p>
             <h3 className="text-4xl serif mb-12 font-normal text-alabaster">{t("fieldTelemetry")}</h3>
@@ -348,7 +348,7 @@ export default function ConsumerVerificationPage() {
         </section>
 
         {/* 6. BLOCKCHAIN PROOF & CUSTODY TIMELINE */}
-        <section className="py-24 px-6 md:px-12 lg:px-24 bg-alabaster">
+        <section className="py-12 sm:py-20 md:py-24 px-4 sm:px-6 md:px-12 lg:px-24 bg-alabaster">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col lg:flex-row gap-20">
               {/* Left Col: Cryptographic Proof */}
