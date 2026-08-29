@@ -229,6 +229,7 @@ export default function PollenVisionAnalyzer() {
               isDragging ? "border-gold bg-gold/10 scale-[1.01]" : "border-charcoal/25 bg-alabaster hover:border-gold hover:bg-gold/5"
             }`}
           >
+            <label htmlFor="pollen-slide-upload" className="sr-only">Upload Pollen Slide Image</label>
             <input
               id="pollen-slide-upload"
               name="slideImage"

@@ -125,6 +125,7 @@ export default function VerifySearchPage() {
 
           <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
+              <label htmlFor="verify-batchid" className="sr-only">Enter QR token or batch ID to verify authenticity</label>
               <input
                 id="verify-batchid"
                 name="batchId"

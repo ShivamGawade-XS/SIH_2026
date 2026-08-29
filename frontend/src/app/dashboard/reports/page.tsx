@@ -179,6 +179,7 @@ export default function ReportsPage() {
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="relative flex-1 w-full">
               <Search className="w-4 h-4 text-warm-grey absolute left-3 top-1/2 -translate-y-1/2" />
+              <label htmlFor="reports-search" className="sr-only">Search reports by farmer name, location, QR token, or batch number</label>
               <input
                 id="reports-search"
                 name="searchTerm"

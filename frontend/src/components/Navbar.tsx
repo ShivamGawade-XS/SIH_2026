@@ -53,6 +53,7 @@ export default function Navbar() {
           {/* Mobile compact language selector */}
           <div className="sm:hidden flex items-center border border-charcoal/30 bg-white shadow-xs px-1 py-0.5">
             <Globe className="w-3 h-3 text-gold mr-1 shrink-0" />
+            <label htmlFor="navbar-mobile-lang" className="sr-only">Language Selector</label>
             <select
               id="navbar-mobile-lang"
               name="language"

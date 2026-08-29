@@ -206,6 +206,7 @@ export default function BeekeeperTipModal({
               </div>
               <div className="relative">
                 <span className="absolute left-3 top-2.5 text-sm font-mono font-bold text-warm-grey">₹</span>
+                <label htmlFor="tip-custom-amount" className="sr-only">Custom micro-patronage amount</label>
                 <input
                   id="tip-custom-amount"
                   name="customAmount"

@@ -125,6 +125,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
 
         {/* Input Query Bar */}
         <div className="flex gap-2 mb-6">
+          <label htmlFor="sms-query" className="sr-only">Offline SMS or USSD verification query input</label>
           <input
             id="sms-query"
             name="query"

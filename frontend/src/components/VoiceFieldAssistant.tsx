@@ -333,6 +333,7 @@ export default function VoiceFieldAssistant() {
         </button>
 
         {/* Text Input */}
+        <label htmlFor="voice-query" className="sr-only">Type beekeeper advisory query or question</label>
         <input
           id="voice-query"
           name="query"
