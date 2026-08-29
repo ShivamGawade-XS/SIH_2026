@@ -389,24 +389,24 @@ export default function ConsumerVerificationPage() {
                 </div>
 
                 {/* Download Certificate Buttons */}
-                <div className="mt-10 flex flex-wrap gap-3">
+                <div className="mt-10 flex flex-col sm:flex-row flex-wrap gap-3">
                   <button
                     onClick={handleDownloadPDF}
-                    className="py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-gold-slide gap-2"
+                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-gold-slide flex items-center justify-center gap-2"
                   >
                     <FileText className="w-4 h-4 text-gold shrink-0" />
                     <span>{t("downloadPDF")}</span>
                   </button>
                   <button
                     onClick={handleDownloadAPEDA}
-                    className="py-3 px-5 text-[11px] uppercase tracking-wider font-bold border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal inline-flex items-center gap-2 transition-colors whitespace-nowrap"
+                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
                   >
                     <Globe className="w-4 h-4 text-gold shrink-0" />
                     <span>{t("apedaPassport")}</span>
                   </button>
                   <button
                     onClick={() => setShowVCModal(true)}
-                    className="py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-outline-luxury gap-2"
+                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-outline-luxury flex items-center justify-center gap-2"
                   >
                     <Download className="w-4 h-4 shrink-0" />
                     <span>W3C Credential (JSON-LD)</span>
@@ -415,7 +415,7 @@ export default function ConsumerVerificationPage() {
                     href={`https://amoy.polygonscan.com/tx/${txHash || "0x98f4c2b1e7a6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0"}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-outline-luxury gap-2"
+                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-outline-luxury flex items-center justify-center gap-2"
                   >
                     <ExternalLink className="w-4 h-4 shrink-0" />
                     <span>Explorer</span>

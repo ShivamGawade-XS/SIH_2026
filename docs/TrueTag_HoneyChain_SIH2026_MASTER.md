@@ -1,6 +1,9 @@
 # HoneyChain by TrueTag
+
 ## SIH 2026 — Complete Strategy & Build Document
+
 ### PS: SIH26021 | Ministry of MSME (KVIC) | Software Category
+
 #### Team Master Document v2.0 — Internal Only
 
 ---
@@ -8,7 +11,7 @@
 ## 0. Quick Reference
 
 | Field | Detail |
-|---|---|
+| --- | --- |
 | PS ID | SIH26021 |
 | PS Title | Honey Chain — Blockchain-Based Honey Traceability & Smart Beekeeping |
 | Team Name | Crimson Syndicate (CS Syndicate) |
@@ -58,7 +61,7 @@ India has 400+ honey brands, 50+ organized players (Dabur, Patanjani, Apis Himal
 ### 2.3 Numbers That Matter for the Pitch
 
 | Metric | Number |
-|---|---|
+| --- | --- |
 | Annual honey production | 1.2 lakh metric tonnes |
 | Export value | ₹1,200+ crore |
 | Adulteration rate | 70–80% (FSSAI) |
@@ -76,6 +79,7 @@ Companies solving adjacent problems globally: HonestBee (Singapore), iFarm (Russ
 ## 3. The Solution — HoneyChain
 
 ### 3.1 One-Line Pitch
+
 > "HoneyChain makes every jar of Indian honey scannable, blockchain-verified, and farmer-attributable — so a beekeeper in Rajasthan can prove their honey is real and charge 3× the commodity price."
 
 ### 3.2 How It Works (5 Steps)
@@ -94,6 +98,7 @@ Each honey jar gets a unique QR code linked to its Batch Token. Printable direct
 
 **Step 5 — Consumer Verification**
 Consumer scans QR. No app required. Browser-based verify page shows:
+
 - Farmer name, photo, hive location on map
 - Harvest date, weight, Brix reading
 - Blockchain transaction hash (tap to verify on Polygonscan)
@@ -109,7 +114,7 @@ Consumer scans QR. No app required. Browser-based verify page shows:
 
 ### 4.1 System Diagram
 
-```
+```text
 [IoT Sensors / Field Officer Entry]
            ↓
 [HoneyChain Dashboard — Next.js + Flutter]
@@ -130,7 +135,7 @@ Consumer scans QR. No app required. Browser-based verify page shows:
 ### 4.2 Full Tech Stack
 
 | Layer | Technology | Justification |
-|---|---|---|
+| --- | --- | --- |
 | Blockchain | Polygon PoS (Sepolia testnet) | Near-zero gas fees (~₹0.01/tx). EVM-compatible. Fast finality. Ethereum mainnet = too expensive. Hyperledger = production overkill for demo. |
 | Smart Contracts | Solidity + Hardhat | Industry standard. Fast iteration. Better error messages under 36hr pressure vs Truffle. |
 | Frontend | Next.js 14 (App Router) + Tailwind | SSR for fast consumer verify page. Tailwind = no wasted CSS time. |
@@ -189,23 +194,23 @@ contract HoneyChain {
     // Core functions
     function registerFarmer(uint256 farmerId, string memory name,
         string memory location, string memory cooperativeId)
-        public onlyAdmin { ... }
+        public onlyAdmin { }
 
     function mintBatch(uint256 batchId, uint256 farmerId,
         string memory ipfsHash, uint8 qualityScore)
-        public onlyFieldOfficer returns (string memory qrCode) { ... }
+        public onlyFieldOfficer returns (string memory qrCode) { }
 
     function addCustody(uint256 batchId, string memory entity,
-        string memory action) public onlyVerified { ... }
+        string memory action) public onlyVerified { }
 
     function addQualityTest(uint256 batchId, uint8 score)
-        public onlyLab { ... }
+        public onlyLab { }
 
     function getBatchHistory(uint256 batchId)
-        public view returns (Batch memory, CustodyEntry[] memory) { ... }
+        public view returns (Batch memory, CustodyEntry[] memory) { }
 
     function verifyByQR(string memory qrCode)
-        public view returns (Batch memory) { ... }
+        public view returns (Batch memory) { }
 }
 ```
 
@@ -291,6 +296,7 @@ Show 3 hives on the admin dashboard: 2 healthy, 1 with a triggered Varroa alert.
 ## 5. Product Features — Full List
 
 ### 5.1 Beekeeper Portal
+
 - Register apiary (name, GPS location, cooperative ID, KVIC Beekeeper Registration Number / DigiLocker ID)
 - Log new harvest batch (form + auto-pull from IoT mock)
 - View all batches and their blockchain confirmation status
@@ -299,6 +305,7 @@ Show 3 hives on the admin dashboard: 2 healthy, 1 with a triggered Varroa alert.
 - Disease alert notifications from CNN model
 
 ### 5.2 Field Officer / KVIC Admin Panel
+
 - Approve farmer registrations (oracle gate — prevents fake entries)
 - Approve batch submissions before blockchain mint
 - District-wise production analytics and maps
@@ -306,6 +313,7 @@ Show 3 hives on the admin dashboard: 2 healthy, 1 with a triggered Varroa alert.
 - Bulk farmer onboarding via CSV
 
 ### 5.3 Consumer Verify Page (Mobile-First PWA)
+
 - QR scan → no app download, opens in browser instantly
 - Farmer story card: name, photo, location on map
 - Harvest timeline with all custody checkpoints
@@ -315,11 +323,13 @@ Show 3 hives on the admin dashboard: 2 healthy, 1 with a triggered Varroa alert.
 - Share-to-social button (converts premium buyers into brand advocates)
 
 ### 5.4 Export Compliance Certificate
+
 - One-click PDF download from any batch
 - Contains: blockchain hash, IPFS link, KVIC stamp, quality grade, farmer GPS
 - Designed to satisfy EU and US GI import documentation requirements
 
 ### 5.5 AI Admin Dashboard
+
 - Quality trend by district and season
 - Adulteration risk heatmap (district-level)
 - Disease alert heat map by hive cluster
@@ -332,7 +342,7 @@ Show 3 hives on the admin dashboard: 2 healthy, 1 with a triggered Varroa alert.
 ### 6.1 Revenue Streams
 
 | Stream | Mechanism | Calculation | Year 1 ARR |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **SaaS for Brands** | Tiered monthly licensing for commercial honey processors | 50 brands × ₹30,000/month avg | **₹1.80 crore** |
 | **Per-Batch QR Minting** | On-chain batch anchoring + tamper-evident QR serials | 60,000 batches × ₹5/batch | **₹30 lakh** |
 | **Cooperative Subscription** | Subsidized KVIC Honey Mission support, IoT & AI telemetry | 15,000 beekeepers × ₹1,000/year | **₹1.50 crore** |
@@ -346,7 +356,7 @@ Show 3 hives on the admin dashboard: 2 healthy, 1 with a triggered Varroa alert.
 ### 6.2 Cost Structure (Year 1)
 
 | Cost | Amount |
-|---|---|
+| --- | --- |
 | Cloud + blockchain node hosting | ₹20–40 lakh |
 | Field team for beekeeper onboarding | ₹60–90 lakh |
 | Sales and marketing | ₹40–60 lakh |
@@ -366,7 +376,7 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 ### 6.4 Funding Path
 
 | Stage | Timeline | Source | Amount |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Bootstrap | Month 0–6 | SIH prize + college incubator | ₹5–10 lakh |
 | Grant | Month 6–12 | AIC (Atal Innovation Mission) + MSME tech grant | ₹25 lakh |
 | Pre-seed | Year 2 | Omnivore, Accel India, Blume Ventures | ₹1–2 crore |
@@ -377,7 +387,7 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 ## 7. SIH Judging Criteria Map
 
 | Criterion | Score | What We Do to Maximize |
-|---|---|---|
+| --- | --- | --- |
 | **Innovation** | 90/100 | Triple-stack integration (Blockchain + AI + IoT) is the claim. Most teams pick one. We use all three and explain why each one needs the other. |
 | **Feasibility** | 92/100 | Every component is live or credibly simulated. IoT is Python script with MQTT. AI model is pre-trained. Blockchain is on testnet before the hackathon starts. |
 | **Impact/Scalability** | 95/100 | 1.5 lakh beekeepers, ₹1,200 crore exports, 700+ GI categories as Phase 2. Numbers are documented and sourced. |
@@ -413,6 +423,7 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 ## 9. 36-Hour Build Plan
 
 ### Hour 0–6: Foundation
+
 - [ ] Smart contract final — `registerFarmer`, `mintBatch`, `addCustody`, `addQualityTest`, `getBatchHistory`, `verifyByQR`
 - [ ] Deploy to Polygon Mumbai (already done pre-hack — just verify it's live)
 - [ ] Next.js project structure finalized, Tailwind + shadcn/ui configured
@@ -421,6 +432,7 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 - [ ] FastAPI service initialized — quality model endpoint ready
 
 ### Hour 6–14: Core Features
+
 - [ ] Farmer registration form → DB write → blockchain register call
 - [ ] Batch entry form: IoT mock fields + manual harvest input
 - [ ] IPFS metadata upload via Pinata on batch submit
@@ -429,6 +441,7 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 - [ ] Consumer verify page — reads from chain + IPFS, shows full journey
 
 ### Hour 14–22: Polish and Integration
+
 - [ ] Admin panel: farmer list, batch approval flow, district analytics chart
 - [ ] Leaflet map: hive locations + custody chain waypoints
 - [ ] Disease alert simulation on IoT dashboard (1 of 3 demo hives flagged)
@@ -438,6 +451,7 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 - [ ] Basic loading states, error boundaries, auth guards
 
 ### Hour 22–30: Demo Path Lock
+
 - [ ] End-to-end test: Register → Log batch → Approve → Mint → QR → Scan → Verify
 - [ ] Run demo path 10 times. Fix every broken flow.
 - [ ] Pre-load 3 demo farmer profiles on testnet (Ramesh, Sunita, Arjun)
@@ -447,6 +461,7 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 - [ ] Print physical QR cards for stage
 
 ### Hour 30–36: Presentation
+
 - [ ] Build slide deck (10 slides max, structure below)
 - [ ] Record 2-minute demo video — backup if live demo fails
 - [ ] Push final code to GitHub with clean README
@@ -465,6 +480,7 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 "HoneyChain is a triple-layer platform: blockchain for tamper-proof batch tracking, IoT for real-time hive intelligence, and AI for quality and disease prediction. Every jar of honey gets a QR code anchored to an immutable on-chain record."
 
 **[2:00–5:00 — Live Demo]**
+
 1. Open HoneyChain dashboard on laptop (projected)
 2. "This is Ramesh's farmer profile — his apiary in Sundarbans, registered on the Polygon blockchain."
 3. Show hive IoT dashboard — 3 hives, 1 with Varroa alert flagged
@@ -482,7 +498,7 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 ## 11. Slide Deck Structure (10 Slides)
 
 | # | Title | Key Content |
-|---|---|---|
+| --- | --- | --- |
 | 1 | The Problem | 70–80% adulteration. Ramesh's story. ₹28,000 income loss. |
 | 2 | Why Existing Solutions Fail | FSSAI certification = paper-based, slow, gameable. No QR verification standard. |
 | 3 | HoneyChain | One-line pitch. Product screenshot. Triple-stack diagram. |
@@ -500,10 +516,12 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 
 **Q: "You claimed ₹6–10 crore ARR Year 1 from SaaS. 50 brands × ₹30,000/month = ₹1.8 crore ARR. Where does the rest come from?"**
 A: "You're completely right to call out that SaaS alone cannot reach ₹6–10 crore. Our realistic Year 1 ARR is **₹3.5–4.4 crore**, split across 4 distinct streams with verifiable unit economics:
+
 1. **Brand SaaS**: 50 brands × ₹30,000/month = ₹1.80 crore.
 2. **Per-Batch QR Minting**: 60,000 batches × ₹5/batch = ₹30 lakh.
 3. **Cooperative IoT/AI Telemetry**: 15,000 beekeepers @ ₹1,000/year (cooperative/Honey Mission subsidized) = ₹1.50 crore.
 4. **Export Digital Certificates**: 800 export consignments × ₹10,000/passport for APEDA/USFDA customs clearance = ₹80 lakh.
+
 This totals **₹4.40 crore Year 1 ARR**, scaling to **₹12.0 crore in Year 3** as we expand to 200+ brands and multi-commodity GI products."
 
 **Q: "What stops a beekeeper from entering fake data?"**
@@ -535,7 +553,7 @@ A: "The smart contract is commodity-agnostic. Honey is Phase 1 because KVIC is t
 ## 13. Risk Matrix
 
 | Risk | Probability | Impact | Mitigation |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Smart contract bug during demo | Medium | Critical | Deploy and test on testnet 48hrs before. Use pre-minted batches on stage — not live minting. |
 | Venue WiFi fails | High | Critical | Cache consumer verify page as offline-first PWA. Pre-load IPFS hashes locally. Have 3 mobile hotspots ready. |
 | QR scan fails on judge's phone | Medium | High | Print 5 QR cards (different sizes). Have 3 phones with verify page already open as backup. |
@@ -549,7 +567,7 @@ A: "The smart contract is commodity-agnostic. Honey is Phase 1 because KVIC is t
 ## 14. Team Role Allocation
 
 | Role | Member | Key Responsibilities |
-|---|---|---|
+| --- | --- | --- |
 | Team Lead + Presenter | Shivam | Architecture decisions, pitch delivery, technical walkthrough, demo coordination |
 | Blockchain Dev | Person 2 | Solidity contracts, Hardhat, Wagmi/ethers.js frontend integration |
 | Full Stack Dev | Person 3 | Next.js pages, PostgreSQL schema, Node.js API routes |
@@ -564,15 +582,19 @@ A: "The smart contract is commodity-agnostic. Honey is Phase 1 because KVIC is t
 ## 15. Scalability Roadmap
 
 ### Phase 1 — Honey Vertical (Year 1–2)
+
 500 beekeepers across 5 KVIC districts: Rajasthan, UP, Himachal Pradesh, Maharashtra, Karnataka. 20 honey brands on platform. ₹3–5 crore ARR. KVIC pilot MoU as proof of government adoption.
 
 ### Phase 2 — GI-Tagged Commodities (Year 2–3)
+
 Expand protocol to Darjeeling tea, Malabar pepper, Alphonso mangoes, Kashmiri saffron, Bikaneri Bhujia. Partnership with GI Registry of India (DPIIT). Same smart contract, different commodity metadata schema. ₹10–15 crore ARR.
 
 ### Phase 3 — National Food Trust Infrastructure (Year 3–5)
+
 Work with FSSAI to make on-chain batch certification a compliance standard for all exported Indian food products. Revenue model shifts from per-brand SaaS to a national licensing arrangement. HoneyChain becomes the authentication layer for "Made in India" certified food.
 
 ### Phase 4 — ASEAN and Middle East Export Corridor (Year 5+)
+
 India exports $40B+ in food annually to UAE, Saudi Arabia, EU — all of which have strict origin traceability requirements. HoneyChain becomes the authentication infrastructure for Indian food exports globally. Estimated opportunity: $2B+ platform GMV.
 
 ---
@@ -580,6 +602,7 @@ India exports $40B+ in food annually to UAE, Saudi Arabia, EU — all of which h
 ## 16. Why the Triple Stack Is the Actual Moat
 
 Most hackathon teams pick one technology. Judges see this every year:
+
 - Team A: "We built a blockchain supply chain" — no intelligence, no sensors, just a ledger
 - Team B: "We built an AI quality predictor" — no immutability, no field verification
 - Team C: "We built an IoT dashboard" — no trust layer, data is mutable
@@ -599,7 +622,7 @@ Together: sensors generate data that cannot be overridden, that data is cryptogr
 ## 17. Key Numbers — Memorize These for the Pitch
 
 | Number | Context |
-|---|---|
+| --- | --- |
 | 70–80% | Honey adulteration rate in India (FSSAI) |
 | 1.2 lakh MT | India's annual honey production |
 | ₹1,200 crore | Annual honey export value |
@@ -623,6 +646,6 @@ Government judges respond to PPP framing. It signals you understand how governme
 
 ---
 
-*Document: HoneyChain by TrueTag | SIH 2026 Master Build Document*
-*Maintained by: Shivam Mahesh Gawade | Version 2.0 | August 2026*
+*Document: HoneyChain by TrueTag | SIH 2026 Master Build Document*  
+*Maintained by: Crimson Syndicate (CS Syndicate) | Version 2.0 | August 2026*  
 *Classification: Internal — Do not share outside team*

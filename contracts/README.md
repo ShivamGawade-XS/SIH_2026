@@ -40,7 +40,7 @@ The smart contracts layer anchors every honey batch onto the **Polygon PoS (Amoy
 ## 🚀 Contracts Deployment Details
 
 | Parameter | Value |
-|---|---|
+| --- | --- |
 | **Contract Name** | `HoneyChain.sol`, `HoneyChainQR.sol` |
 | **Network** | Polygon PoS (Amoy Testnet / Mainnet) |
 | **Chain ID** | `80002` |
@@ -63,6 +63,7 @@ npx hardhat test
 ```
 
 Test coverage includes:
+
 - Role-based authorization tests (Field Officer, Lab Analyst, Admin)
 - Valid IPFS CID (length $\ge 46$) input validation
 - Harvest rejection and re-submission workflows
