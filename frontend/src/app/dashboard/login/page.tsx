@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -74,11 +74,11 @@ export default function LoginPage() {
 
             <form onSubmit={(e) => handleLogin(e)} className="space-y-6">
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium" htmlFor="login-email">
                   Official Email Address
                 </label>
                 <input
-                  type="email"
+id="login-email" name="email" autoComplete="email"                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -88,11 +88,11 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium" htmlFor="login-password">
                   Passcode / Token
                 </label>
                 <input
-                  type="password"
+id="login-password" name="password" autoComplete="current-password"                   type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

@@ -273,7 +273,7 @@ export default function MintBatchPage() {
                     Moisture (%)
                   </label>
                   <input
-                    type="number"
+id="mint-moisture" name="moisture"                     type="number"
                     step="0.1"
                     required
                     value={moisture}
@@ -288,7 +288,7 @@ export default function MintBatchPage() {
                     Brix (°Bx)
                   </label>
                   <input
-                    type="number"
+id="mint-brix" name="brix"                     type="number"
                     step="0.1"
                     required
                     value={brix}
@@ -303,7 +303,7 @@ export default function MintBatchPage() {
                     HMF (mg/kg)
                   </label>
                   <input
-                    type="number"
+id="mint-hmf" name="hmf"                     type="number"
                     step="0.1"
                     required
                     value={hmf}
@@ -318,7 +318,7 @@ export default function MintBatchPage() {
                     Diastase (DN)
                   </label>
                   <input
-                    type="number"
+id="mint-diastase" name="diastase"                     type="number"
                     step="0.1"
                     required
                     value={diastase}
@@ -333,7 +333,7 @@ export default function MintBatchPage() {
                     Conductivity (mS)
                   </label>
                   <input
-                    type="number"
+id="mint-conductivity" name="conductivity"                     type="number"
                     step="0.01"
                     required
                     value={conductivity}
@@ -350,7 +350,7 @@ export default function MintBatchPage() {
                   Harvest Yield Weight (kg)
                 </label>
                 <input
-                  type="number"
+id="mint-yield" name="yieldKg"                   type="number"
                   required
                   value={yieldKg}
                   onChange={(e) => setYieldKg(parseInt(e.target.value) || 0)}

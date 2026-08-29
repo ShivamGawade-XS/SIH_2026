@@ -505,8 +505,10 @@ export default function ConsumerVerificationPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1">City / Purchase Location</label>
+                    <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1" htmlFor="complaint-location">City / Purchase Location</label>
                     <input
+                      id="complaint-location"
+                      name="location"
                       type="text"
                       required
                       placeholder="e.g. Connaught Place, New Delhi"

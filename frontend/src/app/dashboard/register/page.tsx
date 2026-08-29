@@ -226,7 +226,7 @@ export default function RegisterFarmerPage() {
                     Beekeeper Full Name
                   </label>
                   <input
-                    type="text"
+id="reg-name" name="name" autoComplete="name"                     type="text"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -240,7 +240,7 @@ export default function RegisterFarmerPage() {
                     State & District Location
                   </label>
                   <input
-                    type="text"
+id="reg-location" name="location"                     type="text"
                     required
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
@@ -254,7 +254,7 @@ export default function RegisterFarmerPage() {
                     KVIC Cooperative Code
                   </label>
                   <input
-                    type="text"
+id="reg-cooperative" name="cooperativeId"                     type="text"
                     required
                     value={formData.cooperativeId}
                     onChange={(e) => setFormData({ ...formData, cooperativeId: e.target.value })}
@@ -269,7 +269,7 @@ export default function RegisterFarmerPage() {
                   </label>
                   <div className="relative">
                     <input
-                      type="text"
+id="reg-upi" name="upiVpa"                       type="text"
                       value={formData.upiVpa}
                       onChange={(e) => setFormData({ ...formData, upiVpa: e.target.value })}
                       placeholder="e.g. subhash.chander@sbi"
@@ -284,7 +284,7 @@ export default function RegisterFarmerPage() {
                     Apiary GPS Latitude
                   </label>
                   <input
-                    type="text"
+id="reg-lat" name="gpsLat"                     type="text"
                     value={formData.gpsLat}
                     onChange={(e) => setFormData({ ...formData, gpsLat: e.target.value })}
                     placeholder="e.g. 34.0837"
@@ -297,7 +297,7 @@ export default function RegisterFarmerPage() {
                     Apiary GPS Longitude
                   </label>
                   <input
-                    type="text"
+id="reg-lng" name="gpsLng"                     type="text"
                     value={formData.gpsLng}
                     onChange={(e) => setFormData({ ...formData, gpsLng: e.target.value })}
                     placeholder="e.g. 74.7973"

@@ -334,7 +334,7 @@ export default function VoiceFieldAssistant() {
 
         {/* Text Input */}
         <input
-          type="text"
+id="voice-query" name="query"           type="text"
           value={textInput}
           onChange={(e) => setTextInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleTextSend()}

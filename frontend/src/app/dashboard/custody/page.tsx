@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -150,11 +150,11 @@ export default function CustodyLoggingPage() {
 
               {/* Action */}
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium" htmlFor="custody-action">
                   Action Performed
                 </label>
                 <input
-                  type="text"
+id="custody-action" name="action"                   type="text"
                   required
                   value={action}
                   onChange={(e) => setAction(e.target.value)}
@@ -165,11 +165,11 @@ export default function CustodyLoggingPage() {
 
               {/* Operator */}
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium" htmlFor="custody-actor">
                   Authorized Operator / Officer Name
                 </label>
                 <input
-                  type="text"
+id="custody-actor" name="actorName"                   type="text"
                   required
                   value={actorName}
                   onChange={(e) => setActorName(e.target.value)}

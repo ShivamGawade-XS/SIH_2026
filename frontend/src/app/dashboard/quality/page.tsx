@@ -246,7 +246,7 @@ export default function QualityLabPage() {
                     Moisture Content (%)
                   </label>
                   <input
-                    type="number"
+id="q-moisture" name="moisture"                     type="number"
                     step="0.1"
                     value={moisture}
                     onChange={(e) => setMoisture(parseFloat(e.target.value) || 0)}
@@ -260,7 +260,7 @@ export default function QualityLabPage() {
                     Total Soluble Solids (Brix %)
                   </label>
                   <input
-                    type="number"
+id="q-brix" name="brix"                     type="number"
                     step="0.1"
                     value={brix}
                     onChange={(e) => setBrix(parseFloat(e.target.value) || 0)}
@@ -276,7 +276,7 @@ export default function QualityLabPage() {
                     HMF Content (mg/kg)
                   </label>
                   <input
-                    type="number"
+id="q-hmf" name="hmf"                     type="number"
                     step="0.1"
                     value={hmf}
                     onChange={(e) => setHmf(parseFloat(e.target.value) || 0)}
@@ -290,7 +290,7 @@ export default function QualityLabPage() {
                     Diastase Activity (DN)
                   </label>
                   <input
-                    type="number"
+id="q-diastase" name="diastase"                     type="number"
                     step="0.1"
                     value={diastase}
                     onChange={(e) => setDiastase(parseFloat(e.target.value) || 0)}
@@ -306,7 +306,7 @@ export default function QualityLabPage() {
                     Elec. Conductivity (mS/cm)
                   </label>
                   <input
-                    type="number"
+id="q-conductivity" name="conductivity"                     type="number"
                     step="0.01"
                     value={conductivity}
                     onChange={(e) => setConductivity(parseFloat(e.target.value) || 0)}
@@ -320,7 +320,7 @@ export default function QualityLabPage() {
                     δ¹³C Isotope Delta (‰)
                   </label>
                   <input
-                    type="number"
+id="q-c13delta" name="c13Delta"                     type="number"
                     step="0.1"
                     value={c13Delta}
                     onChange={(e) => setC13Delta(parseFloat(e.target.value) || 0)}
@@ -336,7 +336,7 @@ export default function QualityLabPage() {
                     Exogenous C4 Sugars (%)
                   </label>
                   <input
-                    type="number"
+id="q-c4sugar" name="c4Sugar"                     type="number"
                     step="0.1"
                     value={c4Sugar}
                     onChange={(e) => setC4Sugar(parseFloat(e.target.value) || 0)}
@@ -350,7 +350,7 @@ export default function QualityLabPage() {
                     SMR Rice Syrup Marker
                   </label>
                   <input
-                    type="number"
+id="q-smrmarker" name="smrMarker"                     type="number"
                     step="0.01"
                     value={smrMarker}
                     onChange={(e) => setSmrMarker(parseFloat(e.target.value) || 0)}

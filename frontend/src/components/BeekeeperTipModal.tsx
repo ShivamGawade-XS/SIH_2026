@@ -209,7 +209,7 @@ export default function BeekeeperTipModal({
                 <input
                   type="number"
                   placeholder="Or enter custom amount (e.g. 150)"
-                  value={customAmount}
+                  id="tip-custom-amount" name="customAmount" value={customAmount}
                   onChange={handleCustomChange}
                   className="w-full h-11 border-2 border-charcoal/20 pl-8 pr-3 text-xs font-mono font-bold focus:border-gold focus:outline-none"
                 />

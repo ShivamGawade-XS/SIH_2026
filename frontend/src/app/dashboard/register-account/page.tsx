@@ -161,7 +161,7 @@ export default function RegisterAccountPage() {
                 </label>
                 <div className="relative">
                   <input
-                    type="text"
+id="ra-name" name="name" autoComplete="name"                     type="text"
                     required
                     placeholder="e.g. Dr. Rajeshwari Sengupta"
                     value={formData.name}
@@ -178,7 +178,7 @@ export default function RegisterAccountPage() {
                 </label>
                 <div className="relative">
                   <input
-                    type="email"
+id="ra-email" name="email" autoComplete="email"                     type="email"
                     required
                     placeholder="e.g. officer@kvic.gov.in"
                     value={formData.email}
@@ -195,7 +195,7 @@ export default function RegisterAccountPage() {
                 </label>
                 <div className="relative">
                   <input
-                    type="password"
+id="ra-password" name="password" autoComplete="new-password"                     type="password"
                     required
                     minLength={8}
                     placeholder="••••••••••••"
@@ -214,7 +214,7 @@ export default function RegisterAccountPage() {
                   </label>
                   <div className="relative">
                     <input
-                      type="tel"
+id="ra-phone" name="phone" autoComplete="tel"                       type="tel"
                       placeholder="+91 98765 43210"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -229,7 +229,7 @@ export default function RegisterAccountPage() {
                     Role & Permissions
                   </label>
                   <select
-                    value={formData.role}
+id="ra-role" name="role"                     value={formData.role}
                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                     className="w-full h-12 border border-charcoal/30 px-2 text-xs font-bold focus:border-gold focus:outline-none"
                   >
@@ -246,7 +246,7 @@ export default function RegisterAccountPage() {
                 </label>
                 <div className="relative">
                   <input
-                    type="text"
+id="ra-cooperative" name="cooperative"                     type="text"
                     required
                     placeholder="e.g. KVIC-WB-009"
                     value={formData.cooperative}
@@ -296,7 +296,7 @@ export default function RegisterAccountPage() {
                 </label>
                 <div className="relative">
                   <input
-                    type="text"
+id="ra-email-otp" name="emailOtp" autoComplete="one-time-code"                     type="text"
                     required
                     maxLength={6}
                     placeholder="123456"
@@ -339,7 +339,7 @@ export default function RegisterAccountPage() {
                   Enter 6-Digit Phone OTP
                 </label>
                 <input
-                  type="text"
+id="ra-phone-otp" name="phoneOtp" autoComplete="one-time-code"                   type="text"
                   required
                   maxLength={6}
                   placeholder="123456"

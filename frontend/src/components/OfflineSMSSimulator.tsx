@@ -126,7 +126,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
         {/* Input Query Bar */}
         <div className="flex gap-2 mb-6">
           <input
-            type="text"
+id="sms-query" name="query"             type="text"
             value={queryText}
             onChange={(e) => setQueryText(e.target.value)}
             placeholder={channel === "sms" ? "e.g. VERIFY TT-2026-00001" : "*99*4941*001#"}

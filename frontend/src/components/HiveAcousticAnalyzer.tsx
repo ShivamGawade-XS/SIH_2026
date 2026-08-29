@@ -455,7 +455,7 @@ export default function HiveAcousticAnalyzer() {
           <div className="flex items-center gap-4 bg-alabaster p-3 border border-charcoal/15 text-xs font-mono">
             <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">Synthesizer Volume:</span>
             <input
-              type="range"
+id="acoustic-volume" name="volume" aria-label="Volume"               type="range"
               min="0"
               max="0.5"
               step="0.01"

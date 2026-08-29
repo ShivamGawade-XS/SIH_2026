@@ -126,7 +126,7 @@ export default function VerifySearchPage() {
           <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <input
-                type="text"
+id="verify-batchid" name="batchId" autoComplete="off"                 type="text"
                 placeholder="e.g. TT-2026-00001 or Batch #1"
                 value={tokenInput}
                 onChange={(e) => setTokenInput(e.target.value)}
