@@ -7,13 +7,16 @@
 [![SIH 2026](https://img.shields.io/badge/SIH-2026-orange.svg?style=for-the-badge)](https://sih.gov.in)
 [![PS ID SIH26021](https://img.shields.io/badge/PS_ID-SIH26021-blue.svg?style=for-the-badge)](https://sih.gov.in)
 [![Ministry](https://img.shields.io/badge/Ministry-MSME%20--%20KVIC-green.svg?style=for-the-badge)](https://www.kvic.gov.in)
+[![Team](https://img.shields.io/badge/Team-Crimson%20Syndicate%20(CS%20Syndicate)-crimson.svg?style=for-the-badge)](https://github.com/ShivamGawade-XS/SIH_2026)
 [![Blockchain](https://img.shields.io/badge/Blockchain-Polygon%20PoS-8247E5.svg?style=for-the-badge)](https://polygon.technology)
 [![Frontend](https://img.shields.io/badge/Frontend-Next.js%2014-000000.svg?style=for-the-badge)](https://nextjs.org)
 [![AI Engine](https://img.shields.io/badge/AI%20Engine-FastAPI%20%2B%20Scikit--Learn-009688.svg?style=for-the-badge)](https://fastapi.tiangolo.com)
 
 ---
 
-**Contributor & Lead:** [Shivam Gawade](https://github.com/ShivamGawade-XS) ([@ShivamGawade-XS](https://github.com/ShivamGawade-XS))
+**Team:** **Crimson Syndicate (CS Syndicate)**  
+**Team Lead:** [Shivam Gawade](https://github.com/ShivamGawade-XS) ([@ShivamGawade-XS](https://github.com/ShivamGawade-XS))  
+**Team Members:** Shivam Gawade, Rahul Rathod, Rehan Harmalkar, Avneesh Walwalkar, Sunehri Sonar, Shaunak Pai  
 
 ![HoneyChain by TrueTag Banner](./assets/hero_banner.jpg)
 
@@ -386,10 +389,16 @@ In compliance with UIDAI regulations, no raw Aadhaar numbers or biometrics are s
 
 ---
 
-## 👥 Authors & Contributors
+## 👥 Authors & Contributors — Team Crimson Syndicate (CS Syndicate)
 
-- **Shivam Gawade** — Lead Developer & Contributor ([@ShivamGawade-XS](https://github.com/ShivamGawade-XS))
-- **Team TrueTag** — SIH 2026 Participants
+| Member Name | Role & Core Contributions | GitHub Profile |
+| --- | --- | --- |
+| **Shivam Gawade** | **Team Lead** · Full-Stack Web3, Smart Contracts, AI Pipeline | [@ShivamGawade-XS](https://github.com/ShivamGawade-XS) |
+| **Rahul Rathod** | Backend Architecture, Database Schemas & API Federation | |
+| **Rehan Harmalkar** | Smart Contract Security, Hardhat Test Suites & Access Control | |
+| **Avneesh Walwalkar** | AI Model Training, Melissopalynology Vision & Spectrometry | |
+| **Sunehri Sonar** | UI/UX Design System, Multilingual Localization & Frontend UX | |
+| **Shaunak Pai** | IoT Telemetry Systems, Sensor Simulation & Hardware Protocols | |
 
 ---
 
