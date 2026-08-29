@@ -36,6 +36,7 @@ export default function RegisterAccountPage() {
   const [phoneOtp, setPhoneOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [emailDemoOtp, setEmailDemoOtp] = useState<string | null>(null);
   const [devOtpHint, setDevOtpHint] = useState<string | null>(null);
 
   const handleRegisterSubmit = async (e: React.FormEvent) => {
@@ -53,7 +54,7 @@ export default function RegisterAccountPage() {
       const data = await res.json();
       if (res.ok) {
         // In Vercel demo mode, the OTP is returned directly in the response
-        if (data.demoOtp) setDevOtpHint(data.demoOtp);
+        if (data.demoOtp) setEmailDemoOtp(data.demoOtp);
         setStep("VERIFY_EMAIL");
       } else {
         setErrorMsg(data.error || "Failed to register account");
@@ -299,18 +300,27 @@ export default function RegisterAccountPage() {
           {step === "VERIFY_EMAIL" && (
             <form onSubmit={handleVerifyEmail} className="space-y-6">
               <div className="p-4 bg-[#F9F8F6] border border-charcoal/10 text-xs">
-                <p className="text-warm-grey mb-1">
-                  We sent a 6-digit verification code to:
-                </p>
-                <p className="font-mono font-bold text-charcoal">{formData.email}</p>
-                {devOtpHint ? (
-                  <p className="text-[11px] font-mono text-emerald-800 mt-2 bg-emerald-50 p-2 border border-emerald-300">
-                    💡 Demo OTP (Vercel): <strong>{devOtpHint}</strong>
-                  </p>
+                {emailDemoOtp ? (
+                  <>
+                    <p className="text-warm-grey mb-1">Email verification OTP for:</p>
+                    <p className="font-mono font-bold text-charcoal">{formData.email}</p>
+                    <p className="text-[11px] font-mono text-emerald-800 mt-2 bg-emerald-50 p-2 border border-emerald-300">
+                      💡 Demo OTP (no SMTP on Vercel): <strong>{emailDemoOtp}</strong>
+                    </p>
+                    <p className="text-[10px] text-warm-grey mt-1">
+                      Copy the code above and paste it into the field below.
+                    </p>
+                  </>
                 ) : (
-                  <p className="text-[10px] text-warm-grey mt-2">
-                    (In dev mode, check terminal/console logs for the generated OTP code)
-                  </p>
+                  <>
+                    <p className="text-warm-grey mb-1">
+                      We sent a 6-digit verification code to:
+                    </p>
+                    <p className="font-mono font-bold text-charcoal">{formData.email}</p>
+                    <p className="text-[10px] text-warm-grey mt-2">
+                      (In dev mode, check terminal/console logs for the generated OTP code)
+                    </p>
+                  </>
                 )}
               </div>
 
