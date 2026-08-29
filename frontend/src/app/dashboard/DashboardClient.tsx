@@ -200,8 +200,8 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
         {role === "FIELD_OFFICER" && (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
-              <StatCard icon={<Users className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Registered Beekeepers" value={farmerCount.toLocaleString()} sub="+12 verified" />
-              <StatCard icon={<Layers className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Minted Batches" value={(18920 + batchesList.length - 2).toLocaleString()} sub="Polygon PoS" />
+              <StatCard icon={<Users className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Registered Beekeepers" value={farmerCount.toLocaleString("en-IN")} sub="+12 verified" />
+              <StatCard icon={<Layers className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Minted Batches" value={(18920 + batchesList.length - 2).toLocaleString("en-IN")} sub="Polygon PoS" />
               <StatCard icon={<Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Avg. Purity" value="92.8" sub="Grade A+" suffix="/100" />
               <StatCard icon={<Activity className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Pending" value="7" sub="Inspection" />
             </div>
@@ -286,8 +286,8 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
         {role === "ADMIN" && (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
-              <StatCard icon={<Users className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Total Beekeepers" value={farmerCount.toLocaleString()} sub="29 states" />
-              <StatCard icon={<Layers className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Total Batches" value={(18920 + batchesList.length - 2).toLocaleString()} sub="Polygon PoS" />
+              <StatCard icon={<Users className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Total Beekeepers" value={farmerCount.toLocaleString("en-IN")} sub="29 states" />
+              <StatCard icon={<Layers className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Total Batches" value={(18920 + batchesList.length - 2).toLocaleString("en-IN")} sub="Polygon PoS" />
               <StatCard icon={<AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />} label="Complaints" value={complaints.length.toString()} sub="Review" />
               <StatCard icon={<ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-rose-600" />} label="Revoked" value="3" sub="Recalls" />
             </div>

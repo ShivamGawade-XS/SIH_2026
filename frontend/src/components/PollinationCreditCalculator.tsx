@@ -69,9 +69,11 @@ export default function PollinationCreditCalculator() {
   });
   const [showCertificate, setShowCertificate] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [certificateId] = useState(
-    () => `KVIC-GPC-${Date.now().toString(36).toUpperCase().slice(-6)}`
-  );
+  const [certificateId, setCertificateId] = useState("KVIC-GPC-INIT01");
+
+  useEffect(() => {
+    setCertificateId(`KVIC-GPC-${Date.now().toString(36).toUpperCase().slice(-6)}`);
+  }, []);
 
   const crop = CROP_MULTIPLIERS[input.cropType] || CROP_MULTIPLIERS.litchi;
 
@@ -250,14 +252,14 @@ export default function PollinationCreditCalculator() {
               {
                 icon: <TreePine className="w-5 h-5 text-emerald-600" />,
                 label: "Hectares Pollinated",
-                value: `${Number(results.hectaresPollinatedTotal).toLocaleString()} ha`,
+                value: `${Number(results.hectaresPollinatedTotal).toLocaleString('en-IN')} ha`,
                 sub: `${input.colonyCount} colonies × ${input.activeDays} days`,
                 color: "emerald",
               },
               {
                 icon: <TrendingUp className="w-5 h-5 text-blue-600" />,
                 label: "Crop Yield Boost Revenue",
-                value: `₹${Number(results.yieldBoostRevenue).toLocaleString()}`,
+                value: `₹${Number(results.yieldBoostRevenue).toLocaleString('en-IN')}`,
                 sub: `${(crop.yieldBoost * 100).toFixed(0)}% yield multiplier — ${crop.label}`,
                 color: "blue",
               },
@@ -272,7 +274,7 @@ export default function PollinationCreditCalculator() {
                 icon: <Coins className="w-5 h-5 text-gold" />,
                 label: "KVIC Green Credits",
                 value: `${results.kvicGreenCredits} GPC`,
-                sub: `Value: ₹${Number(results.kvicCreditValue).toLocaleString()} @ ₹850/tCO₂e`,
+                sub: `Value: ₹${Number(results.kvicCreditValue).toLocaleString('en-IN')} @ ₹850/tCO₂e`,
                 color: "amber",
               },
             ].map((m) => (
@@ -293,11 +295,11 @@ export default function PollinationCreditCalculator() {
               Total Ecological Service Value (Carbon + Crop Yield)
             </span>
             <p className="text-4xl serif text-gold font-bold">
-              ₹{Number(results.totalEcologicalValue).toLocaleString()}
+              ₹{Number(results.totalEcologicalValue).toLocaleString('en-IN')}
             </p>
             <p className="text-[10px] font-mono text-warm-grey mt-1">
-              India Carbon Market Trade Value: ₹{Number(results.carbonMarketValue).toLocaleString()}
-              &nbsp;•&nbsp;Credit Tokens Issued: {results.creditTokens.toLocaleString()} GPC-tokens
+              India Carbon Market Trade Value: ₹{Number(results.carbonMarketValue).toLocaleString('en-IN')}
+              &nbsp;•&nbsp;Credit Tokens Issued: {results.creditTokens.toLocaleString('en-IN')} GPC-tokens
             </p>
           </div>
 
@@ -315,8 +317,8 @@ export default function PollinationCreditCalculator() {
               <div className="h-full bg-teal-500 flex-1" />
             </div>
             <div className="flex justify-between text-[10px] font-mono text-warm-grey">
-              <span>Crop Pollination Value: ₹{Number(results.yieldBoostRevenue).toLocaleString()}</span>
-              <span>Carbon Credits: ₹{Number(results.carbonMarketValue).toLocaleString()}</span>
+              <span>Crop Pollination Value: ₹{Number(results.yieldBoostRevenue).toLocaleString('en-IN')}</span>
+              <span>Carbon Credits: ₹{Number(results.carbonMarketValue).toLocaleString('en-IN')}</span>
             </div>
           </div>
         </div>
@@ -355,7 +357,7 @@ export default function PollinationCreditCalculator() {
                 <p><span className="text-warm-grey">Hectares Ecologically Serviced:</span> <strong className="text-gold font-bold">{results.hectaresPollinatedTotal} ha</strong></p>
                 <p><span className="text-warm-grey">CO₂ Equivalent Sequestered:</span> <strong className="text-teal-700 font-bold">{results.co2Sequestered} tCO₂e</strong></p>
                 <p><span className="text-warm-grey">KVIC Green Credits Awarded:</span> <strong className="text-gold font-bold">{results.kvicGreenCredits} GPC</strong></p>
-                <p><span className="text-warm-grey">Total Ecological Service Value:</span> <strong className="text-charcoal font-bold">₹{Number(results.totalEcologicalValue).toLocaleString()}</strong></p>
+                <p><span className="text-warm-grey">Total Ecological Service Value:</span> <strong className="text-charcoal font-bold">₹{Number(results.totalEcologicalValue).toLocaleString('en-IN')}</strong></p>
               </div>
               <div className="flex flex-col items-center justify-center p-3 bg-white border border-charcoal/20">
                 <QRCodeSVG

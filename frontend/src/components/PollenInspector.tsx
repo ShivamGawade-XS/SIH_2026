@@ -205,7 +205,7 @@ export default function PollenInspector({
                 Absolute Pollen Count (APC)
               </p>
               <p className="text-base font-bold text-charcoal">
-                {pollenProfile.pollenGrainDensityPerGram.toLocaleString()} <span className="text-xs font-normal text-warm-grey">grains/g</span>
+                {pollenProfile.pollenGrainDensityPerGram.toLocaleString("en-IN")} <span className="text-xs font-normal text-warm-grey">grains/g</span>
               </p>
               <p className="text-[9px] text-emerald-700 mt-0.5 font-sans">
                 Maurizio Class III Standard
