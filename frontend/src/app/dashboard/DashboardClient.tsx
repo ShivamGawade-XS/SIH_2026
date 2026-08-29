@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LiveTelemetryStream from "@/components/LiveTelemetryStream";
+import HiveAcousticAnalyzer from "@/components/HiveAcousticAnalyzer";
 import { DEMO_BATCHES } from "@/lib/constants";
 import {
   getCustomBatches,
@@ -211,6 +212,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
 
             <PendingRequestsTable />
             <div className="mt-12"><LiveTelemetryStream /></div>
+            <div className="mt-12"><HiveAcousticAnalyzer /></div>
             <RecentBatchesTable batchesList={batchesList} />
           </>
         )}
