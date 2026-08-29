@@ -23,6 +23,7 @@ import { generateExportPassportPDF } from "@/lib/export-passport";
 import { saveComplaint, subscribeToBatchUpdates } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
 import { useLanguage } from "@/lib/LanguageContext";
+import { formatDeterministicDate } from "@/lib/utils";
 import confetti from "canvas-confetti";
 import {
   ShieldCheck,
@@ -131,14 +132,7 @@ export default function ConsumerVerificationPage() {
   }
 
   const { farmer, batch, custodyChain, labReport, qrToken, txHash } = data;
-  const harvestDate = new Date(batch.harvestTimestamp * 1000).toLocaleDateString(
-    lang === "hi" ? "hi-IN" : "en-US",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }
-  );
+  const harvestDate = formatDeterministicDate(batch.harvestTimestamp);
 
   const handleCopyTx = () => {
     if (txHash) {

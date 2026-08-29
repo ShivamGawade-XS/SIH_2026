@@ -72,10 +72,10 @@ export default function VerifiableCredentialModal({ isOpen, onClose, batch }: Pr
     },
     proof: {
       type: "EcdsaSecp256k1Signature2019",
-      created: new Date().toISOString(),
+      created: new Date((batch.batch?.harvestTimestamp || 1723618800) * 1000).toISOString(),
       proofPurpose: "assertionMethod",
       verificationMethod: "did:honeychain:kvic:officer:0x892a0e3b97b0a7b45f3c1d9e2a8f4c6e1b7d5a3#key-1",
-      jws: `eyJhbGciOiJFUzI1NksiLCJjcml0IjpbImJjIl19..MEQCIQ${Array.from({ length: 64 }, () => "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]).join("")}`,
+      jws: "eyJhbGciOiJFUzI1NksiLCJjcml0IjpbImJjIl19..MEQCIQC7a3f89d02e456b1c8f902a45b7e8d9c0e123456789abcdef0123456789abcdef01AiB89f2d9c4e7b1a56209ef43c8b1a32d67e891c345a6789b0cd1234ef56789a2f10",
     },
   };
 

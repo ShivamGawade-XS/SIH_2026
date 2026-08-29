@@ -45,11 +45,11 @@ export default function QrLabelsPage() {
   }, []);
 
   const selectedBatch = batches.find((b) => b.batchId === selectedBatchId) || batches[0];
-  const originDomain = typeof window !== "undefined" ? window.location.origin : "https://honeychain-truetag.vercel.app";
-  const verifyUrl = `${originDomain}/verify/${selectedBatch.batchId}?qr=${selectedBatch.qrToken}`;
+  const verifyUrl = `https://honeychain-truetag.vercel.app/verify/${selectedBatch.batchId}?qr=${selectedBatch.qrToken}`;
 
-  // Simulated Dynamic NTAG 424 DNA Cryptographic CMAC Tag URI
-  const nfcDynamicUri = `${originDomain}/verify/${selectedBatch.batchId}?nfc_tag=${selectedBatch.qrToken}&cmac=${Array.from({ length: 16 }, () => Math.floor(Math.random() * 16).toString(16)).join("")}&ctr=${nfcSimulatedCount}`;
+  // Deterministic Dynamic NTAG 424 DNA Cryptographic CMAC Tag URI
+  const cmacToken = ((0x9f8e7d6c5b4a3f2e + nfcSimulatedCount * 0x1337) % 0xffffffffffffffff).toString(16).padStart(16, "0");
+  const nfcDynamicUri = `https://honeychain-truetag.vercel.app/verify/${selectedBatch.batchId}?nfc_tag=${selectedBatch.qrToken}&cmac=${cmacToken}&ctr=${nfcSimulatedCount}`;
 
   const handlePrint = () => {
     window.print();

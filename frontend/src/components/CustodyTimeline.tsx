@@ -2,6 +2,7 @@
 
 import { CustodyEntry } from "@/lib/types";
 import { CheckCircle2, ShieldCheck, Truck, Factory, TreePine } from "lucide-react";
+import { formatDeterministicDateTime } from "@/lib/utils";
 
 interface CustodyTimelineProps {
   chain: CustodyEntry[];
@@ -20,13 +21,7 @@ export default function CustodyTimeline({ chain }: CustodyTimelineProps) {
   return (
     <div className="space-y-10 relative">
       {chain.map((entry, idx) => {
-        const dateStr = new Date(entry.timestamp * 1000).toLocaleDateString("en-IN", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+        const dateStr = formatDeterministicDateTime(entry.timestamp);
 
         const isLast = idx === chain.length - 1;
 

@@ -2,16 +2,14 @@
 
 import { Farmer } from "@/lib/types";
 import { ShieldCheck, MapPin, Award, Calendar } from "lucide-react";
+import { formatDeterministicMonthYear } from "@/lib/utils";
 
 interface FarmerProfileProps {
   farmer: Farmer;
 }
 
 export default function FarmerProfile({ farmer }: FarmerProfileProps) {
-  const regDate = new Date(farmer.registeredAt * 1000).toLocaleDateString("en-IN", {
-    month: "long",
-    year: "numeric",
-  });
+  const regDate = formatDeterministicMonthYear(farmer.registeredAt);
 
   return (
     <div className="border border-charcoal/10 bg-white p-8 md:p-12 group">

@@ -395,7 +395,7 @@ function StatCard({ icon, label, value, sub, suffix = "" }: { icon: React.ReactN
         <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-warm-grey font-bold truncate max-w-[100px] sm:max-w-none">{label}</span>
         {icon}
       </div>
-      <p className="text-xl sm:text-3xl font-serif text-charcoal font-bold truncate">
+      <p suppressHydrationWarning className="text-xl sm:text-3xl font-serif text-charcoal font-bold truncate">
         {value}{suffix && <span className="text-xs sm:text-sm font-sans font-normal text-warm-grey">{suffix}</span>}
       </p>
       <p className="text-[8px] sm:text-[10px] text-emerald-800 mt-1 sm:mt-2 font-bold font-mono truncate">{sub}</p>
