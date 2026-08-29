@@ -14,9 +14,10 @@ module.exports = {
     }
   },
   networks: {
-    sepolia: {
-      url: process.env.POLYGON_SEPOLIA_RPC || "https://rpc-sepolia.polygon.technology",
-      accounts: [PRIVATE_KEY]
+    amoy: {
+      url: process.env.POLYGON_AMOY_RPC || "https://rpc-amoy.polygon.technology",
+      accounts: [PRIVATE_KEY],
+      chainId: 80002
     },
     hardhat: {
       chainId: 1337

@@ -1,4 +1,5 @@
 import { jsPDF } from "jspdf";
+import { HONEYCHAIN_CONTRACT_ADDRESS } from "./constants";
 import { BatchMetadata } from "./types";
 
 /**
@@ -189,7 +190,7 @@ export function generateExportPassportPDF(data: BatchMetadata) {
   doc.setTextColor(40, 40, 40);
   doc.text(`Ledger Network:       Polygon PoS (Chain ID 80002 / Amoy & Mainnet)`, 16, y);
   y += 5;
-  doc.text(`Smart Contract:       0x3630A7B0c210F0A0061e80C6DE0ea9034E35A536`, 16, y);
+  doc.text(`Smart Contract:       ${HONEYCHAIN_CONTRACT_ADDRESS}`, 16, y);
   y += 5;
   doc.text(`Mint Transaction:     ${txHash || "0x98f4a7c2b3e810564921ad58ec73d091fb5e3962b1a8d0c24f5a6b7e8d9c0e12"}`, 16, y);
   y += 5;

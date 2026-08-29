@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { Server, CheckCircle2, Globe, Database, Code, RefreshCw, Sparkles, ExternalLink } from "lucide-react";
+import { HONEYCHAIN_CONTRACT_ADDRESS } from "@/lib/constants";
 
 export default function GovtInteroperabilityCard() {
   const [showJson, setShowJson] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSynced, setLastSynced] = useState("Just now");
 
+  // MOCK: Government data gateway synchronization federation telemetry
   const mockPayload = {
     standard: "National Honey Mission Data Interoperability Standard v2.4",
     syncTimestamp: new Date().toISOString(),
@@ -32,7 +34,7 @@ export default function GovtInteroperabilityCard() {
     },
     cryptographicAnchor: {
       blockchain: "Polygon PoS (Amoy Testnet / Mainnet)",
-      smartContract: "0x3630A7B0c210F0A0061e80C6DE0ea9034E35A536",
+      smartContract: HONEYCHAIN_CONTRACT_ADDRESS,
       stateHash: "0x4a7c2b3e810564921ad58ec73d091fb5e3962b1a8d0c24f5a6b7e8d9c0e12",
     },
   };

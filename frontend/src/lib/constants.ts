@@ -42,7 +42,9 @@ export const FSSAI_STANDARDS = {
   MAX_ELECTRICAL_CONDUCTIVITY: 0.8,
 };
 
-// Demo batches for immediate presentation
+// ─── DEMO DATASET (BASELINE SAMPLES) ──────────────────────────────────────────
+// MOCK: Pre-seeded demonstration honey batches for offline/testing scenarios.
+// Dynamic batches minted via /dashboard/mint will take precedence from SQLite DB.
 export const DEMO_BATCHES = [
   {
     batchId: 1,

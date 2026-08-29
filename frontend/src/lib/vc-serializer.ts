@@ -4,6 +4,7 @@
  * Author: Shivam Gawade (@ShivamGawade-XS)
  */
 
+import { HONEYCHAIN_CONTRACT_ADDRESS } from "./constants";
 import { BatchMetadata } from "./types";
 
 /**
@@ -68,8 +69,8 @@ export function exportHoneyBatchCredential(
         actorAddress: c.actor,
       })),
       blockchainProof: {
-        network: "Polygon PoS (Sepolia Testnet)",
-        smartContract: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        network: "Polygon PoS (Amoy Testnet - Chain ID 80002)",
+        smartContract: HONEYCHAIN_CONTRACT_ADDRESS,
         ipfsMetadataCID: batch.ipfsMetadataHash,
         txHash: txHash || "0x8f2d9c4e7b1a56209ef43c8b1a32d67e891c345a6789b0cd1234ef56789a2f10",
       },
