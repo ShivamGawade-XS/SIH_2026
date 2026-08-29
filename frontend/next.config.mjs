@@ -4,8 +4,19 @@ const nextConfig = {
   poweredByHeader: false,
   async headers() {
     return [
+      // ── Static assets: immutable cache, no security header interference ──
       {
-        source: "/(.*)",
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      // ── All app routes: security headers ──
+      {
+        source: "/((?!_next/static|_next/image|favicon.ico).*)",
         headers: [
           {
             key: "X-Frame-Options",
