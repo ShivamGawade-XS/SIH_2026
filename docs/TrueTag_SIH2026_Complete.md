@@ -460,7 +460,7 @@ A: "KVIC is one client. We simultaneously approach GI-tagged product cooperative
 | Full Stack Dev (2) | Next.js frontend, Node.js backend, DB | React, Next.js, PostgreSQL |
 | AI / Backend Dev (1) | FastAPI quality model, IPFS integration | Python, scikit-learn, Pinata |
 | UI/UX Dev (1) | Design system, mobile verify page, dashboard | Tailwind, Figma |
-| Team Lead / Presenter (Shivam) | Architecture decisions, pitch, demo script, judge Q&A | All of the above |
+| Team Lead / Presenter (Shivam) | Architecture decisions, pitch, demo script, technical defense | All of the above |
 
 ---
 

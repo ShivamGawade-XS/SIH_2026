@@ -450,7 +450,7 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 - [ ] Push final code to GitHub with clean README
 - [ ] Deploy frontend to Vercel, backend to Railway
 - [ ] Rehearse demo walk-through 3 times (timed — must finish in 5 minutes)
-- [ ] Prepare judge Q&A (answers in Section 10)
+- [ ] Review Technical Architecture FAQ & System Specifications (Section 12)
 
 ---
 
@@ -494,7 +494,7 @@ No competitor can replicate on-chain honey provenance history. This is the actua
 
 ---
 
-## 12. Judge Questions — Prepared Answers
+## 12. Technical Architecture FAQ & System Specifications
 
 **Q: "You claimed ₹6–10 crore ARR Year 1 from SaaS. 50 brands × ₹30,000/month = ₹1.8 crore ARR. Where does the rest come from?"**
 A: "You're completely right to call out that SaaS alone cannot reach ₹6–10 crore. Our realistic Year 1 ARR is **₹3.5–4.4 crore**, split across 4 distinct streams with verifiable unit economics:
@@ -548,7 +548,7 @@ A: "The smart contract is commodity-agnostic. Honey is Phase 1 because KVIC is t
 
 | Role | Member | Key Responsibilities |
 |---|---|---|
-| Team Lead + Presenter | Shivam | Architecture decisions, pitch delivery, judge Q&A, demo coordination |
+| Team Lead + Presenter | Shivam | Architecture decisions, pitch delivery, technical walkthrough, demo coordination |
 | Blockchain Dev | Person 2 | Solidity contracts, Hardhat, Wagmi/ethers.js frontend integration |
 | Full Stack Dev | Person 3 | Next.js pages, PostgreSQL schema, Node.js API routes |
 | AI + Backend Dev | Person 4 | FastAPI service, Random Forest quality model, TFLite CNN, IPFS integration |

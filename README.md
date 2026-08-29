@@ -309,83 +309,69 @@ contract HoneyChain is AccessControl {
 
 ---
 
-## 🎯 SIH 2026 Judge Q&A & Technical Defense Guide
+## 💡 Scientific Rigor, Security & System Innovations
 
-### Q1. "Consumer scan rates on food products globally are under 3%. Why would an average Indian consumer, buying honey at a kirana store, scan a QR code? You're solving a problem consumers don't know they have."
+### 1. High-Intent Verification Touchpoints & FSSAI E-Labeling Compliance
 
-> **Definitive Answer:**
->
-> 1. **High-Motivation Trigger Points**: Passive packaging QR codes get <3% scans, but HoneyChain targets two deliberate high-intent touchpoints:
->    - **E-Commerce Listings (Amazon / Flipkart / ONDC)**: Product description displays *"Scan on delivery to verify batch authenticity"* — digital-native buyers in this segment actively verify products.
->    - **Premium Retail Shelf-Talkers**: For premium raw/organic honey priced at ₹500–800/kg (vs ₹200 commercial syrup), the QR code acts as the **instant justification for premium pricing** directly at the point of sale.
-> 2. **Regulatory Pull (FSSAI 2025 E-Labeling Guidelines)**: KVIC and certified honey brands use "Blockchain Verified" claims to comply with upcoming FSSAI digital transparency norms, driving structural adoption.
-> 3. **The Real ROI is B2B & Export Compliance**: The primary economic return of HoneyChain is **B2B export documentation**. Cooperatives and exporters use immutable on-chain batch passports to satisfy strict APEDA, USFDA, and EU carbon isotope ($^{13}\text{C}$) / NMR traceability audits. Consumer trust is a powerful secondary advantage.
+- **High-Motivation Trigger Points**: Passive packaging QR codes often suffer low scan rates. HoneyChain targets two high-intent touchpoints:
+  - **E-Commerce Deliveries (Amazon / Flipkart / ONDC)**: Product packaging prompts *"Scan on delivery to verify batch authenticity"* — digital-native buyers in this segment actively verify high-value consumables.
+  - **Point-of-Sale Shelf-Talkers**: For premium raw/organic honey priced at ₹500–800/kg (vs ₹200 commercial syrup), the interactive QR passport serves as the **instant justification for premium pricing** directly at the point of sale.
+- **Regulatory Alignment (FSSAI 2025 E-Labeling Guidelines)**: KVIC and certified honey cooperatives use "Blockchain Verified" claims to comply with upcoming FSSAI digital transparency norms, driving structural industry adoption.
+- **B2B & International Export Compliance**: Cooperatives and exporters use immutable on-chain batch passports to satisfy strict APEDA, USFDA, and EU carbon isotope ($^{13}\text{C}$) / NMR traceability audits.
 
 ---
 
-### Q2. "You claim Varroa mite detection accuracy on CNN models. On what data? India primarily uses *Apis cerana indica* — not the European *Apis mellifera* in Western datasets."
+### 2. Transferable Morphological Computer Vision for Apiculture
 
-> **Definitive Answer:**
->
-> 1. **Honest Dataset Attribution**: Our base model is trained on 5,400 annotated hive images (4,600 from open Western *Apis mellifera* benchmarks + 800 *Apis cerana indica* pilot validation frames).
-> 2. **Species-Transferable Morphological Signals**: The vision model inspects physical frame-level pathology (reddish-brown mite clusters, perforated brood cell cappings, and comb decay) rather than individual bee taxonomy — visual symptoms that are structurally identical across both Western and native Indian bee species.
-> 3. **Indian Dataset Pipeline & ICAR Partnership**: Post-SIH field rollout equips KVIC field officers with mobile inspection tools to capture geo-tagged *Apis cerana indica* frame imagery, while establishing an official data validation pipeline with **ICAR-AICRP on Honeybees & Pollinators**.
+- **Dataset Rigor**: The computer vision model is trained on 5,400 annotated hive frames (4,600 from open apiculture benchmarks + 800 native *Apis cerana indica* pilot validation frames).
+- **Species-Transferable Pathological Signals**: The vision model inspects physical frame-level pathology (reddish-brown mite clusters, perforated brood cell cappings, and comb decay) rather than individual bee taxonomy — visual symptoms that are structurally identical across both Western (*Apis mellifera*) and native Indian bee species (*Apis cerana indica*).
+- **Institutional Research Alignment**: Field deployment links with mobile inspection tools for geo-tagged frame imagery, establishing an official data validation pipeline aligned with **ICAR-AICRP on Honeybees & Pollinators**.
 
 ---
 
-### Q3. "What stops a counterfeiter from buying one genuine jar, copying the QR code, and printing it on 10,000 fake jars?"
+### 3. Unit-Level Serial Cryptography & $3\times$ Volume Anomaly Engine
 
-> **Definitive Answer:**
->
-> 1. **Unit-Level Serial Encoding**: Every jar carries a unique serial token `HC-{YEAR}-{BATCH_ID}-{UNIT_SERIAL}` (e.g., `HC-2026-00142-037`) derived from harvest mass ($42.5\text{ kg} \rightarrow 85\text{ units}$).
-> 2. **First-Scan Activation vs. Duplicate Warnings**: The genuine buyer's first scan activates the unit on-chain. Subsequent scans on the same serial immediately alert the buyer: *"Warning: This QR serial has already been scanned multiple times. Check lid tamper seal."*
-> 3. **$3\times$ Volume Anomaly Engine**: If total scans on a batch exceed $3\times \text{expectedUnitCount}$ (e.g., $>255$ scans on an 85-jar batch), the backend automatically flags the batch as disputed and dispatches an instant red alert to the KVIC District Supervisor for retail recall.
+- **Unit-Level Serial Encoding**: Every jar carries a unique serial token `HC-{YEAR}-{BATCH_ID}-{UNIT_SERIAL}` (e.g., `HC-2026-00142-037`) derived from harvest mass ($42.5\text{ kg} \rightarrow 85\text{ units}$).
+- **First-Scan Activation vs. Duplicate Warnings**: The genuine buyer's first scan activates the unit on-chain. Subsequent scans on the same serial immediately alert the buyer: *"Warning: This QR serial has already been scanned multiple times. Check lid tamper seal."*
+- **$3\times$ Volume Anomaly Engine**: If total scans on a batch exceed $3\times \text{expectedUnitCount}$ (e.g., $>255$ scans on an 85-jar batch), the system automatically flags the batch as disputed and dispatches an instant red alert to the KVIC District Supervisor for retail recall.
 
 ---
 
-### Q4. "You claimed ₹6–10 crore ARR Year 1 from SaaS. 50 brands × ₹30,000/month = ₹1.8 crore ARR. Where does the rest come from?"
+### 4. Multi-Stream Sustainable Economics & Revenue Model
 
-> **Definitive Answer:**
->
-> SaaS subscriptions are paid by **private honey brands & commercial processors** (e.g., Dabur, Patanjali, Apis, Organic India) seeking KVIC blockchain export certification to prove compliance to international buyers. KVIC acts as the mandating regulator and nodal authority, while brand processors are the paying SaaS subscribers.
->
-> | Revenue Stream | Unit Economics | Volume / Basis | Year 1 ARR |
-> | --- | --- | --- | --- |
-> | **1. Brand SaaS Subscriptions** | ₹30,000 / month | 50 commercial honey brands | **₹1.80 crore** |
-> | **2. Per-Batch QR Minting** | ₹5 / batch certificate | 60,000 harvest batches | **₹30 lakh** |
-> | **3. Cooperative Subscriptions** | ₹1,000 / beekeeper / yr (absorbed by KVIC Honey Mission scheme) | 15,000 active beekeepers | **₹1.50 crore** |
-> | **4. Export Digital Passports** | ₹10,000 / consignment cert | 800 export consignments | **₹80 lakh** |
-> | **Year 1 Target Total** | | | **~₹4.40 crore ARR** |
->
-> **Year 3 Target**: **₹12.0 crore ARR** scaling across 200+ brands and expanding the same protocol to 700+ GI-tagged agricultural products (Darjeeling tea, Kashmiri saffron, Malabar pepper).
+Commercial subscriptions are paid by **private honey brands & commercial processors** (e.g., Dabur, Patanjali, Apis, Organic India) seeking KVIC blockchain export certification to prove compliance to international buyers. KVIC acts as the mandating regulator and nodal authority, while brand processors are the paying SaaS subscribers.
+
+| Revenue Stream | Unit Economics | Volume / Basis | Year 1 ARR |
+| --- | --- | --- | --- |
+| **1. Brand SaaS Subscriptions** | ₹30,000 / month | 50 commercial honey brands | **₹1.80 crore** |
+| **2. Per-Batch QR Minting** | ₹5 / batch certificate | 60,000 harvest batches | **₹30 lakh** |
+| **3. Cooperative Subscriptions** | ₹1,000 / beekeeper / yr (absorbed by KVIC Honey Mission scheme) | 15,000 active beekeepers | **₹1.50 crore** |
+| **4. Export Digital Passports** | ₹10,000 / consignment cert | 800 export consignments | **₹80 lakh** |
+| **Year 1 Target Total** | | | **~₹4.40 crore ARR** |
+
+**Year 3 Target**: **₹12.0 crore ARR** scaling across 200+ brands and expanding the same protocol to 700+ GI-tagged agricultural products (Darjeeling tea, Kashmiri saffron, Malabar pepper).
 
 ---
 
-### Q5. "The Oracle Problem: What stops a corrupt field officer or beekeeper from inputting fake honey data? Blockchain only makes lies immutable."
+### 5. Physical & Cryptographic Solution to the Oracle Problem
 
-> **Definitive Answer:**
->
-> We resolve the Oracle Problem through a **3-Layer Physical & Cryptographic Verification Architecture**:
->
-> 1. **Autonomous IoT Hardware Signature**: Hive weight, acoustic frequency, and temperature data are generated directly by physical sensors and signed in hardware enclaves (LoRaWAN/MQTT) — requiring zero human entry.
-> 2. **2-Party Asymmetric Sign-Off**: The beekeeper submits the harvest (`submitHarvest`), but a separate authorized Field Officer (`FIELD_OFFICER_ROLE`) must inspect and approve (`approveHarvestAndMint`). Collusion requires multiple bad actors.
-> 3. **Disinterested Laboratory Cross-Check & Supervisor Flagging**: Laboratory tests (NMR $\delta^{13}\text{C}$, SMR rice syrup, HMF) are logged by certified chemists (`LAB_ANALYST_ROLE`). If discrepancies appear later, District Supervisors execute non-destructive `flagFraud()` dispute calls on-chain.
+We resolve the Oracle Problem through a **3-Layer Physical & Cryptographic Verification Architecture**:
+
+1. **Autonomous IoT Hardware Signature**: Hive weight, acoustic frequency, and temperature data are generated directly by physical sensors and signed in hardware enclaves (LoRaWAN/MQTT) — requiring zero human entry.
+2. **2-Party Asymmetric Sign-Off**: The beekeeper submits the harvest (`submitHarvest`), but a separate authorized Field Officer (`FIELD_OFFICER_ROLE`) must inspect and approve (`approveHarvestAndMint`). Collusion requires multiple bad actors.
+3. **Disinterested Laboratory Cross-Check & Supervisor Flagging**: Laboratory tests (NMR $\delta^{13}\text{C}$, SMR rice syrup, HMF) are logged by certified chemists (`LAB_ANALYST_ROLE`). If discrepancies appear later, District Supervisors execute non-destructive `flagFraud()` dispute calls on-chain.
 
 ---
 
-### Q6. "If Pinata goes down, doesn't your IPFS storage break?"
+### 6. Decentralized Multi-Gateway Content Addressing (IPFS & Filecoin)
 
-> **Definitive Answer:**
->
-> No. IPFS uses **Content Addressing (CIDs)** where the hash is derived mathematically from the file contents (`ipfs://Qm...`), not a server location. Pinata is used merely as an initial HTTP pinning gateway. Because the CID is immutable on Polygon, files can be served by any IPFS gateway (Cloudflare, Infura, local KVIC IPFS Cluster nodes, or Web3.Storage/Filecoin) without altering a single byte on the smart contract.
+IPFS uses **Content Addressing (CIDs)** where the hash is derived mathematically from the file contents (`ipfs://Qm...`), not a server location. Pinata is used as an initial HTTP pinning gateway. Because the CID is immutable on Polygon, files can be served by any IPFS gateway (Cloudflare, Infura, local KVIC IPFS Cluster nodes, or Web3.Storage/Filecoin) without altering a single byte on the smart contract.
 
 ---
 
-### Q7. "How do you handle farmer identity legally without a UIDAI Aadhaar license?"
+### 7. Privacy-Preserving Farmer Identity Architecture (DigiLocker & BRN)
 
-> **Definitive Answer:**
->
-> Student teams and third-party apps cannot legally store raw Aadhaar numbers under UIDAI regulations. HoneyChain uses official **KVIC Beekeeper Registration Numbers (BRN)**, State Cooperative Society IDs, and standard DigiLocker OAuth verification tokens. No biometric or Aadhaar data is stored on-chain.
+In compliance with UIDAI regulations, no raw Aadhaar numbers or biometrics are stored. HoneyChain uses official **KVIC Beekeeper Registration Numbers (BRN)**, State Cooperative Society IDs, and standard DigiLocker OAuth verification tokens. No personal biometric data is stored on-chain.
 
 ---
 
