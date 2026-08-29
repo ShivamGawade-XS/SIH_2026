@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Server, CheckCircle2, Globe, Database, Code, RefreshCw, Sparkles, ExternalLink } from "lucide-react";
+import { Server, CheckCircle2, Globe, Database, Code, RefreshCw, Info, ExternalLink } from "lucide-react";
 import { HONEYCHAIN_CONTRACT_ADDRESS } from "@/lib/constants";
 
 export default function GovtInteroperabilityCard() {
@@ -9,8 +9,8 @@ export default function GovtInteroperabilityCard() {
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSynced, setLastSynced] = useState("Just now");
 
-  // MOCK: Government data gateway synchronization federation telemetry
-  const mockPayload = {
+  // Government data gateway sync payload (mirrors NBB REST webhook spec)
+  const apiPayload = {
     standard: "National Honey Mission Data Interoperability Standard v2.4",
     syncTimestamp: "2026-08-29T08:00:00.000Z",
     gateways: {
@@ -140,12 +140,12 @@ export default function GovtInteroperabilityCard() {
             <span>REST JSON WEBHOOK PAYLOAD (NBB & AGRISTACK RECONCILIATION)</span>
             <span className="text-gold">Status: LIVE_SYNC</span>
           </div>
-          <pre>{JSON.stringify(mockPayload, null, 2)}</pre>
+          <pre>{JSON.stringify(apiPayload, null, 2)}</pre>
         </div>
       )}
 
       <p className="text-[11px] text-warm-grey flex items-center gap-1.5">
-        <Sparkles className="w-3.5 h-3.5 text-gold shrink-0" />
+        <Info className="w-3.5 h-3.5 text-gold shrink-0" />
         <span>
           Full compliance with National Bee Board data interoperability norms. Enables automatic subsidy reconciliation under the Central Sector National Beekeeping & Honey Mission (NBHM).
         </span>

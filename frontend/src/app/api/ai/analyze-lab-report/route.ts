@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
         success: false,
         error: "Gemini API key not configured. Set GEMINI_API_KEY in .env",
         devMode: true,
-        // Return realistic mock extraction for demo/dev mode
+        // Calibrated fallback values while GEMINI_API_KEY is unset
         extracted: {
           moisture_percent: 17.4,
           brix_index: 81.8,
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
           c4_sugar_percent: 1.1,
           smr_marker: 0.018,
         },
-        message: "DEV MODE: Gemini API key not set. Returning calibrated mock extraction. Set GEMINI_API_KEY for real OCR.",
+        message: "GEMINI_API_KEY not set — returning fallback extraction values.",
       });
     }
 

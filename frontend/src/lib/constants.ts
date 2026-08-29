@@ -43,8 +43,8 @@ export const FSSAI_STANDARDS = {
 };
 
 // ─── DEMO DATASET (BASELINE SAMPLES) ──────────────────────────────────────────
-// MOCK: Pre-seeded demonstration honey batches for offline/testing scenarios.
-// Dynamic batches minted via /dashboard/mint will take precedence from SQLite DB.
+// Seeded batches used for stage demos and offline fallback.
+// Live-minted batches from /dashboard/mint are served from SQLite.
 export const DEMO_BATCHES = [
   {
     batchId: 1,

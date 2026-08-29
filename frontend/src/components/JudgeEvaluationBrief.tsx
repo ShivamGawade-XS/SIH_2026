@@ -9,7 +9,7 @@ import {
   Globe,
   Database,
   Smartphone,
-  Sparkles,
+  BookOpen,
   ExternalLink,
   X,
   FileText,

@@ -11,6 +11,10 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
   const DISTRICT_SUPERVISOR_ROLE = ethers.keccak256(ethers.toUtf8Bytes("DISTRICT_SUPERVISOR_ROLE"));
   const ADMIN_ROLE               = ethers.keccak256(ethers.toUtf8Bytes("ADMIN_ROLE"));
 
+  const VALID_CID_1 = "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uc1";
+  const VALID_CID_2 = "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uc2";
+  const VALID_CID_3 = "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uc3";
+
   beforeEach(async function () {
     [admin, fieldOfficer, supervisor, beekeeperWallet, stranger] = await ethers.getSigners();
 
@@ -27,7 +31,7 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
       "Ramesh Kumar",
       "Sundarbans, West Bengal",
       "KVIC-WB-2024-001",
-      "QmFarmerProfileHash123"
+      VALID_CID_1
     );
   });
 
@@ -49,14 +53,14 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
     it("blocks stranger from registering farmers", async () => {
       await expect(
         contract.connect(stranger).registerFarmer(
-          stranger.address, "X", "Y", "Z", "hash"
+          stranger.address, "X", "Y", "Z", VALID_CID_1
         )
       ).to.be.reverted;
     });
 
     it("blocks stranger from submitting harvest", async () => {
       await expect(
-        contract.connect(stranger).submitHarvest("Acacia", 50, "QmHash")
+        contract.connect(stranger).submitHarvest("Acacia", 50, VALID_CID_1)
       ).to.be.reverted;
     });
   });
@@ -66,7 +70,7 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
   describe("Step 1 — Beekeeper: submitHarvest()", function () {
     it("allows a registered beekeeper to submit a harvest request", async () => {
       const tx = await contract.connect(beekeeperWallet).submitHarvest(
-        "Mustard Blossom", 120, "QmHarvestMetaHash001"
+        "Mustard Blossom", 120, VALID_CID_1
       );
       const receipt = await tx.wait();
       const event = receipt.logs.find(l => l.fragment?.name === "HarvestSubmitted");
@@ -76,7 +80,7 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
     });
 
     it("stores request in Pending state", async () => {
-      await contract.connect(beekeeperWallet).submitHarvest("Acacia", 80, "QmHash2");
+      await contract.connect(beekeeperWallet).submitHarvest("Acacia", 80, VALID_CID_2);
       const req = await contract.getHarvestRequest(1);
       expect(req.status).to.equal(0); // RequestStatus.Pending
       expect(req.floraSource).to.equal("Acacia");
@@ -84,13 +88,13 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
 
     it("blocks zero-quantity harvest submissions", async () => {
       await expect(
-        contract.connect(beekeeperWallet).submitHarvest("Litchi", 0, "QmHash")
+        contract.connect(beekeeperWallet).submitHarvest("Litchi", 0, VALID_CID_1)
       ).to.be.revertedWith("HoneyChain: Quantity must be > 0");
     });
 
     it("blocks unregistered callers", async () => {
       await expect(
-        contract.connect(stranger).submitHarvest("Tulsi", 10, "QmHash")
+        contract.connect(stranger).submitHarvest("Tulsi", 10, VALID_CID_1)
       ).to.be.reverted;
     });
   });
@@ -99,12 +103,12 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
 
   describe("Step 2 — Field Officer: approveHarvestAndMint()", function () {
     beforeEach(async () => {
-      await contract.connect(beekeeperWallet).submitHarvest("Litchi", 200, "QmRawHash");
+      await contract.connect(beekeeperWallet).submitHarvest("Litchi", 200, VALID_CID_1);
     });
 
     it("mints a batch upon approval", async () => {
       const tx = await contract.connect(fieldOfficer).approveHarvestAndMint(
-        1, "QmVerifiedMetaHash", 87, "Grade A (Raw Organic)", "HCQR-001"
+        1, VALID_CID_2, 87, "Grade A (Raw Organic)", "HCQR-001"
       );
       const receipt = await tx.wait();
       const event = receipt.logs.find(l => l.fragment?.name === "BatchMinted");
@@ -115,7 +119,7 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
 
     it("marks request as Approved", async () => {
       await contract.connect(fieldOfficer).approveHarvestAndMint(
-        1, "QmVerifiedHash", 90, "Grade A+", "HCQR-002"
+        1, VALID_CID_2, 90, "Grade A+", "HCQR-002"
       );
       const req = await contract.getHarvestRequest(1);
       expect(req.status).to.equal(1); // RequestStatus.Approved
@@ -123,7 +127,7 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
 
     it("sets batch as authentic after minting", async () => {
       await contract.connect(fieldOfficer).approveHarvestAndMint(
-        1, "QmVerifiedHash", 90, "Grade A+", "HCQR-003"
+        1, VALID_CID_2, 90, "Grade A+", "HCQR-003"
       );
       const batch = await contract.getBatch(1);
       expect(batch.isAuthentic).to.equal(true);
@@ -133,24 +137,24 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
 
     it("rejects duplicate QR token on second mint", async () => {
       await contract.connect(fieldOfficer).approveHarvestAndMint(
-        1, "QmHash", 80, "Grade B", "HCQR-DUPE"
+        1, VALID_CID_2, 80, "Grade B", "HCQR-DUPE"
       );
       // Submit another harvest
-      await contract.connect(beekeeperWallet).submitHarvest("Ajwain", 50, "QmHash2");
+      await contract.connect(beekeeperWallet).submitHarvest("Ajwain", 50, VALID_CID_3);
       await expect(
         contract.connect(fieldOfficer).approveHarvestAndMint(
-          2, "QmHash2", 75, "Grade B", "HCQR-DUPE"
+          2, VALID_CID_3, 75, "Grade B", "HCQR-DUPE"
         )
       ).to.be.revertedWith("HoneyChain: QR token already assigned");
     });
 
     it("prevents approving an already-approved request", async () => {
       await contract.connect(fieldOfficer).approveHarvestAndMint(
-        1, "QmHash", 80, "Grade A", "HCQR-X1"
+        1, VALID_CID_2, 80, "Grade A", "HCQR-X1"
       );
       await expect(
         contract.connect(fieldOfficer).approveHarvestAndMint(
-          1, "QmHash2", 80, "Grade A", "HCQR-X2"
+          1, VALID_CID_3, 80, "Grade A", "HCQR-X2"
         )
       ).to.be.revertedWith("HoneyChain: Request not in pending state");
     });
@@ -158,7 +162,7 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
     it("blocks stranger from approving", async () => {
       await expect(
         contract.connect(stranger).approveHarvestAndMint(
-          1, "QmHash", 80, "Grade A", "HCQR-S1"
+          1, VALID_CID_2, 80, "Grade A", "HCQR-S1"
         )
       ).to.be.reverted;
     });
@@ -166,7 +170,7 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
 
   describe("Step 2 — Field Officer: rejectHarvest()", function () {
     beforeEach(async () => {
-      await contract.connect(beekeeperWallet).submitHarvest("Neem", 30, "QmNeem");
+      await contract.connect(beekeeperWallet).submitHarvest("Neem", 30, VALID_CID_1);
     });
 
     it("rejects a harvest with a reason", async () => {
@@ -189,7 +193,7 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
       await contract.connect(fieldOfficer).rejectHarvest(1, "Bad sample");
       await expect(
         contract.connect(fieldOfficer).approveHarvestAndMint(
-          1, "QmHash", 80, "Grade A", "HCQR-Y1"
+          1, VALID_CID_2, 80, "Grade A", "HCQR-Y1"
         )
       ).to.be.revertedWith("HoneyChain: Request not in pending state");
     });
@@ -199,9 +203,9 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
 
   describe("Step 3 — District Supervisor: flagFraud()", function () {
     beforeEach(async () => {
-      await contract.connect(beekeeperWallet).submitHarvest("Acacia", 100, "QmAcacia");
+      await contract.connect(beekeeperWallet).submitHarvest("Acacia", 100, VALID_CID_1);
       await contract.connect(fieldOfficer).approveHarvestAndMint(
-        1, "QmVerifiedAcacia", 85, "Grade A", "HCQR-AUDIT1"
+        1, VALID_CID_2, 85, "Grade A", "HCQR-AUDIT1"
       );
     });
 
@@ -247,9 +251,9 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
 
   describe("Step 3 — District Supervisor: resolveDispute()", function () {
     beforeEach(async () => {
-      await contract.connect(beekeeperWallet).submitHarvest("Jamun", 75, "QmJamun");
+      await contract.connect(beekeeperWallet).submitHarvest("Jamun", 75, VALID_CID_1);
       await contract.connect(fieldOfficer).approveHarvestAndMint(
-        1, "QmVerifiedJamun", 92, "Grade A+", "HCQR-RES1"
+        1, VALID_CID_2, 92, "Grade A+", "HCQR-RES1"
       );
       await contract.connect(supervisor).flagFraud(1, "Suspected adulteration — pending retesting");
     });
@@ -293,9 +297,9 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
 
   describe("Admin: revokeBatch()", function () {
     beforeEach(async () => {
-      await contract.connect(beekeeperWallet).submitHarvest("Tulsi", 60, "QmTulsi");
+      await contract.connect(beekeeperWallet).submitHarvest("Tulsi", 60, VALID_CID_1);
       await contract.connect(fieldOfficer).approveHarvestAndMint(
-        1, "QmVerifiedTulsi", 78, "Grade B", "HCQR-ADMIN1"
+        1, VALID_CID_2, 78, "Grade B", "HCQR-ADMIN1"
       );
     });
 
@@ -321,9 +325,9 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
 
   describe("QR Token Lookup", function () {
     it("resolves QR token to correct batch", async () => {
-      await contract.connect(beekeeperWallet).submitHarvest("Coriander", 40, "QmCor");
+      await contract.connect(beekeeperWallet).submitHarvest("Coriander", 40, VALID_CID_1);
       await contract.connect(fieldOfficer).approveHarvestAndMint(
-        1, "QmVerifiedCor", 81, "Grade A", "HCQR-LOOKUP1"
+        1, VALID_CID_2, 81, "Grade A", "HCQR-LOOKUP1"
       );
       const batch = await contract.getBatchByQR("HCQR-LOOKUP1");
       expect(batch.batchId).to.equal(1n);
@@ -335,9 +339,9 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
 
   describe("Custody Chain Logging", function () {
     it("logs full custody journey", async () => {
-      await contract.connect(beekeeperWallet).submitHarvest("Sunflower", 90, "QmSun");
+      await contract.connect(beekeeperWallet).submitHarvest("Sunflower", 90, VALID_CID_1);
       await contract.connect(fieldOfficer).approveHarvestAndMint(
-        1, "QmVerifiedSun", 89, "Grade A+", "HCQR-CUST1"
+        1, VALID_CID_2, 89, "Grade A+", "HCQR-CUST1"
       );
       await contract.connect(fieldOfficer).addCustody(1, "KVIC Processing Unit #7, Patna", "Received & Graded");
       await contract.connect(fieldOfficer).addCustody(1, "Pasteurization Facility, Jaipur", "Pasteurized at 40°C");

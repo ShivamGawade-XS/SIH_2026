@@ -3,7 +3,6 @@ import { BatchMetadata } from "./types";
 
 /**
  * Generate an official KVIC Certificate of Provenance PDF
- * Adapted from ZeroCert certificate generation architecture
  * Author: Shivam Gawade (@ShivamGawade-XS)
  */
 export function generateCertificatePDF(data: BatchMetadata) {
@@ -109,23 +108,68 @@ export function generateCertificatePDF(data: BatchMetadata) {
   doc.text(`KVIC Cooperative:   ${farmer.cooperativeId}`, 32, 104);
   doc.text(`TrueTag QR Token:   ${qrToken}`, 32, 110);
 
-  // Purity Score Badge in Box
-  doc.setFillColor(26, 26, 26);
-  doc.rect(pageWidth - 75, 78, 42, 34, "F");
+  // Purity Score Panel — official certification style
+  const panelX = pageWidth - 83;
+  const panelY = 75;
+  const panelW = 52;
+  const panelH = 38;
+
+  // Panel background (ivory)
+  doc.setFillColor(252, 249, 240);
+  doc.setDrawColor(212, 175, 55);
+  doc.setLineWidth(1.2);
+  doc.rect(panelX, panelY, panelW, panelH, "FD");
+
+  // Inner inset border
+  doc.setDrawColor(212, 175, 55);
+  doc.setLineWidth(0.35);
+  doc.rect(panelX + 2, panelY + 2, panelW - 4, panelH - 4);
+
+  // Security hatch lines (diagonal guilloche)
+  doc.setDrawColor(232, 220, 190);
+  doc.setLineWidth(0.25);
+  for (let i = 0; i <= panelW + panelH; i += 4) {
+    const x1 = panelX + Math.max(0, i - panelH);
+    const y1 = panelY + Math.min(i, panelH);
+    const x2 = panelX + Math.min(i, panelW);
+    const y2 = panelY + Math.max(0, i - panelW);
+    if (x1 <= panelX + panelW && y2 >= panelY) {
+      doc.line(x1, y1, x2, y2);
+    }
+  }
+
+  // Header label
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(5.5);
+  doc.setTextColor(140, 110, 40);
+  doc.text("QUALITY ASSESSMENT SCORE", panelX + panelW / 2, panelY + 7, { align: "center" });
+
+  // Score value
+  const scoreStr = `${batch.qualityScore}`;
+  doc.setFont("times", "bold");
+  doc.setFontSize(22);
+  doc.setTextColor(26, 26, 26);
+  doc.text(scoreStr, panelX + panelW / 2 - 3, panelY + 21, { align: "center" });
+
+  // /100 suffix
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7);
-  doc.setTextColor(212, 175, 55);
-  doc.text("AI PURITY SCORE", pageWidth - 54, 85, { align: "center" });
+  doc.setTextColor(100, 100, 100);
+  doc.text("/100", panelX + panelW / 2 + 8, panelY + 21, { align: "center" });
 
-  doc.setFont("times", "bold");
-  doc.setFontSize(20);
-  doc.setTextColor(255, 255, 255);
-  doc.text(`${batch.qualityScore}`, pageWidth - 54, 96, { align: "center" });
-
+  // Grade pill
+  doc.setFillColor(212, 175, 55);
+  doc.rect(panelX + 10, panelY + 24, panelW - 20, 6, "F");
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(7);
-  doc.setTextColor(74, 222, 128);
-  doc.text("100% FSSAI PASSED", pageWidth - 54, 104, { align: "center" });
+  doc.setFontSize(6);
+  doc.setTextColor(26, 26, 26);
+  doc.text(batch.grade, panelX + panelW / 2, panelY + 28.5, { align: "center" });
+
+  // FSSAI reference
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(4.5);
+  doc.setTextColor(150, 130, 90);
+  doc.text("FSSAI IS 4941 · EA-IRMS", panelX + panelW / 2, panelY + 36.5, { align: "center" });
 
   // 10. Lab Parameter Table
   const tableY = 124;

@@ -38,8 +38,8 @@ export default function DBTPayoutCard({
   const handleSimulatePayout = () => {
     setIsDisbursing(true);
     setTimeout(() => {
-      const mockUtr = `DBT-KVIC-2026-${Math.floor(100000000 + Math.random() * 900000000)}`;
-      setUtrNumber(mockUtr);
+      const utrRef = `DBT-KVIC-2026-${Math.floor(100000000 + Math.random() * 900000000)}`;
+      setUtrNumber(utrRef);
       setIsDisbursing(false);
       setDisbursed(true);
       confetti({ particleCount: 70, spread: 55, origin: { y: 0.8 } });
