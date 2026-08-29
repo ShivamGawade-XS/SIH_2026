@@ -264,6 +264,12 @@ export default function QrLabelsPage() {
                       size={108}
                       level="H"
                       includeMargin={false}
+                      imageSettings={{
+                        src: "/honeychain_app_icon.jpg",
+                        height: 22,
+                        width: 22,
+                        excavate: true,
+                      }}
                     />
                   </div>
 
@@ -292,6 +298,11 @@ export default function QrLabelsPage() {
                   {/* Outer Gold Border Trim */}
                   <div className="absolute inset-1.5 border border-gold/60 pointer-events-none" />
 
+                  {/* Security Watermark in Label Background */}
+                  <div className="absolute right-[-20px] bottom-8 w-44 h-44 opacity-[0.08] pointer-events-none select-none mix-blend-multiply">
+                    <img src="/honeychain_logo_badge.jpg" alt="" className="w-full h-full object-contain" />
+                  </div>
+
                   {/* Top Brand Header */}
                   <div className="text-center z-10 border-b border-charcoal/15 pb-2 flex flex-col items-center">
                     <span className="text-[8px] uppercase tracking-ultra text-warm-grey font-bold block mb-1">
@@ -309,7 +320,17 @@ export default function QrLabelsPage() {
                   {/* Center QR & Purity Badge */}
                   <div className="flex items-center justify-between gap-3 z-10 my-2">
                     <div className="p-2 border border-charcoal bg-white shrink-0">
-                      <QRCodeSVG value={verifyUrl} size={88} level="H" />
+                      <QRCodeSVG
+                        value={verifyUrl}
+                        size={88}
+                        level="H"
+                        imageSettings={{
+                          src: "/honeychain_app_icon.jpg",
+                          height: 18,
+                          width: 18,
+                          excavate: true,
+                        }}
+                      />
                     </div>
                     <div className="text-left text-xs font-mono">
                       <div className="p-1.5 bg-gold/15 border border-gold text-center mb-1.5">
@@ -349,9 +370,14 @@ export default function QrLabelsPage() {
               {Array.from({ length: Math.min(sheetCount, 2) }).map((_, i) => (
                 <div
                   key={i}
-                  className="w-full max-w-md border-4 border-charcoal bg-[#141414] text-alabaster p-6 flex flex-col justify-between relative shadow-lg"
+                  className="w-full max-w-md border-4 border-charcoal bg-[#141414] text-alabaster p-6 flex flex-col justify-between relative shadow-lg overflow-hidden"
                 >
-                  <div className="flex justify-between items-start border-b border-white/20 pb-4">
+                  {/* Security Watermark in Drum Tag Background */}
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 w-56 h-56 opacity-[0.07] pointer-events-none select-none">
+                    <img src="/honeychain_logo_badge.jpg" alt="" className="w-full h-full object-contain" />
+                  </div>
+
+                  <div className="flex justify-between items-start border-b border-white/20 pb-4 relative z-10">
                     <div>
                       <span className="text-[10px] uppercase tracking-ultra text-gold font-mono font-bold block">
                         KVIC HEAVY TRANSPORT DRUM TAG
@@ -365,9 +391,19 @@ export default function QrLabelsPage() {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-6 my-6">
+                  <div className="flex items-center gap-6 my-6 relative z-10">
                     <div className="p-3 bg-white border border-white shrink-0">
-                      <QRCodeSVG value={verifyUrl} size={110} level="H" />
+                      <QRCodeSVG
+                        value={verifyUrl}
+                        size={110}
+                        level="H"
+                        imageSettings={{
+                          src: "/honeychain_app_icon.jpg",
+                          height: 24,
+                          width: 24,
+                          excavate: true,
+                        }}
+                      />
                     </div>
                     <div className="text-xs font-mono space-y-1.5">
                       <p className="text-warm-grey">TrueTag Token: <span className="text-alabaster font-bold">{selectedBatch.qrToken}</span></p>
@@ -380,7 +416,7 @@ export default function QrLabelsPage() {
                     </div>
                   </div>
 
-                  <div className="border-t border-white/20 pt-3 text-[10px] font-mono text-warm-grey flex justify-between">
+                  <div className="border-t border-white/20 pt-3 text-[10px] font-mono text-warm-grey flex justify-between relative z-10">
                     <span>Tamper Law: Section 16 FSSAI Act 2006</span>
                     <span>Chain: Polygon PoS (Amoy)</span>
                   </div>

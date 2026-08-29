@@ -224,6 +224,12 @@ export default function BeekeeperTipModal({
                   size={150}
                   level="H"
                   includeMargin={true}
+                  imageSettings={{
+                    src: "/honeychain_app_icon.jpg",
+                    height: 28,
+                    width: 28,
+                    excavate: true,
+                  }}
                 />
               </div>
               <p className="text-[11px] font-mono font-bold text-charcoal">

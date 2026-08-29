@@ -33,6 +33,21 @@ export function generateCertificatePDF(data: BatchMetadata) {
   doc.setLineWidth(0.75);
   doc.rect(14, 14, pageWidth - 28, pageHeight - 28);
 
+  // 3b. Subtle Security Watermark Rosette in Background Center
+  const centerX = pageWidth / 2;
+  const centerY = pageHeight / 2 + 10;
+  doc.setDrawColor(240, 230, 210);
+  doc.setLineWidth(0.4);
+  for (let r = 15; r <= 45; r += 7) {
+    doc.circle(centerX, centerY, r);
+  }
+  doc.setFont("times", "bolditalic");
+  doc.setFontSize(28);
+  doc.setTextColor(242, 236, 222);
+  doc.text("HONEYCHAIN", centerX, centerY - 4, { align: "center" });
+  doc.setFontSize(10);
+  doc.text("KVIC • TRUETAG IMMUTABLE PROVENANCE", centerX, centerY + 8, { align: "center" });
+
   // 4. Header: KVIC & National Bee Board
   doc.setFont("times", "bold");
   doc.setFontSize(11);
@@ -162,7 +177,26 @@ export function generateCertificatePDF(data: BatchMetadata) {
   doc.text(`Polygon Tx: ${txHash || "0x8f2d9c4e7b1a56209ef43c8b1a32d67e891c345a6789b0cd1234ef56789a2f10"}`, 25, chainY + 4);
   doc.text(`IPFS CID:   ${batch.ipfsMetadataHash}`, 25, chainY + 7.5);
 
-  // 12. Signatures
+  // 12. Center Embossed Official Provenance Seal Stamp
+  const sealCenterX = pageWidth / 2;
+  const sealCenterY = 178;
+  doc.setDrawColor(212, 175, 55);
+  doc.setLineWidth(0.8);
+  doc.circle(sealCenterX, sealCenterY, 14);
+  doc.setLineWidth(0.3);
+  doc.circle(sealCenterX, sealCenterY, 12.2);
+  doc.setFont("times", "bold");
+  doc.setFontSize(5);
+  doc.setTextColor(180, 140, 30);
+  doc.text("★ KVIC • NATIONAL BEE BOARD ★", sealCenterX, sealCenterY - 7, { align: "center" });
+  doc.setFontSize(7.5);
+  doc.text("100% PURE", sealCenterX, sealCenterY - 1, { align: "center" });
+  doc.setFontSize(6.5);
+  doc.text("AUTHENTIC", sealCenterX, sealCenterY + 3, { align: "center" });
+  doc.setFontSize(4.5);
+  doc.text("TRUETAG SECURED", sealCenterX, sealCenterY + 8, { align: "center" });
+
+  // 13. Signatures
   const sigY = 186;
   doc.setDrawColor(180, 180, 180);
   doc.setLineWidth(0.3);
