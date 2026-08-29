@@ -1,53 +1,57 @@
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import HoneyChainLogo from "@/components/HoneyChainLogo";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-background px-6 py-10 mt-16">
-      <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between gap-8">
+    <footer className="py-24 px-6 md:px-12 lg:px-24 bg-charcoal text-alabaster border-t border-charcoal">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-12">
+          <HoneyChainLogo size="lg" variant="full" theme="dark" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-20">
+          {/* Col 1 */}
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-6">Collaborators & Governance</p>
+            <div className="flex flex-col gap-3">
+              <p className="text-xl serif italic font-normal text-alabaster">Khadi and Village Industries Commission (KVIC)</p>
+              <p className="text-base serif italic text-taupe/80">National Bee Board — Honey Mission</p>
+              <p className="text-xs text-warm-grey mt-2">Ministry of Micro, Small & Medium Enterprises, Govt. of India</p>
+            </div>
+          </div>
 
-        <div>
-          <p className="text-sm font-semibold text-text-primary mb-1">HoneyChain</p>
-          <p className="text-xs text-text-muted max-w-xs leading-relaxed">
-            Blockchain honey provenance for KVIC and the National Bee Board.
-            SIH 2026 — Problem Statement SIH26021.
+          {/* Col 2 */}
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-6">Architectural Core</p>
+            <p className="text-xl serif text-alabaster">TrueTag Universal Authentication</p>
+            <p className="text-xs text-taupe/70 mt-2 leading-relaxed">
+              Decentralized provenance protocol combining Polygon PoS immutable ledger, AI-driven anti-adulteration models, and physical tamper-evident micro-QR seals.
+            </p>
+          </div>
+
+          {/* Col 3 */}
+          <div className="flex flex-col items-start md:items-end">
+            <div className="bg-alabaster text-charcoal px-4 py-2 font-bold text-xs uppercase tracking-widest mb-4">
+              SIH 2026 Finalist
+            </div>
+            <p className="text-[10px] text-warm-grey uppercase tracking-widest">Problem Statement: SIH26021</p>
+            <p className="text-xs text-taupe/80 mt-2">Lead Developer: <span className="text-gold font-medium">Shivam Gawade</span></p>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="border-t border-white/10 pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[10px] uppercase tracking-widest text-warm-grey">
+            © 2026 HoneyChain by TrueTag. Open Source Under MIT License.
           </p>
-        </div>
-
-        <div className="flex gap-12 text-sm">
-          <div>
-            <p className="text-text-muted text-xs font-medium mb-3 uppercase tracking-wide">Platform</p>
-            <ul className="space-y-2">
-              <li><Link href="/" className="text-text-secondary hover:text-text-primary transition-colors text-sm">Home</Link></li>
-              <li><Link href="/verify" className="text-text-secondary hover:text-text-primary transition-colors text-sm">Verify</Link></li>
-              <li><Link href="/dashboard" className="text-text-secondary hover:text-text-primary transition-colors text-sm">Portal</Link></li>
-            </ul>
-          </div>
-          <div>
-            <p className="text-text-muted text-xs font-medium mb-3 uppercase tracking-wide">Open Source</p>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="https://github.com/ShivamGawade-XS/SIH_2026"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-text-secondary hover:text-text-primary transition-colors flex items-center gap-1 text-sm"
-                >
-                  GitHub <ExternalLink className="w-3 h-3" />
-                </Link>
-              </li>
-            </ul>
+          <div className="flex gap-8">
+            <Link href="https://github.com/ShivamGawade-XS/SIH_2026" target="_blank" className="text-[10px] uppercase tracking-widest text-warm-grey hover:text-gold transition-colors duration-300">
+              GitHub Repository
+            </Link>
+            <Link href="https://github.com/ShivamGawade-XS/zerocert" target="_blank" className="text-[10px] uppercase tracking-widest text-warm-grey hover:text-gold transition-colors duration-300">
+              ZeroCert Engine
+            </Link>
           </div>
         </div>
-
-      </div>
-
-      <div className="max-w-4xl mx-auto mt-8 pt-6 border-t border-border">
-        <p className="text-xs text-text-muted">
-          © 2026 HoneyChain by TrueTag. Open source under MIT License.
-          Lead Developer: Shivam Gawade.
-        </p>
       </div>
     </footer>
   );

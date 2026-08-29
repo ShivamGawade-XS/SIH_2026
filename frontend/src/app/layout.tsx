@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Playfair_Display, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import GridLines from "@/components/GridLines";
@@ -8,6 +8,12 @@ import JudgeEvaluationBrief from "@/components/JudgeEvaluationBrief";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { Toaster } from "@/components/ui/sonner";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -58,16 +64,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${playfair.variable} ${inter.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/honeychain_app_icon.jpg" type="image/jpeg" />
         <link rel="shortcut icon" href="/honeychain_app_icon.jpg" type="image/jpeg" />
         <link rel="apple-touch-icon" href="/honeychain_app_icon.jpg" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#0F0F0F" />
+        <meta name="theme-color" content="#1A1A1A" />
       </head>
       <body
-        className="min-h-screen bg-background text-text-primary relative selection:bg-brand-amber selection:text-black"
+        className="min-h-screen bg-alabaster text-charcoal relative selection:bg-gold selection:text-charcoal"
         suppressHydrationWarning
       >
         <LanguageProvider>

@@ -31,21 +31,22 @@ export default function JudgeEvaluationBrief() {
     <>
       {/* Floating Trigger Button for Judges */}
       <button
+        type="button"
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-20 left-3 sm:bottom-6 sm:left-6 z-40 px-3.5 py-2.5 bg-brand-amber hover:bg-brand-amber-light text-black font-bold text-xs uppercase tracking-wider rounded-lg shadow-2xl flex items-center gap-2 transition-all hover:scale-105 active:scale-95 border border-brand-amber"
+        className="fixed bottom-20 left-3 sm:bottom-6 sm:left-6 z-40 px-3.5 py-2.5 bg-[#121212] hover:bg-[#1A1A1A] text-white font-bold text-xs uppercase tracking-wider shadow-2xl flex items-center gap-2 transition-all hover:scale-105 active:scale-95 border-2 border-gold"
       >
-        <Award className="w-4 h-4 text-black shrink-0" />
+        <Award className="w-4 h-4 text-gold shrink-0" />
         <span className="hidden sm:inline">SIH 2026 Jury Brief</span>
         <span className="sm:hidden">Jury Brief</span>
-        <Badge variant="secondary" className="bg-black text-brand-amber font-mono text-[9px] px-1.5 py-0">
+        <span className="bg-black text-gold border border-gold/40 font-mono text-[9px] px-1.5 py-0.5">
           SIH26021
-        </Badge>
+        </span>
       </button>
 
       {/* Full-Screen Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
-          <div className="bg-surface border border-border rounded-xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden text-text-primary">
+          <div className="bg-[#141414] border-2 border-gold max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden text-alabaster">
             {/* Modal Header */}
             <div className="px-6 py-5 border-b border-border bg-surface-raised flex items-center justify-between">
               <div className="flex items-center gap-3">
