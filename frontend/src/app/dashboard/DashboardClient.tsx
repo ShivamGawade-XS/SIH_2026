@@ -7,6 +7,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LiveTelemetryStream from "@/components/LiveTelemetryStream";
 import HiveAcousticAnalyzer from "@/components/HiveAcousticAnalyzer";
+import MigratoryRoutePlanner from "@/components/MigratoryRoutePlanner";
+import PollinationCreditCalculator from "@/components/PollinationCreditCalculator";
+import VoiceFieldAssistant from "@/components/VoiceFieldAssistant";
+import PollenVisionAnalyzer from "@/components/PollenVisionAnalyzer";
 import { DEMO_BATCHES } from "@/lib/constants";
 import {
   getCustomBatches,
@@ -23,7 +27,7 @@ import {
   Users, Layers, Sparkles, Activity, PlusCircle, Truck, QrCode,
   LogOut, ExternalLink, ShieldAlert, FileSpreadsheet, FlaskConical,
   ClipboardList, AlertTriangle, ShieldCheck, BarChart3,
-  Microscope, FileText, Bell, Lock,
+  Microscope, FileText, Bell, Lock, Compass,
 } from "lucide-react";
 
 type Role = "FIELD_OFFICER" | "LAB_ANALYST" | "ADMIN";
@@ -208,11 +212,16 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               <DarkCard href="/dashboard/mint" icon={<Layers className="w-7 h-7 text-gold" />} title="Approve & Mint Batch" desc="Review harvest submission and mint on Polygon." cta="Launch Mint" />
               <DarkCard href="/dashboard/custody" icon={<Truck className="w-7 h-7 text-gold" />} title="Log Custody Transfer" desc="Processing, cold filtration, lab certification." cta="Log Step" />
               <DarkCard href="/dashboard/bulk" icon={<FileSpreadsheet className="w-7 h-7 text-gold" />} title="Bulk CSV Mint" desc="High-throughput multi-barrel CSV minting." cta="Upload CSV" />
+              <DarkCard href="/dashboard/migration" icon={<Compass className="w-7 h-7 text-gold" />} title="Migratory Bloom Planner" desc="Pan-India floral calendar, convoy logistics & KVIC transit pass." cta="Plan Route" />
+              <DarkCard href="/dashboard/credits" icon={<Bell className="w-7 h-7 text-gold" />} title="Green Pollination Credits" desc="Carbon offset tokenizer, ecological impact & KVIC Green Credit Certificate." cta="Calculate Credits" />
             </div>
 
             <PendingRequestsTable />
             <div className="mt-12"><LiveTelemetryStream /></div>
             <div className="mt-12"><HiveAcousticAnalyzer /></div>
+            <div className="mt-12"><VoiceFieldAssistant /></div>
+            <div className="mt-12"><MigratoryRoutePlanner /></div>
+            <div className="mt-12"><PollinationCreditCalculator /></div>
             <RecentBatchesTable batchesList={batchesList} />
           </>
         )}
@@ -234,6 +243,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               <DarkCard href="/dashboard/quality" icon={<Microscope className="w-7 h-7 text-gold" />} title="Run AI Quality Analysis" desc="Submit batch ID for NMR spectrometry & adulterant classifier." cta="Analyse Batch" />
               <DarkCard href="/dashboard/custody" icon={<ClipboardList className="w-7 h-7 text-gold" />} title="Lab Certification Log" desc="Record FSSAI IS 4941 & NMR fingerprint results on-chain." cta="Log Certification" />
               <DarkCard href="/dashboard/reports" icon={<FileText className="w-7 h-7 text-gold" />} title="Download Lab Reports" desc="Export batch-wise PDF test certificates and W3C VC credentials." cta="Export Reports" />
+              <DarkCard href="/dashboard/pollen" icon={<Sparkles className="w-7 h-7 text-gold" />} title="Pollen Vision AI" desc="Gemini Vision melissopalynology — classify floral botanical origin from microscope slides." cta="Launch Microscope" />
             </div>
 
             <div className="border-2 border-rose-200 bg-rose-50 p-4 sm:p-8 shadow-sm mb-12">
@@ -265,6 +275,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               </div>
             </div>
 
+            <div className="mt-12"><PollenVisionAnalyzer /></div>
             <RecentBatchesTable batchesList={batchesList} />
           </>
         )}
