@@ -26,6 +26,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://honeychain-truetag.vercel.app"),
   title: "HoneyChain by TrueTag — Blockchain Honey Authenticity & Provenance",
   description:
     "KVIC & National Bee Board verifiable honey authentication engine powered by Polygon PoS, AI quality scoring, and TrueTag cryptographic QR provenance.",
@@ -40,6 +41,21 @@ export const metadata: Metadata = {
     "SIH 2026",
   ],
   authors: [{ name: "Shivam Gawade", url: "https://github.com/ShivamGawade-XS" }],
+  icons: {
+    icon: [
+      { url: "/honeychain_app_icon.jpg", sizes: "any" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/honeychain_app_icon.jpg", sizes: "180x180" },
+    ],
+    shortcut: "/honeychain_app_icon.jpg",
+  },
+  openGraph: {
+    title: "HoneyChain by TrueTag — Blockchain Honey Authenticity & Provenance",
+    description: "KVIC & National Bee Board verifiable honey authentication engine powered by Polygon PoS, AI quality scoring, and TrueTag cryptographic QR provenance.",
+    images: [{ url: "/honeychain_logo_badge.jpg", width: 1024, height: 1024, alt: "HoneyChain Brand Emblem" }],
+  },
 };
 
 export default function RootLayout({
@@ -50,6 +66,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable} ${mono.variable}`}>
       <head>
+        <link rel="icon" href="/honeychain_app_icon.jpg" type="image/jpeg" />
+        <link rel="shortcut icon" href="/honeychain_app_icon.jpg" type="image/jpeg" />
+        <link rel="apple-touch-icon" href="/honeychain_app_icon.jpg" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#1A1A1A" />
       </head>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -240,9 +241,17 @@ export default function ConsumerVerificationPage() {
         {/* 2. AUTHENTICITY BADGE SECTION (Dark Charcoal) */}
         <section className="py-20 px-6 md:px-12 lg:px-24 bg-charcoal text-alabaster border-b border-charcoal">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="flex items-center gap-8">
-              <div className="w-20 h-20 border border-gold flex items-center justify-center bg-charcoal text-gold">
-                <ShieldCheck className="w-10 h-10" />
+            <div className="flex items-center gap-6">
+              <div className="w-20 h-20 relative rounded-2xl overflow-hidden border-2 border-gold/70 shadow-lg shrink-0 bg-[#121212] group">
+                <Image
+                  src="/honeychain_logo_badge.jpg"
+                  alt="HoneyChain Certified Organic Seal"
+                  width={80}
+                  height={80}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  priority
+                />
+                <div className="absolute inset-0 ring-1 ring-inset ring-white/15 rounded-2xl pointer-events-none" />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
