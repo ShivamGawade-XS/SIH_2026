@@ -242,11 +242,13 @@ export default function QualityLabPage() {
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-moisture" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Moisture Content (%)
                   </label>
                   <input
-id="q-moisture" name="moisture"                     type="number"
+                    id="q-moisture"
+                    name="moisture"
+                    type="number"
                     step="0.1"
                     value={moisture}
                     onChange={(e) => setMoisture(parseFloat(e.target.value) || 0)}
@@ -256,11 +258,13 @@ id="q-moisture" name="moisture"                     type="number"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-brix" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Total Soluble Solids (Brix %)
                   </label>
                   <input
-id="q-brix" name="brix"                     type="number"
+                    id="q-brix"
+                    name="brix"
+                    type="number"
                     step="0.1"
                     value={brix}
                     onChange={(e) => setBrix(parseFloat(e.target.value) || 0)}
@@ -272,11 +276,13 @@ id="q-brix" name="brix"                     type="number"
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-hmf" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     HMF Content (mg/kg)
                   </label>
                   <input
-id="q-hmf" name="hmf"                     type="number"
+                    id="q-hmf"
+                    name="hmf"
+                    type="number"
                     step="0.1"
                     value={hmf}
                     onChange={(e) => setHmf(parseFloat(e.target.value) || 0)}
@@ -286,11 +292,13 @@ id="q-hmf" name="hmf"                     type="number"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-diastase" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Diastase Activity (DN)
                   </label>
                   <input
-id="q-diastase" name="diastase"                     type="number"
+                    id="q-diastase"
+                    name="diastase"
+                    type="number"
                     step="0.1"
                     value={diastase}
                     onChange={(e) => setDiastase(parseFloat(e.target.value) || 0)}
@@ -302,11 +310,13 @@ id="q-diastase" name="diastase"                     type="number"
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-conductivity" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Elec. Conductivity (mS/cm)
                   </label>
                   <input
-id="q-conductivity" name="conductivity"                     type="number"
+                    id="q-conductivity"
+                    name="conductivity"
+                    type="number"
                     step="0.01"
                     value={conductivity}
                     onChange={(e) => setConductivity(parseFloat(e.target.value) || 0)}
@@ -316,11 +326,13 @@ id="q-conductivity" name="conductivity"                     type="number"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-c13delta" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     δ¹³C Isotope Delta (‰)
                   </label>
                   <input
-id="q-c13delta" name="c13Delta"                     type="number"
+                    id="q-c13delta"
+                    name="c13Delta"
+                    type="number"
                     step="0.1"
                     value={c13Delta}
                     onChange={(e) => setC13Delta(parseFloat(e.target.value) || 0)}
@@ -332,11 +344,13 @@ id="q-c13delta" name="c13Delta"                     type="number"
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-c4sugar" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Exogenous C4 Sugars (%)
                   </label>
                   <input
-id="q-c4sugar" name="c4Sugar"                     type="number"
+                    id="q-c4sugar"
+                    name="c4Sugar"
+                    type="number"
                     step="0.1"
                     value={c4Sugar}
                     onChange={(e) => setC4Sugar(parseFloat(e.target.value) || 0)}
@@ -346,11 +360,13 @@ id="q-c4sugar" name="c4Sugar"                     type="number"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-smrmarker" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     SMR Rice Syrup Marker
                   </label>
                   <input
-id="q-smrmarker" name="smrMarker"                     type="number"
+                    id="q-smrmarker"
+                    name="smrMarker"
+                    type="number"
                     step="0.01"
                     value={smrMarker}
                     onChange={(e) => setSmrMarker(parseFloat(e.target.value) || 0)}

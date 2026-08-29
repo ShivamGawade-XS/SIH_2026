@@ -54,6 +54,9 @@ export default function Navbar() {
           <div className="sm:hidden flex items-center border border-charcoal/30 bg-white shadow-xs px-1 py-0.5">
             <Globe className="w-3 h-3 text-gold mr-1 shrink-0" />
             <select
+              id="navbar-mobile-lang"
+              name="language"
+              aria-label="Language Selector"
               value={lang}
               onChange={(e) => setLang(e.target.value as any)}
               className="bg-transparent text-[10px] font-bold text-charcoal focus:outline-none py-0.5"

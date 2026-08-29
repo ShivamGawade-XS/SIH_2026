@@ -131,6 +131,7 @@ CONCLUSION: Sample conforms to Grade A+ Premium Raw Organic Honey standards.`);
                 <input
                   type="file"
                   id="labFile"
+                  name="labFile"
                   accept="image/*,.pdf"
                   onChange={handleFileChange}
                   className="hidden"

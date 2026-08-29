@@ -151,10 +151,12 @@ export default function PollinationCreditCalculator() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+              <label htmlFor="credit-colonies" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
                 Active Bee Colonies (boxes)
               </label>
               <input
+                id="credit-colonies"
+                name="colonyCount"
                 type="number"
                 min={1}
                 max={5000}
@@ -164,10 +166,12 @@ export default function PollinationCreditCalculator() {
               />
             </div>
             <div>
-              <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+              <label htmlFor="credit-duration" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
                 Active Bloom Days
               </label>
               <input
+                id="credit-duration"
+                name="activeDays"
                 type="number"
                 min={1}
                 max={365}
@@ -179,10 +183,12 @@ export default function PollinationCreditCalculator() {
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+            <label htmlFor="credit-crop" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
               Primary Crop Pollinated
             </label>
             <select
+              id="credit-crop"
+              name="cropType"
               value={input.cropType}
               onChange={(e) => setInput((p) => ({ ...p, cropType: e.target.value }))}
               className="w-full border-2 border-charcoal/20 bg-alabaster px-4 py-2.5 font-mono text-sm text-charcoal focus:border-gold focus:outline-none transition-colors"
@@ -194,10 +200,12 @@ export default function PollinationCreditCalculator() {
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+            <label htmlFor="credit-state" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
               State / UT of Apiary
             </label>
             <select
+              id="credit-state"
+              name="stateName"
               value={input.stateName}
               onChange={(e) => setInput((p) => ({ ...p, stateName: e.target.value }))}
               className="w-full border-2 border-charcoal/20 bg-alabaster px-4 py-2.5 font-mono text-sm text-charcoal focus:border-gold focus:outline-none transition-colors"
@@ -208,10 +216,13 @@ export default function PollinationCreditCalculator() {
 
           <div className="grid grid-cols-1 gap-3">
             <div>
-              <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+              <label htmlFor="credit-farmer-name" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
                 Registered Beekeeper / Farmer Name
               </label>
               <input
+                id="credit-farmer-name"
+                name="farmerName"
+                autoComplete="name"
                 type="text"
                 value={input.farmerName}
                 onChange={(e) => setInput((p) => ({ ...p, farmerName: e.target.value }))}
@@ -219,10 +230,12 @@ export default function PollinationCreditCalculator() {
               />
             </div>
             <div>
-              <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+              <label htmlFor="credit-coop-code" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
                 KVIC Cooperative Code
               </label>
               <input
+                id="credit-coop-code"
+                name="cooperativeCode"
                 type="text"
                 value={input.cooperativeCode}
                 onChange={(e) => setInput((p) => ({ ...p, cooperativeCode: e.target.value }))}

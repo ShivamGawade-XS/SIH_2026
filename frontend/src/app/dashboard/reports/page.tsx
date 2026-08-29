@@ -180,6 +180,9 @@ export default function ReportsPage() {
             <div className="relative flex-1 w-full">
               <Search className="w-4 h-4 text-warm-grey absolute left-3 top-1/2 -translate-y-1/2" />
               <input
+                id="reports-search"
+                name="searchTerm"
+                aria-label="Search reports by farmer name, location, QR token, or batch number"
                 type="text"
                 placeholder="Search by farmer name, location, QR token, or batch #..."
                 value={searchTerm}

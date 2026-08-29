@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -114,10 +114,12 @@ export default function CustodyLoggingPage() {
             <form onSubmit={handleAddCustody} className="space-y-8">
               {/* Batch selection */}
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label htmlFor="custody-batch" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                   Select Harvest Batch
                 </label>
                 <select
+                  id="custody-batch"
+                  name="selectedBatchId"
                   value={selectedBatchId}
                   onChange={(e) => setSelectedBatchId(Number(e.target.value))}
                   className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
@@ -132,10 +134,12 @@ export default function CustodyLoggingPage() {
 
               {/* Facility */}
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label htmlFor="custody-facility" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                   Receiving Facility / Location Entity
                 </label>
                 <select
+                  id="custody-facility"
+                  name="facility"
                   value={facility}
                   onChange={(e) => setFacility(e.target.value)}
                   className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"

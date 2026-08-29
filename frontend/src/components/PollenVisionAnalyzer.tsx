@@ -229,11 +229,20 @@ export default function PollenVisionAnalyzer() {
               isDragging ? "border-gold bg-gold/10 scale-[1.01]" : "border-charcoal/25 bg-alabaster hover:border-gold hover:bg-gold/5"
             }`}
           >
-            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={() => {
-              const randomPollen = POLLEN_DB[Math.floor(Math.random() * POLLEN_DB.length)];
-              setSelectedPreviewId(randomPollen.id);
-              runAnalysis(randomPollen.id);
-            }} />
+            <input
+              id="pollen-slide-upload"
+              name="slideImage"
+              aria-label="Upload Pollen Slide Image"
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={() => {
+                const randomPollen = POLLEN_DB[Math.floor(Math.random() * POLLEN_DB.length)];
+                setSelectedPreviewId(randomPollen.id);
+                runAnalysis(randomPollen.id);
+              }}
+            />
             <Microscope className="w-10 h-10 text-warm-grey/50 mx-auto mb-3" />
             <p className="text-sm font-serif text-charcoal mb-1">Drop Pollen Slide Image Here</p>
             <p className="text-[10px] font-mono text-warm-grey">

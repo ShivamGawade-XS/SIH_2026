@@ -207,9 +207,12 @@ export default function BeekeeperTipModal({
               <div className="relative">
                 <span className="absolute left-3 top-2.5 text-sm font-mono font-bold text-warm-grey">₹</span>
                 <input
+                  id="tip-custom-amount"
+                  name="customAmount"
+                  aria-label="Custom micro-patronage amount"
                   type="number"
                   placeholder="Or enter custom amount (e.g. 150)"
-                  id="tip-custom-amount" name="customAmount" value={customAmount}
+                  value={customAmount}
                   onChange={handleCustomChange}
                   className="w-full h-11 border-2 border-charcoal/20 pl-8 pr-3 text-xs font-mono font-bold focus:border-gold focus:outline-none"
                 />
@@ -244,10 +247,13 @@ export default function BeekeeperTipModal({
             <form onSubmit={handleConfirmPayment} className="space-y-3 mb-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="tip-tipper-name" className="block text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Your Name (Optional)
                   </label>
                   <input
+                    id="tip-tipper-name"
+                    name="tipperName"
+                    autoComplete="name"
                     type="text"
                     placeholder="e.g. Ananya"
                     value={tipperName}
@@ -256,10 +262,12 @@ export default function BeekeeperTipModal({
                   />
                 </div>
                 <div>
-                  <label className="block text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="tip-utr-number" className="block text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     UPI Ref / UTR No. (Optional)
                   </label>
                   <input
+                    id="tip-utr-number"
+                    name="utrNumber"
                     type="text"
                     placeholder="e.g. 423589012345"
                     value={utrNumber}

@@ -206,6 +206,9 @@ export default function BulkMintPage() {
               {/* Dropzone */}
               <div className="border-2 border-dashed border-charcoal/30 bg-alabaster/40 p-10 text-center relative hover:border-gold transition-colors mb-8">
                 <input
+                  id="bulk-csv-upload"
+                  name="csvFile"
+                  aria-label="Upload KVIC Regional Harvest CSV Sheet"
                   type="file"
                   accept=".csv"
                   onChange={handleFileUpload}

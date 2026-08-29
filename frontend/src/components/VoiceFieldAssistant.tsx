@@ -334,7 +334,10 @@ export default function VoiceFieldAssistant() {
 
         {/* Text Input */}
         <input
-id="voice-query" name="query"           type="text"
+          id="voice-query"
+          name="query"
+          aria-label="Type beekeeper advisory query or question"
+          type="text"
           value={textInput}
           onChange={(e) => setTextInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleTextSend()}

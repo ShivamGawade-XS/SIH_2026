@@ -222,11 +222,14 @@ export default function RegisterFarmerPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-name" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Beekeeper Full Name
                   </label>
                   <input
-id="reg-name" name="name" autoComplete="name"                     type="text"
+                    id="reg-name"
+                    name="name"
+                    autoComplete="name"
+                    type="text"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -236,11 +239,13 @@ id="reg-name" name="name" autoComplete="name"                     type="text"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-location" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     State & District Location
                   </label>
                   <input
-id="reg-location" name="location"                     type="text"
+                    id="reg-location"
+                    name="location"
+                    type="text"
                     required
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
@@ -250,11 +255,13 @@ id="reg-location" name="location"                     type="text"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-cooperative" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     KVIC Cooperative Code
                   </label>
                   <input
-id="reg-cooperative" name="cooperativeId"                     type="text"
+                    id="reg-cooperative"
+                    name="cooperativeId"
+                    type="text"
                     required
                     value={formData.cooperativeId}
                     onChange={(e) => setFormData({ ...formData, cooperativeId: e.target.value })}
@@ -264,12 +271,14 @@ id="reg-cooperative" name="cooperativeId"                     type="text"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-upi" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Beekeeper UPI VPA (Direct Tip Settlement)
                   </label>
                   <div className="relative">
                     <input
-id="reg-upi" name="upiVpa"                       type="text"
+                      id="reg-upi"
+                      name="upiVpa"
+                      type="text"
                       value={formData.upiVpa}
                       onChange={(e) => setFormData({ ...formData, upiVpa: e.target.value })}
                       placeholder="e.g. subhash.chander@sbi"
@@ -280,11 +289,13 @@ id="reg-upi" name="upiVpa"                       type="text"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-lat" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Apiary GPS Latitude
                   </label>
                   <input
-id="reg-lat" name="gpsLat"                     type="text"
+                    id="reg-lat"
+                    name="gpsLat"
+                    type="text"
                     value={formData.gpsLat}
                     onChange={(e) => setFormData({ ...formData, gpsLat: e.target.value })}
                     placeholder="e.g. 34.0837"
@@ -293,11 +304,13 @@ id="reg-lat" name="gpsLat"                     type="text"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-lng" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Apiary GPS Longitude
                   </label>
                   <input
-id="reg-lng" name="gpsLng"                     type="text"
+                    id="reg-lng"
+                    name="gpsLng"
+                    type="text"
                     value={formData.gpsLng}
                     onChange={(e) => setFormData({ ...formData, gpsLng: e.target.value })}
                     placeholder="e.g. 74.7973"

@@ -100,10 +100,12 @@ export default function QrLabelsPage() {
             {/* Batch Selector */}
             <div className="flex flex-wrap items-center gap-3">
               <div>
-                <label className="block text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                <label htmlFor="qr-batch-select" className="block text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                   Active Batch
                 </label>
                 <select
+                  id="qr-batch-select"
+                  name="selectedBatchId"
                   value={selectedBatchId}
                   onChange={(e) => setSelectedBatchId(Number(e.target.value))}
                   className="h-11 border-2 border-charcoal/30 bg-white px-3 text-xs font-bold text-charcoal focus:border-gold focus:outline-none"
@@ -188,8 +190,10 @@ export default function QrLabelsPage() {
           {/* Security Customization Toolbar */}
           <div className="p-4 border border-charcoal/15 bg-white mb-8 flex flex-wrap items-center justify-between gap-4 text-xs">
             <div className="flex items-center gap-6">
-              <label className="flex items-center gap-2 cursor-pointer select-none">
+              <label htmlFor="qr-guilloche" className="flex items-center gap-2 cursor-pointer select-none">
                 <input
+                  id="qr-guilloche"
+                  name="includeGuilloche"
                   type="checkbox"
                   checked={includeGuilloche}
                   onChange={(e) => setIncludeGuilloche(e.target.checked)}
@@ -199,8 +203,10 @@ export default function QrLabelsPage() {
               </label>
 
               <div className="flex items-center gap-2">
-                <span className="text-warm-grey font-medium">Stickers per Sheet:</span>
+                <label htmlFor="qr-sheet-count" className="text-warm-grey font-medium">Stickers per Sheet:</label>
                 <select
+                  id="qr-sheet-count"
+                  name="sheetCount"
                   value={sheetCount}
                   onChange={(e) => setSheetCount(Number(e.target.value))}
                   className="border border-charcoal/30 bg-transparent px-2 py-1 font-bold text-charcoal"

@@ -492,8 +492,10 @@ export default function ConsumerVerificationPage() {
                   className="space-y-4"
                 >
                   <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1">Issue Type</label>
+                    <label htmlFor="complaint-issue" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1">Issue Type</label>
                     <select
+                      id="complaint-issue"
+                      name="reportReason"
                       value={reportReason}
                       onChange={(e) => setReportReason(e.target.value)}
                       className="w-full h-10 border-b border-charcoal/30 bg-transparent text-xs focus:border-gold focus:outline-none"

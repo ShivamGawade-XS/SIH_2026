@@ -250,10 +250,12 @@ export default function MintBatchPage() {
             <form onSubmit={handleMint} className="space-y-8">
               {/* Farmer selection */}
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label htmlFor="mint-farmer" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                   Select Registered Beekeeper
                 </label>
                 <select
+                  id="mint-farmer"
+                  name="farmerId"
                   value={farmerId}
                   onChange={(e) => setFarmerId(e.target.value)}
                   className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
@@ -269,11 +271,13 @@ export default function MintBatchPage() {
               {/* Lab Parameters */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="mint-moisture" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Moisture (%)
                   </label>
                   <input
-id="mint-moisture" name="moisture"                     type="number"
+                    id="mint-moisture"
+                    name="moisture"
+                    type="number"
                     step="0.1"
                     required
                     value={moisture}
@@ -284,11 +288,13 @@ id="mint-moisture" name="moisture"                     type="number"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="mint-brix" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Brix (°Bx)
                   </label>
                   <input
-id="mint-brix" name="brix"                     type="number"
+                    id="mint-brix"
+                    name="brix"
+                    type="number"
                     step="0.1"
                     required
                     value={brix}
@@ -299,11 +305,13 @@ id="mint-brix" name="brix"                     type="number"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="mint-hmf" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     HMF (mg/kg)
                   </label>
                   <input
-id="mint-hmf" name="hmf"                     type="number"
+                    id="mint-hmf"
+                    name="hmf"
+                    type="number"
                     step="0.1"
                     required
                     value={hmf}
@@ -314,11 +322,13 @@ id="mint-hmf" name="hmf"                     type="number"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="mint-diastase" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Diastase (DN)
                   </label>
                   <input
-id="mint-diastase" name="diastase"                     type="number"
+                    id="mint-diastase"
+                    name="diastase"
+                    type="number"
                     step="0.1"
                     required
                     value={diastase}
@@ -329,11 +339,13 @@ id="mint-diastase" name="diastase"                     type="number"
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="mint-conductivity" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Conductivity (mS)
                   </label>
                   <input
-id="mint-conductivity" name="conductivity"                     type="number"
+                    id="mint-conductivity"
+                    name="conductivity"
+                    type="number"
                     step="0.01"
                     required
                     value={conductivity}
@@ -346,11 +358,13 @@ id="mint-conductivity" name="conductivity"                     type="number"
 
               {/* Yield */}
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label htmlFor="mint-yield" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                   Harvest Yield Weight (kg)
                 </label>
                 <input
-id="mint-yield" name="yieldKg"                   type="number"
+                  id="mint-yield"
+                  name="yieldKg"
+                  type="number"
                   required
                   value={yieldKg}
                   onChange={(e) => setYieldKg(parseInt(e.target.value) || 0)}

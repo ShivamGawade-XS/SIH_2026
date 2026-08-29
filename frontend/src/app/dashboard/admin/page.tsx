@@ -234,10 +234,12 @@ export default function AdminRecallPage() {
               </p>
 
               <div className="mb-6">
-                <label className="block text-[10px] uppercase tracking-widest text-charcoal font-bold mb-1.5">
+                <label htmlFor="admin-revocation-reason" className="block text-[10px] uppercase tracking-widest text-charcoal font-bold mb-1.5">
                   Official Revocation Reason:
                 </label>
                 <select
+                  id="admin-revocation-reason"
+                  name="recallReason"
                   value={recallReason}
                   onChange={(e) => setRecallReason(e.target.value)}
                   className="w-full h-10 border border-charcoal/30 bg-alabaster px-3 text-xs font-mono font-bold focus:border-rose-600 focus:outline-none"
