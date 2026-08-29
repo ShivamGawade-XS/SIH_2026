@@ -35,8 +35,16 @@ export default function LoginPage() {
       if (!res.ok) {
         setError(data.error || "Authentication failed.");
       } else {
+        // Open redirect protection: strictly enforce relative local paths
+        const searchParams = new URLSearchParams(window.location.search);
+        const fromParam = searchParams.get("from");
+        const safeDestination =
+          fromParam && fromParam.startsWith("/") && !fromParam.startsWith("//") && !fromParam.includes(":")
+            ? fromParam
+            : "/dashboard";
+
         // Timestamp param bypasses browser bfcache / stale page cache
-        window.location.href = `/dashboard?ts=${Date.now()}`;
+        window.location.href = `${safeDestination}${safeDestination.includes("?") ? "&" : "?"}ts=${Date.now()}`;
       }
     } catch {
       setError("Network error. Please try again.");

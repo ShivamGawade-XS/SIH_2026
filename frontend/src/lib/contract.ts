@@ -16,6 +16,28 @@ async function withTimeout<T>(promise: Promise<T>, ms = 4000): Promise<T> {
 }
 
 /**
+ * Call an RPC blockchain operation with exponential backoff retry (3 attempts)
+ */
+export async function withRpcRetry<T>(
+  operation: () => Promise<T>,
+  retries = 3,
+  baseDelayMs = 1000
+): Promise<T> {
+  let lastError: any = null;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await withTimeout(operation(), 4000);
+    } catch (err) {
+      lastError = err;
+      if (attempt < retries) {
+        await new Promise((res) => setTimeout(res, baseDelayMs * Math.pow(2, attempt - 1)));
+      }
+    }
+  }
+  throw lastError;
+}
+
+/**
  * Get read-only provider for Polygon Amoy
  */
 export function getReadOnlyProvider(): ethers.JsonRpcProvider {

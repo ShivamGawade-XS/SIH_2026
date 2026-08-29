@@ -216,7 +216,11 @@ contract HoneyChain is AccessControl {
         string  calldata cooperativeId,
         string  calldata ipfsProfileHash
     ) external onlyRole(FIELD_OFFICER_ROLE) returns (uint256 farmerId) {
-        require(walletAddress != address(0), "HoneyChain: Invalid wallet address");
+        require(walletAddress != address(0),                 "HoneyChain: Invalid wallet address");
+        require(beekeeperToFarmerId[walletAddress] == 0,     "HoneyChain: Wallet already registered to a farmer");
+        require(bytes(name).length > 0,                      "HoneyChain: Name cannot be empty");
+        require(bytes(location).length > 0,                  "HoneyChain: Location cannot be empty");
+        require(bytes(ipfsProfileHash).length >= 44,         "HoneyChain: Invalid IPFS CID length");
 
         _farmerIdCounter++;
         farmerId = _farmerIdCounter;
@@ -245,6 +249,7 @@ contract HoneyChain is AccessControl {
 
     /**
      * @notice Step 1: Beekeeper submits raw harvest data for verification
+     * @dev block.timestamp is acceptable for harvest timestamping given ~15s miner variance is negligible for agricultural cycles.
      * @param floraSource      Botanical flower species (e.g., "Mustard", "Litchi")
      * @param quantityKg       Total harvest yield in kg
      * @param ipfsMetadataHash IPFS CID containing raw hive telemetry & harvest logs
@@ -258,6 +263,8 @@ contract HoneyChain is AccessControl {
         require(farmerId != 0 && _farmerExists[farmerId], "HoneyChain: Caller not a registered farmer");
         require(farmers[farmerId].isVerified,             "HoneyChain: Farmer not verified");
         require(quantityKg > 0,                           "HoneyChain: Quantity must be > 0");
+        require(bytes(floraSource).length > 0,            "HoneyChain: Flora source cannot be empty");
+        require(bytes(ipfsMetadataHash).length >= 44,     "HoneyChain: Invalid IPFS metadata CID length");
 
         _requestIdCounter++;
         requestId = _requestIdCounter;
@@ -285,7 +292,8 @@ contract HoneyChain is AccessControl {
 
     /**
      * @notice Step 2: Field Officer approves harvest request and mints immutable batch
-     * @dev Enforces rule: No batch mints without FieldOfficer approval of a valid request
+     * @dev Enforces rule: No batch mints without FieldOfficer approval of a valid request.
+     *      No ETH transfers or external calls exist in this contract, ensuring complete reentrancy safety.
      * @param requestId        The harvest request ID to approve
      * @param ipfsMetadataHash Full verified laboratory & provenance metadata IPFS CID
      * @param qualityScore     AI / Lab Purity Score (0-100)
@@ -299,11 +307,13 @@ contract HoneyChain is AccessControl {
         string  calldata grade,
         string  calldata qrToken
     ) external onlyRole(FIELD_OFFICER_ROLE) returns (uint256 batchId) {
-        require(_requestExists[requestId], "HoneyChain: Request does not exist");
+        require(_requestExists[requestId],           "HoneyChain: Request does not exist");
         HarvestRequest storage req = harvestRequests[requestId];
         require(req.status == RequestStatus.Pending, "HoneyChain: Request not in pending state");
         require(qualityScore <= 100,                 "HoneyChain: Quality score must be 0-100");
+        require(bytes(qrToken).length > 0,           "HoneyChain: QR token cannot be empty");
         require(qrToBatch[qrToken] == 0,             "HoneyChain: QR token already assigned");
+        require(bytes(ipfsMetadataHash).length >= 44,"HoneyChain: Invalid IPFS metadata CID length");
 
         // Update request status
         req.status        = RequestStatus.Approved;

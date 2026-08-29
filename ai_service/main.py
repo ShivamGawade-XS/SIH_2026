@@ -9,9 +9,10 @@ import time
 import json
 import random
 import asyncio
+import re
 from typing import Optional, List, Dict, Any
-from fastapi import FastAPI, HTTPException, Body
-from fastapi.responses import StreamingResponse
+from fastapi import FastAPI, HTTPException, Body, Request
+from fastapi.responses import StreamingResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import numpy as np
@@ -22,16 +23,68 @@ app = FastAPI(
     version="2.2.0"
 )
 
-# Enable CORS for Next.js frontend & tools with valid credentials spec
+# ─── FSSAI PHYSICAL REALITY BOUNDS FOR ADVERSARIAL VALIDATION ─────────────────
+MIN_MOISTURE_PCT = 10.0
+MAX_MOISTURE_PCT = 35.0
+MIN_BRIX_INDEX = 50.0
+MAX_BRIX_INDEX = 90.0
+MIN_HMF_MG_KG = 0.0
+MAX_HMF_MG_KG = 500.0
+MIN_DIASTASE_ACTIVITY = 0.0
+MAX_DIASTASE_ACTIVITY = 100.0
+MIN_ELECTRICAL_CONDUCTIVITY = 0.0
+MAX_ELECTRICAL_CONDUCTIVITY = 5.0
+MIN_C13_DELTA = -45.0
+MAX_C13_DELTA = -5.0
+MIN_C4_SUGAR_PCT = 0.0
+MAX_C4_SUGAR_PCT = 100.0
+MIN_SMR_MARKER = 0.0
+MAX_SMR_MARKER = 5.0
+
+# ─── PRODUCTION CORS CONFIGURATION ────────────────────────────────────────────
+ALLOWED_ORIGINS_RAW = os.getenv(
+    "ALLOWED_ORIGINS",
+    "https://honeychain-truetag.vercel.app,http://localhost:3000,http://127.0.0.1:3000"
+)
+ALLOWED_ORIGINS = [origin.strip() for origin in ALLOWED_ORIGINS_RAW.split(",") if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["*"],
+    allow_origins=ALLOWED_ORIGINS if "*" not in ALLOWED_ORIGINS else ["*"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
-# Load trained ML models
+# ─── IN-MEMORY SLIDING-WINDOW RATE LIMITER (30 REQ / MIN PER IP) ──────────────
+RATE_LIMIT_STORE: Dict[str, List[float]] = {}
+RATE_LIMIT_WINDOW = 60.0
+RATE_LIMIT_MAX_REQUESTS = 30
+
+@app.middleware("http")
+async def rate_limit_middleware(request: Request, call_next):
+    # Only rate-limit API mutating or compute-heavy endpoints
+    path = request.url.path
+    if path.startswith("/api/quality/predict") or path.startswith("/quality/predict"):
+        client_ip = request.client.host if request.client else "unknown"
+        now = time.time()
+        
+        timestamps = RATE_LIMIT_STORE.get(client_ip, [])
+        # Expire old timestamps
+        timestamps = [t for t in timestamps if now - t < RATE_LIMIT_WINDOW]
+        
+        if len(timestamps) >= RATE_LIMIT_MAX_REQUESTS:
+            return JSONResponse(
+                status_code=429,
+                content={"error": "Rate limit exceeded (Max 30 requests/minute). Please slow down."}
+            )
+            
+        timestamps.append(now)
+        RATE_LIMIT_STORE[client_ip] = timestamps
+        
+    return await call_next(request)
+
+# Load trained ML models with startup integrity self-test
 ml_regressor = None
 ml_classifier = None
 try:
@@ -42,8 +95,22 @@ try:
         ml_regressor = joblib.load(model_path)
     if os.path.exists(classifier_path):
         ml_classifier = joblib.load(classifier_path)
+
+    # Model Integrity Self-Test Vector
+    if ml_regressor is not None:
+        import pandas as pd
+        test_df = pd.DataFrame([{
+            "moisture_percent": 17.5,
+            "brix_index": 81.2,
+            "hmf_mg_kg": 12.4,
+            "diastase_activity": 14.0,
+            "electrical_conductivity": 0.45,
+            "c13_isotope_delta": -26.2
+        }])
+        test_out = ml_regressor.predict(test_df)[0]
+        assert 0.0 <= test_out <= 100.0, f"Model sanity check failed: output {test_out} outside [0, 100]"
 except Exception as e:
-    print(f"Notice: ML model load status: ({e})")
+    print(f"Notice: ML model startup status: ({e})")
 
 
 # ─── IN-MEMORY LIVE HIVE TELEMETRY STORE ──────────────────────────────────────
@@ -174,6 +241,20 @@ def predict_honey_quality(data: HoneyQualityInput):
     c13_val = data.c13_isotope_delta if data.c13_isotope_delta is not None else -26.2
     c4_val = data.c4_sugar_percent if data.c4_sugar_percent is not None else 1.2
     smr_val = data.smr_marker if data.smr_marker is not None else 0.02
+
+    # Physical Boundary Validation (Adversarial Protection)
+    if not (MIN_MOISTURE_PCT <= moisture <= MAX_MOISTURE_PCT):
+        raise HTTPException(status_code=422, detail=f"Moisture {moisture}% is physically impossible for honey ({MIN_MOISTURE_PCT}-{MAX_MOISTURE_PCT}%)")
+    if not (MIN_BRIX_INDEX <= brix <= MAX_BRIX_INDEX):
+        raise HTTPException(status_code=422, detail=f"Brix reading {brix} is out of physical range ({MIN_BRIX_INDEX}-{MAX_BRIX_INDEX})")
+    if not (MIN_HMF_MG_KG <= hmf <= MAX_HMF_MG_KG):
+        raise HTTPException(status_code=422, detail=f"HMF content {hmf} mg/kg is out of range ({MIN_HMF_MG_KG}-{MAX_HMF_MG_KG})")
+    if not (MIN_DIASTASE_ACTIVITY <= diastase <= MAX_DIASTASE_ACTIVITY):
+        raise HTTPException(status_code=422, detail=f"Diastase activity {diastase} is out of range ({MIN_DIASTASE_ACTIVITY}-{MAX_DIASTASE_ACTIVITY})")
+    if not (MIN_ELECTRICAL_CONDUCTIVITY <= conductivity <= MAX_ELECTRICAL_CONDUCTIVITY):
+        raise HTTPException(status_code=422, detail=f"Conductivity {conductivity} mS/cm is out of range ({MIN_ELECTRICAL_CONDUCTIVITY}-{MAX_ELECTRICAL_CONDUCTIVITY})")
+    if not (MIN_C13_DELTA <= c13_val <= MAX_C13_DELTA):
+        raise HTTPException(status_code=422, detail=f"C13 delta {c13_val} per mil is out of natural range ({MIN_C13_DELTA} to {MAX_C13_DELTA})")
 
     if ml_regressor is not None and ml_classifier is not None:
         try:
