@@ -9,6 +9,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { DEMO_BATCHES } from "@/lib/constants";
 import { fetchBatchesFromDB } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
+import { generateStickerSheetPDF } from "@/lib/pdf-stickers";
 import HoneyChainLogo from "@/components/HoneyChainLogo";
 import {
   QrCode,
@@ -36,6 +37,7 @@ export default function QrLabelsPage() {
   const [includeGuilloche, setIncludeGuilloche] = useState(true);
   const [nfcSimulatedCount, setNfcSimulatedCount] = useState(1);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   useEffect(() => {
     fetchBatchesFromDB().then((list) => {
@@ -53,6 +55,20 @@ export default function QrLabelsPage() {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleDownloadPDF = () => {
+    setIsGeneratingPdf(true);
+    try {
+      generateStickerSheetPDF({
+        batch: selectedBatch,
+        format: selectedFormat,
+        sheetCount,
+        includeGuilloche,
+      });
+    } finally {
+      setTimeout(() => setIsGeneratingPdf(false), 600);
+    }
   };
 
   const handleSimulateNfcTap = () => {
@@ -119,13 +135,22 @@ export default function QrLabelsPage() {
                 </select>
               </div>
 
-              <div className="flex items-end gap-2 pt-4">
+              <div className="flex flex-wrap items-end gap-2 pt-4">
+                <button
+                  onClick={handleDownloadPDF}
+                  disabled={isGeneratingPdf}
+                  className="h-11 px-5 bg-gold text-charcoal hover:bg-gold/90 text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-sm transition-all"
+                >
+                  <Download className="w-4 h-4 text-charcoal" />
+                  <span>{isGeneratingPdf ? "Generating PDF..." : "📥 Download A4 PDF Sheet"}</span>
+                </button>
+
                 <button
                   onClick={handlePrint}
-                  className="h-11 px-5 bg-charcoal text-alabaster text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center gap-2 shadow-sm"
+                  className="h-11 px-5 bg-charcoal text-alabaster hover:border-gold border border-charcoal text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-sm transition-all"
                 >
                   <Printer className="w-4 h-4 text-gold" />
-                  <span>Print Sticker Sheet</span>
+                  <span>Print Sheet</span>
                 </button>
               </div>
             </div>
@@ -215,7 +240,8 @@ export default function QrLabelsPage() {
                   <option value={1}>1 (Single Master Label)</option>
                   <option value={4}>4 (2×2 Grid)</option>
                   <option value={6}>6 (2×3 Grid)</option>
-                  <option value={9}>9 (3×3 Grid)</option>
+                  <option value={8}>8 (2×4 Grid)</option>
+                  <option value={12}>12 (3×4 Grid)</option>
                 </select>
               </div>
             </div>
@@ -236,7 +262,13 @@ export default function QrLabelsPage() {
         <div className="bg-white border-2 border-charcoal/20 p-8 sm:p-12 shadow-md">
           {/* Format 1: 35mm Circular Jar Lid Tamper Seal */}
           {selectedFormat === "LID_SEAL_35MM" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
+            <div className={`gap-8 justify-items-center ${
+              sheetCount === 1
+                ? "grid grid-cols-1 max-w-sm mx-auto"
+                : sheetCount <= 4
+                ? "grid grid-cols-1 sm:grid-cols-2"
+                : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            }`}>
               {Array.from({ length: sheetCount }).map((_, i) => (
                 <div
                   key={i}
@@ -296,7 +328,13 @@ export default function QrLabelsPage() {
 
           {/* Format 2: Front Jar Luxury Label (50x70mm) */}
           {selectedFormat === "FRONT_LABEL_50X70MM" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
+            <div className={`gap-8 justify-items-center ${
+              sheetCount === 1
+                ? "grid grid-cols-1 max-w-sm mx-auto"
+                : sheetCount <= 4
+                ? "grid grid-cols-1 sm:grid-cols-2"
+                : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            }`}>
               {Array.from({ length: sheetCount }).map((_, i) => (
                 <div
                   key={i}
@@ -373,8 +411,12 @@ export default function QrLabelsPage() {
 
           {/* Format 3: Bulk Transport Drum Tag (100x150mm) */}
           {selectedFormat === "DRUM_TAG_100X150MM" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
-              {Array.from({ length: Math.min(sheetCount, 2) }).map((_, i) => (
+            <div className={`gap-8 justify-items-center ${
+              sheetCount === 1
+                ? "grid grid-cols-1 max-w-lg mx-auto"
+                : "grid grid-cols-1 md:grid-cols-2"
+            }`}>
+              {Array.from({ length: sheetCount }).map((_, i) => (
                 <div
                   key={i}
                   className="w-full max-w-md border-4 border-charcoal bg-[#141414] text-alabaster p-6 flex flex-col justify-between relative shadow-lg overflow-hidden"

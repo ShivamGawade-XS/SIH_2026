@@ -13,6 +13,8 @@ import {
   RefreshCw,
   Bell,
   Layers,
+  Mic,
+  MicOff,
 } from "lucide-react";
 import HoneyChainLogo, { HoneyChainBadge } from "./HoneyChainLogo";
 
@@ -93,6 +95,7 @@ const PROFILES: Record<string, AcousticProfile> = {
 export default function HiveAcousticAnalyzer() {
   const [selectedProfileKey, setSelectedProfileKey] = useState<string>("calm");
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isMicLive, setIsMicLive] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.15);
   const [isSimulatingAlert, setIsSimulatingAlert] = useState<boolean>(false);
   const [alertSent, setAlertSent] = useState<boolean>(false);
@@ -104,12 +107,17 @@ export default function HiveAcousticAnalyzer() {
   const gainNodeRef = useRef<GainNode | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animFrameIdRef = useRef<number | null>(null);
+  const liveMicStreamRef = useRef<MediaStream | null>(null);
 
   const currentProfile = PROFILES[selectedProfileKey];
 
   // Stop audio safely
   const stopAudio = () => {
     try {
+      if (liveMicStreamRef.current) {
+        liveMicStreamRef.current.getTracks().forEach((t) => t.stop());
+        liveMicStreamRef.current = null;
+      }
       if (osc1Ref.current) {
         osc1Ref.current.stop();
         osc1Ref.current.disconnect();
@@ -126,6 +134,37 @@ export default function HiveAcousticAnalyzer() {
       }
     } catch {}
     setIsPlaying(false);
+    setIsMicLive(false);
+  };
+
+  const toggleLiveMic = async () => {
+    if (isMicLive) {
+      stopAudio();
+      return;
+    }
+    stopAudio();
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      liveMicStreamRef.current = stream;
+
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      const ctx = new AudioCtx();
+      audioCtxRef.current = ctx;
+
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 256;
+      analyserRef.current = analyser;
+
+      const source = ctx.createMediaStreamSource(stream);
+      source.connect(analyser);
+
+      setIsMicLive(true);
+      setIsPlaying(false);
+    } catch (err) {
+      console.warn("Microphone access denied or unavailable:", err);
+      alert("Microphone access is required to analyze live ambient sound.");
+      setIsMicLive(false);
+    }
   };
 
   // Start synthesized audio based on acoustic profile
@@ -370,8 +409,20 @@ export default function HiveAcousticAnalyzer() {
           </div>
         </div>
 
-        {/* Audio Synth Toggle */}
-        <div className="flex items-center gap-3">
+        {/* Audio Controls */}
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            onClick={toggleLiveMic}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 transition-all ${
+              isMicLive
+                ? "bg-rose-600 text-white shadow-lg animate-pulse"
+                : "border-2 border-gold/60 bg-gold/10 text-gold hover:bg-gold hover:text-charcoal shadow-xs"
+            }`}
+          >
+            {isMicLive ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+            <span>{isMicLive ? "Stop Live Mic" : "🎤 Live Mic Input"}</span>
+          </button>
+
           <button
             onClick={togglePlayback}
             className={`px-4 py-2 text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 transition-all ${

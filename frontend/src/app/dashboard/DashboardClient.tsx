@@ -11,6 +11,7 @@ import MigratoryRoutePlanner from "@/components/MigratoryRoutePlanner";
 import PollinationCreditCalculator from "@/components/PollinationCreditCalculator";
 import VoiceFieldAssistant from "@/components/VoiceFieldAssistant";
 import PollenVisionAnalyzer from "@/components/PollenVisionAnalyzer";
+import { useLanguage } from "@/lib/LanguageContext";
 import { DEMO_BATCHES } from "@/lib/constants";
 import {
   getCustomBatches,
@@ -116,6 +117,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
 
   const role = currentUser.role;
   const meta = ROLE_META[role] || ROLE_META.FIELD_OFFICER;
+  const { t } = useLanguage();
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#F9F8F6]">
@@ -184,12 +186,12 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
             {role === "ADMIN" && (
               <Link href="/dashboard/admin" className="px-4 py-2 text-xs uppercase tracking-widest font-bold border-2 border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 flex items-center gap-1.5 transition-colors shadow-xs">
                 <ShieldAlert className="w-3.5 h-3.5" />
-                <span>Admin Recall Center</span>
+                <span>{t("dashAdminRecall")}</span>
               </Link>
             )}
             <button onClick={handleLogout} className="px-4 py-2 text-xs uppercase tracking-widest font-bold border-2 border-charcoal/30 hover:border-charcoal bg-white flex items-center gap-1.5 transition-colors shadow-xs">
               <LogOut className="w-3.5 h-3.5 text-charcoal" />
-              <span>Logout</span>
+              <span>{t("dashLogout")}</span>
             </button>
           </div>
         </div>
@@ -200,20 +202,20 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
         {role === "FIELD_OFFICER" && (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
-              <StatCard icon={<Users className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Registered Beekeepers" value={farmerCount.toLocaleString("en-IN")} sub="+12 verified" />
-              <StatCard icon={<Layers className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Minted Batches" value={(18920 + batchesList.length - 2).toLocaleString("en-IN")} sub="Polygon PoS" />
-              <StatCard icon={<Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Avg. Purity" value="92.8" sub="Grade A+" suffix="/100" />
-              <StatCard icon={<Activity className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Pending" value="7" sub="Inspection" />
+              <StatCard icon={<Users className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label={t("dashRegisteredBeekeepers")} value={farmerCount.toLocaleString("en-IN")} sub="+12 verified" />
+              <StatCard icon={<Layers className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label={t("dashMintedBatches")} value={(18920 + batchesList.length - 2).toLocaleString("en-IN")} sub="Polygon PoS" />
+              <StatCard icon={<Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label={t("dashAvgPurity")} value="92.8" sub="Grade A+" suffix="/100" />
+              <StatCard icon={<Activity className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label={t("dashPending")} value="7" sub="Inspection" />
             </div>
 
-            <SectionLabel>Field Officer Actions</SectionLabel>
+            <SectionLabel>{t("dashFieldOfficerActions")}</SectionLabel>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-              <DarkCard href="/dashboard/register" icon={<PlusCircle className="w-7 h-7 text-gold" />} title="Register Beekeeper" desc="KYC, cooperative code, GPS location, IPFS photo." cta="Open Form" />
-              <DarkCard href="/dashboard/mint" icon={<Layers className="w-7 h-7 text-gold" />} title="Approve & Mint Batch" desc="Review harvest submission and mint on Polygon." cta="Launch Mint" />
-              <DarkCard href="/dashboard/custody" icon={<Truck className="w-7 h-7 text-gold" />} title="Log Custody Transfer" desc="Processing, cold filtration, lab certification." cta="Log Step" />
-              <DarkCard href="/dashboard/bulk" icon={<FileSpreadsheet className="w-7 h-7 text-gold" />} title="Bulk CSV Mint" desc="High-throughput multi-barrel CSV minting." cta="Upload CSV" />
-              <DarkCard href="/dashboard/migration" icon={<Compass className="w-7 h-7 text-gold" />} title="Migratory Bloom Planner" desc="Pan-India floral calendar, convoy logistics & KVIC transit pass." cta="Plan Route" />
-              <DarkCard href="/dashboard/credits" icon={<Bell className="w-7 h-7 text-gold" />} title="Green Pollination Credits" desc="Carbon offset tokenizer, ecological impact & KVIC Green Credit Certificate." cta="Calculate Credits" />
+              <DarkCard href="/dashboard/register" icon={<PlusCircle className="w-7 h-7 text-gold" />} title={t("dashRegisterBeekeeper")} desc="KYC, cooperative code, GPS location, IPFS photo." cta="Open Form" />
+              <DarkCard href="/dashboard/mint" icon={<Layers className="w-7 h-7 text-gold" />} title={t("dashApproveMint")} desc="Review harvest submission and mint on Polygon." cta="Launch Mint" />
+              <DarkCard href="/dashboard/custody" icon={<Truck className="w-7 h-7 text-gold" />} title={t("dashLogCustody")} desc="Processing, cold filtration, lab certification." cta="Log Step" />
+              <DarkCard href="/dashboard/bulk" icon={<FileSpreadsheet className="w-7 h-7 text-gold" />} title={t("dashBulkMint")} desc="High-throughput multi-barrel CSV minting." cta="Upload CSV" />
+              <DarkCard href="/dashboard/migration" icon={<Compass className="w-7 h-7 text-gold" />} title={t("dashMigration")} desc="Pan-India floral calendar, convoy logistics & KVIC transit pass." cta="Plan Route" />
+              <DarkCard href="/dashboard/credits" icon={<Bell className="w-7 h-7 text-gold" />} title={t("dashCredits")} desc="Carbon offset tokenizer, ecological impact & KVIC Green Credit Certificate." cta="Calculate Credits" />
             </div>
 
             <PendingRequestsTable />
@@ -238,12 +240,12 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               <StatCard icon={<ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500" />} label="NABL Certs" value="3,410" sub="This year" />
             </div>
 
-            <SectionLabel>Lab Analyst Actions</SectionLabel>
+            <SectionLabel>{t("dashLabAnalystActions")}</SectionLabel>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16">
-              <DarkCard href="/dashboard/quality" icon={<Microscope className="w-7 h-7 text-gold" />} title="Run AI Quality Analysis" desc="Submit batch ID for NMR spectrometry & adulterant classifier." cta="Analyse Batch" />
-              <DarkCard href="/dashboard/custody" icon={<ClipboardList className="w-7 h-7 text-gold" />} title="Lab Certification Log" desc="Record FSSAI IS 4941 & NMR fingerprint results on-chain." cta="Log Certification" />
-              <DarkCard href="/dashboard/reports" icon={<FileText className="w-7 h-7 text-gold" />} title="Download Lab Reports" desc="Export batch-wise PDF test certificates and W3C VC credentials." cta="Export Reports" />
-              <DarkCard href="/dashboard/pollen" icon={<Sparkles className="w-7 h-7 text-gold" />} title="Pollen Vision AI" desc="Gemini Vision melissopalynology — classify floral botanical origin from microscope slides." cta="Launch Microscope" />
+              <DarkCard href="/dashboard/quality" icon={<Microscope className="w-7 h-7 text-gold" />} title={t("dashRunQuality")} desc="Submit batch ID for NMR spectrometry & adulterant classifier." cta="Analyse Batch" />
+              <DarkCard href="/dashboard/custody" icon={<ClipboardList className="w-7 h-7 text-gold" />} title={t("dashLabCert")} desc="Record FSSAI IS 4941 & NMR fingerprint results on-chain." cta="Log Certification" />
+              <DarkCard href="/dashboard/reports" icon={<FileText className="w-7 h-7 text-gold" />} title={t("dashDownloadReports")} desc="Export batch-wise PDF test certificates and W3C VC credentials." cta="Export Reports" />
+              <DarkCard href="/dashboard/pollen" icon={<Sparkles className="w-7 h-7 text-gold" />} title={t("dashPollenVision")} desc="Gemini Vision melissopalynology — classify floral botanical origin from microscope slides." cta="Launch Microscope" />
             </div>
 
             <div className="border-2 border-rose-200 bg-rose-50 p-4 sm:p-8 shadow-sm mb-12">
@@ -301,7 +303,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               <span className="text-[10px] font-mono font-bold text-emerald-800 uppercase tracking-widest">99.97% uptime</span>
             </div>
 
-            <SectionLabel>Administrator Actions</SectionLabel>
+            <SectionLabel>{t("dashAdminActions")}</SectionLabel>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
               <DarkCard href="/dashboard/admin" icon={<ShieldAlert className="w-7 h-7 text-rose-400" />} title="Recall & Revocation Center" desc="Review citizen fraud complaints and execute emergency batch revocations." cta="Open Recall Center" />
               <DarkCard href="/dashboard/bulk" icon={<FileSpreadsheet className="w-7 h-7 text-gold" />} title="Bulk Operations" desc="Batch minting, CSV import/export, mass QR label printing." cta="Open Bulk Panel" />
@@ -310,7 +312,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
               <DarkCard href="/dashboard/custody" icon={<Truck className="w-7 h-7 text-gold" />} title="Custody Audit Log" desc="Full supply chain custody trail for any batch across all stations." cta="View Audit Trail" />
               <DarkCard href="/dashboard/quality" icon={<BarChart3 className="w-7 h-7 text-gold" />} title="Quality Analytics" desc="System-wide AI purity score trends, adulteration heatmaps." cta="View Analytics" />
-              <DarkCard href="/dashboard/reports" icon={<FileText className="w-7 h-7 text-gold" />} title="System Reports" desc="Export FSSAI compliance reports, KVIC audit summaries, ministry exports." cta="Export Reports" />
+              <DarkCard href="/dashboard/reports" icon={<FileText className="w-7 h-7 text-gold" />} title={t("dashDownloadReports")} desc="Export FSSAI compliance reports, KVIC audit summaries, ministry exports." cta="Export Reports" />
             </div>
 
             <div className="border-2 border-rose-200 bg-white p-8 shadow-sm mb-12">

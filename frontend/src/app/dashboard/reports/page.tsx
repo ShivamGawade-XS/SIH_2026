@@ -54,6 +54,9 @@ export default function ReportsPage() {
     setDownloadingId(batch.batchId);
     try {
       generateCertificatePDF(batch);
+    } catch (err) {
+      console.error("Certificate generation failed:", err);
+      alert("Certificate PDF generation failed. Please try again.");
     } finally {
       setTimeout(() => setDownloadingId(null), 800);
     }
@@ -63,6 +66,9 @@ export default function ReportsPage() {
     setDownloadingId(batch.batchId);
     try {
       generateExportPassportPDF(batch);
+    } catch (err) {
+      console.error("APEDA Passport generation failed:", err);
+      alert("APEDA Passport PDF generation failed. Please try again.");
     } finally {
       setTimeout(() => setDownloadingId(null), 800);
     }
@@ -98,14 +104,27 @@ export default function ReportsPage() {
       "Status",
     ];
 
+    // Safely escape a CSV cell value (handles commas, quotes, Indic text & CWE-1236 formula injection)
+    const escapeCSV = (val: string | number | boolean) => {
+      let str = String(val ?? "");
+      // CWE-1236 Defense: prevent formula injection in Excel/Sheets
+      if (/^[=+\-@\t\r]/.test(str)) {
+        str = `'${str}`;
+      }
+      if (str.includes(",") || str.includes('"') || str.includes("\n") || /[^\x00-\x7F]/.test(str)) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    };
+
     const rows = filtered.map((b) => [
       b.batchId,
       b.qrToken,
-      `"${b.farmer.name}"`,
-      `"${b.farmer.location}"`,
+      b.farmer.name,
+      b.farmer.location,
       b.farmer.cooperativeId,
       b.batch.qualityScore,
-      `"${b.batch.grade}"`,
+      b.batch.grade,
       b.labReport.moisturePercent,
       b.labReport.brixPercent,
       b.labReport.hmfMgPerKg,
@@ -114,17 +133,22 @@ export default function ReportsPage() {
       b.batch.isRevoked ? "REVOKED" : "AUTHENTIC",
     ]);
 
-    const csvContent =
-      "data:text/csv;charset=utf-8," +
-      [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const csvLines = [
+      headers.map(escapeCSV).join(","),
+      ...rows.map((r) => r.map(escapeCSV).join(",")),
+    ].join("\r\n");
 
-    const encodedUri = encodeURI(csvContent);
+    // UTF-8 BOM prefix so Excel opens Indic characters correctly
+    const BOM = "\uFEFF";
+    const blob = new Blob([BOM + csvLines], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
+    link.href = url;
     link.setAttribute("download", `KVIC-HoneyChain-Audit-Report-${Date.now()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (

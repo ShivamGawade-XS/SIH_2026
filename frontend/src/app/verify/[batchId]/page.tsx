@@ -56,6 +56,8 @@ export default function ConsumerVerificationPage() {
   const [reportSubmitted, setReportSubmitted] = useState(false);
   const [reportReason, setReportReason] = useState("Broken or damaged QR seal on lid");
   const [reportTicketId, setReportTicketId] = useState("CMP-2026-482");
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [apedaLoading, setApedaLoading] = useState(false);
 
   useEffect(() => {
     if (qrParam) {
@@ -164,23 +166,39 @@ export default function ConsumerVerificationPage() {
   };
 
   const handleDownloadPDF = () => {
-    generateCertificatePDF(data);
-    confetti({
-      particleCount: 50,
-      spread: 60,
-      origin: { y: 0.7 },
-      colors: ["#D4AF37", "#1A1A1A"],
-    });
+    setPdfLoading(true);
+    try {
+      generateCertificatePDF(data);
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.7 },
+        colors: ["#D4AF37", "#1A1A1A"],
+      });
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      alert("Certificate generation failed. Please try again.");
+    } finally {
+      setTimeout(() => setPdfLoading(false), 800);
+    }
   };
 
   const handleDownloadAPEDA = () => {
-    generateExportPassportPDF(data);
-    confetti({
-      particleCount: 50,
-      spread: 60,
-      origin: { y: 0.7 },
-      colors: ["#D4AF37", "#138808", "#1A1A1A"],
-    });
+    setApedaLoading(true);
+    try {
+      generateExportPassportPDF(data);
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.7 },
+        colors: ["#D4AF37", "#138808", "#1A1A1A"],
+      });
+    } catch (err) {
+      console.error("APEDA passport generation failed:", err);
+      alert("APEDA Passport generation failed. Please try again.");
+    } finally {
+      setTimeout(() => setApedaLoading(false), 800);
+    }
   };
 
   return (
@@ -402,14 +420,16 @@ export default function ConsumerVerificationPage() {
                 <div className="mt-10 flex flex-col sm:flex-row flex-wrap gap-3">
                   <button
                     onClick={handleDownloadPDF}
-                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-gold-slide flex items-center justify-center gap-2"
+                    disabled={pdfLoading}
+                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-gold-slide flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     <FileText className="w-4 h-4 text-gold shrink-0" />
-                    <span>{t("downloadPDF")}</span>
+                    <span>{pdfLoading ? "Generating…" : t("downloadPDF")}</span>
                   </button>
                   <button
                     onClick={handleDownloadAPEDA}
-                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
+                    disabled={apedaLoading}
+                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal flex items-center justify-center gap-2 transition-colors whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     <Globe className="w-4 h-4 text-gold shrink-0" />
                     <span>{t("apedaPassport")}</span>

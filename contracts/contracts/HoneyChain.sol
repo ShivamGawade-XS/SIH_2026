@@ -2,6 +2,7 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /**
  * @title HoneyChain
@@ -9,7 +10,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
  * @notice SIH 2026 — Problem Statement SIH26021 | Ministry of MSME (KVIC)
  * @author Shivam Gawade (TrueTag Platform)
  */
-contract HoneyChain is AccessControl {
+contract HoneyChain is AccessControl, ReentrancyGuard {
 
     // ─── Roles ───────────────────────────────────────────────────────────────
     bytes32 public constant ADMIN_ROLE               = keccak256("ADMIN_ROLE");
@@ -428,6 +429,7 @@ contract HoneyChain is AccessControl {
         require(!batches[batchId].isRevoked,     "HoneyChain: Batch is revoked");
         require(_farmerExists[farmerId],          "HoneyChain: Farmer not registered");
         require(contributionKg > 0,              "HoneyChain: Contribution must be > 0");
+        require(batches[batchId].farmerIds.length < 30, "HoneyChain: Max pooled contributors (30) reached");
 
         batches[batchId].farmerIds.push(farmerId);
         batches[batchId].contributionKg.push(contributionKg);
@@ -600,7 +602,7 @@ contract HoneyChain is AccessControl {
      * @param farmerId The registered beekeeper ID
      * @param batchId  The batch ID consumed
      */
-    function tipFarmer(uint256 farmerId, uint256 batchId) external payable {
+    function tipFarmer(uint256 farmerId, uint256 batchId) external payable nonReentrant {
         require(_farmerExists[farmerId], "HoneyChain: Farmer does not exist");
         require(msg.value > 0, "HoneyChain: Tip amount must be > 0");
         
@@ -619,7 +621,7 @@ contract HoneyChain is AccessControl {
      *      disburses proportional revenue directly to each contributing beekeeper's wallet.
      * @param batchId The procured batch ID
      */
-    function settleBatchProcurement(uint256 batchId) external payable {
+    function settleBatchProcurement(uint256 batchId) external payable nonReentrant {
         require(_batchExists[batchId], "HoneyChain: Batch does not exist");
         Batch storage b = batches[batchId];
         require(!b.isRevoked, "HoneyChain: Batch is revoked");

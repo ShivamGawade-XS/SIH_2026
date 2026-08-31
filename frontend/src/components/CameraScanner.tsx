@@ -119,9 +119,34 @@ export default function CameraScanner({ onScanSuccess, onClose }: CameraScannerP
           </p>
         )}
 
+        {/* Upload QR Image Fallback */}
+        <div className="mt-4 pt-3 border-t border-charcoal/10 flex flex-col items-center">
+          <label className="text-[10px] uppercase tracking-wider text-charcoal font-bold cursor-pointer hover:text-gold transition-colors flex items-center gap-1.5 py-1">
+            <Sparkles className="w-3.5 h-3.5 text-gold" />
+            <span>Or Upload QR Image / Screenshot</span>
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file || !scannerRef.current) return;
+                try {
+                  const decodedText = await scannerRef.current.scanFile(file, true);
+                  if (decodedText) {
+                    onScanSuccess(decodedText);
+                  }
+                } catch {
+                  setError("No valid QR code found in selected image.");
+                }
+              }}
+            />
+          </label>
+        </div>
+
         <button
           onClick={onClose}
-          className="w-full mt-6 py-3 border border-charcoal text-xs uppercase tracking-widest font-semibold hover:bg-charcoal hover:text-white transition-colors"
+          className="w-full mt-4 py-2.5 border border-charcoal text-xs uppercase tracking-widest font-semibold hover:bg-charcoal hover:text-white transition-colors"
         >
           Cancel Scan
         </button>

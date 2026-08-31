@@ -51,10 +51,10 @@ export default function IoTStageController() {
   };
 
   return (
-    <div className="fixed bottom-20 right-3 sm:bottom-6 sm:right-6 z-40 font-sans print:hidden">
+    <div className="fixed bottom-[76px] right-3 sm:bottom-6 sm:right-6 z-50 font-sans print:hidden">
       {/* Expanded Control Box */}
       {isOpen && (
-        <div className="mb-3 w-[calc(100vw-1.5rem)] max-w-sm sm:w-96 bg-[#161616] text-[#F9F8F6] border-2 border-gold p-4 sm:p-5 shadow-2xl animate-in fade-in slide-in-from-bottom-3 duration-300 max-h-[80vh] overflow-y-auto">
+        <div className="mb-3 w-[calc(100vw-1.5rem)] max-w-sm sm:w-96 bg-[#161616] text-[#F9F8F6] border-2 border-gold p-4 sm:p-5 shadow-2xl animate-in fade-in slide-in-from-bottom-3 duration-300 max-h-[60vh] overflow-y-auto">
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/15">
             <div className="flex items-center gap-2">
               <Radio className="w-4 h-4 text-gold animate-pulse shrink-0" />
