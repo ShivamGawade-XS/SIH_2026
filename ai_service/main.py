@@ -7,7 +7,7 @@ Author: Shivam Gawade (ShivamGawade-XS)
 import os
 import time
 import json
-import random
+import secrets
 import asyncio
 import re
 import hashlib
