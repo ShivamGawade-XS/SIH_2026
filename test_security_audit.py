@@ -8,11 +8,17 @@ Evaluates:
   5. Commit-Reveal / Seed Hash Tampering Resistance
   6. Under-Cap Secret PIN Claim Replay & Brute Force
 """
-import sys, os, math, json, hashlib
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "ai_service"))
-
+import sys
+import os
+import json
+import hashlib
 from fastapi.testclient import TestClient
-from main import app
+
+try:
+    from ai_service.main import app
+except ImportError:
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "ai_service"))
+    from main import app
 
 client = TestClient(app)
 

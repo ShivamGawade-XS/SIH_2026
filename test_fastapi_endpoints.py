@@ -8,11 +8,15 @@ Tests all live endpoints including:
 - IoT Telemetry Alert Ingestion
 - Melissopalynology Botanical Classification
 """
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "ai_service"))
-
+import sys
+import os
 from fastapi.testclient import TestClient
-from main import app
+
+try:
+    from ai_service.main import app
+except ImportError:
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "ai_service"))
+    from main import app
 
 client = TestClient(app)
 
