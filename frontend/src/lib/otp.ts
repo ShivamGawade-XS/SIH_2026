@@ -5,13 +5,15 @@
 
 import prisma from "./db";
 
+import { generateSecureOtp } from "./crypto-utils";
+
 const OTP_EXPIRY_MINUTES = 10;
 
 /**
- * Generate a 6-digit OTP code
+ * Generate a 6-digit OTP code using cryptographically secure random bytes
  */
 export function generateOtpCode(): string {
-  return String(Math.floor(100000 + Math.random() * 900000));
+  return generateSecureOtp();
 }
 
 /**

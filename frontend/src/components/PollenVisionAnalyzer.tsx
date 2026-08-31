@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import HoneyChainLogo from "./HoneyChainLogo";
+import { getSecureRandomInt } from "@/lib/crypto-utils";
 
 // ─── Pollen taxonomy & floral origin database ─────────────────────────────────
 interface PollenType {
@@ -152,10 +153,10 @@ function simulateClassification(pollenId: string): ClassificationResult {
   return {
     dominantPollen: dominant,
     secondaryPollens,
-    totalPollenCount: Math.floor(Math.random() * 400) + 250,
+    totalPollenCount: getSecureRandomInt(250, 650),
     monofloralPurity: dominant.purityContrib,
     fssaiGrade: dominant.purityContrib >= 60 ? "Grade A — Monofloral GI Honey" : dominant.purityContrib >= 45 ? "Grade B — Monofloral" : "Grade C — Multifloral",
-    botanicalOriginConfidence: dominant.confidenceThreshold + Math.random() * 0.1,
+    botanicalOriginConfidence: Number((dominant.confidenceThreshold + getSecureRandomInt(1, 10) * 0.01).toFixed(2)),
     labReportId: `HC-PAL-${Date.now().toString(36).toUpperCase().slice(-7)}`,
     isMonofloral,
   };
@@ -185,7 +186,7 @@ export default function PollenVisionAnalyzer() {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    const randomPollen = POLLEN_DB[Math.floor(Math.random() * POLLEN_DB.length)];
+    const randomPollen = POLLEN_DB[getSecureRandomInt(0, POLLEN_DB.length - 1)];
     setSelectedPreviewId(randomPollen.id);
     runAnalysis(randomPollen.id);
   };
@@ -239,7 +240,7 @@ export default function PollenVisionAnalyzer() {
               accept="image/*"
               className="hidden"
               onChange={() => {
-                const randomPollen = POLLEN_DB[Math.floor(Math.random() * POLLEN_DB.length)];
+                const randomPollen = POLLEN_DB[getSecureRandomInt(0, POLLEN_DB.length - 1)];
                 setSelectedPreviewId(randomPollen.id);
                 runAnalysis(randomPollen.id);
               }}

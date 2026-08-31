@@ -25,6 +25,7 @@ import { saveComplaint, subscribeToBatchUpdates } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
 import { useLanguage } from "@/lib/LanguageContext";
 import { formatDeterministicDate } from "@/lib/utils";
+import { getSecureRandomInt } from "@/lib/crypto-utils";
 import confetti from "canvas-confetti";
 import {
   ShieldCheck,
@@ -504,7 +505,7 @@ export default function ConsumerVerificationPage() {
                 <form
                   onSubmit={async (e) => {
                     e.preventDefault();
-                    const ticketId = `CMP-2026-${Math.floor(Math.random() * 800 + 100)}`;
+                    const ticketId = `CMP-2026-${getSecureRandomInt(100, 899)}`;
                     setReportTicketId(ticketId);
                     await saveComplaint({
                       id: ticketId,

@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { getCurrentPosition, reverseGeocode, checkGIZone, GIZone, GI_ZONES } from "@/lib/geo";
 import { saveCustomFarmer } from "@/lib/registry";
+import { getSecureRandomInt } from "@/lib/crypto-utils";
 
 export default function RegisterFarmerPage() {
   const router = useRouter();
@@ -83,7 +84,7 @@ export default function RegisterFarmerPage() {
       location: zone.region,
       gpsLat: lat,
       gpsLng: lng,
-      cooperativeId: `KVIC-${zone.state.slice(0, 2).toUpperCase()}-0${Math.floor(Math.random() * 80 + 10)}`,
+      cooperativeId: `KVIC-${zone.state.slice(0, 2).toUpperCase()}-0${getSecureRandomInt(10, 89)}`,
     }));
     setGpsNotice(`✨ GI Zone Applied: ${zone.name}`);
   };

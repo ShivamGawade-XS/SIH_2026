@@ -8,6 +8,7 @@ import JudgeEvaluationBrief from "@/components/JudgeEvaluationBrief";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { Toaster } from "@/components/ui/sonner";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -84,20 +85,8 @@ export default function RootLayout({
           <IoTStageController />
           <JudgeEvaluationBrief />
           <Toaster position="top-right" />
+          <ServiceWorkerRegister />
         </LanguageProvider>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js').catch(function(err) {
-                    console.log('ServiceWorker registration skipped:', err);
-                  });
-                });
-              }
-            `,
-          }}
-        />
       </body>
     </html>
   );

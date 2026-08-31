@@ -19,15 +19,15 @@ export const IPFS_GATEWAYS = [
   "https://dweb.link/ipfs/",
 ];
 
+import { generateSecureCid } from "./crypto-utils";
+
 /**
  * Pin JSON metadata document to IPFS
  */
 export async function pinJSONToIPFS(body: Record<string, any>, name: string): Promise<string> {
   if (!PINATA_JWT) {
-    // Generate deterministic mock hash if API keys not configured
-    const pseudoHash = "Qm" + Array.from({ length: 44 }, () =>
-      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"[Math.floor(Math.random() * 62)]
-    ).join("");
+    // Generate secure mock CID if API keys not configured
+    const pseudoHash = generateSecureCid("Qm");
     console.warn("Pinata JWT not set. Generated mock IPFS CID:", pseudoHash);
     return pseudoHash;
   }

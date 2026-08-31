@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { BatchMetadata } from "@/lib/types";
 import { DEMO_BATCHES } from "@/lib/constants";
+import { generateSecureCid, generateSecureHex } from "@/lib/crypto-utils";
 
 export const dynamic = "force-dynamic";
 
@@ -160,14 +161,14 @@ export async function POST(req: NextRequest) {
         id: nextId,
         farmerId: farmer.id,
         harvestTimestamp: new Date(),
-        ipfsMetadataHash: ipfsMetadataHash || `bafybeih${Math.random().toString(36).substring(2, 15)}`,
+        ipfsMetadataHash: ipfsMetadataHash || generateSecureCid(),
         qualityScore: score,
         grade: finalGrade,
         isAuthentic: true,
         isRevoked: false,
         isDisputed: false,
         qrToken,
-        txHash: txHash || `0x${Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("")}`,
+        txHash: txHash || `0x${generateSecureHex(32)}`,
         blockNumber: blockNumber || 59350000 + nextId,
         botanicalFlora: botanicalFlora || "Monofloral Flora",
       },

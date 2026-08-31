@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createOtp } from "@/lib/otp";
 import { sendPhoneOtp } from "@/lib/email";
+import { generateSecureOtp } from "@/lib/crypto-utils";
 
 const IS_VERCEL = process.env.VERCEL === "1";
 
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
     // --- Vercel Demo-Mode Fallback ---
     // SQLite OTP writes fail on Vercel; generate and return a demo OTP directly
     if (IS_VERCEL) {
-      const demoOtp = String(Math.floor(100000 + Math.random() * 900000));
+      const demoOtp = generateSecureOtp();
       console.log(`[DEMO MODE] Phone OTP for ${cleanPhone}: ${demoOtp}`);
       return NextResponse.json({
         success: true,

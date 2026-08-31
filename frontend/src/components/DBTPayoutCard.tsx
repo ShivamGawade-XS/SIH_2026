@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Landmark, CheckCircle2, ArrowRight, Wallet, ShieldCheck, Sparkles, ReceiptText } from "lucide-react";
 import confetti from "canvas-confetti";
+import { getSecureRandomInt } from "@/lib/crypto-utils";
 
 interface DBTPayoutCardProps {
   beekeeperName: string;
@@ -38,7 +39,7 @@ export default function DBTPayoutCard({
   const handleSimulatePayout = () => {
     setIsDisbursing(true);
     setTimeout(() => {
-      const utrRef = `DBT-KVIC-2026-${Math.floor(100000000 + Math.random() * 900000000)}`;
+      const utrRef = `DBT-KVIC-2026-${getSecureRandomInt(100000000, 999999999)}`;
       setUtrNumber(utrRef);
       setIsDisbursing(false);
       setDisbursed(true);

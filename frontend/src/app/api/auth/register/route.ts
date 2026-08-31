@@ -3,6 +3,7 @@ import prisma from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 import { createOtp } from "@/lib/otp";
 import { sendVerificationEmail } from "@/lib/email";
+import { generateSecureOtp } from "@/lib/crypto-utils";
 
 // Detect Vercel production (SQLite is read-only on Vercel filesystem)
 const IS_VERCEL = process.env.VERCEL === "1";
@@ -26,8 +27,8 @@ export async function POST(req: NextRequest) {
     // We simulate a successful registration flow for demo & judging purposes.
     if (IS_VERCEL) {
       console.log("[DEMO MODE] Simulating registration for:", normalizedEmail);
-      // Simulate OTP generation for display (dev console hint)
-      const demoOtp = String(Math.floor(100000 + Math.random() * 900000));
+      // Generate cryptographically secure OTP for display (dev console hint)
+      const demoOtp = generateSecureOtp();
       console.log(`[DEMO MODE] Email OTP for ${normalizedEmail}: ${demoOtp}`);
       return NextResponse.json({
         success: true,

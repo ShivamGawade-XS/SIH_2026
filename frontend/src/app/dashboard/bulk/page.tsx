@@ -8,6 +8,7 @@ import Papa from "papaparse";
 import confetti from "canvas-confetti";
 import { getCustomBatches, saveCustomBatch } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
+import { generateSecureHex, generateSecureCid } from "@/lib/crypto-utils";
 import { FileSpreadsheet, ArrowLeft, Upload, CheckCircle2, Download, Layers, QrCode, Sparkles, AlertTriangle } from "lucide-react";
 
 // ─── SIMULATION MODE BANNER ────────────────────────────────────────────────────
@@ -138,10 +139,7 @@ export default function BulkMintPage() {
         // Production: replace with await honeyChainContract.approveHarvestAndMint(...)
         // and use the returned ethers.js TransactionReceipt.hash (real Polygon tx).
         const SIMULATION_TX_PREFIX = "DEMO-SIM-NOT-ONCHAIN-";
-        const simulationTxHash = SIMULATION_TX_PREFIX + Array.from(
-          { length: 20 },
-          () => Math.floor(Math.random() * 16).toString(16)
-        ).join("");
+        const simulationTxHash = SIMULATION_TX_PREFIX + generateSecureHex(10);
         // ─────────────────────────────────────────────────────────────────────
 
         const newBatchRecord: BatchMetadata = {
@@ -159,7 +157,7 @@ export default function BulkMintPage() {
             batchId: newBatchId,
             farmerId: newBatchId,
             harvestTimestamp: Math.floor(Date.now() / 1000),
-            ipfsMetadataHash: "bafybei" + Array.from({ length: 38 }, () => "abcdefghijklmnopqrstuvwxyz234567"[Math.floor(Math.random() * 32)]).join(""),
+            ipfsMetadataHash: generateSecureCid(),
             qualityScore: row.computedScore,
             grade: row.grade,
             isAuthentic: true,

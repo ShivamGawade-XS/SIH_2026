@@ -1,11 +1,16 @@
 import time
-import random
+import secrets
 import json
 import requests
 
 AI_BASE_URL = "http://localhost:8000"
 ANOMALY_URL = f"{AI_BASE_URL}/api/anomaly/hive"
 TELEMETRY_URL = f"{AI_BASE_URL}/api/iot/push-telemetry"
+
+def secure_uniform(a: float, b: float) -> float:
+    """Cryptographically secure uniform float in range [a, b]"""
+    rnd = secrets.randbelow(10000) / 10000.0
+    return a + (b - a) * rnd
 
 HIVEDATA = [
     {
@@ -39,14 +44,14 @@ HIVEDATA = [
 ]
 
 def generate_telemetry(hive):
-    weight_variance = random.uniform(-0.15, 0.2)
-    # Rare swarming/stress event simulation (2% chance)
-    if random.random() < 0.02:
+    weight_variance = secure_uniform(-0.15, 0.2)
+    # Rare swarming/stress event simulation (2% chance) using cryptographically secure RNG
+    if secrets.randbelow(100) < 2:
         weight_variance = -1.8
 
-    temp = round(34.5 + random.uniform(-0.8, 1.2), 1)
-    humidity = round(62.0 + random.uniform(-4.0, 5.0), 1)
-    acoustic = round(hive["base_acoustic"] + random.uniform(-2.0, 3.0), 1)
+    temp = round(34.5 + secure_uniform(-0.8, 1.2), 1)
+    humidity = round(62.0 + secure_uniform(-4.0, 5.0), 1)
+    acoustic = round(hive["base_acoustic"] + secure_uniform(-2.0, 3.0), 1)
     current_weight = round(hive["base_weight"] + weight_variance, 2)
     previous_weight = round(hive["base_weight"], 2)
 

@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import confetti from "canvas-confetti";
 import { getCustomBatches, saveCustomBatch, fetchBatchesFromDB } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
+import { generateSecureHex } from "@/lib/crypto-utils";
 import { Truck, ArrowLeft, ShieldCheck, CheckCircle2, Factory, FlaskConical, Store, ExternalLink } from "lucide-react";
 
 export default function CustodyLoggingPage() {
@@ -36,7 +37,7 @@ export default function CustodyLoggingPage() {
     setTimeout(() => {
       setLoading(false);
       const newEntry = {
-        actor: "0x" + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(""),
+        actor: `0x${generateSecureHex(20)}`,
         entity: facility,
         timestamp: Math.floor(Date.now() / 1000),
         action: `${action} (Logged by: ${actorName})`,

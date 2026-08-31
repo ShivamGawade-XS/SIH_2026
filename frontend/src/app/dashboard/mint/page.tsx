@@ -8,6 +8,7 @@ import confetti from "canvas-confetti";
 import { Layers, ArrowLeft, Sparkles, CheckCircle2, QrCode, ExternalLink, ShieldCheck, Activity } from "lucide-react";
 
 import { saveCustomBatch, getCustomFarmers, getCustomBatches, fetchFarmersFromDB } from "@/lib/registry";
+import { generateSecureHex, generateSecureCid } from "@/lib/crypto-utils";
 
 export default function MintBatchPage() {
   const [farmersList, setFarmersList] = useState(getCustomFarmers());
@@ -102,7 +103,7 @@ export default function MintBatchPage() {
 
       let newBatchId = 3;
       let generatedToken = `TT-2026-00003`;
-      let generatedTx = "0x" + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
+      let generatedTx = `0x${generateSecureHex(32)}`;
 
       if (res.ok) {
         const data = await res.json();
@@ -123,7 +124,7 @@ export default function MintBatchPage() {
           batchId: newBatchId,
           farmerId: selectedFarmer.farmerId,
           harvestTimestamp: Math.floor(Date.now() / 1000),
-          ipfsMetadataHash: "bafybeic" + Array.from({ length: 50 }, () => "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]).join(""),
+          ipfsMetadataHash: generateSecureCid(),
           qualityScore: aiScore,
           grade: aiGrade,
           isAuthentic: true,
