@@ -44,9 +44,9 @@ describe("HoneyChainQR — Anti-Counterfeiting & Clone Detection", function () {
       await qrContract.connect(consumer).recordScan("TT-2026-00001");
 
       const status = await qrContract.getQRStatus("TT-2026-00001");
-      expect(status[0]).to.equal(1n); // batchId
-      expect(status[1]).to.equal(2n); // scanCount
-      expect(status[3]).to.equal(false); // isFlagged
+      expect(status.batchId).to.equal(1n);
+      expect(status.scanCount).to.equal(2n);
+      expect(status.isFlagged).to.equal(false);
     });
 
     it("flags QR as suspicious clone when scan count exceeds threshold (>25)", async () => {
@@ -59,9 +59,9 @@ describe("HoneyChainQR — Anti-Counterfeiting & Clone Detection", function () {
         .to.emit(qrContract, "QRFlagged");
 
       const status = await qrContract.getQRStatus("TT-2026-00001");
-      expect(status[1]).to.equal(26n);
-      expect(status[3]).to.equal(true); // isFlagged
-      expect(status[4]).to.include("physical QR clone");
+      expect(status.scanCount).to.equal(26n);
+      expect(status.isFlagged).to.equal(true);
+      expect(status.flagReason).to.include("physical QR clone");
     });
 
     it("rejects recording scan for unregistered QR token", async () => {

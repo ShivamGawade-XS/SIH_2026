@@ -16,6 +16,7 @@ import SupplyChainMapReplay from "@/components/SupplyChainMapReplay";
 import PollenInspector from "@/components/PollenInspector";
 import DBTPayoutCard from "@/components/DBTPayoutCard";
 import VerifiableCredentialModal from "@/components/VerifiableCredentialModal";
+import UnderCapPinClaimModal from "@/components/UnderCapPinClaimModal";
 import { fetchBatchById, fetchBatchByQR } from "@/lib/contract";
 import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
 import { generateCertificatePDF } from "@/lib/pdf-certificate";
@@ -51,6 +52,7 @@ export default function ConsumerVerificationPage() {
   const [showReportModal, setShowReportModal] = useState(false);
   const [showTipModal, setShowTipModal] = useState(false);
   const [showVCModal, setShowVCModal] = useState(false);
+  const [showPinClaimModal, setShowPinClaimModal] = useState(false);
   const [reportSubmitted, setReportSubmitted] = useState(false);
   const [reportReason, setReportReason] = useState("Broken or damaged QR seal on lid");
   const [reportTicketId, setReportTicketId] = useState("CMP-2026-482");
@@ -223,6 +225,14 @@ export default function ConsumerVerificationPage() {
                   >
                     <Heart className="w-4 h-4 text-rose-600 fill-rose-600/30" />
                     <span>🇮🇳 Tip Beekeeper (Direct UPI)</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShowPinClaimModal(true)}
+                    className="px-4 py-2.5 border-2 border-amber-600 bg-amber-600/10 hover:bg-amber-600 hover:text-white text-charcoal transition-colors text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-xs"
+                  >
+                    <ShieldCheck className="w-4 h-4 text-amber-600 group-hover:text-white" />
+                    <span>🔓 Claim Under-Cap PIN</span>
                   </button>
                 </div>
               </div>
@@ -553,6 +563,15 @@ export default function ConsumerVerificationPage() {
           isOpen={showVCModal}
           onClose={() => setShowVCModal(false)}
           batch={data}
+        />
+
+        {/* UNDER-CAP PIN CLAIM & JAR BURN MODAL */}
+        <UnderCapPinClaimModal
+          isOpen={showPinClaimModal}
+          onClose={() => setShowPinClaimModal(false)}
+          batchId={batch.batchId}
+          qrToken={qrToken}
+          farmerName={farmer.name}
         />
       </main>
 

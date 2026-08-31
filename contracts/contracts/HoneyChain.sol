@@ -63,20 +63,24 @@ contract HoneyChain is AccessControl {
 
     /**
      * @dev Step 2: Minted Honey Batch (only created upon Field Officer approval)
+     * @dev farmerIds[] and contributionKg[] support pooled cooperative batches.
+     *      A single batch may contain honey from multiple KVIC-verified beekeepers.
      */
     struct Batch {
-        uint256 batchId;
-        uint256 requestId;         // Linked harvest request
-        uint256 farmerId;
-        uint256 harvestTimestamp;
-        string  ipfsMetadataHash;  // IPFS CID for full verified metadata JSON
-        uint8   qualityScore;      // AI Purity Score (0-100)
-        string  grade;             // e.g. "Grade A+ (Premium Raw Organic)"
-        bool    isAuthentic;
-        bool    isDisputed;        // Marked as disputed by District Supervisor (non-destructive)
-        string  disputeReason;     // Reason for dispute/fraud flag
-        address flaggedBy;         // Supervisor who flagged the batch
-        bool    isRevoked;         // Emergency revocation
+        uint256   batchId;
+        uint256   requestId;         // Linked harvest request
+        uint256[] farmerIds;         // All contributing farmer IDs (replaces single farmerId)
+        uint256[] contributionKg;    // Proportional kg contributed per farmer (same-index as farmerIds)
+        uint256   totalKg;           // Total batch weight in kg
+        uint256   harvestTimestamp;
+        string    ipfsMetadataHash;  // IPFS CID for full verified metadata JSON
+        uint8     qualityScore;      // AI Purity Score (0-100)
+        string    grade;             // e.g. "Grade A+ (Premium Raw Organic)"
+        bool      isAuthentic;
+        bool      isDisputed;        // Marked as disputed by District Supervisor (non-destructive)
+        string    disputeReason;     // Reason for dispute/fraud flag
+        address   flaggedBy;         // Supervisor who flagged the batch
+        bool      isRevoked;         // Emergency revocation
     }
 
     /**
@@ -133,13 +137,24 @@ contract HoneyChain is AccessControl {
     );
 
     event BatchMinted(
+        uint256   indexed batchId,
+        uint256   indexed requestId,
+        uint256[] farmerIds,
+        uint256   totalKg,
+        string    ipfsMetadataHash,
+        uint8     qualityScore,
+        string    grade,
+        address   indexed mintedBy
+    );
+
+    /**
+     * @dev Emitted when a Field Officer adds a beekeeper's contribution to a pooled batch.
+     */
+    event FarmerContributionAdded(
         uint256 indexed batchId,
-        uint256 indexed requestId,
         uint256 indexed farmerId,
-        string  ipfsMetadataHash,
-        uint8   qualityScore,
-        string  grade,
-        address mintedBy
+        uint256 contributionKg,
+        address indexed addedBy
     );
 
     event BatchDisputed(
@@ -171,6 +186,36 @@ contract HoneyChain is AccessControl {
     event BatchRevoked(
         uint256 indexed batchId,
         address revokedBy
+    );
+
+    /**
+     * @dev Emitted when a consumer directly tips/rewards a beekeeper on Polygon with zero platform fees.
+     */
+    event DirectTipForwarded(
+        uint256 indexed batchId,
+        uint256 indexed farmerId,
+        address indexed farmerWallet,
+        address tipper,
+        uint256 amountWei
+    );
+
+    /**
+     * @dev Emitted when a processor/brand purchases a batch and funds are auto-split to contributing beekeepers.
+     */
+    event BatchProcurementSettled(
+        uint256 indexed batchId,
+        address indexed buyer,
+        uint256 totalAmountWei,
+        uint256 totalKg,
+        uint256 timestamp
+    );
+
+    event FarmerProcurementDisbursed(
+        uint256 indexed batchId,
+        uint256 indexed farmerId,
+        address indexed farmerWallet,
+        uint256 amountWei,
+        uint256 contributionKg
     );
 
     // ─── Constructor ──────────────────────────────────────────────────────────
@@ -321,24 +366,30 @@ contract HoneyChain is AccessControl {
         req.reviewedAt    = block.timestamp;
         req.reviewRemarks = "Approved by KVIC Field Officer";
 
-        // Mint Batch
+        // Mint Batch — initialise with the primary farmer from the harvest request.
+        // Additional farmers may be added via addFarmerContribution() after minting.
         _batchIdCounter++;
         batchId = _batchIdCounter;
 
-        batches[batchId] = Batch({
-            batchId:          batchId,
-            requestId:        requestId,
-            farmerId:         req.farmerId,
-            harvestTimestamp: block.timestamp,
-            ipfsMetadataHash: ipfsMetadataHash,
-            qualityScore:     qualityScore,
-            grade:            grade,
-            isAuthentic:      true,
-            isDisputed:       false,
-            disputeReason:    "",
-            flaggedBy:        address(0),
-            isRevoked:        false
-        });
+        uint256[] memory initFarmerIds    = new uint256[](1);
+        uint256[] memory initContribution = new uint256[](1);
+        initFarmerIds[0]    = req.farmerId;
+        initContribution[0] = req.quantityKg;
+
+        batches[batchId].batchId          = batchId;
+        batches[batchId].requestId        = requestId;
+        batches[batchId].farmerIds        = initFarmerIds;
+        batches[batchId].contributionKg   = initContribution;
+        batches[batchId].totalKg          = req.quantityKg;
+        batches[batchId].harvestTimestamp = block.timestamp;
+        batches[batchId].ipfsMetadataHash = ipfsMetadataHash;
+        batches[batchId].qualityScore     = qualityScore;
+        batches[batchId].grade            = grade;
+        batches[batchId].isAuthentic      = true;
+        batches[batchId].isDisputed       = false;
+        batches[batchId].disputeReason    = "";
+        batches[batchId].flaggedBy        = address(0);
+        batches[batchId].isRevoked        = false;
 
         _batchExists[batchId] = true;
         qrToBatch[qrToken]    = batchId;
@@ -352,7 +403,55 @@ contract HoneyChain is AccessControl {
         }));
 
         emit HarvestApproved(requestId, batchId, msg.sender, qualityScore, grade);
-        emit BatchMinted(batchId, requestId, req.farmerId, ipfsMetadataHash, qualityScore, grade, msg.sender);
+
+        uint256[] memory emittedFarmerIds = new uint256[](1);
+        emittedFarmerIds[0] = req.farmerId;
+        string memory _ipfsHash = ipfsMetadataHash;
+        uint256 _qty = req.quantityKg;
+        emit BatchMinted(batchId, requestId, emittedFarmerIds, _qty, _ipfsHash, qualityScore, grade, msg.sender);
+    }
+
+    /**
+     * @notice Add an additional beekeeper's honey contribution to an existing pooled batch.
+     * @dev Reflects cooperative collection reality: honey from multiple farmers is pooled
+     *      before processing. Callable only by Field Officers who witnessed the collection.
+     * @param batchId        The target batch to add the contribution to
+     * @param farmerId       The registered KVIC farmer ID of the contributing beekeeper
+     * @param contributionKg The weight in kg contributed by this farmer
+     */
+    function addFarmerContribution(
+        uint256 batchId,
+        uint256 farmerId,
+        uint256 contributionKg
+    ) external onlyRole(FIELD_OFFICER_ROLE) {
+        require(_batchExists[batchId],           "HoneyChain: Batch does not exist");
+        require(!batches[batchId].isRevoked,     "HoneyChain: Batch is revoked");
+        require(_farmerExists[farmerId],          "HoneyChain: Farmer not registered");
+        require(contributionKg > 0,              "HoneyChain: Contribution must be > 0");
+
+        batches[batchId].farmerIds.push(farmerId);
+        batches[batchId].contributionKg.push(contributionKg);
+        batches[batchId].totalKg += contributionKg;
+
+        emit FarmerContributionAdded(batchId, farmerId, contributionKg, msg.sender);
+    }
+
+    /**
+     * @notice Get all farmer IDs and their contributions for a pooled batch.
+     * @return farmerIds      Array of KVIC farmer IDs that contributed honey
+     * @return contributions  Corresponding contribution weights in kg
+     * @return totalKg        Total batch weight
+     */
+    function getBatchContributors(
+        uint256 batchId
+    ) external view returns (
+        uint256[] memory farmerIds,
+        uint256[] memory contributions,
+        uint256          totalKg
+    ) {
+        require(_batchExists[batchId], "HoneyChain: Batch does not exist");
+        Batch storage b = batches[batchId];
+        return (b.farmerIds, b.contributionKg, b.totalKg);
     }
 
     /**
@@ -493,6 +592,73 @@ contract HoneyChain is AccessControl {
         }));
 
         emit BatchRevoked(batchId, msg.sender);
+    }
+
+    /**
+     * @notice Direct Consumer-to-Farmer Micro-Tipping / Royalty Forwarding
+     * @dev 100% of msg.value is transferred directly to the farmer's registered wallet with zero intermediary cuts.
+     * @param farmerId The registered beekeeper ID
+     * @param batchId  The batch ID consumed
+     */
+    function tipFarmer(uint256 farmerId, uint256 batchId) external payable {
+        require(_farmerExists[farmerId], "HoneyChain: Farmer does not exist");
+        require(msg.value > 0, "HoneyChain: Tip amount must be > 0");
+        
+        address farmerWallet = farmers[farmerId].walletAddress;
+        require(farmerWallet != address(0), "HoneyChain: Invalid farmer wallet");
+
+        (bool success, ) = payable(farmerWallet).call{value: msg.value}("");
+        require(success, "HoneyChain: Tip transfer failed");
+
+        emit DirectTipForwarded(batchId, farmerId, farmerWallet, msg.sender, msg.value);
+    }
+
+    /**
+     * @notice Automated Batch Procurement Settlement & Multi-Farmer Revenue Splitter
+     * @dev Processors or brands deposit procurement payment. Smart contract automatically
+     *      disburses proportional revenue directly to each contributing beekeeper's wallet.
+     * @param batchId The procured batch ID
+     */
+    function settleBatchProcurement(uint256 batchId) external payable {
+        require(_batchExists[batchId], "HoneyChain: Batch does not exist");
+        Batch storage b = batches[batchId];
+        require(!b.isRevoked, "HoneyChain: Batch is revoked");
+        require(b.isAuthentic, "HoneyChain: Cannot procure disputed/inauthentic batch");
+        require(msg.value > 0, "HoneyChain: Procurement payment must be > 0");
+        require(b.totalKg > 0, "HoneyChain: Batch has zero recorded weight");
+
+        uint256 totalPayment = msg.value;
+        uint256 totalWeight = b.totalKg;
+        uint256 contributorsCount = b.farmerIds.length;
+
+        for (uint256 i = 0; i < contributorsCount; i++) {
+            uint256 farmerId = b.farmerIds[i];
+            uint256 farmerContribution = b.contributionKg[i];
+            uint256 farmerShare = (totalPayment * farmerContribution) / totalWeight;
+
+            address farmerWallet = farmers[farmerId].walletAddress;
+            if (farmerWallet != address(0) && farmerShare > 0) {
+                (bool success, ) = payable(farmerWallet).call{value: farmerShare}("");
+                require(success, "HoneyChain: Procurement disbursement transfer failed");
+
+                emit FarmerProcurementDisbursed(
+                    batchId,
+                    farmerId,
+                    farmerWallet,
+                    farmerShare,
+                    farmerContribution
+                );
+            }
+        }
+
+        _custodyChain[batchId].push(CustodyEntry({
+            actor:     msg.sender,
+            entity:    "Commercial Brand Procurement Settlement",
+            timestamp: block.timestamp,
+            action:    "Direct Smart Escrow Disbursed to All Contributing Beekeepers"
+        }));
+
+        emit BatchProcurementSettled(batchId, msg.sender, totalPayment, totalWeight, block.timestamp);
     }
 
     // ─── View Functions ───────────────────────────────────────────────────────

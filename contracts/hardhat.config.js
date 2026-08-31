@@ -7,6 +7,8 @@ module.exports = {
   solidity: {
     version: "0.8.24",
     settings: {
+      // viaIR required to avoid stack-too-deep on BatchMinted event with array params
+      viaIR: true,
       optimizer: {
         enabled: true,
         runs: 200

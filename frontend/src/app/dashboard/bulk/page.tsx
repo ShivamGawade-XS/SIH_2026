@@ -8,7 +8,25 @@ import Papa from "papaparse";
 import confetti from "canvas-confetti";
 import { getCustomBatches, saveCustomBatch } from "@/lib/registry";
 import { BatchMetadata } from "@/lib/types";
-import { FileSpreadsheet, ArrowLeft, Upload, CheckCircle2, Download, Layers, QrCode, Sparkles } from "lucide-react";
+import { FileSpreadsheet, ArrowLeft, Upload, CheckCircle2, Download, Layers, QrCode, Sparkles, AlertTriangle } from "lucide-react";
+
+// ─── SIMULATION MODE BANNER ────────────────────────────────────────────────────
+// Bulk CSV mint runs in SIMULATION MODE. It stores data locally for demo purposes.
+// In production, each row calls the on-chain approveHarvestAndMint() via ethers.js.
+// txHash values are NOT real blockchain transactions — they are clearly marked as demo.
+const SimulationBanner = () => (
+  <div className="flex items-start gap-3 bg-amber-50 border border-amber-300 px-5 py-4 mb-8">
+    <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+    <div>
+      <p className="text-xs font-semibold uppercase tracking-widest text-amber-800 mb-0.5">Demo / Simulation Mode</p>
+      <p className="text-xs text-amber-700">
+        Batches minted here are stored locally for demonstration purposes only. AI scores are
+        fetched from the live HoneyChain FastAPI microservice. Transaction hashes are simulation
+        placeholders — production deployment connects to the Polygon Amoy smart contract via ethers.js.
+      </p>
+    </div>
+  </div>
+);
 
 interface CSVRow {
   BeekeeperName: string;
@@ -50,27 +68,56 @@ export default function BulkMintPage() {
     Papa.parse<CSVRow>(file, {
       header: true,
       skipEmptyLines: true,
-      complete: (results) => {
-        const enriched = results.data.map((row, idx) => {
-          const moisture = parseFloat(row.MoisturePercent) || 17.5;
-          const brix = parseFloat(row.BrixIndex) || 81.0;
-          const hmf = parseFloat(row.HmfMgKg) || 15.0;
-          const diastase = parseFloat(row.DiastaseActivity) || 16.0;
+      complete: async (results) => {
+        // Score each row by calling the real HoneyChain FastAPI microservice.
+        // Falls back to physics-based formula only if the AI service is unreachable.
+        const AI_ENDPOINT = process.env.NEXT_PUBLIC_AI_SERVICE_URL || "http://localhost:8000";
 
-          let score = 100.0;
-          if (moisture > 20.0) score -= (moisture - 20.0) * 15.0;
-          if (brix < 80.0) score -= (80.0 - brix) * 4.0;
-          if (hmf > 40.0) score -= (hmf - 40.0) * 2.5;
-          if (diastase < 8.0) score -= (8.0 - diastase) * 6.0;
-          const finalScore = Math.max(10, Math.min(99, Math.round(score)));
+        const enriched = await Promise.all(
+          results.data.map(async (row, idx) => {
+            const moisture = parseFloat(row.MoisturePercent) || 17.5;
+            const brix     = parseFloat(row.BrixIndex)       || 81.0;
+            const hmf      = parseFloat(row.HmfMgKg)         || 15.0;
+            const diastase = parseFloat(row.DiastaseActivity) || 16.0;
 
-          return {
-            ...row,
-            id: idx + 1,
-            computedScore: finalScore,
-            grade: finalScore >= 90 ? "Grade A+ Raw Organic" : finalScore >= 75 ? "Grade A Pure" : "Grade B",
-          };
-        });
+            let finalScore = 0;
+            let grade = "Grade B";
+            let scoredBy = "physics-fallback";
+
+            try {
+              const res = await fetch(`${AI_ENDPOINT}/api/quality/predict`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  moisture: moisture,
+                  brix: brix,
+                  hmf: hmf,
+                  diastase: diastase,
+                }),
+              });
+              if (res.ok) {
+                const json = await res.json();
+                finalScore = json.quality_score ?? json.purity_score ?? 0;
+                grade      = json.grade ?? "Grade B";
+                scoredBy   = "ai-service-v2";
+              } else {
+                throw new Error(`AI service returned ${res.status}`);
+              }
+            } catch {
+              // Physics-based FSSAI fallback (identical to FastAPI _calculate_math_score_and_class)
+              let score = 100.0;
+              if (moisture > 20.0) score -= (moisture - 20.0) * 15.0;
+              if (brix < 80.0)     score -= (80.0 - brix) * 4.0;
+              if (hmf > 40.0)      score -= (hmf - 40.0) * 2.5;
+              if (diastase < 8.0)  score -= (8.0 - diastase) * 6.0;
+              finalScore = Math.max(10, Math.min(99, Math.round(score)));
+              grade      = finalScore >= 90 ? "Grade A+ Raw Organic" : finalScore >= 75 ? "Grade A Pure" : "Grade B";
+              scoredBy   = "physics-fallback";
+            }
+
+            return { ...row, id: idx + 1, computedScore: finalScore, grade, scoredBy };
+          })
+        );
         setParsedRows(enriched);
       },
     });
@@ -84,7 +131,19 @@ export default function BulkMintPage() {
 
       parsedRows.forEach((row, idx) => {
         const newBatchId = existing.length + idx + 1;
-        const qrToken = `TT-2026-0000${newBatchId}`;
+        const qrToken = `TT-2026-${String(newBatchId).padStart(5, "0")}`;
+
+        // ── SIMULATION MODE ───────────────────────────────────────────────────
+        // txHash is intentionally marked as a simulation placeholder.
+        // Production: replace with await honeyChainContract.approveHarvestAndMint(...)
+        // and use the returned ethers.js TransactionReceipt.hash (real Polygon tx).
+        const SIMULATION_TX_PREFIX = "DEMO-SIM-NOT-ONCHAIN-";
+        const simulationTxHash = SIMULATION_TX_PREFIX + Array.from(
+          { length: 20 },
+          () => Math.floor(Math.random() * 16).toString(16)
+        ).join("");
+        // ─────────────────────────────────────────────────────────────────────
+
         const newBatchRecord: BatchMetadata = {
           batchId: newBatchId,
           farmer: {
@@ -100,7 +159,7 @@ export default function BulkMintPage() {
             batchId: newBatchId,
             farmerId: newBatchId,
             harvestTimestamp: Math.floor(Date.now() / 1000),
-            ipfsMetadataHash: "Qm" + Array.from({ length: 44 }, () => "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]).join(""),
+            ipfsMetadataHash: "bafybei" + Array.from({ length: 38 }, () => "abcdefghijklmnopqrstuvwxyz234567"[Math.floor(Math.random() * 32)]).join(""),
             qualityScore: row.computedScore,
             grade: row.grade,
             isAuthentic: true,
@@ -111,7 +170,7 @@ export default function BulkMintPage() {
               actor: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
               entity: `Harvest Site (${row.Location})`,
               timestamp: Math.floor(Date.now() / 1000),
-              action: "Bulk Harvested & TrueTag IoT Sealed",
+              action: `Bulk Harvested & TrueTag IoT Sealed [AI scored by: ${row.scoredBy ?? "physics-fallback"}]`,
             },
           ],
           labReport: {
@@ -126,7 +185,7 @@ export default function BulkMintPage() {
             testedAt: new Date().toISOString().split("T")[0],
           },
           qrToken,
-          txHash: "0x" + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join(""),
+          txHash: simulationTxHash,
         };
         saveCustomBatch(newBatchRecord);
       });
@@ -154,6 +213,7 @@ export default function BulkMintPage() {
           <span>Back to Operations Dashboard</span>
         </Link>
 
+        <SimulationBanner />
         <div className="border border-charcoal/20 bg-white p-5 sm:p-8 md:p-12 shadow-luxury-card mb-8 sm:mb-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-charcoal/10">
             <div className="flex items-center gap-4">
@@ -248,6 +308,7 @@ export default function BulkMintPage() {
                           <th className="p-3 font-semibold">Brix</th>
                           <th className="p-3 font-semibold">AI Purity</th>
                           <th className="p-3 font-semibold">Grade</th>
+                          <th className="p-3 font-semibold">Scored By</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-charcoal/5">
@@ -260,6 +321,7 @@ export default function BulkMintPage() {
                             <td className="p-3 font-mono">{row.BrixIndex}°Bx</td>
                             <td className="p-3 font-serif font-bold text-gold">{row.computedScore}/100</td>
                             <td className="p-3 font-medium">{row.grade}</td>
+                            <td className="p-3 font-mono text-[10px] text-warm-grey">{row.scoredBy ?? "—"}</td>
                           </tr>
                         ))}
                       </tbody>
