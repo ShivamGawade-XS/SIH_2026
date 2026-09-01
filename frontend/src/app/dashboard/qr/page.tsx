@@ -241,7 +241,10 @@ export default function QrLabelsPage() {
                   <option value={4}>4 (2×2 Grid)</option>
                   <option value={6}>6 (2×3 Grid)</option>
                   <option value={8}>8 (2×4 Grid)</option>
-                  <option value={12}>12 (3×4 Grid)</option>
+                  <option value={12}>12 (3×4 Full Sheet)</option>
+                  <option value={16}>16 (2×8 Double Sheet)</option>
+                  <option value={24}>24 (3×8 Multi-Sheet Pack)</option>
+                  <option value={48}>48 (Commercial Batch Run)</option>
                 </select>
               </div>
             </div>

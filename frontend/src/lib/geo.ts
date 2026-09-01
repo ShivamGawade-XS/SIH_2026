@@ -105,15 +105,38 @@ export async function getCurrentPosition(): Promise<GeoPosition> {
       });
       return pos;
     } catch {
-      // Browser GPS timed out or denied, proceed to fallback
+      // Browser GPS timed out or denied, proceed to resilient network fallback
     }
   }
 
-  // 2. Try fast IP-based Geolocation fallback
+  // 2. Try fast IP-based Geolocation fallbacks (CORS-friendly)
   try {
-    const ipRes = await fetch("https://ipapi.co/json/", { cache: "no-store" });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2500);
+    const ipRes = await fetch("https://ipwho.is/", { signal: controller.signal, cache: "no-store" });
+    clearTimeout(timeout);
     if (ipRes.ok) {
       const ipData = await ipRes.json();
+      if (ipData && ipData.latitude && ipData.longitude) {
+        return {
+          lat: Number(ipData.latitude),
+          lng: Number(ipData.longitude),
+          accuracy: 2500,
+          source: "ip_fallback",
+        };
+      }
+    }
+  } catch {
+    // Try secondary IP provider
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2000);
+    const ipRes2 = await fetch("https://api.bigdatacloud.net/data/client-info", { signal: controller.signal, cache: "no-store" });
+    clearTimeout(timeout);
+    if (ipRes2.ok) {
+      const ipData = await ipRes2.json();
       if (ipData && ipData.latitude && ipData.longitude) {
         return {
           lat: Number(ipData.latitude),
@@ -124,7 +147,7 @@ export async function getCurrentPosition(): Promise<GeoPosition> {
       }
     }
   } catch {
-    // Network fallback failed, proceed to default
+    // Fallback to preset apiary
   }
 
   // 3. Fallback to Verified Sundarbans KVIC Field Apiary

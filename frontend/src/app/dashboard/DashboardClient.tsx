@@ -123,10 +123,9 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
     <div className="min-h-screen flex flex-col justify-between bg-[#F9F8F6]">
       <Navbar />
 
-      <main className="py-12 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto w-full flex-1">
-
-        {/* ── SIH EVALUATOR QUICK PERSONA SWITCHER BANNER ── */}
-        <div className="mb-8 p-4 border-2 border-gold/40 bg-amber-50/70 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <main className="py-8 sm:py-16 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto w-full flex-1">
+        {/* ── DEMO PERSONA SWITCHER BAR ── */}
+        <div className="mb-8 p-3.5 sm:p-4 bg-amber-500/10 border-2 border-amber-500/30 rounded-none flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
           <div className="flex items-center gap-2.5">
             <span className="w-2.5 h-2.5 bg-amber-500 rounded-full animate-ping" />
             <div>
@@ -177,7 +176,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               </span>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl serif text-charcoal font-normal">
-              Welcome, <span className="italic text-gold font-serif">{currentUser.name.split(" ")[0]}</span>
+              {t("dashWelcome")} <span className="italic text-gold font-serif">{currentUser.name.split(" ")[0]}</span>
             </h1>
             <p className="text-xs sm:text-sm text-warm-grey mt-1 font-mono">{currentUser.email}</p>
           </div>
@@ -216,15 +215,16 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               <DarkCard href="/dashboard/bulk" icon={<FileSpreadsheet className="w-7 h-7 text-gold" />} title={t("dashBulkMint")} desc="High-throughput multi-barrel CSV minting." cta="Upload CSV" />
               <DarkCard href="/dashboard/migration" icon={<Compass className="w-7 h-7 text-gold" />} title={t("dashMigration")} desc="Pan-India floral calendar, convoy logistics & KVIC transit pass." cta="Plan Route" />
               <DarkCard href="/dashboard/credits" icon={<Bell className="w-7 h-7 text-gold" />} title={t("dashCredits")} desc="Carbon offset tokenizer, ecological impact & KVIC Green Credit Certificate." cta="Calculate Credits" />
+              <DarkCard href="/dashboard/qr" icon={<QrCode className="w-7 h-7 text-gold" />} title={t("dashPrintQR")} desc="Vector PDF labels, breakable lid tamper seals & under-cap PIN scratch cards." cta="Open Studio" />
             </div>
 
-            <PendingRequestsTable />
+            <PendingRequestsTable t={t} />
             <div className="mt-12"><LiveTelemetryStream /></div>
             <div className="mt-12"><HiveAcousticAnalyzer /></div>
             <div className="mt-12"><VoiceFieldAssistant /></div>
             <div className="mt-12"><MigratoryRoutePlanner /></div>
             <div className="mt-12"><PollinationCreditCalculator /></div>
-            <RecentBatchesTable batchesList={batchesList} />
+            <RecentBatchesTable batchesList={batchesList} t={t} />
           </>
         )}
 
@@ -234,10 +234,10 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
         {role === "LAB_ANALYST" && (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
-              <StatCard icon={<FlaskConical className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Tested (Month)" value="1,284" sub="FSSAI IS 4941" />
-              <StatCard icon={<Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Avg. Purity" value="91.4" sub="All batches" suffix="/100" />
-              <StatCard icon={<AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />} label="Flags" value="18" sub="Syrup anomalies" />
-              <StatCard icon={<ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500" />} label="NABL Certs" value="3,410" sub="This year" />
+              <StatCard icon={<FlaskConical className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label={t("dashTestedMonth")} value="1,284" sub="FSSAI IS 4941" />
+              <StatCard icon={<Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label={t("dashAvgPurity")} value="91.4" sub="All batches" suffix="/100" />
+              <StatCard icon={<AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />} label={t("dashSyrupFlags")} value="18" sub="Syrup anomalies" />
+              <StatCard icon={<ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500" />} label={t("dashNablCerts")} value="3,410" sub="This year" />
             </div>
 
             <SectionLabel>{t("dashLabAnalystActions")}</SectionLabel>
@@ -251,7 +251,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
             <div className="border-2 border-rose-200 bg-rose-50 p-4 sm:p-8 shadow-sm mb-12">
               <div className="flex items-center gap-3 mb-6 pb-4 border-b border-rose-200">
                 <AlertTriangle className="w-5 h-5 text-rose-600" />
-                <h3 className="text-xl serif text-charcoal font-bold">Adulteration Alert Queue</h3>
+                <h3 className="text-xl serif text-charcoal font-bold">{t("dashAdulterationQueue")}</h3>
                 <span className="ml-auto px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-rose-400 bg-rose-100 text-rose-800">18 Open</span>
               </div>
               <div className="space-y-3">
@@ -278,7 +278,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
             </div>
 
             <div className="mt-12"><PollenVisionAnalyzer /></div>
-            <RecentBatchesTable batchesList={batchesList} />
+            <RecentBatchesTable batchesList={batchesList} t={t} />
           </>
         )}
 
@@ -288,8 +288,8 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
         {role === "ADMIN" && (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
-              <StatCard icon={<Users className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Total Beekeepers" value={farmerCount.toLocaleString("en-IN")} sub="29 states" />
-              <StatCard icon={<Layers className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label="Total Batches" value={(18920 + batchesList.length - 2).toLocaleString("en-IN")} sub="Polygon PoS" />
+              <StatCard icon={<Users className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label={t("dashRegisteredBeekeepers")} value={farmerCount.toLocaleString("en-IN")} sub="29 states" />
+              <StatCard icon={<Layers className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />} label={t("dashMintedBatches")} value={(18920 + batchesList.length - 2).toLocaleString("en-IN")} sub="Polygon PoS" />
               <StatCard icon={<AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />} label="Complaints" value={complaints.length.toString()} sub="Review" />
               <StatCard icon={<ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-rose-600" />} label="Revoked" value="3" sub="Recalls" />
             </div>
@@ -297,7 +297,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
             <div className="p-6 border-2 border-emerald-300 bg-emerald-50 mb-10 flex items-center gap-4">
               <span className="w-3 h-3 bg-emerald-500 animate-pulse" />
               <div className="flex-1">
-                <p className="font-bold text-charcoal text-sm">All Systems Operational</p>
+                <p className="font-bold text-charcoal text-sm">{t("dashAllSystemsLive")}</p>
                 <p className="text-xs text-emerald-700">Polygon PoS RPC • FastAPI NMR Service • IPFS Gateway • SSE IoT Stream — all live</p>
               </div>
               <span className="text-[10px] font-mono font-bold text-emerald-800 uppercase tracking-widest">99.97% uptime</span>
@@ -305,20 +305,20 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
 
             <SectionLabel>{t("dashAdminActions")}</SectionLabel>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-              <DarkCard href="/dashboard/admin" icon={<ShieldAlert className="w-7 h-7 text-rose-400" />} title="Recall & Revocation Center" desc="Review citizen fraud complaints and execute emergency batch revocations." cta="Open Recall Center" />
-              <DarkCard href="/dashboard/bulk" icon={<FileSpreadsheet className="w-7 h-7 text-gold" />} title="Bulk Operations" desc="Batch minting, CSV import/export, mass QR label printing." cta="Open Bulk Panel" />
-              <DarkCard href="/dashboard/register" icon={<Users className="w-7 h-7 text-gold" />} title="Beekeeper Registry" desc="Add or manage registered beekeepers, cooperatives, and KYC status." cta="View Registry" />
+              <DarkCard href="/dashboard/admin" icon={<ShieldAlert className="w-7 h-7 text-rose-400" />} title={t("dashRecallCenterTitle")} desc="Review citizen fraud complaints and execute emergency batch revocations." cta="Open Recall Center" />
+              <DarkCard href="/dashboard/bulk" icon={<FileSpreadsheet className="w-7 h-7 text-gold" />} title={t("dashBulkOpsTitle")} desc="Batch minting, CSV import/export, mass QR label printing." cta="Open Bulk Panel" />
+              <DarkCard href="/dashboard/register" icon={<Users className="w-7 h-7 text-gold" />} title={t("dashRegistryTitle")} desc="Add or manage registered beekeepers, cooperatives, and KYC status." cta="View Registry" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
-              <DarkCard href="/dashboard/custody" icon={<Truck className="w-7 h-7 text-gold" />} title="Custody Audit Log" desc="Full supply chain custody trail for any batch across all stations." cta="View Audit Trail" />
-              <DarkCard href="/dashboard/quality" icon={<BarChart3 className="w-7 h-7 text-gold" />} title="Quality Analytics" desc="System-wide AI purity score trends, adulteration heatmaps." cta="View Analytics" />
+              <DarkCard href="/dashboard/custody" icon={<Truck className="w-7 h-7 text-gold" />} title={t("dashCustodyAuditTitle")} desc="Full supply chain custody trail for any batch across all stations." cta="View Audit Trail" />
+              <DarkCard href="/dashboard/quality" icon={<BarChart3 className="w-7 h-7 text-gold" />} title={t("dashAnalyticsTitle")} desc="System-wide AI purity score trends, adulteration heatmaps." cta="View Analytics" />
               <DarkCard href="/dashboard/reports" icon={<FileText className="w-7 h-7 text-gold" />} title={t("dashDownloadReports")} desc="Export FSSAI compliance reports, KVIC audit summaries, ministry exports." cta="Export Reports" />
             </div>
 
             <div className="border-2 border-rose-200 bg-white p-8 shadow-sm mb-12">
               <div className="flex items-center gap-3 mb-6 pb-4 border-b border-charcoal/10">
                 <Bell className="w-5 h-5 text-rose-600" />
-                <h3 className="text-2xl serif text-charcoal font-bold">Citizen Tamper Reports</h3>
+                <h3 className="text-2xl serif text-charcoal font-bold">{t("dashCitizenReports")}</h3>
                 <span className="ml-auto px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-rose-400 bg-rose-100 text-rose-800">
                   {complaints.length} Pending
                 </span>
@@ -348,33 +348,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               )}
             </div>
 
-            <div className="border-2 border-charcoal/15 bg-white p-8 shadow-sm mb-12">
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-charcoal/10">
-                <Lock className="w-5 h-5 text-gold" />
-                <h3 className="text-2xl serif text-charcoal font-bold">Role & Access Matrix</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[
-                  { role: "BeeKeeper", color: "amber", actions: ["Submit Harvest Request", "View own batch history", "Download QR label"] },
-                  { role: "Field Officer", color: "emerald", actions: ["Register beekeepers", "Approve/Reject harvests", "Mint batches on-chain", "Log custody transfers", "Bulk CSV minting"] },
-                  { role: "District Supervisor", color: "blue", actions: ["Flag fraud (non-destructive)", "Resolve disputes", "Audit any batch", "Formal audit trail entries"] },
-                ].map((r) => (
-                  <div key={r.role} className="p-5 border border-charcoal/10 bg-[#F9F8F6]">
-                    <p className={`text-[10px] uppercase tracking-widest font-bold mb-3 text-${r.color}-700`}>{r.role}</p>
-                    <ul className="space-y-1.5">
-                      {r.actions.map((a) => (
-                        <li key={a} className="text-xs text-charcoal flex items-start gap-2">
-                          <span className="text-gold mt-0.5">•</span>{a}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <LiveTelemetryStream />
-            <div className="mt-12"><RecentBatchesTable batchesList={batchesList} /></div>
+            <RecentBatchesTable batchesList={batchesList} t={t} />
           </>
         )}
       </main>
@@ -420,7 +394,7 @@ function DarkCard({ href, icon, title, desc, cta }: { href: string; icon: React.
   );
 }
 
-function PendingRequestsTable() {
+function PendingRequestsTable({ t }: { t: (key: string) => string }) {
   const pending = [
     { id: "REQ-081", farmer: "Arjun Mandal", location: "Birbhum, WB", flora: "Mustard Blossom", qty: 120, submitted: "27 Aug 2026" },
     { id: "REQ-082", farmer: "Geeta Devi", location: "Vaishali, Bihar", flora: "Litchi", qty: 85, submitted: "26 Aug 2026" },
@@ -430,7 +404,7 @@ function PendingRequestsTable() {
     <div className="border-2 border-amber-200 bg-amber-50 p-4 sm:p-8 shadow-sm mb-12">
       <div className="flex items-center gap-3 mb-6 pb-4 border-b border-amber-200">
         <ClipboardList className="w-5 h-5 text-amber-600" />
-        <h3 className="text-xl serif text-charcoal font-bold">Pending Harvest Submissions</h3>
+        <h3 className="text-xl serif text-charcoal font-bold">{t("dashPendingSubmissions")}</h3>
         <span className="ml-auto px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-amber-400 bg-amber-100 text-amber-800">
           {pending.length} Awaiting
         </span>
@@ -473,22 +447,22 @@ function PendingRequestsTable() {
   );
 }
 
-function RecentBatchesTable({ batchesList }: { batchesList: BatchMetadata[] }) {
+function RecentBatchesTable({ batchesList, t }: { batchesList: BatchMetadata[]; t: (key: string) => string }) {
   return (
     <div className="border-2 border-charcoal/15 bg-white p-4 sm:p-8 shadow-sm mt-8">
       <div className="flex justify-between items-center mb-6 pb-4 border-b border-charcoal/10">
-        <h3 className="text-2xl serif text-charcoal font-bold">Recent Authenticated Batches</h3>
+        <h3 className="text-2xl serif text-charcoal font-bold">{t("dashRecentBatches")}</h3>
         <span className="text-[10px] uppercase tracking-widest text-charcoal font-mono font-bold">Polygon PoS</span>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
           <thead>
             <tr className="border-b-2 border-charcoal/15 bg-[#F9F8F6] text-[10px] uppercase tracking-widest text-warm-grey">
-              <th className="p-3 font-bold">Batch ID</th>
-              <th className="p-3 font-bold">QR Token</th>
-              <th className="p-3 font-bold">Beekeeper / Location</th>
-              <th className="p-3 font-bold">Purity Score</th>
-              <th className="p-3 font-bold">Grade</th>
+              <th className="p-3 font-bold">{t("batchId")}</th>
+              <th className="p-3 font-bold">{t("registryToken")}</th>
+              <th className="p-3 font-bold">{t("theSource")}</th>
+              <th className="p-3 font-bold">{t("aiPurityScore")}</th>
+              <th className="p-3 font-bold">{t("complianceBadge")}</th>
               <th className="p-3 font-bold text-right">Inspect</th>
             </tr>
           </thead>
