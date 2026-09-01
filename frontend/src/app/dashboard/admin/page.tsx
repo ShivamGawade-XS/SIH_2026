@@ -83,7 +83,7 @@ export default function AdminRecallPage() {
 
           {/* 0. NATIONAL ADULTERATION RADAR & CLUSTER HEATMAP */}
           <div className="mb-12">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
               <div>
                 <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
                   National Quality Surveillance Engine
@@ -92,12 +92,12 @@ export default function AdminRecallPage() {
                   Regional Adulteration Radar & Cluster Anomaly Map
                 </h3>
               </div>
-              <span className="px-3 py-1 bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono text-[10px] uppercase font-bold">
+              <span className="px-3 py-1 bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono text-[10px] uppercase font-bold self-start sm:self-auto">
                 97.6% National Purity Average
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
               {[
                 { state: "Bihar (Muzaffarpur)", score: "98.4%", risk: "Optimal", batches: 412, status: "bg-emerald-50 text-emerald-900 border-emerald-300" },
                 { state: "West Bengal (Sundarbans)", score: "96.1%", risk: "Optimal", batches: 289, status: "bg-emerald-50 text-emerald-900 border-emerald-300" },

@@ -98,7 +98,7 @@ export default function VerifySearchPage() {
         </div>
 
         {/* Action Panel: Camera Scan + SMS Simulation + Manual Search */}
-        <div className="border-2 border-charcoal/20 bg-white p-8 md:p-12 mb-16 shadow-md">
+        <div className="border-2 border-charcoal/20 bg-white p-5 sm:p-8 md:p-12 mb-12 sm:mb-16 shadow-md">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <button
               onClick={() => setShowScanner(true)}
