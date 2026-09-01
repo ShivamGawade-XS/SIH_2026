@@ -23,6 +23,36 @@ export async function POST(req: NextRequest) {
       giZone = checkGIZone(lat, lng);
     }
 
+    const IS_VERCEL = process.env.VERCEL === "1";
+
+    if (IS_VERCEL) {
+      const demoFarmerId = Math.floor(100 + Date.now() % 900);
+      return NextResponse.json({
+        success: true,
+        farmerId: demoFarmerId,
+        farmer: {
+          farmerId: demoFarmerId,
+          name: name.trim(),
+          location: location.trim(),
+          cooperativeId: cooperativeId.trim(),
+          gpsLat: lat,
+          gpsLng: lng,
+          upiVpa: upiVpa ? upiVpa.trim() : null,
+          isVerified: true,
+          registeredAt: Math.floor(Date.now() / 1000),
+        },
+        giZone: giZone
+          ? {
+              name: giZone.name,
+              giCertNo: giZone.giCertNo,
+              flora: giZone.flora,
+              verified: true,
+            }
+          : null,
+        message: `Beekeeper #${demoFarmerId} onboarded and verified successfully (Demo Mode)`,
+      });
+    }
+
     const farmer = await prisma.farmer.create({
       data: {
         name: name.trim(),

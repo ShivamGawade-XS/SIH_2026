@@ -75,11 +75,24 @@ export default function BulkMintPage() {
         const AI_ENDPOINT = process.env.NEXT_PUBLIC_AI_SERVICE_URL || "http://localhost:8000";
 
         const enriched = await Promise.all(
-          results.data.map(async (row, idx) => {
-            const moisture = parseFloat(row.MoisturePercent) || 17.5;
-            const brix     = parseFloat(row.BrixIndex)       || 81.0;
-            const hmf      = parseFloat(row.HmfMgKg)         || 15.0;
-            const diastase = parseFloat(row.DiastaseActivity) || 16.0;
+          results.data.map(async (row: any, idx) => {
+            const getVal = (...keys: string[]) => {
+              for (const k of keys) {
+                if (row[k] !== undefined && row[k] !== null && String(row[k]).trim() !== "") {
+                  return row[k];
+                }
+              }
+              return undefined;
+            };
+
+            const moisture = parseFloat(getVal("MoisturePercent", "Moisture", "moisture", "moisture_percent", "Moisture (%)")) || 17.5;
+            const brix     = parseFloat(getVal("BrixIndex", "Brix", "brix", "brix_index", "Brix (%)")) || 81.0;
+            const hmf      = parseFloat(getVal("HmfMgKg", "HMF", "hmf", "hmf_mg_kg", "HMF (mg/kg)")) || 15.0;
+            const diastase = parseFloat(getVal("DiastaseActivity", "Diastase", "diastase", "diastase_activity", "Diastase (DN)")) || 16.0;
+
+            const beekeeperName = getVal("BeekeeperName", "Beekeeper", "farmer_name", "FarmerName", "Name") || "Verified Beekeeper";
+            const location = getVal("Location", "location", "Region", "region", "ApiaryLocation") || "KVIC Apiary Cluster";
+            const coopCode = getVal("CooperativeCode", "Cooperative", "cooperative_id", "CoopCode") || "KVIC-COOP-01";
 
             let finalScore = 0;
             let grade = "Grade B";
@@ -116,7 +129,16 @@ export default function BulkMintPage() {
               scoredBy   = "physics-fallback";
             }
 
-            return { ...row, id: idx + 1, computedScore: finalScore, grade, scoredBy };
+            return {
+              ...row,
+              id: idx + 1,
+              beekeeperName,
+              location,
+              coopCode,
+              computedScore: finalScore,
+              grade,
+              scoredBy,
+            };
           })
         );
         setParsedRows(enriched);
@@ -130,7 +152,7 @@ export default function BulkMintPage() {
       setLoading(false);
       const existing = getCustomBatches();
 
-      parsedRows.forEach((row, idx) => {
+      parsedRows.forEach((row: any, idx) => {
         const newBatchId = existing.length + idx + 1;
         const qrToken = `TT-2026-${String(newBatchId).padStart(5, "0")}`;
 
@@ -146,9 +168,9 @@ export default function BulkMintPage() {
           batchId: newBatchId,
           farmer: {
             farmerId: newBatchId,
-            name: row.BeekeeperName || "Verified Beekeeper",
-            location: row.Location || "KVIC Apiary Cluster",
-            cooperativeId: row.CooperativeCode || "KVIC-COOP-01",
+            name: row.beekeeperName || row.BeekeeperName || "Verified Beekeeper",
+            location: row.location || row.Location || "KVIC Apiary Cluster",
+            cooperativeId: row.coopCode || row.CooperativeCode || "KVIC-COOP-01",
             ipfsProfileHash: "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
             isVerified: true,
             registeredAt: Math.floor(Date.now() / 1000),
