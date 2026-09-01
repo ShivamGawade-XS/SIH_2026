@@ -3,7 +3,10 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 const PROTECTED_ROUTES = ["/dashboard"];
-const JWT_SECRET = process.env.JWT_SECRET || "honeychain_super_secret_jwt_key_sih_2026_truetag";
+if (!process.env.JWT_SECRET) {
+  throw new Error("FATAL: JWT_SECRET environment variable is not set.");
+}
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

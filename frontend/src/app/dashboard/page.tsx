@@ -9,7 +9,7 @@ export const revalidate = 0;
 
 // Server Component — reads cookie on the server, no client-side flash
 export default async function DashboardPage() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
 
   if (!token) {

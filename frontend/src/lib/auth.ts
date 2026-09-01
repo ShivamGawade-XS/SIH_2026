@@ -5,8 +5,13 @@ import { DEMO_OFFICERS, SESSION_COOKIE_NAME } from "./auth-constants";
 
 export { DEMO_OFFICERS, SESSION_COOKIE_NAME };
 
-const JWT_SECRET = process.env.JWT_SECRET || "honeychain_super_secret_jwt_key_sih_2026_truetag";
-const secret = new TextEncoder().encode(JWT_SECRET);
+if (!process.env.JWT_SECRET) {
+  throw new Error(
+    "FATAL: JWT_SECRET environment variable is not set. " +
+    "Set it in .env or your hosting provider's environment variables."
+  );
+}
+const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
 /**
  * Sign a new JWT session for a user or field officer
