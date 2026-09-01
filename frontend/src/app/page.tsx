@@ -23,9 +23,9 @@ export default function HomePage() {
 
           <div className="max-w-6xl mx-auto relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-3 px-3 py-1.5 border border-charcoal/20 bg-white mb-6 shadow-xs">
-                <span className="h-2 w-2 bg-gold" />
-                <span className="text-[10px] uppercase tracking-ultra text-charcoal font-bold">
+              <div className="inline-flex items-center gap-2 sm:gap-3 px-2.5 sm:px-3 py-1.5 border border-charcoal/20 bg-white mb-6 shadow-xs max-w-full">
+                <span className="h-2 w-2 bg-gold shrink-0" />
+                <span className="text-[9px] sm:text-[10px] uppercase tracking-wider sm:tracking-ultra text-charcoal font-bold leading-none truncate">
                   KVIC • National Bee Board • TrueTag Platform
                 </span>
               </div>

@@ -168,27 +168,27 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
         {/* ── HEADER ── */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12 pb-8 border-b-2 border-charcoal/10">
           <div>
-            <div className="flex items-center gap-3 mb-3">
-              <span className="w-2.5 h-2.5 bg-emerald-500 animate-pulse" />
-              <span className="text-[10px] uppercase tracking-ultra text-charcoal font-bold">{meta.station}</span>
-              <span className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border ${meta.badge}`}>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
+              <span className="w-2.5 h-2.5 bg-emerald-500 animate-pulse shrink-0" />
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-wider sm:tracking-ultra text-charcoal font-bold">{meta.station}</span>
+              <span className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border shrink-0 ${meta.badge}`}>
                 {ROLE_LABEL[role]}
               </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl serif text-charcoal font-normal">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl serif text-charcoal font-normal">
               {t("dashWelcome")} <span className="italic text-gold font-serif">{currentUser.name.split(" ")[0]}</span>
             </h1>
             <p className="text-xs sm:text-sm text-warm-grey mt-1 font-mono">{currentUser.email}</p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
             {role === "ADMIN" && (
-              <Link href="/dashboard/admin" className="px-4 py-2 text-xs uppercase tracking-widest font-bold border-2 border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 flex items-center gap-1.5 transition-colors shadow-xs">
+              <Link href="/dashboard/admin" className="flex-1 sm:flex-none justify-center px-4 py-2 text-xs uppercase tracking-widest font-bold border-2 border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 flex items-center gap-1.5 transition-colors shadow-xs">
                 <ShieldAlert className="w-3.5 h-3.5" />
                 <span>{t("dashAdminRecall")}</span>
               </Link>
             )}
-            <button onClick={handleLogout} className="px-4 py-2 text-xs uppercase tracking-widest font-bold border-2 border-charcoal/30 hover:border-charcoal bg-white flex items-center gap-1.5 transition-colors shadow-xs">
+            <button onClick={handleLogout} className="flex-1 sm:flex-none justify-center px-4 py-2 text-xs uppercase tracking-widest font-bold border-2 border-charcoal/30 hover:border-charcoal bg-white flex items-center gap-1.5 transition-colors shadow-xs">
               <LogOut className="w-3.5 h-3.5 text-charcoal" />
               <span>{t("dashLogout")}</span>
             </button>

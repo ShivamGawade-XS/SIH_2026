@@ -25,7 +25,7 @@ export default function HoneyChainLogo({
   const sizeMap: Record<LogoSize, { icon: string; px: number; text: string; sub: string; badge: string }> = {
     xs: { icon: "w-6 h-6", px: 24, text: "text-[11px]", sub: "text-[7px]", badge: "text-[6px] py-0.2 px-1" },
     sm: { icon: "w-8 h-8", px: 32, text: "text-xs", sub: "text-[8px]", badge: "text-[7px] py-0.5 px-1.5" },
-    md: { icon: "w-10 h-10", px: 40, text: "text-sm", sub: "text-[9px]", badge: "text-[8px] py-0.5 px-2" },
+    md: { icon: "w-8 h-8 sm:w-10 sm:h-10", px: 40, text: "text-xs sm:text-sm", sub: "text-[8px] sm:text-[9px]", badge: "text-[7px] sm:text-[8px] py-0.5 px-1.5 sm:px-2" },
     lg: { icon: "w-14 h-14", px: 56, text: "text-xl", sub: "text-[11px]", badge: "text-[9px] py-1 px-2.5" },
     xl: { icon: "w-20 h-20", px: 80, text: "text-3xl", sub: "text-xs", badge: "text-[10px] py-1 px-3" },
     "2xl": { icon: "w-28 h-28", px: 112, text: "text-4xl", sub: "text-sm", badge: "text-xs py-1.5 px-3.5" },
@@ -181,7 +181,7 @@ export default function HoneyChainLogo({
             </span>
           )}
         </div>
-        <span className={`uppercase tracking-wider sm:tracking-ultra font-medium ${subTextColor} ${currentSize.sub} whitespace-nowrap`}>
+        <span className={`uppercase tracking-wider sm:tracking-ultra font-medium ${subTextColor} ${currentSize.sub} whitespace-nowrap hidden xs:block`}>
           KVIC • National Bee Board
         </span>
       </div>
