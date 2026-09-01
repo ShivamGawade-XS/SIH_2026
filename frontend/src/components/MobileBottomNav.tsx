@@ -167,7 +167,7 @@ export default function MobileBottomNav() {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 gap-2.5">
+            <div className="grid grid-cols-1 gap-4">
               {aiTools.map((tool) => {
                 const ToolIcon = tool.icon;
                 return (

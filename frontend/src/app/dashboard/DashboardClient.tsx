@@ -138,7 +138,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex sm:flex-wrap items-center gap-2 overflow-x-auto scrollbar-none snap-x pb-2 sm:pb-0 w-full sm:w-auto">
             {DEMO_OFFICERS.map((officer) => {
               const isActive = currentUser.email.toLowerCase() === officer.email.toLowerCase();
               return (

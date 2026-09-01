@@ -113,73 +113,73 @@ export default function Navbar() {
             <Link
               href="/verify"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-xs font-bold text-charcoal uppercase tracking-wider"
+              className="p-4 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-sm md:text-xs font-bold text-charcoal uppercase tracking-wider"
             >
-              <div className="flex items-center gap-2">
-                <QrCode className="w-4 h-4 text-gold" />
+              <div className="flex items-center gap-3">
+                <QrCode className="w-5 h-5 text-gold" />
                 <span>Verify Honey Batch QR</span>
               </div>
-              <span className="text-gold">→</span>
+              <span className="text-gold text-lg">→</span>
             </Link>
 
             <Link
               href="/dashboard"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-xs font-bold text-charcoal uppercase tracking-wider"
+              className="p-4 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-sm md:text-xs font-bold text-charcoal uppercase tracking-wider"
             >
-              <div className="flex items-center gap-2">
-                <LayoutDashboard className="w-4 h-4 text-gold" />
+              <div className="flex items-center gap-3">
+                <LayoutDashboard className="w-5 h-5 text-gold" />
                 <span>KVIC Operations Dashboard</span>
               </div>
-              <span className="text-gold">→</span>
+              <span className="text-gold text-lg">→</span>
             </Link>
 
             <Link
               href="/dashboard/register"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-xs font-bold text-charcoal uppercase tracking-wider"
+              className="p-4 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-sm md:text-xs font-bold text-charcoal uppercase tracking-wider"
             >
-              <div className="flex items-center gap-2">
-                <PlusCircle className="w-4 h-4 text-gold" />
+              <div className="flex items-center gap-3">
+                <PlusCircle className="w-5 h-5 text-gold" />
                 <span>Register Beekeeper (GPS)</span>
               </div>
-              <span className="text-gold">→</span>
+              <span className="text-gold text-lg">→</span>
             </Link>
 
             <Link
               href="/dashboard/migration"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-xs font-bold text-charcoal uppercase tracking-wider"
+              className="p-4 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-sm md:text-xs font-bold text-charcoal uppercase tracking-wider"
             >
-              <div className="flex items-center gap-2">
-                <span className="text-sm">🗺️</span>
+              <div className="flex items-center gap-3">
+                <span className="text-lg">🗺️</span>
                 <span>Migratory Bloom Planner</span>
               </div>
-              <span className="text-gold">→</span>
+              <span className="text-gold text-lg">→</span>
             </Link>
 
             <Link
               href="/dashboard/credits"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-xs font-bold text-charcoal uppercase tracking-wider"
+              className="p-4 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-sm md:text-xs font-bold text-charcoal uppercase tracking-wider"
             >
-              <div className="flex items-center gap-2">
-                <span className="text-sm">🌿</span>
+              <div className="flex items-center gap-3">
+                <span className="text-lg">🌿</span>
                 <span>Green Pollination Credits</span>
               </div>
-              <span className="text-gold">→</span>
+              <span className="text-gold text-lg">→</span>
             </Link>
 
             <Link
               href="/dashboard/pollen"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-xs font-bold text-charcoal uppercase tracking-wider"
+              className="p-4 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster flex items-center justify-between text-sm md:text-xs font-bold text-charcoal uppercase tracking-wider"
             >
-              <div className="flex items-center gap-2">
-                <Microscope className="w-4 h-4 text-gold" />
+              <div className="flex items-center gap-3">
+                <Microscope className="w-5 h-5 text-gold" />
                 <span>Pollen Vision AI</span>
               </div>
-              <span className="text-gold">→</span>
+              <span className="text-gold text-lg">→</span>
             </Link>
           </div>
         </div>

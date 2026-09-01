@@ -15,7 +15,7 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col justify-between bg-[#F9F8F6]">
       <Navbar />
 
-      <main className="flex-1">
+      <main className="flex-1 pb-24 md:pb-0">
         {/* 1. HERO SECTION */}
         <section className="py-20 sm:py-28 px-6 md:px-12 lg:px-24 border-b-2 border-charcoal/10 relative overflow-hidden bg-[#F9F8F6]">
           {/* Subtle gold decorative gradient corner */}
@@ -40,17 +40,17 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/verify"
-                  className="h-14 px-8 text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center justify-center gap-3 shadow-md"
+                  className="h-14 px-8 text-sm sm:text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center justify-center gap-3 shadow-md w-full sm:w-auto"
                 >
-                  <QrCode className="w-4 h-4 text-gold" />
+                  <QrCode className="w-5 sm:w-4 h-5 sm:h-4 text-gold" />
                   <span>{t("verifyJarBtn")}</span>
                 </Link>
                 <Link
                   href="/dashboard"
-                  className="h-14 px-8 text-xs uppercase tracking-widest font-bold btn-outline-luxury flex items-center justify-center gap-3 shadow-xs"
+                  className="h-14 px-8 text-sm sm:text-xs uppercase tracking-widest font-bold btn-outline-luxury flex items-center justify-center gap-3 shadow-xs w-full sm:w-auto"
                 >
                   <span>{t("fieldLoginBtn")}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-5 sm:w-4 h-5 sm:h-4" />
                 </Link>
               </div>
             </div>
