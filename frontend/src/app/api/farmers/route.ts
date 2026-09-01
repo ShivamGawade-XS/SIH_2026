@@ -47,10 +47,10 @@ export async function GET() {
       name: f.name,
       location: f.location,
       cooperativeId: f.cooperativeId,
-      gpsLat: f.gpsLat,
-      gpsLng: f.gpsLng,
+      gpsLat: f.gpsLat ? Number(f.gpsLat.toFixed(2)) : null,
+      gpsLng: f.gpsLng ? Number(f.gpsLng.toFixed(2)) : null,
       ipfsProfileHash: f.ipfsProfileHash,
-      upiVpa: f.upiVpa,
+      upiVpa: f.upiVpa ? f.upiVpa.replace(/(?<=^.{2}).*?(?=@)/, "***") : null,
       isVerified: f.isVerified,
       registeredAt: Math.floor(f.registeredAt.getTime() / 1000),
     }));

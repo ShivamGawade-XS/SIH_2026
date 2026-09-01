@@ -59,9 +59,9 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { batchId, farmerId, amount, utrNumber, tipperName } = body;
 
-    if (!batchId || !farmerId || !amount) {
+    if (!batchId || !farmerId || !amount || Number(amount) <= 0) {
       return NextResponse.json(
-        { error: "batchId, farmerId, and amount are required" },
+        { error: "batchId, farmerId, and valid positive amount are required" },
         { status: 400 }
       );
     }
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
         batchId: Number(batchId),
         farmerId: Number(farmerId),
         amount: Number(amount),
-        utrNumber: utrNumber || null,
+        utrNumber: utrNumber ? String(utrNumber).trim() : null,
         tipperName: tipperName || "Anonymous Consumer",
         status: utrNumber ? "CONFIRMED" : "PENDING",
       },

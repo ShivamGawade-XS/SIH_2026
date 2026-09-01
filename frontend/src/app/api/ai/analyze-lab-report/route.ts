@@ -1,7 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifyRateLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1";
+    const { success: rateLimitOk } = await verifyRateLimiter.limit(`ai_analyze:${ip}`);
+    if (!rateLimitOk) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. Please wait 1 minute before submitting further lab reports." },
+        { status: 429 }
+      );
+    }
+
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
     if (!GEMINI_API_KEY) {

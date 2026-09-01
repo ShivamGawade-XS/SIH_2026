@@ -14,11 +14,12 @@ export interface DemoOfficer {
   cooperative: string;
 }
 
-// Credentials are read from environment variables at build time.
-// Defaults are provided ONLY for offline hackathon demo & judging panel.
-const OFFICER_PASS = process.env.NEXT_PUBLIC_DEMO_OFFICER_PASS ?? "kvic2026password";
-const LAB_PASS = process.env.NEXT_PUBLIC_DEMO_LAB_PASS ?? "lab2026password";
-const ADMIN_PASS = process.env.NEXT_PUBLIC_DEMO_ADMIN_PASS ?? "admin2026password";
+// Credentials are read from environment variables.
+// In production, fallback plaintext passwords are fully disabled for security.
+const IS_PROD = process.env.NODE_ENV === "production";
+const OFFICER_PASS = process.env.DEMO_OFFICER_PASS || (IS_PROD ? "" : "kvic2026password");
+const LAB_PASS = process.env.DEMO_LAB_PASS || (IS_PROD ? "" : "lab2026password");
+const ADMIN_PASS = process.env.DEMO_ADMIN_PASS || (IS_PROD ? "" : "admin2026password");
 
 export const DEMO_OFFICERS: DemoOfficer[] = [
   {
