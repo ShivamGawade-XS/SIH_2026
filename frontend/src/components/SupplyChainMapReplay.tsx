@@ -121,7 +121,7 @@ export default function SupplyChainMapReplay({
   const totalDistance = defaultSteps[defaultSteps.length - 1].distanceKm;
 
   return (
-    <div className="border-2 border-charcoal/15 bg-white p-6 sm:p-8 shadow-sm">
+    <div className="border-2 border-charcoal/15 bg-white p-4 sm:p-6 md:p-8 shadow-sm">
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-charcoal/10">
         <div>

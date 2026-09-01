@@ -157,7 +157,7 @@ export default function NMRSpectrumViewer({ purityScore, adulterantClass }: NMRS
           ref={canvasRef}
           width={700}
           height={220}
-          className="w-full min-w-[340px] h-auto block"
+          className="w-full min-w-[280px] sm:min-w-[340px] h-auto block"
         />
       </div>
 

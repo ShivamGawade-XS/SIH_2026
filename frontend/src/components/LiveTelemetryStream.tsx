@@ -87,7 +87,7 @@ export default function LiveTelemetryStream() {
   const hasAnomaly = data.has_alert || data.status.includes("CRITICAL") || data.status.includes("Alert");
 
   return (
-    <div className={`border-2 p-8 my-12 relative overflow-hidden transition-colors duration-500 ${
+    <div className={`border-2 p-4 sm:p-6 md:p-8 my-6 sm:my-12 relative overflow-hidden transition-colors duration-500 ${
       hasAnomaly
         ? "border-rose-500 bg-rose-950/40 text-alabaster"
         : "border-charcoal/20 bg-charcoal text-alabaster"
@@ -141,7 +141,7 @@ export default function LiveTelemetryStream() {
       </div>
 
       {/* Telemetry Sensor Metric Tiles */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 relative z-10 font-mono">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 relative z-10 font-mono">
         {/* Weight */}
         <div className={`p-4 border ${hasAnomaly ? "border-rose-500/50 bg-rose-900/20" : "border-white/10 bg-black/30"}`}>
           <div className="flex items-center justify-between text-warm-grey mb-2">

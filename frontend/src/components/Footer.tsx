@@ -3,26 +3,26 @@ import HoneyChainLogo from "@/components/HoneyChainLogo";
 
 export default function Footer() {
   return (
-    <footer className="py-24 px-6 md:px-12 lg:px-24 bg-charcoal text-alabaster border-t border-charcoal">
+    <footer className="py-12 sm:py-20 md:py-24 px-4 sm:px-6 md:px-12 lg:px-24 bg-charcoal text-alabaster border-t border-charcoal">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-12">
+        <div className="mb-8 sm:mb-12">
           <HoneyChainLogo size="lg" variant="full" theme="dark" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 md:gap-16 mb-12 sm:mb-20">
           {/* Col 1 */}
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-6">Collaborators & Governance</p>
-            <div className="flex flex-col gap-3">
-              <p className="text-xl serif italic font-normal text-alabaster">Khadi and Village Industries Commission (KVIC)</p>
-              <p className="text-base serif italic text-taupe/80">National Bee Board — Honey Mission</p>
+            <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-4 sm:mb-6">Collaborators & Governance</p>
+            <div className="flex flex-col gap-2 sm:gap-3">
+              <p className="text-lg sm:text-xl serif italic font-normal text-alabaster">Khadi and Village Industries Commission (KVIC)</p>
+              <p className="text-sm sm:text-base serif italic text-taupe/80">National Bee Board — Honey Mission</p>
               <p className="text-xs text-warm-grey mt-2">Ministry of Micro, Small & Medium Enterprises, Govt. of India</p>
             </div>
           </div>
 
           {/* Col 2 */}
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-6">Architectural Core</p>
-            <p className="text-xl serif text-alabaster">TrueTag Universal Authentication</p>
+            <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-4 sm:mb-6">Architectural Core</p>
+            <p className="text-lg sm:text-xl serif text-alabaster">TrueTag Universal Authentication</p>
             <p className="text-xs text-taupe/70 mt-2 leading-relaxed">
               Decentralized provenance protocol combining Polygon PoS immutable ledger, AI-driven anti-adulteration models, and physical tamper-evident micro-QR seals.
             </p>
@@ -39,11 +39,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/10 pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="border-t border-white/10 pt-8 sm:pt-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6">
           <p className="text-[10px] uppercase tracking-widest text-warm-grey">
             © 2026 HoneyChain by TrueTag. Open Source Under MIT License.
           </p>
-          <div className="flex gap-8">
+          <div className="flex flex-wrap gap-4 sm:gap-8">
             <Link href="https://github.com/ShivamGawade-XS/SIH_2026" target="_blank" className="text-[10px] uppercase tracking-widest text-warm-grey hover:text-gold transition-colors duration-300">
               GitHub Repository
             </Link>

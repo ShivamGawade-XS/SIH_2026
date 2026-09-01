@@ -207,7 +207,7 @@ export default function MigratoryRoutePlanner() {
   return (
     <div className="border-2 border-charcoal/20 bg-white shadow-luxury-card overflow-hidden">
       {/* Header */}
-      <div className="p-6 bg-charcoal text-alabaster border-b border-charcoal flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-4 sm:p-6 bg-charcoal text-alabaster border-b border-charcoal flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 border border-gold bg-[#121212] rounded-xl flex items-center justify-center text-gold">
             <Compass className="w-5 h-5 animate-spin-slow" />
@@ -236,7 +236,7 @@ export default function MigratoryRoutePlanner() {
         </button>
       </div>
 
-      <div className="p-6 space-y-8">
+      <div className="p-4 sm:p-6 space-y-6 sm:space-y-8">
         {/* Month Selector Bar */}
         <div>
           <div className="flex justify-between items-center mb-3">

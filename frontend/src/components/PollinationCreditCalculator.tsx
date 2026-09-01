@@ -109,7 +109,7 @@ export default function PollinationCreditCalculator() {
   return (
     <div className="border-2 border-charcoal/20 bg-white shadow-luxury-card overflow-hidden">
       {/* Header */}
-      <div className="p-6 bg-charcoal text-alabaster border-b border-charcoal flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-4 sm:p-6 bg-charcoal text-alabaster border-b border-charcoal flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 border border-gold bg-[#121212] rounded-xl flex items-center justify-center text-gold">
             <Leaf className="w-5 h-5" />
@@ -141,7 +141,7 @@ export default function PollinationCreditCalculator() {
         </button>
       </div>
 
-      <div className="p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
         {/* ─── Left: Calculator Inputs ────────────────────────────────────── */}
         <div className="lg:col-span-5 space-y-5">
           <h3 className="text-sm uppercase tracking-widest font-mono font-bold text-warm-grey flex items-center gap-2">
@@ -149,7 +149,7 @@ export default function PollinationCreditCalculator() {
             Apiary Season Parameters
           </h3>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="credit-colonies" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
                 Active Bee Colonies (boxes)
