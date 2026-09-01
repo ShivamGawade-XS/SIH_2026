@@ -127,7 +127,7 @@ export default function SupplyChainMapReplay({
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="w-2 h-2 rounded-full bg-gold animate-ping" />
-            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+            <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
               Autonomous Supply Chain Audit
             </span>
           </div>
@@ -140,7 +140,7 @@ export default function SupplyChainMapReplay({
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className="px-4 py-2 bg-charcoal text-alabaster text-sm md:text-xs uppercase tracking-widest font-bold flex items-center gap-2 hover:bg-black transition-colors"
+            className="px-4 py-2 bg-charcoal text-alabaster text-xs uppercase tracking-widest font-bold flex items-center gap-2 hover:bg-black transition-colors"
           >
             {isPlaying ? (
               <>
@@ -170,10 +170,10 @@ export default function SupplyChainMapReplay({
       {/* Progress Bar & Milestone Tabs */}
       <div className="my-6">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-mono">
+          <span className="text-[10px] uppercase tracking-widest text-warm-grey font-mono">
             Origin $\rightarrow$ Retail Transit Progress
           </span>
-          <span className="text-sm md:text-xs font-mono font-bold text-charcoal">
+          <span className="text-xs font-mono font-bold text-charcoal">
             {current.distanceKm} km of {totalDistance} km Total Distance
           </span>
         </div>
@@ -202,14 +202,14 @@ export default function SupplyChainMapReplay({
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono font-bold uppercase">
+                <span className="text-[9px] font-mono font-bold uppercase">
                   Step 0{s.stepNumber}
                 </span>
                 {idx <= activeStep && (
                   <CheckCircle2 className={`w-3 h-3 ${idx === activeStep ? "text-gold" : "text-emerald-600"}`} />
                 )}
               </div>
-              <p className="text-sm md:text-xs md:text-[10px] font-medium truncate mt-0.5 hidden sm:block">
+              <p className="text-[10px] font-medium truncate mt-0.5 hidden sm:block">
                 {s.stageName}
               </p>
             </button>
@@ -222,10 +222,10 @@ export default function SupplyChainMapReplay({
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-charcoal/10">
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 bg-gold/20 text-charcoal border border-gold/40 text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase font-bold font-mono">
+              <span className="px-2 py-0.5 bg-gold/20 text-charcoal border border-gold/40 text-[9px] uppercase font-bold font-mono">
                 Stage {current.stepNumber} of {defaultSteps.length}
               </span>
-              <span className="text-sm md:text-xs text-warm-grey font-mono flex items-center gap-1">
+              <span className="text-xs text-warm-grey font-mono flex items-center gap-1">
                 <Clock className="w-3 h-3 text-warm-grey" />
                 {current.timestamp}
               </span>
@@ -235,7 +235,7 @@ export default function SupplyChainMapReplay({
             </h4>
           </div>
 
-          <div className="flex items-center gap-4 text-sm md:text-xs font-mono">
+          <div className="flex items-center gap-4 text-xs font-mono">
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-charcoal/15">
               <Thermometer className="w-3.5 h-3.5 text-emerald-600" />
               <span>{current.temperature}</span>
@@ -247,9 +247,9 @@ export default function SupplyChainMapReplay({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 text-sm md:text-xs">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 text-xs">
           <div>
-            <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+            <p className="text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
               Geographical Location & Facility
             </p>
             <div className="flex items-start gap-2 text-charcoal font-medium">
@@ -262,7 +262,7 @@ export default function SupplyChainMapReplay({
           </div>
 
           <div>
-            <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+            <p className="text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
               Verifying Custody Actor
             </p>
             <div className="flex items-start gap-2 text-charcoal font-medium">
@@ -276,10 +276,10 @@ export default function SupplyChainMapReplay({
         </div>
 
         <div className="mt-4 pt-3 border-t border-charcoal/10 bg-white p-3.5 border border-charcoal/10">
-          <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-0.5">
+          <p className="text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-0.5">
             Immutable Action Logged
           </p>
-          <p className="text-sm md:text-xs text-charcoal font-mono">
+          <p className="text-xs text-charcoal font-mono">
             {current.action}
           </p>
         </div>

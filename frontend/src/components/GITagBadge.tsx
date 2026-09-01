@@ -116,10 +116,10 @@ export default function GITagBadge({ location, batchId, gpsLat, gpsLng }: GITagB
       >
         <Award className="w-4 h-4 text-gold group-hover:text-charcoal shrink-0" />
         <div>
-          <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-ultra font-bold text-warm-grey group-hover:text-charcoal block">
+          <span className="text-[9px] uppercase tracking-ultra font-bold text-warm-grey group-hover:text-charcoal block">
             {isGpsVerified ? "🛰️ GPS-Verified GI Heritage" : "GI-Tag Certified Heritage Honey"}
           </span>
-          <span className="text-sm md:text-xs font-serif font-bold text-charcoal group-hover:text-charcoal">
+          <span className="text-xs font-serif font-bold text-charcoal group-hover:text-charcoal">
             {giData.flora}
           </span>
         </div>
@@ -143,7 +143,7 @@ export default function GITagBadge({ location, batchId, gpsLat, gpsLng }: GITagB
                 <Award className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+                <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
                   Geographical Indication (GI) Certificate Dossier
                 </p>
                 <h3 className="text-2xl serif text-charcoal font-bold">{giData.flora}</h3>
@@ -155,8 +155,8 @@ export default function GITagBadge({ location, batchId, gpsLat, gpsLng }: GITagB
               isGpsVerified ? "border-emerald-300 bg-emerald-50 text-emerald-900" : "border-gold/30 bg-gold/5 text-charcoal"
             }`}>
               <ShieldCheck className={`w-5 h-5 ${isGpsVerified ? "text-emerald-600" : "text-gold"}`} />
-              <div className="text-sm md:text-xs">
-                <p className="font-bold uppercase tracking-wider text-sm md:text-xs md:text-[10px]">
+              <div className="text-xs">
+                <p className="font-bold uppercase tracking-wider text-[10px]">
                   {isGpsVerified ? "🛰️ Real-Time GPS Polygon Match Confirmed" : "Official KVIC Heritage Registered"}
                 </p>
                 <p className="text-[11px] opacity-85">
@@ -166,35 +166,35 @@ export default function GITagBadge({ location, batchId, gpsLat, gpsLng }: GITagB
             </div>
 
             {/* Botanical Details Grid */}
-            <div className="grid grid-cols-2 gap-4 mb-6 text-sm md:text-xs">
+            <div className="grid grid-cols-2 gap-4 mb-6 text-xs">
               <div className="p-3 bg-[#F9F8F6] border border-charcoal/10">
-                <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-widest text-warm-grey block mb-1">Botanical Taxon</span>
+                <span className="text-[9px] uppercase tracking-widest text-warm-grey block mb-1">Botanical Taxon</span>
                 <span className="font-serif italic font-bold text-charcoal">{giData.botanicalName}</span>
               </div>
               <div className="p-3 bg-[#F9F8F6] border border-charcoal/10">
-                <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-widest text-warm-grey block mb-1">Pollen Analysis</span>
+                <span className="text-[9px] uppercase tracking-widest text-warm-grey block mb-1">Pollen Analysis</span>
                 <span className="font-bold text-charcoal">{giData.pollenPurity}</span>
               </div>
               <div className="p-3 bg-[#F9F8F6] border border-charcoal/10">
-                <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-widest text-warm-grey block mb-1">Harvest Window</span>
+                <span className="text-[9px] uppercase tracking-widest text-warm-grey block mb-1">Harvest Window</span>
                 <span className="font-bold text-charcoal">{giData.harvestWindow}</span>
               </div>
               <div className="p-3 bg-[#F9F8F6] border border-charcoal/10">
-                <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-widest text-warm-grey block mb-1">KVIC Production Cluster</span>
+                <span className="text-[9px] uppercase tracking-widest text-warm-grey block mb-1">KVIC Production Cluster</span>
                 <span className="font-mono font-bold text-charcoal">{giData.kvicCluster}</span>
               </div>
             </div>
 
             {/* Terroir Description */}
             <div className="mb-6">
-              <h4 className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold text-charcoal mb-2">Terroir & Ecosystem Characteristics:</h4>
-              <p className="text-sm md:text-xs text-warm-grey leading-relaxed bg-[#F9F8F6] p-4 border border-charcoal/10">
+              <h4 className="text-[10px] uppercase tracking-widest font-bold text-charcoal mb-2">Terroir & Ecosystem Characteristics:</h4>
+              <p className="text-xs text-warm-grey leading-relaxed bg-[#F9F8F6] p-4 border border-charcoal/10">
                 {giData.description}
               </p>
             </div>
 
             {/* GPS Coordinates */}
-            <div className="flex items-center justify-between p-3 bg-charcoal text-alabaster text-sm md:text-xs font-mono mb-6">
+            <div className="flex items-center justify-between p-3 bg-charcoal text-alabaster text-xs font-mono mb-6">
               <div className="flex items-center gap-2">
                 <Compass className="w-4 h-4 text-gold" />
                 <span>Apiary Coordinates:</span>
@@ -207,7 +207,7 @@ export default function GITagBadge({ location, batchId, gpsLat, gpsLng }: GITagB
             <button
               type="button"
               onClick={() => setShowModal(false)}
-              className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-sm md:text-xs font-bold btn-gold-slide flex items-center justify-center"
+              className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-xs font-bold btn-gold-slide flex items-center justify-center"
             >
               Close Dossier
             </button>

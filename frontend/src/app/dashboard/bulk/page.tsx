@@ -19,8 +19,8 @@ const SimulationBanner = () => (
   <div className="flex items-start gap-3 bg-amber-50 border border-amber-300 px-5 py-4 mb-8">
     <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
     <div>
-      <p className="text-sm md:text-xs font-semibold uppercase tracking-widest text-amber-800 mb-0.5">Demo / Simulation Mode</p>
-      <p className="text-sm md:text-xs text-amber-700">
+      <p className="text-xs font-semibold uppercase tracking-widest text-amber-800 mb-0.5">Demo / Simulation Mode</p>
+      <p className="text-xs text-amber-700">
         Batches minted here are stored locally for demonstration purposes only. AI scores are
         fetched from the live HoneyChain FastAPI microservice. Transaction hashes are simulation
         placeholders — production deployment connects to the Polygon Amoy smart contract via ethers.js.
@@ -227,7 +227,7 @@ export default function BulkMintPage() {
       <main className="py-8 sm:py-16 px-4 sm:px-6 md:px-12 max-w-6xl mx-auto w-full flex-1">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-sm md:text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Operations Dashboard</span>
@@ -241,14 +241,14 @@ export default function BulkMintPage() {
                 <FileSpreadsheet className="w-5 sm:w-6 h-5 sm:h-6" />
               </div>
               <div>
-                <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">High-Throughput Processing</p>
+                <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">High-Throughput Processing</p>
                 <h1 className="text-2xl sm:text-3xl serif text-charcoal font-normal">Bulk CSV Batch Minting</h1>
               </div>
             </div>
 
             <button
               onClick={handleDownloadSample}
-              className="px-5 py-2.5 text-sm md:text-xs uppercase tracking-widest font-semibold btn-outline-luxury flex items-center gap-2"
+              className="px-5 py-2.5 text-xs uppercase tracking-widest font-semibold btn-outline-luxury flex items-center gap-2"
             >
               <Download className="w-4 h-4" />
               <span>Download CSV Template</span>
@@ -261,21 +261,21 @@ export default function BulkMintPage() {
               <h2 className="text-3xl serif text-charcoal mb-2">
                 {mintedCount} Harvest Batches Minted On Polygon!
               </h2>
-              <p className="text-sm md:text-xs text-warm-grey max-w-md mx-auto mb-6">
+              <p className="text-xs text-warm-grey max-w-md mx-auto mb-6">
                 All batches have been authenticated with AI spectrometry scores, unique cryptographic QR tokens, and anchored to the ledger.
               </p>
 
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link
                   href="/dashboard/qr"
-                  className="px-8 py-4 text-sm md:text-xs uppercase tracking-widest font-semibold btn-gold-slide inline-flex items-center justify-center gap-2"
+                  className="px-8 py-4 text-xs uppercase tracking-widest font-semibold btn-gold-slide inline-flex items-center justify-center gap-2"
                 >
                   <QrCode className="w-4 h-4" />
                   <span>Print Batch QR Sticker Sheets</span>
                 </Link>
                 <Link
                   href="/dashboard"
-                  className="px-8 py-4 text-sm md:text-xs uppercase tracking-widest font-semibold btn-outline-luxury inline-block"
+                  className="px-8 py-4 text-xs uppercase tracking-widest font-semibold btn-outline-luxury inline-block"
                 >
                   Return to Dashboard Table
                 </Link>
@@ -299,7 +299,7 @@ export default function BulkMintPage() {
                 <p className="text-sm font-serif font-medium text-charcoal mb-1">
                   Upload KVIC Regional Harvest CSV Sheet
                 </p>
-                <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey">
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey">
                   Drag and drop .CSV file here or click to browse
                 </p>
               </div>
@@ -308,18 +308,18 @@ export default function BulkMintPage() {
               {parsedRows.length > 0 && (
                 <div>
                   <div className="flex justify-between items-center mb-4">
-                    <p className="text-sm md:text-xs uppercase tracking-widest font-semibold text-charcoal">
+                    <p className="text-xs uppercase tracking-widest font-semibold text-charcoal">
                       Parsed Batches ({parsedRows.length} lots detected)
                     </p>
-                    <div className="flex items-center gap-1 text-sm md:text-xs md:text-[10px] text-emerald-700 bg-emerald-50 px-2 py-1 border border-emerald-200">
+                    <div className="flex items-center gap-1 text-[10px] text-emerald-700 bg-emerald-50 px-2 py-1 border border-emerald-200">
                       <Sparkles className="w-3 h-3" />
                       <span>AI Scores Calculated</span>
                     </div>
                   </div>
 
                   <div className="overflow-x-auto border border-charcoal/10 mb-8">
-                    <table className="w-full text-left text-sm md:text-xs">
-                      <thead className="bg-alabaster border-b border-charcoal/10 text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-alabaster border-b border-charcoal/10 text-[10px] uppercase tracking-widest text-warm-grey">
                         <tr>
                           <th className="p-3 font-semibold">#</th>
                           <th className="p-3 font-semibold">Beekeeper / Location</th>
@@ -341,7 +341,7 @@ export default function BulkMintPage() {
                             <td className="p-3 font-mono">{row.BrixIndex}°Bx</td>
                             <td className="p-3 font-serif font-bold text-gold">{row.computedScore}/100</td>
                             <td className="p-3 font-medium">{row.grade}</td>
-                            <td className="p-3 font-mono text-sm md:text-xs md:text-[10px] text-warm-grey">{row.scoredBy ?? "—"}</td>
+                            <td className="p-3 font-mono text-[10px] text-warm-grey">{row.scoredBy ?? "—"}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -351,7 +351,7 @@ export default function BulkMintPage() {
                   <button
                     onClick={handleExecuteBulkMint}
                     disabled={loading}
-                    className="w-full h-14 text-sm md:text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
+                    className="w-full h-14 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
                   >
                     <Layers className="w-4 h-4" />
                     <span>{loading ? "Bulk Anchoring on Polygon..." : `Mint All ${parsedRows.length} Batches on HoneyChain`}</span>

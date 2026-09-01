@@ -67,12 +67,12 @@ export default function IoTStageController() {
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/15">
               <div className="flex items-center gap-2">
                 <Radio className="w-4 h-4 text-gold animate-pulse shrink-0" />
-                <span className="text-sm md:text-xs uppercase font-bold tracking-wider text-gold truncate">
+                <span className="text-xs uppercase font-bold tracking-wider text-gold truncate">
                   Stage IoT Hardware Controller
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`px-2 py-0.5 text-[8px] sm:text-xs md:text-[10px] md:text-[9px] uppercase font-mono font-bold border shrink-0 ${
+                <span className={`px-2 py-0.5 text-[8px] sm:text-[9px] uppercase font-mono font-bold border shrink-0 ${
                   alertActive
                     ? "bg-rose-950/80 text-rose-400 border-rose-500 animate-pulse"
                     : "bg-emerald-950/80 text-emerald-400 border-emerald-500"
@@ -99,7 +99,7 @@ export default function IoTStageController() {
                 type="button"
                 disabled={loading}
                 onClick={() => handleTrigger(true, false)}
-                className="w-full py-2.5 px-3 bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm md:text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 disabled:opacity-50"
+                className="w-full py-2.5 px-3 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 disabled:opacity-50"
               >
                 <AlertTriangle className="w-4 h-4 shrink-0" />
                 <span className="truncate">⚡ Trigger Live Varroa Alert</span>
@@ -109,7 +109,7 @@ export default function IoTStageController() {
                 type="button"
                 disabled={loading}
                 onClick={() => handleTrigger(false, true)}
-                className="w-full py-2 px-3 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm md:text-xs uppercase tracking-wider border border-white/20 flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50"
+                className="w-full py-2 px-3 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs uppercase tracking-wider border border-white/20 flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50"
               >
                 <RefreshCw className="w-3.5 h-3.5 shrink-0" />
                 <span className="truncate">🔄 Reset Hive to Optimal</span>
@@ -117,13 +117,13 @@ export default function IoTStageController() {
             </div>
 
             {lastMessage && (
-              <div className="p-2.5 bg-black/60 border border-white/10 text-sm md:text-xs md:text-[10px] font-mono text-[#E8C868] flex items-start gap-1.5">
+              <div className="p-2.5 bg-black/60 border border-white/10 text-[10px] font-mono text-[#E8C868] flex items-start gap-1.5">
                 <Activity className="w-3 h-3 text-gold shrink-0 mt-0.5" />
                 <span className="break-words">{lastMessage}</span>
               </div>
             )}
 
-            <div className="mt-3 pt-2 border-t border-white/10 flex justify-between items-center text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey font-mono">
+            <div className="mt-3 pt-2 border-t border-white/10 flex justify-between items-center text-[9px] text-warm-grey font-mono">
               <span>Route: /api/iot/trigger-alert</span>
               <span>Target: HIVE-WB-0391</span>
             </div>

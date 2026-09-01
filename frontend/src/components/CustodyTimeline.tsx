@@ -36,12 +36,12 @@ export default function CustodyTimeline({ chain }: CustodyTimelineProps) {
             </div>
 
             <div>
-              <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1">
+              <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1">
                 Step 0{idx + 1} • {dateStr}
               </p>
               <h4 className="font-serif text-lg font-normal text-charcoal">{entry.entity}</h4>
-              <p className="text-sm md:text-xs text-warm-grey mt-1 font-medium">{entry.action}</p>
-              <p className="text-sm md:text-xs md:text-[10px] font-mono text-warm-grey/70 mt-1 truncate max-w-sm">
+              <p className="text-xs text-warm-grey mt-1 font-medium">{entry.action}</p>
+              <p className="text-[10px] font-mono text-warm-grey/70 mt-1 truncate max-w-sm">
                 Signed by: {entry.actor}
               </p>
             </div>

@@ -244,7 +244,7 @@ export default function VoiceFieldAssistant() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-gold font-mono font-bold">
+              <span className="text-[10px] uppercase tracking-ultra text-gold font-mono font-bold">
                 KVIC Apiculture AI
               </span>
               <span className="px-2 py-0.5 bg-blue-500/20 text-blue-300 border border-blue-500/40 text-[8px] font-mono uppercase font-bold">
@@ -263,7 +263,7 @@ export default function VoiceFieldAssistant() {
             <button
               key={lang.code}
               onClick={() => setSelectedLang(lang)}
-              className={`px-3 py-1.5 text-sm md:text-xs md:text-[10px] font-mono font-bold uppercase tracking-widest border shrink-0 transition-all ${
+              className={`px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-widest border shrink-0 transition-all ${
                 selectedLang.code === lang.code
                   ? "bg-gold text-charcoal border-gold"
                   : "bg-transparent text-warm-grey border-charcoal/40 hover:border-gold hover:text-gold"
@@ -280,14 +280,14 @@ export default function VoiceFieldAssistant() {
         {messages.map((msg) => (
           <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
-              className={`max-w-[90%] sm:max-w-[85%] p-3.5 sm:p-4 text-sm md:text-xs sm:text-sm leading-relaxed ${
+              className={`max-w-[90%] sm:max-w-[85%] p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed ${
                 msg.role === "user"
                   ? "bg-charcoal text-alabaster"
                   : "bg-white border-2 border-charcoal/15 text-charcoal shadow-xs"
               }`}
             >
               {msg.text}
-              <p className={`text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono mt-1.5 ${msg.role === "user" ? "text-warm-grey/60" : "text-warm-grey/80"}`}>
+              <p className={`text-[9px] font-mono mt-1.5 ${msg.role === "user" ? "text-warm-grey/60" : "text-warm-grey/80"}`}>
                 {msg.timestamp.toLocaleTimeString("en-IN")}
               </p>
             </div>
@@ -296,7 +296,7 @@ export default function VoiceFieldAssistant() {
 
         {isThinking && (
           <div className="flex justify-start">
-            <div className="bg-white border-2 border-charcoal/15 p-4 flex items-center gap-2 text-warm-grey text-sm md:text-xs">
+            <div className="bg-white border-2 border-charcoal/15 p-4 flex items-center gap-2 text-warm-grey text-xs">
               <Loader2 className="w-4 h-4 animate-spin text-gold" />
               <span className="font-mono">Identifying intent & preparing response...</span>
             </div>
@@ -305,7 +305,7 @@ export default function VoiceFieldAssistant() {
 
         {transcript && (
           <div className="flex justify-end">
-            <div className="bg-gold/10 border border-gold px-4 py-2 text-sm md:text-xs font-mono text-charcoal italic">
+            <div className="bg-gold/10 border border-gold px-4 py-2 text-xs font-mono text-charcoal italic">
               🎤 {transcript}
             </div>
           </div>
@@ -356,7 +356,7 @@ export default function VoiceFieldAssistant() {
       </div>
 
       {/* Status Bar */}
-      <div className="px-5 py-2 bg-alabaster border-t border-charcoal/10 flex justify-between text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono text-warm-grey">
+      <div className="px-5 py-2 bg-alabaster border-t border-charcoal/10 flex justify-between text-[9px] font-mono text-warm-grey">
         <span className="flex items-center gap-1.5">
           <Languages className="w-3 h-3 text-gold" />
           Active: {selectedLang.label} ({selectedLang.nativeName}) — {selectedLang.bcp47}

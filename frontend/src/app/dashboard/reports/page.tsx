@@ -160,12 +160,12 @@ export default function ReportsPage() {
         <div className="flex items-center justify-between gap-4 mb-6 sm:mb-8">
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-2 text-sm md:text-xs uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Dashboard</span>
           </Link>
-          <div className="hidden xs:flex items-center gap-2 text-sm md:text-xs md:text-[10px] uppercase tracking-ultra font-bold text-warm-grey">
+          <div className="hidden xs:flex items-center gap-2 text-[10px] uppercase tracking-ultra font-bold text-warm-grey">
             <span>Audit & Compliance</span>
             <span>•</span>
             <span className="text-emerald-700">FSSAI Format</span>
@@ -177,21 +177,21 @@ export default function ReportsPage() {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2.5 h-2.5 bg-gold rounded-full" />
-              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-charcoal font-bold">
+              <span className="text-[10px] uppercase tracking-ultra text-charcoal font-bold">
                 Quality Documentation & Ministry Exports
               </span>
             </div>
             <h1 className="text-2xl sm:text-4xl md:text-5xl serif text-charcoal font-normal">
               Audit & Lab <span className="italic text-gold font-serif">Reports</span>
             </h1>
-            <p className="text-sm md:text-xs text-warm-grey mt-1">
+            <p className="text-xs text-warm-grey mt-1">
               Download certified NABL laboratory certificates, W3C Verifiable Credentials, and Ministry of MSME batch summaries.
             </p>
           </div>
 
           <button
             onClick={handleExportCSV}
-            className="px-5 py-3 bg-charcoal text-alabaster border-2 border-charcoal hover:border-gold text-sm md:text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-xs transition-all"
+            className="px-5 py-3 bg-charcoal text-alabaster border-2 border-charcoal hover:border-gold text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-xs transition-all"
           >
             <Download className="w-4 h-4 text-gold" />
             <span>Export Ministry CSV</span>
@@ -212,7 +212,7 @@ export default function ReportsPage() {
                 placeholder="Search by farmer name, location, QR token, or batch #..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full h-11 pl-10 pr-4 border border-charcoal/20 bg-[#F9F8F6] text-sm md:text-xs font-mono font-medium focus:border-gold focus:outline-none"
+                className="w-full h-11 pl-10 pr-4 border border-charcoal/20 bg-[#F9F8F6] text-xs font-mono font-medium focus:border-gold focus:outline-none"
               />
             </div>
 
@@ -220,7 +220,7 @@ export default function ReportsPage() {
               <button
                 type="button"
                 onClick={() => setGradeFilter("ALL")}
-                className={`px-4 py-2.5 text-sm md:text-xs font-bold uppercase tracking-wider border transition-colors ${
+                className={`px-4 py-2.5 text-xs font-bold uppercase tracking-wider border transition-colors ${
                   gradeFilter === "ALL"
                     ? "bg-charcoal text-gold border-charcoal"
                     : "bg-white text-charcoal border-charcoal/20 hover:border-gold"
@@ -231,7 +231,7 @@ export default function ReportsPage() {
               <button
                 type="button"
                 onClick={() => setGradeFilter("GRADE_A")}
-                className={`px-4 py-2.5 text-sm md:text-xs font-bold uppercase tracking-wider border transition-colors ${
+                className={`px-4 py-2.5 text-xs font-bold uppercase tracking-wider border transition-colors ${
                   gradeFilter === "GRADE_A"
                     ? "bg-charcoal text-gold border-charcoal"
                     : "bg-white text-charcoal border-charcoal/20 hover:border-gold"
@@ -242,7 +242,7 @@ export default function ReportsPage() {
               <button
                 type="button"
                 onClick={() => setGradeFilter("REVOKED")}
-                className={`px-4 py-2.5 text-sm md:text-xs font-bold uppercase tracking-wider border transition-colors ${
+                className={`px-4 py-2.5 text-xs font-bold uppercase tracking-wider border transition-colors ${
                   gradeFilter === "REVOKED"
                     ? "bg-charcoal text-gold border-charcoal"
                     : "bg-white text-charcoal border-charcoal/20 hover:border-gold"
@@ -260,15 +260,15 @@ export default function ReportsPage() {
             <h3 className="text-2xl serif text-charcoal font-bold">
               Certified Harvest Batches ({filtered.length})
             </h3>
-            <span className="text-sm md:text-xs md:text-[10px] font-mono text-warm-grey uppercase tracking-widest">
+            <span className="text-[10px] font-mono text-warm-grey uppercase tracking-widest">
               NABL & Polygon Verified
             </span>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm md:text-xs">
+            <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b-2 border-charcoal/15 bg-[#F9F8F6] text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold">
+                <tr className="border-b-2 border-charcoal/15 bg-[#F9F8F6] text-[10px] uppercase tracking-widest text-warm-grey font-bold">
                   <th className="p-3">Batch & QR</th>
                   <th className="p-3">Beekeeper / Origin</th>
                   <th className="p-3">Purity Score</th>
@@ -282,13 +282,13 @@ export default function ReportsPage() {
                   <tr key={item.batchId} className="hover:bg-[#F9F8F6] transition-colors">
                     <td className="p-3">
                       <p className="font-mono font-bold text-charcoal">#00{item.batchId}</p>
-                      <p className="text-sm md:text-xs md:text-[10px] font-mono text-warm-grey">{item.qrToken}</p>
+                      <p className="text-[10px] font-mono text-warm-grey">{item.qrToken}</p>
                     </td>
 
                     <td className="p-3">
                       <p className="font-semibold text-charcoal">{item.farmer.name}</p>
-                      <p className="text-sm md:text-xs md:text-[10px] text-warm-grey">{item.farmer.location}</p>
-                      <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono text-emerald-700 bg-emerald-50 px-1 border border-emerald-200">
+                      <p className="text-[10px] text-warm-grey">{item.farmer.location}</p>
+                      <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-1 border border-emerald-200">
                         {item.farmer.cooperativeId}
                       </span>
                     </td>
@@ -297,12 +297,12 @@ export default function ReportsPage() {
                       <p className="text-base font-serif font-bold text-gold">
                         {item.batch.qualityScore}/100
                       </p>
-                      <p className="text-sm md:text-xs md:text-[10px] md:text-[9px] font-bold text-charcoal uppercase tracking-wider">
+                      <p className="text-[9px] font-bold text-charcoal uppercase tracking-wider">
                         {item.batch.grade}
                       </p>
                     </td>
 
-                    <td className="p-3 font-mono text-sm md:text-xs md:text-[10px] space-y-0.5">
+                    <td className="p-3 font-mono text-[10px] space-y-0.5">
                       <p>Moisture: <span className="font-bold text-charcoal">{item.labReport.moisturePercent}%</span></p>
                       <p>Brix: <span className="font-bold text-charcoal">{item.labReport.brixPercent}%</span></p>
                       <p>HMF: <span className="font-bold text-charcoal">{item.labReport.hmfMgPerKg} mg/kg</span></p>
@@ -310,7 +310,7 @@ export default function ReportsPage() {
 
                     <td className="p-3">
                       <span
-                        className={`px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-bold uppercase tracking-wider border ${
+                        className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border ${
                           item.batch.isRevoked
                             ? "border-rose-400 bg-rose-50 text-rose-800"
                             : "border-emerald-300 bg-emerald-50 text-emerald-800"
@@ -326,7 +326,7 @@ export default function ReportsPage() {
                           type="button"
                           onClick={() => handleDownloadPDF(item)}
                           disabled={downloadingId === item.batchId}
-                          className="px-2.5 py-1 text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold border border-charcoal/30 bg-white hover:bg-charcoal hover:text-gold text-charcoal transition-colors shadow-2xs inline-flex items-center gap-1"
+                          className="px-2.5 py-1 text-[10px] uppercase tracking-widest font-bold border border-charcoal/30 bg-white hover:bg-charcoal hover:text-gold text-charcoal transition-colors shadow-2xs inline-flex items-center gap-1"
                         >
                           <Download className="w-3 h-3" />
                           <span>KVIC Cert</span>
@@ -336,7 +336,7 @@ export default function ReportsPage() {
                           type="button"
                           onClick={() => handleDownloadAPEDA(item)}
                           disabled={downloadingId === item.batchId}
-                          className="px-2.5 py-1 text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold border border-gold/40 bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal transition-colors shadow-2xs inline-flex items-center gap-1"
+                          className="px-2.5 py-1 text-[10px] uppercase tracking-widest font-bold border border-gold/40 bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal transition-colors shadow-2xs inline-flex items-center gap-1"
                         >
                           <Globe className="w-3 h-3 text-gold" />
                           <span>APEDA Passport</span>
@@ -345,7 +345,7 @@ export default function ReportsPage() {
                         <button
                           type="button"
                           onClick={() => handleDownloadVC(item)}
-                          className="px-2.5 py-1 text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold border border-charcoal/20 bg-white hover:bg-charcoal hover:text-white text-charcoal transition-colors shadow-2xs inline-flex items-center gap-1"
+                          className="px-2.5 py-1 text-[10px] uppercase tracking-widest font-bold border border-charcoal/20 bg-white hover:bg-charcoal hover:text-white text-charcoal transition-colors shadow-2xs inline-flex items-center gap-1"
                         >
                           <Award className="w-3 h-3 text-gold" />
                           <span>W3C VC</span>

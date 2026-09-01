@@ -77,7 +77,7 @@ export default function CameraScanner({ onScanSuccess, onClose }: CameraScannerP
         <div className="flex justify-between items-center pb-4 mb-6 border-b border-charcoal/10">
           <div className="flex items-center gap-2">
             <Camera className="w-4 h-4 text-gold" />
-            <span className="text-sm md:text-xs uppercase tracking-widest font-semibold text-charcoal">
+            <span className="text-xs uppercase tracking-widest font-semibold text-charcoal">
               Scan Honey Jar Micro-QR
             </span>
           </div>
@@ -109,19 +109,19 @@ export default function CameraScanner({ onScanSuccess, onClose }: CameraScannerP
         </div>
 
         {error ? (
-          <div className="mt-4 p-3 border border-rose-200 bg-rose-50 text-rose-700 text-sm md:text-xs flex items-center gap-2">
+          <div className="mt-4 p-3 border border-rose-200 bg-rose-50 text-rose-700 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>{error}</span>
           </div>
         ) : (
-          <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-center text-warm-grey mt-4">
+          <p className="text-[10px] uppercase tracking-widest text-center text-warm-grey mt-4">
             Align the tamper-evident QR code on your honey jar within the frame
           </p>
         )}
 
         {/* Upload QR Image Fallback */}
         <div className="mt-4 pt-3 border-t border-charcoal/10 flex flex-col items-center">
-          <label className="text-sm md:text-xs md:text-[10px] uppercase tracking-wider text-charcoal font-bold cursor-pointer hover:text-gold transition-colors flex items-center gap-1.5 py-1">
+          <label className="text-[10px] uppercase tracking-wider text-charcoal font-bold cursor-pointer hover:text-gold transition-colors flex items-center gap-1.5 py-1">
             <Sparkles className="w-3.5 h-3.5 text-gold" />
             <span>Or Upload QR Image / Screenshot</span>
             <input
@@ -146,7 +146,7 @@ export default function CameraScanner({ onScanSuccess, onClose }: CameraScannerP
 
         <button
           onClick={onClose}
-          className="w-full mt-4 py-2.5 border border-charcoal text-sm md:text-xs uppercase tracking-widest font-semibold hover:bg-charcoal hover:text-white transition-colors"
+          className="w-full mt-4 py-2.5 border border-charcoal text-xs uppercase tracking-widest font-semibold hover:bg-charcoal hover:text-white transition-colors"
         >
           Cancel Scan
         </button>

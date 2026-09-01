@@ -99,12 +99,12 @@ export default function LiveTelemetryStream() {
 
       {/* Critical Alert Banner if active */}
       {hasAnomaly && (
-        <div className="mb-6 p-3 bg-rose-600/90 border border-rose-400 text-white text-sm md:text-xs font-mono font-bold flex items-center justify-between animate-bounce">
+        <div className="mb-6 p-3 bg-rose-600/90 border border-rose-400 text-white text-xs font-mono font-bold flex items-center justify-between animate-bounce">
           <div className="flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-amber-300 shrink-0" />
             <span>{data.status}</span>
           </div>
-          <span className="text-sm md:text-xs md:text-[10px] uppercase bg-black/40 px-2 py-0.5 tracking-widest">Action: Inspect Brood Frame</span>
+          <span className="text-[10px] uppercase bg-black/40 px-2 py-0.5 tracking-widest">Action: Inspect Brood Frame</span>
         </div>
       )}
 
@@ -119,7 +119,7 @@ export default function LiveTelemetryStream() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey">
+              <span className="text-[10px] uppercase tracking-ultra text-warm-grey">
                 National Bee Board • LoRaWAN-Compatible IoT Telemetry Feed
               </span>
               <span className={`w-2 h-2 rounded-full ${
@@ -134,7 +134,7 @@ export default function LiveTelemetryStream() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 text-sm md:text-xs md:text-[10px] font-mono uppercase tracking-widest text-gold">
+        <div className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-mono uppercase tracking-widest text-gold">
           <Activity className="w-3.5 h-3.5 text-gold" />
           <span>{connected ? "Live SSE Stream Active" : "Simulated Local Loop"}</span>
         </div>
@@ -145,11 +145,11 @@ export default function LiveTelemetryStream() {
         {/* Weight */}
         <div className={`p-4 border ${hasAnomaly ? "border-rose-500/50 bg-rose-900/20" : "border-white/10 bg-black/30"}`}>
           <div className="flex items-center justify-between text-warm-grey mb-2">
-            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest">Hive Weight</span>
+            <span className="text-[10px] uppercase tracking-widest">Hive Weight</span>
             <Scale className="w-3.5 h-3.5 text-gold" />
           </div>
           <p className="text-2xl font-serif font-bold text-alabaster">{data.weight_kg} kg</p>
-          <span className={`text-sm md:text-xs md:text-[10px] md:text-[9px] font-sans mt-1 block ${hasAnomaly ? "text-rose-400 font-bold" : "text-emerald-400"}`}>
+          <span className={`text-[9px] font-sans mt-1 block ${hasAnomaly ? "text-rose-400 font-bold" : "text-emerald-400"}`}>
             {hasAnomaly ? "Weight Loss Detected" : "Optimal Honey Storage"}
           </span>
         </div>
@@ -157,33 +157,33 @@ export default function LiveTelemetryStream() {
         {/* Temperature */}
         <div className={`p-4 border ${hasAnomaly ? "border-rose-500/50 bg-rose-900/20" : "border-white/10 bg-black/30"}`}>
           <div className="flex items-center justify-between text-warm-grey mb-2">
-            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest">Internal Temp</span>
+            <span className="text-[10px] uppercase tracking-widest">Internal Temp</span>
             <Thermometer className="w-3.5 h-3.5 text-gold" />
           </div>
           <p className="text-2xl font-serif font-bold text-alabaster">{data.internal_temp_c}°C</p>
-          <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-emerald-400 font-sans mt-1 block">Thermoregulation Active</span>
+          <span className="text-[9px] text-emerald-400 font-sans mt-1 block">Thermoregulation Active</span>
         </div>
 
         {/* Humidity */}
         <div className={`p-4 border ${hasAnomaly ? "border-rose-500/50 bg-rose-900/20" : "border-white/10 bg-black/30"}`}>
           <div className="flex items-center justify-between text-warm-grey mb-2">
-            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest">Brood Humidity</span>
+            <span className="text-[10px] uppercase tracking-widest">Brood Humidity</span>
             <Droplets className="w-3.5 h-3.5 text-gold" />
           </div>
           <p className="text-2xl font-serif font-bold text-alabaster">{data.humidity_percent}%</p>
-          <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-emerald-400 font-sans mt-1 block">Optimal Nectar Curing</span>
+          <span className="text-[9px] text-emerald-400 font-sans mt-1 block">Optimal Nectar Curing</span>
         </div>
 
         {/* Acoustic Frequency */}
         <div className={`p-4 border ${hasAnomaly ? "border-rose-500/50 bg-rose-900/20" : "border-white/10 bg-black/30"}`}>
           <div className="flex items-center justify-between text-warm-grey mb-2">
-            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest">Acoustic Buzz</span>
+            <span className="text-[10px] uppercase tracking-widest">Acoustic Buzz</span>
             <Volume2 className="w-3.5 h-3.5 text-gold" />
           </div>
           <p className={`text-2xl font-serif font-bold ${hasAnomaly ? "text-rose-300" : "text-alabaster"}`}>
             {data.acoustic_frequency_hz} Hz
           </p>
-          <span className={`text-sm md:text-xs md:text-[10px] md:text-[9px] font-sans mt-1 block ${hasAnomaly ? "text-rose-400 font-bold" : "text-emerald-400"}`}>
+          <span className={`text-[9px] font-sans mt-1 block ${hasAnomaly ? "text-rose-400 font-bold" : "text-emerald-400"}`}>
             {hasAnomaly ? "Elevated Stress Buzz" : "Zero Swarming Risk"}
           </span>
         </div>

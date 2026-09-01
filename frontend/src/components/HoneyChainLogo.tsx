@@ -24,11 +24,11 @@ export default function HoneyChainLogo({
 }: LogoProps) {
   const sizeMap: Record<LogoSize, { icon: string; px: number; text: string; sub: string; badge: string }> = {
     xs: { icon: "w-6 h-6", px: 24, text: "text-[11px]", sub: "text-[7px]", badge: "text-[6px] py-0.2 px-1" },
-    sm: { icon: "w-8 h-8", px: 32, text: "text-sm md:text-xs", sub: "text-[8px]", badge: "text-[7px] py-0.5 px-1.5" },
-    md: { icon: "w-10 h-10", px: 40, text: "text-sm", sub: "text-sm md:text-xs md:text-[10px] md:text-[9px]", badge: "text-[8px] py-0.5 px-2" },
-    lg: { icon: "w-14 h-14", px: 56, text: "text-xl", sub: "text-[11px]", badge: "text-sm md:text-xs md:text-[10px] md:text-[9px] py-1 px-2.5" },
-    xl: { icon: "w-20 h-20", px: 80, text: "text-3xl", sub: "text-sm md:text-xs", badge: "text-sm md:text-xs md:text-[10px] py-1 px-3" },
-    "2xl": { icon: "w-28 h-28", px: 112, text: "text-4xl", sub: "text-sm", badge: "text-sm md:text-xs py-1.5 px-3.5" },
+    sm: { icon: "w-8 h-8", px: 32, text: "text-xs", sub: "text-[8px]", badge: "text-[7px] py-0.5 px-1.5" },
+    md: { icon: "w-10 h-10", px: 40, text: "text-sm", sub: "text-[9px]", badge: "text-[8px] py-0.5 px-2" },
+    lg: { icon: "w-14 h-14", px: 56, text: "text-xl", sub: "text-[11px]", badge: "text-[9px] py-1 px-2.5" },
+    xl: { icon: "w-20 h-20", px: 80, text: "text-3xl", sub: "text-xs", badge: "text-[10px] py-1 px-3" },
+    "2xl": { icon: "w-28 h-28", px: 112, text: "text-4xl", sub: "text-sm", badge: "text-xs py-1.5 px-3.5" },
   };
 
   const currentSize = sizeMap[size];
@@ -120,7 +120,7 @@ export default function HoneyChainLogo({
           <span className="font-serif font-bold tracking-widest text-sm uppercase block">
             Honey<span className="text-gold">Chain</span>
           </span>
-          <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-ultra text-warm-grey font-mono block mt-1 flex items-center justify-center gap-1">
+          <span className="text-[9px] uppercase tracking-ultra text-warm-grey font-mono block mt-1 flex items-center justify-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
             Organic • KVIC Provenance
           </span>

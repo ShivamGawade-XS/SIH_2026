@@ -144,13 +144,13 @@ export default function RegisterAccountPage() {
           <div className="flex items-center gap-4 mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-charcoal/10">
             <HoneyChainLogo variant="badge" size="md" />
             <div>
-              <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">KVIC Access Control</p>
+              <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">KVIC Access Control</p>
               <h1 className="text-2xl sm:text-3xl serif text-charcoal font-normal">Officer & Lab Registration</h1>
             </div>
           </div>
 
           {errorMsg && (
-            <div className="p-4 mb-6 border border-rose-300 bg-rose-50 text-rose-800 text-sm md:text-xs font-mono">
+            <div className="p-4 mb-6 border border-rose-300 bg-rose-50 text-rose-800 text-xs font-mono">
               ⚠️ {errorMsg}
             </div>
           )}
@@ -159,7 +159,7 @@ export default function RegisterAccountPage() {
           {step === "FORM" && (
             <form onSubmit={handleRegisterSubmit} className="space-y-6">
               <div>
-                <label htmlFor="ra-name" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
+                <label htmlFor="ra-name" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
                   Full Name & Designation
                 </label>
                 <div className="relative">
@@ -172,14 +172,14 @@ export default function RegisterAccountPage() {
                     placeholder="e.g. Dr. Rajeshwari Sengupta"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full h-12 border border-charcoal/30 pl-10 pr-3 text-sm md:text-xs focus:border-gold focus:outline-none"
+                    className="w-full h-12 border border-charcoal/30 pl-10 pr-3 text-xs focus:border-gold focus:outline-none"
                   />
                   <UserCheck className="w-4 h-4 text-warm-grey absolute left-3 top-4" />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="ra-email" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
+                <label htmlFor="ra-email" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
                   Government / Official Email
                 </label>
                 <div className="relative">
@@ -192,14 +192,14 @@ export default function RegisterAccountPage() {
                     placeholder="e.g. officer@kvic.gov.in"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full h-12 border border-charcoal/30 pl-10 pr-3 text-sm md:text-xs font-mono focus:border-gold focus:outline-none"
+                    className="w-full h-12 border border-charcoal/30 pl-10 pr-3 text-xs font-mono focus:border-gold focus:outline-none"
                   />
                   <Mail className="w-4 h-4 text-warm-grey absolute left-3 top-4" />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="ra-password" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
+                <label htmlFor="ra-password" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
                   Password (Min 8 Characters)
                 </label>
                 <div className="relative">
@@ -213,7 +213,7 @@ export default function RegisterAccountPage() {
                     placeholder="••••••••••••"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="w-full h-12 border border-charcoal/30 pl-10 pr-3 text-sm md:text-xs font-mono focus:border-gold focus:outline-none"
+                    className="w-full h-12 border border-charcoal/30 pl-10 pr-3 text-xs font-mono focus:border-gold focus:outline-none"
                   />
                   <Lock className="w-4 h-4 text-warm-grey absolute left-3 top-4" />
                 </div>
@@ -221,7 +221,7 @@ export default function RegisterAccountPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="ra-phone" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
+                  <label htmlFor="ra-phone" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
                     Mobile (for OTP SMS)
                   </label>
                   <div className="relative">
@@ -233,14 +233,14 @@ export default function RegisterAccountPage() {
                       placeholder="+91 98765 43210"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full h-12 border border-charcoal/30 pl-9 pr-2 text-sm md:text-xs font-mono focus:border-gold focus:outline-none"
+                      className="w-full h-12 border border-charcoal/30 pl-9 pr-2 text-xs font-mono focus:border-gold focus:outline-none"
                     />
                     <Phone className="w-3.5 h-3.5 text-warm-grey absolute left-3 top-4" />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="ra-role" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
+                  <label htmlFor="ra-role" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
                     Role & Permissions
                   </label>
                   <select
@@ -248,7 +248,7 @@ export default function RegisterAccountPage() {
                     name="role"
                     value={formData.role}
                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                    className="w-full h-12 border border-charcoal/30 px-2 text-sm md:text-xs font-bold focus:border-gold focus:outline-none"
+                    className="w-full h-12 border border-charcoal/30 px-2 text-xs font-bold focus:border-gold focus:outline-none"
                   >
                     <option value="FIELD_OFFICER">Field Officer (KVIC)</option>
                     <option value="LAB_ANALYST">Lab Analyst (NBB)</option>
@@ -258,7 +258,7 @@ export default function RegisterAccountPage() {
               </div>
 
               <div>
-                <label htmlFor="ra-cooperative" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
+                <label htmlFor="ra-cooperative" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
                   KVIC / NBB Station Code
                 </label>
                 <div className="relative">
@@ -270,7 +270,7 @@ export default function RegisterAccountPage() {
                     placeholder="e.g. KVIC-WB-009"
                     value={formData.cooperative}
                     onChange={(e) => setFormData({ ...formData, cooperative: e.target.value })}
-                    className="w-full h-12 border border-charcoal/30 pl-10 pr-3 text-sm md:text-xs font-mono focus:border-gold focus:outline-none"
+                    className="w-full h-12 border border-charcoal/30 pl-10 pr-3 text-xs font-mono focus:border-gold focus:outline-none"
                   />
                   <Building className="w-4 h-4 text-warm-grey absolute left-3 top-4" />
                 </div>
@@ -279,7 +279,7 @@ export default function RegisterAccountPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-sm md:text-xs font-bold btn-gold-slide flex items-center justify-center gap-2 shadow-sm"
+                className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-xs font-bold btn-gold-slide flex items-center justify-center gap-2 shadow-sm"
               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin text-gold" /> : <ArrowRight className="w-4 h-4 text-gold" />}
                 <span>{loading ? "Creating Officer Account..." : "Register & Send Email OTP"}</span>
@@ -288,7 +288,7 @@ export default function RegisterAccountPage() {
               <div className="text-center pt-2">
                 <Link
                   href="/dashboard/login"
-                  className="text-sm md:text-xs text-warm-grey hover:text-charcoal underline"
+                  className="text-xs text-warm-grey hover:text-charcoal underline"
                 >
                   Already have an officer account? Sign In
                 </Link>
@@ -299,7 +299,7 @@ export default function RegisterAccountPage() {
           {/* STEP 2: Email OTP Verification */}
           {step === "VERIFY_EMAIL" && (
             <form onSubmit={handleVerifyEmail} className="space-y-6">
-              <div className="p-4 bg-[#F9F8F6] border border-charcoal/10 text-sm md:text-xs">
+              <div className="p-4 bg-[#F9F8F6] border border-charcoal/10 text-xs">
                 {emailDemoOtp ? (
                   <>
                     <p className="text-warm-grey mb-1">Email verification OTP for:</p>
@@ -307,7 +307,7 @@ export default function RegisterAccountPage() {
                     <p className="text-[11px] font-mono text-emerald-800 mt-2 bg-emerald-50 p-2 border border-emerald-300">
                       💡 Demo OTP (no SMTP on Vercel): <strong>{emailDemoOtp}</strong>
                     </p>
-                    <p className="text-sm md:text-xs md:text-[10px] text-warm-grey mt-1">
+                    <p className="text-[10px] text-warm-grey mt-1">
                       Copy the code above and paste it into the field below.
                     </p>
                   </>
@@ -317,7 +317,7 @@ export default function RegisterAccountPage() {
                       We sent a 6-digit verification code to:
                     </p>
                     <p className="font-mono font-bold text-charcoal">{formData.email}</p>
-                    <p className="text-sm md:text-xs md:text-[10px] text-warm-grey mt-2">
+                    <p className="text-[10px] text-warm-grey mt-2">
                       (In dev mode, check terminal/console logs for the generated OTP code)
                     </p>
                   </>
@@ -325,7 +325,7 @@ export default function RegisterAccountPage() {
               </div>
 
               <div>
-                <label htmlFor="ra-email-otp" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
+                <label htmlFor="ra-email-otp" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
                   Enter 6-Digit Email OTP
                 </label>
                 <div className="relative">
@@ -348,7 +348,7 @@ export default function RegisterAccountPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-sm md:text-xs font-bold btn-gold-slide flex items-center justify-center gap-2"
+                className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-xs font-bold btn-gold-slide flex items-center justify-center gap-2"
               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin text-gold" /> : <CheckCircle2 className="w-4 h-4 text-gold" />}
                 <span>Verify Email Address</span>
@@ -359,7 +359,7 @@ export default function RegisterAccountPage() {
           {/* STEP 3: Phone OTP Verification */}
           {step === "VERIFY_PHONE" && (
             <form onSubmit={handleVerifyPhone} className="space-y-6">
-              <div className="p-4 bg-[#F9F8F6] border border-charcoal/10 text-sm md:text-xs">
+              <div className="p-4 bg-[#F9F8F6] border border-charcoal/10 text-xs">
                 <p className="text-warm-grey mb-1">
                   We sent a SMS verification code to:
                 </p>
@@ -372,7 +372,7 @@ export default function RegisterAccountPage() {
               </div>
 
               <div>
-                <label htmlFor="ra-phone-otp" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
+                <label htmlFor="ra-phone-otp" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold">
                   Enter 6-Digit Phone OTP
                 </label>
                 <input
@@ -392,7 +392,7 @@ export default function RegisterAccountPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-sm md:text-xs font-bold btn-gold-slide flex items-center justify-center gap-2"
+                className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-xs font-bold btn-gold-slide flex items-center justify-center gap-2"
               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin text-gold" /> : <CheckCircle2 className="w-4 h-4 text-gold" />}
                 <span>Verify Phone Number</span>
@@ -405,12 +405,12 @@ export default function RegisterAccountPage() {
             <div className="text-center py-6">
               <CheckCircle2 className="w-16 h-16 text-emerald-600 mx-auto mb-4" />
               <h2 className="text-3xl serif text-charcoal font-bold mb-2">Account Fully Verified</h2>
-              <p className="text-sm md:text-xs text-warm-grey max-w-sm mx-auto mb-6">
+              <p className="text-xs text-warm-grey max-w-sm mx-auto mb-6">
                 Your officer credentials for <strong className="text-charcoal">{formData.email}</strong> have been cryptographically hashed and saved to the database.
               </p>
               <Link
                 href="/dashboard/login"
-                className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-sm md:text-xs font-bold btn-gold-slide flex items-center justify-center gap-2"
+                className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-xs font-bold btn-gold-slide flex items-center justify-center gap-2"
               >
                 <span>Proceed to Login</span>
                 <ArrowRight className="w-4 h-4 text-gold" />

@@ -60,7 +60,7 @@ export default function AdminRecallPage() {
       <main className="py-8 sm:py-16 px-4 sm:px-6 md:px-12 max-w-6xl mx-auto w-full flex-1">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-sm md:text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Operations Dashboard</span>
@@ -76,7 +76,7 @@ export default function AdminRecallPage() {
               <ShieldAlert className="w-5 sm:w-6 h-5 sm:h-6" />
             </div>
             <div>
-              <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">KVIC Administration & Food Safety</p>
+              <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">KVIC Administration & Food Safety</p>
               <h1 className="text-2xl sm:text-3xl serif text-charcoal font-normal">Emergency Recall & Quality Oversight</h1>
             </div>
           </div>
@@ -85,14 +85,14 @@ export default function AdminRecallPage() {
           <div className="mb-12">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+                <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
                   National Quality Surveillance Engine
                 </p>
                 <h3 className="text-xl serif text-charcoal font-normal">
                   Regional Adulteration Radar & Cluster Anomaly Map
                 </h3>
               </div>
-              <span className="px-3 py-1 bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono text-sm md:text-xs md:text-[10px] uppercase font-bold">
+              <span className="px-3 py-1 bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono text-[10px] uppercase font-bold">
                 97.6% National Purity Average
               </span>
             </div>
@@ -107,14 +107,14 @@ export default function AdminRecallPage() {
               ].map((cluster, idx) => (
                 <div key={idx} className={`p-3.5 border-2 ${cluster.status} flex flex-col justify-between`}>
                   <div>
-                    <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-widest font-mono font-bold block opacity-75 truncate">
+                    <span className="text-[9px] uppercase tracking-widest font-mono font-bold block opacity-75 truncate">
                       {cluster.state}
                     </span>
                     <span className="text-xl font-serif font-bold block mt-1">
                       {cluster.score}
                     </span>
                   </div>
-                  <div className="mt-3 pt-2 border-t border-current/20 text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono flex justify-between">
+                  <div className="mt-3 pt-2 border-t border-current/20 text-[9px] font-mono flex justify-between">
                     <span>{cluster.risk}</span>
                     <span>{cluster.batches} B</span>
                   </div>
@@ -131,8 +131,8 @@ export default function AdminRecallPage() {
             </h3>
 
             <div className="border border-charcoal/10 overflow-x-auto">
-              <table className="w-full text-left text-sm md:text-xs">
-                <thead className="bg-alabaster border-b border-charcoal/10 text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-alabaster border-b border-charcoal/10 text-[10px] uppercase tracking-widest text-warm-grey">
                   <tr>
                     <th className="p-3">Complaint ID</th>
                     <th className="p-3">Batch / QR Token</th>
@@ -149,7 +149,7 @@ export default function AdminRecallPage() {
                       <td className="p-3 font-medium">{c.reportedBy}</td>
                       <td className="p-3 text-warm-grey">{c.reason}</td>
                       <td className="p-3">
-                        <span className={`px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-semibold uppercase tracking-wider border ${
+                        <span className={`px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider border ${
                           c.status.includes("Authentic")
                             ? "border-emerald-300 bg-emerald-50 text-emerald-800"
                             : "border-amber-300 bg-amber-50 text-amber-800"
@@ -172,8 +172,8 @@ export default function AdminRecallPage() {
             </h3>
 
             <div className="border border-charcoal/10 overflow-x-auto">
-              <table className="w-full text-left text-sm md:text-xs">
-                <thead className="bg-alabaster border-b border-charcoal/10 text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-alabaster border-b border-charcoal/10 text-[10px] uppercase tracking-widest text-warm-grey">
                   <tr>
                     <th className="p-3">Batch ID</th>
                     <th className="p-3">Beekeeper / Location</th>
@@ -190,22 +190,22 @@ export default function AdminRecallPage() {
                       <td className="p-3 font-serif font-bold text-gold">{b.batch.qualityScore}/100</td>
                       <td className="p-3">
                         {b.batch.isRevoked ? (
-                          <span className="px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-semibold uppercase tracking-wider border border-rose-300 bg-rose-50 text-rose-800">
+                          <span className="px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider border border-rose-300 bg-rose-50 text-rose-800">
                             REVOKED / RECALLED
                           </span>
                         ) : (
-                          <span className="px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-semibold uppercase tracking-wider border border-emerald-300 bg-emerald-50 text-emerald-800">
+                          <span className="px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider border border-emerald-300 bg-emerald-50 text-emerald-800">
                             AUTHENTIC & ACTIVE
                           </span>
                         )}
                       </td>
                       <td className="p-3 text-right">
                         {b.batch.isRevoked ? (
-                          <span className="text-sm md:text-xs md:text-[10px] text-warm-grey font-mono">Ledger Sealed</span>
+                          <span className="text-[10px] text-warm-grey font-mono">Ledger Sealed</span>
                         ) : (
                           <button
                             onClick={() => openRecallModal(b.batchId)}
-                            className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-semibold transition-colors shadow-xs"
+                            className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-[10px] uppercase tracking-widest font-semibold transition-colors shadow-xs"
                           >
                             Emergency Revoke
                           </button>
@@ -228,13 +228,13 @@ export default function AdminRecallPage() {
                 <h3 className="text-xl serif font-bold">Confirm Batch Revocation</h3>
               </div>
 
-              <p className="text-sm md:text-xs text-warm-grey mb-4">
+              <p className="text-xs text-warm-grey mb-4">
                 You are about to issue a permanent emergency food safety revocation for <strong>Batch #{modalBatchId}</strong>.
                 All consumer verification scans for this batch token will immediately flag as <strong>REVOKED / RECALLED</strong> across all distributed nodes and active sessions.
               </p>
 
               <div className="mb-6">
-                <label htmlFor="admin-revocation-reason" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-charcoal font-bold mb-1.5">
+                <label htmlFor="admin-revocation-reason" className="block text-[10px] uppercase tracking-widest text-charcoal font-bold mb-1.5">
                   Official Revocation Reason:
                 </label>
                 <select
@@ -242,7 +242,7 @@ export default function AdminRecallPage() {
                   name="recallReason"
                   value={recallReason}
                   onChange={(e) => setRecallReason(e.target.value)}
-                  className="w-full h-10 border border-charcoal/30 bg-alabaster px-3 text-sm md:text-xs font-mono font-bold focus:border-rose-600 focus:outline-none"
+                  className="w-full h-10 border border-charcoal/30 bg-alabaster px-3 text-xs font-mono font-bold focus:border-rose-600 focus:outline-none"
                 >
                   <option value="Suspected Adulteration / Broken Tamper Seal">Suspected Adulteration / Broken Tamper Seal</option>
                   <option value="High Exogenous C4 Corn/Cane Syrup Detected">High Exogenous C4 Corn/Cane Syrup Detected</option>
@@ -256,14 +256,14 @@ export default function AdminRecallPage() {
                 <button
                   type="button"
                   onClick={() => setModalBatchId(null)}
-                  className="flex-1 h-11 border border-charcoal/30 text-charcoal text-sm md:text-xs uppercase tracking-widest font-bold hover:bg-alabaster transition-colors"
+                  className="flex-1 h-11 border border-charcoal/30 text-charcoal text-xs uppercase tracking-widest font-bold hover:bg-alabaster transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={confirmRevocation}
-                  className="flex-1 h-11 bg-rose-600 hover:bg-rose-700 text-white text-sm md:text-xs uppercase tracking-widest font-bold transition-colors shadow-md flex items-center justify-center gap-1.5"
+                  className="flex-1 h-11 bg-rose-600 hover:bg-rose-700 text-white text-xs uppercase tracking-widest font-bold transition-colors shadow-md flex items-center justify-center gap-1.5"
                 >
                   <Ban className="w-4 h-4" />
                   <span>Execute Revoke</span>

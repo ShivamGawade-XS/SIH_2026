@@ -68,7 +68,7 @@ export default function CustodyLoggingPage() {
       <main className="py-8 sm:py-16 px-4 sm:px-6 md:px-12 max-w-4xl mx-auto w-full flex-1">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-sm md:text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Operations Dashboard</span>
@@ -80,7 +80,7 @@ export default function CustodyLoggingPage() {
               <Truck className="w-5 sm:w-6 h-5 sm:h-6" />
             </div>
             <div>
-              <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">Supply Chain Governance</p>
+              <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">Supply Chain Governance</p>
               <h1 className="text-2xl sm:text-3xl md:text-4xl serif text-charcoal font-normal">Log Custody Transfer Event</h1>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function CustodyLoggingPage() {
             <div className="p-8 border border-emerald-300 bg-emerald-50/50 text-center">
               <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
               <h2 className="text-3xl serif text-charcoal mb-2">Custody Transfer Recorded On-Chain</h2>
-              <p className="text-sm md:text-xs text-warm-grey max-w-md mx-auto mb-6">
+              <p className="text-xs text-warm-grey max-w-md mx-auto mb-6">
                 Step 0{selectedBatch.custodyChain.length} has been permanently appended to Batch{" "}
                 <span className="font-mono font-bold text-charcoal">#00{selectedBatch.batchId}</span> ({selectedBatch.qrToken}).
               </p>
@@ -98,14 +98,14 @@ export default function CustodyLoggingPage() {
                 <Link
                   href={`/verify/${selectedBatch.batchId}`}
                   target="_blank"
-                  className="px-8 py-4 text-sm md:text-xs uppercase tracking-widest font-semibold btn-gold-slide inline-flex items-center justify-center gap-2"
+                  className="px-8 py-4 text-xs uppercase tracking-widest font-semibold btn-gold-slide inline-flex items-center justify-center gap-2"
                 >
                   <span>View Updated Timeline</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </Link>
                 <button
                   onClick={() => setSuccess(false)}
-                  className="px-8 py-4 text-sm md:text-xs uppercase tracking-widest font-semibold btn-outline-luxury inline-block"
+                  className="px-8 py-4 text-xs uppercase tracking-widest font-semibold btn-outline-luxury inline-block"
                 >
                   Log Another Custody Transfer
                 </button>
@@ -115,7 +115,7 @@ export default function CustodyLoggingPage() {
             <form onSubmit={handleAddCustody} className="space-y-8">
               {/* Batch selection */}
               <div>
-                <label htmlFor="custody-batch" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label htmlFor="custody-batch" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                   Select Harvest Batch
                 </label>
                 <select
@@ -135,7 +135,7 @@ export default function CustodyLoggingPage() {
 
               {/* Facility */}
               <div>
-                <label htmlFor="custody-facility" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label htmlFor="custody-facility" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                   Receiving Facility / Location Entity
                 </label>
                 <select
@@ -155,7 +155,7 @@ export default function CustodyLoggingPage() {
 
               {/* Action */}
               <div>
-                <label className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium" htmlFor="custody-action">
+                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium" htmlFor="custody-action">
                   Action Performed
                 </label>
                 <input
@@ -170,7 +170,7 @@ id="custody-action" name="action"                   type="text"
 
               {/* Operator */}
               <div>
-                <label className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium" htmlFor="custody-actor">
+                <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium" htmlFor="custody-actor">
                   Authorized Operator / Officer Name
                 </label>
                 <input
@@ -184,7 +184,7 @@ id="custody-actor" name="actorName"                   type="text"
 
               <div className="p-6 border border-charcoal/10 bg-alabaster/40 flex items-start gap-4">
                 <ShieldCheck className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
-                <p className="text-sm md:text-xs text-warm-grey leading-relaxed">
+                <p className="text-xs text-warm-grey leading-relaxed">
                   Logging this custody step generates a cryptographic event on the Polygon PoS HoneyChain contract, permanently sealing the supply chain chain-of-custody.
                 </p>
               </div>
@@ -192,7 +192,7 @@ id="custody-actor" name="actorName"                   type="text"
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-14 text-sm md:text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
+                className="w-full h-14 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
               >
                 <span>{loading ? "Signing on Polygon PoS..." : "Record Custody Transfer on Blockchain"}</span>
               </button>

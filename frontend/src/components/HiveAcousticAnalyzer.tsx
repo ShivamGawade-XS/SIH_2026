@@ -396,7 +396,7 @@ export default function HiveAcousticAnalyzer() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-gold font-mono font-bold">
+              <span className="text-[10px] uppercase tracking-ultra text-gold font-mono font-bold">
                 Bio-Acoustic Spectral AI
               </span>
               <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[8px] font-mono uppercase font-bold">
@@ -413,7 +413,7 @@ export default function HiveAcousticAnalyzer() {
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={toggleLiveMic}
-            className={`px-4 py-2 text-sm md:text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 transition-all ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 transition-all ${
               isMicLive
                 ? "bg-rose-600 text-white shadow-lg animate-pulse"
                 : "border-2 border-gold/60 bg-gold/10 text-gold hover:bg-gold hover:text-charcoal shadow-xs"
@@ -425,7 +425,7 @@ export default function HiveAcousticAnalyzer() {
 
           <button
             onClick={togglePlayback}
-            className={`px-4 py-2 text-sm md:text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 transition-all ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 transition-all ${
               isPlaying
                 ? "bg-rose-600 text-white shadow-lg animate-pulse"
                 : "bg-gold text-charcoal hover:bg-gold/90 shadow-xs"
@@ -441,7 +441,7 @@ export default function HiveAcousticAnalyzer() {
         {/* Left Column: Preset Selector & Spectrogram Canvas (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
           <div>
-            <div className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-bold font-mono">
+            <div className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-bold font-mono">
               Select Acoustic Sound Preset:
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -467,12 +467,12 @@ export default function HiveAcousticAnalyzer() {
                     }`}
                   >
                     <div className="flex justify-between items-start mb-1">
-                      <span className="font-bold text-sm md:text-xs text-charcoal">{p.name}</span>
+                      <span className="font-bold text-xs text-charcoal">{p.name}</span>
                       <span className={`text-[8px] font-mono font-bold px-1.5 py-0.5 border ${statusColor}`}>
                         {p.fundamentalHz} Hz
                       </span>
                     </div>
-                    <span className="text-sm md:text-xs md:text-[10px] text-warm-grey font-mono truncate">{p.statusLabel}</span>
+                    <span className="text-[10px] text-warm-grey font-mono truncate">{p.statusLabel}</span>
                   </button>
                 );
               })}
@@ -481,7 +481,7 @@ export default function HiveAcousticAnalyzer() {
 
           {/* Spectrogram Canvas */}
           <div className="border-2 border-charcoal/20 bg-[#0D0C0B] p-4 relative shadow-inner">
-            <div className="flex justify-between items-center text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono text-gold mb-2 border-b border-white/10 pb-1.5">
+            <div className="flex justify-between items-center text-[9px] font-mono text-gold mb-2 border-b border-white/10 pb-1.5">
               <span className="flex items-center gap-1.5">
                 <Activity className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
                 SPECTROGRAM FFT (0 Hz – 1,000 Hz)
@@ -506,8 +506,8 @@ export default function HiveAcousticAnalyzer() {
           </div>
 
           {/* Volume Control */}
-          <div className="flex items-center gap-4 bg-alabaster p-3 border border-charcoal/15 text-sm md:text-xs font-mono">
-            <label htmlFor="acoustic-volume" className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold">Synthesizer Volume:</label>
+          <div className="flex items-center gap-4 bg-alabaster p-3 border border-charcoal/15 text-xs font-mono">
+            <label htmlFor="acoustic-volume" className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">Synthesizer Volume:</label>
             <input
               id="acoustic-volume"
               name="volume"
@@ -529,13 +529,13 @@ export default function HiveAcousticAnalyzer() {
           <div className="p-5 border-2 border-charcoal/15 bg-[#F9F8F6] space-y-4">
             <div className="flex justify-between items-start border-b border-charcoal/10 pb-3">
               <div>
-                <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-ultra text-warm-grey font-bold block">
+                <span className="text-[9px] uppercase tracking-ultra text-warm-grey font-bold block">
                   Colony Diagnostic
                 </span>
                 <h3 className="text-lg serif font-bold text-charcoal">{currentProfile.name}</h3>
               </div>
               <span
-                className={`px-2.5 py-1 text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono font-bold uppercase border ${
+                className={`px-2.5 py-1 text-[9px] font-mono font-bold uppercase border ${
                   currentProfile.status === "CRITICAL"
                     ? "bg-rose-600 text-white border-rose-700"
                     : currentProfile.status === "WARNING"
@@ -550,9 +550,9 @@ export default function HiveAcousticAnalyzer() {
             </div>
 
             {/* Metric Bars */}
-            <div className="space-y-3 font-mono text-sm md:text-xs">
+            <div className="space-y-3 font-mono text-xs">
               <div>
-                <div className="flex justify-between text-sm md:text-xs md:text-[10px] mb-1">
+                <div className="flex justify-between text-[10px] mb-1">
                   <span className="text-warm-grey font-bold">Swarm Departure Risk:</span>
                   <span
                     className={`font-bold ${
@@ -594,14 +594,14 @@ export default function HiveAcousticAnalyzer() {
 
             {/* AI Recommendation Box */}
             <div className="p-3.5 bg-white border border-charcoal/20 shadow-xs">
-              <div className="flex items-center gap-1.5 text-gold font-bold text-sm md:text-xs md:text-[10px] uppercase font-mono mb-1">
+              <div className="flex items-center gap-1.5 text-gold font-bold text-[10px] uppercase font-mono mb-1">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>KVIC Bio-Acoustic Action Plan</span>
               </div>
-              <p className="text-sm md:text-xs text-charcoal font-serif leading-relaxed mb-2">
+              <p className="text-xs text-charcoal font-serif leading-relaxed mb-2">
                 {currentProfile.recommendation}
               </p>
-              <p className="text-sm md:text-xs md:text-[10px] text-warm-grey font-mono border-t border-charcoal/10 pt-1.5">
+              <p className="text-[10px] text-warm-grey font-mono border-t border-charcoal/10 pt-1.5">
                 ⚡ Required Action: <strong className="text-charcoal">{currentProfile.actionRequired}</strong>
               </p>
             </div>
@@ -612,7 +612,7 @@ export default function HiveAcousticAnalyzer() {
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center gap-2">
                 <Bell className="w-4 h-4 text-gold" />
-                <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-gold font-mono font-bold">
+                <span className="text-[10px] uppercase tracking-widest text-gold font-mono font-bold">
                   Emergency Field Notification
                 </span>
               </div>
@@ -620,7 +620,7 @@ export default function HiveAcousticAnalyzer() {
             </div>
 
             {alertSent ? (
-              <div className="p-3 bg-emerald-950/80 border border-emerald-500 text-emerald-300 text-sm md:text-xs font-mono flex items-center gap-2">
+              <div className="p-3 bg-emerald-950/80 border border-emerald-500 text-emerald-300 text-xs font-mono flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>SMS Alert Dispatched to Field Beekeeper & WhatsApp Bot!</span>
               </div>
@@ -628,7 +628,7 @@ export default function HiveAcousticAnalyzer() {
               <button
                 onClick={handleSendAlert}
                 disabled={isSimulatingAlert}
-                className="w-full py-2.5 bg-gold text-charcoal hover:bg-gold/90 font-bold text-sm md:text-xs uppercase tracking-widest font-mono flex items-center justify-center gap-2 shadow-xs transition-colors"
+                className="w-full py-2.5 bg-gold text-charcoal hover:bg-gold/90 font-bold text-xs uppercase tracking-widest font-mono flex items-center justify-center gap-2 shadow-xs transition-colors"
               >
                 {isSimulatingAlert ? (
                   <>

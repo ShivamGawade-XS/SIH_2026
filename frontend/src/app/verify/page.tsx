@@ -85,7 +85,7 @@ export default function VerifySearchPage() {
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 border border-charcoal/20 bg-white mb-4 shadow-xs">
             <ShieldCheck className="w-3.5 h-3.5 text-gold" />
-            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-charcoal font-bold">
+            <span className="text-[10px] uppercase tracking-ultra text-charcoal font-bold">
               TrueTag Universal Authentication
             </span>
           </div>
@@ -102,7 +102,7 @@ export default function VerifySearchPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <button
               onClick={() => setShowScanner(true)}
-              className="h-14 px-6 text-sm md:text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center justify-center gap-3 shadow-sm"
+              className="h-14 px-6 text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center justify-center gap-3 shadow-sm"
             >
               <Camera className="w-5 h-5 text-gold" />
               <span>{t("scanWithCamera")}</span>
@@ -110,7 +110,7 @@ export default function VerifySearchPage() {
 
             <button
               onClick={() => setShowSmsModal(true)}
-              className="h-14 px-6 text-sm md:text-xs uppercase tracking-widest font-bold border-2 border-charcoal bg-alabaster hover:bg-charcoal hover:text-gold text-charcoal flex items-center justify-center gap-2.5 transition-colors shadow-sm"
+              className="h-14 px-6 text-xs uppercase tracking-widest font-bold border-2 border-charcoal bg-alabaster hover:bg-charcoal hover:text-gold text-charcoal flex items-center justify-center gap-2.5 transition-colors shadow-sm"
             >
               <MessageSquare className="w-4 h-4 text-gold" />
               <span>{t("offlineSms")}</span>
@@ -119,7 +119,7 @@ export default function VerifySearchPage() {
 
           <div className="flex items-center gap-4 my-6">
             <div className="h-px flex-1 bg-charcoal/20" />
-            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold">Or Enter Token Manually</span>
+            <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">Or Enter Token Manually</span>
             <div className="h-px flex-1 bg-charcoal/20" />
           </div>
 
@@ -140,7 +140,7 @@ export default function VerifySearchPage() {
             </div>
             <button
               type="submit"
-              className="h-14 px-8 text-sm md:text-xs uppercase tracking-widest font-bold btn-outline-luxury flex items-center justify-center gap-2 shadow-xs"
+              className="h-14 px-8 text-xs uppercase tracking-widest font-bold btn-outline-luxury flex items-center justify-center gap-2 shadow-xs"
             >
               <Search className="w-4 h-4 text-charcoal" />
               <span>Verify</span>
@@ -152,7 +152,7 @@ export default function VerifySearchPage() {
         <div>
           <div className="flex items-center gap-2 mb-6">
             <Sparkles className="w-3.5 h-3.5 text-gold" />
-            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">
+            <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">
               Instant Verified Batch Samples (Click to Inspect)
             </span>
           </div>
@@ -166,7 +166,7 @@ export default function VerifySearchPage() {
               >
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <span className="text-sm md:text-xs md:text-[10px] font-mono text-warm-grey uppercase tracking-widest block font-bold">
+                    <span className="text-[10px] font-mono text-warm-grey uppercase tracking-widest block font-bold">
                       {batch.qr}
                     </span>
                     <h3 className="text-xl serif text-charcoal font-bold group-hover:text-gold transition-colors">
@@ -174,15 +174,15 @@ export default function VerifySearchPage() {
                     </h3>
                   </div>
                   <div className="text-right">
-                    <span className="text-sm md:text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-1 border border-emerald-300">
+                    <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-1 border border-emerald-300">
                       Score: {batch.score}/100
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-sm md:text-xs text-warm-grey pt-3 border-t border-charcoal/10">
+                <div className="flex items-center justify-between text-xs text-warm-grey pt-3 border-t border-charcoal/10">
                   <span>{batch.farmer}</span>
-                  <span className="text-charcoal font-bold uppercase tracking-wider text-sm md:text-xs md:text-[10px] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  <span className="text-charcoal font-bold uppercase tracking-wider text-[10px] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                     {t("verifyJarLink")}
                   </span>
                 </div>

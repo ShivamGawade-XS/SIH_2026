@@ -125,7 +125,7 @@ export default function ConsumerVerificationPage() {
             <div className="h-16 w-3/4 bg-charcoal/15 rounded" />
             <div className="h-48 w-full bg-white border-2 border-charcoal/10 p-8 flex flex-col justify-center items-center gap-3">
               <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
-              <p className="text-sm md:text-xs uppercase tracking-widest text-warm-grey font-bold">
+              <p className="text-xs uppercase tracking-widest text-warm-grey font-bold">
                 Querying Polygon Amoy Ledger & IPFS Provenance...
               </p>
             </div>
@@ -214,7 +214,7 @@ export default function ConsumerVerificationPage() {
               <div>
                 <div className="flex flex-wrap items-center gap-3 mb-4">
                   <span className="h-px w-8 bg-gold" />
-                  <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">
+                  <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">
                     KVIC • National Bee Board • {qrToken}
                   </span>
                   <GITagBadge
@@ -232,7 +232,7 @@ export default function ConsumerVerificationPage() {
                 <div className="mt-6 flex flex-wrap items-center gap-3">
                   <button
                     onClick={handleSpeakAudio}
-                    className="px-4 py-2.5 bg-charcoal text-alabaster hover:bg-gold hover:text-charcoal transition-colors text-sm md:text-xs uppercase tracking-widest font-semibold flex items-center gap-2 shadow-xs"
+                    className="px-4 py-2.5 bg-charcoal text-alabaster hover:bg-gold hover:text-charcoal transition-colors text-xs uppercase tracking-widest font-semibold flex items-center gap-2 shadow-xs"
                   >
                     <Volume2 className={`w-4 h-4 ${isSpeaking ? "text-gold animate-pulse" : ""}`} />
                     <span>{isSpeaking ? "Playing Voice Summary..." : (lang === "hi" ? "🎙️ आवाज में प्रमाण पत्र सुनें" : lang === "bn" ? "🎙️ অডিও শুনুন" : "🎙️ Listen to Audio Narration")}</span>
@@ -240,7 +240,7 @@ export default function ConsumerVerificationPage() {
 
                   <button
                     onClick={() => setShowTipModal(true)}
-                    className="px-4 py-2.5 border-2 border-gold bg-gold/10 hover:bg-gold text-charcoal transition-colors text-sm md:text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-xs"
+                    className="px-4 py-2.5 border-2 border-gold bg-gold/10 hover:bg-gold text-charcoal transition-colors text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-xs"
                   >
                     <Heart className="w-4 h-4 text-rose-600 fill-rose-600/30" />
                     <span>🇮🇳 Tip Beekeeper (Direct UPI)</span>
@@ -248,7 +248,7 @@ export default function ConsumerVerificationPage() {
 
                   <button
                     onClick={() => setShowPinClaimModal(true)}
-                    className="px-4 py-2.5 border-2 border-amber-600 bg-amber-600/10 hover:bg-amber-600 hover:text-white text-charcoal transition-colors text-sm md:text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-xs"
+                    className="px-4 py-2.5 border-2 border-amber-600 bg-amber-600/10 hover:bg-amber-600 hover:text-white text-charcoal transition-colors text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-xs"
                   >
                     <ShieldCheck className="w-4 h-4 text-amber-600 group-hover:text-white" />
                     <span>🔓 Claim Under-Cap PIN</span>
@@ -256,9 +256,9 @@ export default function ConsumerVerificationPage() {
                 </div>
               </div>
               <div className="text-left md:text-right">
-                <p className="text-sm md:text-xs uppercase tracking-widest text-warm-grey">{t("batchId")}</p>
+                <p className="text-xs uppercase tracking-widest text-warm-grey">{t("batchId")}</p>
                 <p className="text-3xl font-serif font-bold text-charcoal">#00{batch.batchId}</p>
-                <p className="text-sm md:text-xs md:text-[10px] text-warm-grey mt-1">{t("registryToken")}: {qrToken}</p>
+                <p className="text-[10px] text-warm-grey mt-1">{t("registryToken")}: {qrToken}</p>
               </div>
             </div>
           </div>
@@ -282,28 +282,28 @@ export default function ConsumerVerificationPage() {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-gold font-semibold">
+                  <span className="text-[10px] uppercase tracking-widest text-gold font-semibold">
                     {t("authenticBadge")}
                   </span>
                 </div>
                 <h2 className="text-3xl serif text-alabaster font-normal mb-2">
                   {t("complianceBadge")}
                 </h2>
-                <p className="text-sm md:text-xs text-warm-grey max-w-md">
+                <p className="text-xs text-warm-grey max-w-md">
                   Cryptographically secured by KVIC Regional Honey Protocol. Batch records are anchored to Polygon PoS and IPFS storage.
                 </p>
               </div>
             </div>
 
             <div className="text-right border-l-0 md:border-l border-white/10 pl-0 md:pl-12 w-full md:w-auto">
-              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-semibold block mb-1">
+              <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold block mb-1">
                 {t("aiPurityScore")}
               </span>
               <div className="flex items-baseline justify-start md:justify-end gap-2">
                 <span className="text-6xl font-serif text-gold font-normal">{batch.qualityScore}</span>
                 <span className="text-xl text-warm-grey font-serif">/100</span>
               </div>
-              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-emerald-400 font-semibold block mt-1">
+              <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold block mt-1">
                 {batch.grade || t("gradeACertified")}
               </span>
             </div>
@@ -321,29 +321,29 @@ export default function ConsumerVerificationPage() {
         {/* 4. HARVEST METRICS */}
         <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 lg:px-24 bg-charcoal text-alabaster border-b border-charcoal">
           <div className="max-w-6xl mx-auto">
-            <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">{t("harvestRecord")}</p>
+            <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">{t("harvestRecord")}</p>
             <h3 className="text-4xl serif mb-12 font-normal text-alabaster">{t("fieldTelemetry")}</h3>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="border-t border-white/10 pt-6">
-                <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("harvestDate")}</span>
+                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("harvestDate")}</span>
                 <span className="text-2xl font-serif text-alabaster block">{harvestDate}</span>
-                <span className="text-sm md:text-xs md:text-[10px] text-taupe/60 mt-1 block">Optimal Moon Phase</span>
+                <span className="text-[10px] text-taupe/60 mt-1 block">Optimal Moon Phase</span>
               </div>
               <div className="border-t border-white/10 pt-6">
-                <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("brixIndex")}</span>
+                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("brixIndex")}</span>
                 <span className="text-2xl font-serif text-gold block">{labReport.brixPercent}°Bx</span>
-                <span className="text-sm md:text-xs md:text-[10px] text-emerald-400 mt-1 block">Exceeds FSSAI Standard</span>
+                <span className="text-[10px] text-emerald-400 mt-1 block">Exceeds FSSAI Standard</span>
               </div>
               <div className="border-t border-white/10 pt-6">
-                <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("moistureLevel")}</span>
+                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("moistureLevel")}</span>
                 <span className="text-2xl font-serif text-alabaster block">{labReport.moisturePercent}%</span>
-                <span className="text-sm md:text-xs md:text-[10px] text-emerald-400 mt-1 block">Optimal Low Moisture</span>
+                <span className="text-[10px] text-emerald-400 mt-1 block">Optimal Low Moisture</span>
               </div>
               <div className="border-t border-white/10 pt-6">
-                <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("hmfFreshness")}</span>
+                <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">{t("hmfFreshness")}</span>
                 <span className="text-2xl font-serif text-alabaster block">{labReport.hmfMgPerKg} mg/kg</span>
-                <span className="text-sm md:text-xs md:text-[10px] text-taupe/60 mt-1 block">Unheated Raw Quality</span>
+                <span className="text-[10px] text-taupe/60 mt-1 block">Unheated Raw Quality</span>
               </div>
             </div>
           </div>
@@ -379,21 +379,21 @@ export default function ConsumerVerificationPage() {
             <div className="flex flex-col lg:flex-row gap-20">
               {/* Left Col: Cryptographic Proof */}
               <div className="w-full lg:w-1/2">
-                <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">{t("chainOfTrust")}</p>
+                <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">{t("chainOfTrust")}</p>
                 <h3 className="text-4xl md:text-5xl serif text-charcoal mb-8 font-normal">{t("immutableEvidence")}</h3>
-                <p className="text-sm md:text-xs text-warm-grey leading-relaxed mb-10">
+                <p className="text-xs text-warm-grey leading-relaxed mb-10">
                   Every honey batch is permanently anchored onto the Polygon PoS blockchain with cryptographic hashes matching the physical micro-QR seal on the jar.
                 </p>
 
                 <div className="space-y-6">
                   {/* Tx Hash */}
                   <div className="p-6 border border-charcoal/15 bg-white">
-                    <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2">Polygon Transaction Hash</p>
-                    <div className="flex items-center justify-between font-mono text-sm md:text-xs text-charcoal">
+                    <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-2">Polygon Transaction Hash</p>
+                    <div className="flex items-center justify-between font-mono text-xs text-charcoal">
                       <span className="truncate pr-4">{txHash || "0x98f4c2b1e7a6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0"}</span>
                       <button
                         onClick={handleCopyTx}
-                        className="text-gold hover:text-charcoal transition-colors flex items-center gap-1 text-sm md:text-xs md:text-[10px] uppercase font-semibold flex-shrink-0"
+                        className="text-gold hover:text-charcoal transition-colors flex items-center gap-1 text-[10px] uppercase font-semibold flex-shrink-0"
                       >
                         <Copy className="w-3.5 h-3.5" />
                         <span>{copiedTx ? "Copied" : "Copy"}</span>
@@ -403,12 +403,12 @@ export default function ConsumerVerificationPage() {
 
                   {/* IPFS CID */}
                   <div className="p-6 border border-charcoal/15 bg-white">
-                    <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2">IPFS Metadata CID</p>
-                    <div className="flex items-center justify-between font-mono text-sm md:text-xs text-charcoal">
+                    <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-2">IPFS Metadata CID</p>
+                    <div className="flex items-center justify-between font-mono text-xs text-charcoal">
                       <span className="truncate pr-4">{batch.ipfsMetadataHash}</span>
                       <button
                         onClick={handleCopyIpfs}
-                        className="text-gold hover:text-charcoal transition-colors flex items-center gap-1 text-sm md:text-xs md:text-[10px] uppercase font-semibold flex-shrink-0"
+                        className="text-gold hover:text-charcoal transition-colors flex items-center gap-1 text-[10px] uppercase font-semibold flex-shrink-0"
                       >
                         <Copy className="w-3.5 h-3.5" />
                         <span>{copiedIpfs ? "Copied" : "Copy"}</span>
@@ -455,10 +455,10 @@ export default function ConsumerVerificationPage() {
 
                 {/* Report Counterfeit / Broken Seal */}
                 <div className="mt-6 pt-6 border-t border-charcoal/10 flex justify-between items-center">
-                  <span className="text-sm md:text-xs md:text-[10px] text-warm-grey">Suspect this jar is counterfeit or tampered?</span>
+                  <span className="text-[10px] text-warm-grey">Suspect this jar is counterfeit or tampered?</span>
                   <button
                     onClick={() => setShowReportModal(true)}
-                    className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-semibold text-rose-700 hover:text-rose-900 transition-colors underline"
+                    className="text-[10px] uppercase tracking-widest font-semibold text-rose-700 hover:text-rose-900 transition-colors underline"
                   >
                     {t("reportTamper")}
                   </button>
@@ -467,7 +467,7 @@ export default function ConsumerVerificationPage() {
 
               {/* Right Col: Custody Timeline */}
               <div className="w-full lg:w-1/2">
-                <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">Supply Chain Timeline</p>
+                <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">Supply Chain Timeline</p>
                 <h3 className="text-4xl serif text-charcoal mb-8 font-normal">{t("chainOfCustody")}</h3>
                 <div className="border border-charcoal/10 bg-white p-8 md:p-12">
                   <CustodyTimeline chain={custodyChain} />
@@ -482,7 +482,7 @@ export default function ConsumerVerificationPage() {
           <div className="fixed inset-0 z-50 bg-charcoal/80 backdrop-blur-sm flex items-center justify-center p-6">
             <div className="border border-charcoal/20 bg-white max-w-md w-full p-8 relative shadow-2xl">
               <h3 className="text-2xl serif text-charcoal mb-2">Report Suspicious Jar / Tampering</h3>
-              <p className="text-sm md:text-xs text-warm-grey mb-6">
+              <p className="text-xs text-warm-grey mb-6">
                 Your report for Batch #{batch.batchId} ({qrToken}) will be forwarded directly to KVIC & National Bee Board quality inspectors.
               </p>
 
@@ -490,13 +490,13 @@ export default function ConsumerVerificationPage() {
                 <div className="p-6 border border-emerald-300 bg-emerald-50 text-center">
                   <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
                   <p className="text-sm font-serif font-bold text-charcoal">Report Successfully Logged</p>
-                  <p className="text-sm md:text-xs text-warm-grey mt-1">Inspection Ticket: {reportTicketId}</p>
+                  <p className="text-xs text-warm-grey mt-1">Inspection Ticket: {reportTicketId}</p>
                   <button
                     onClick={() => {
                       setShowReportModal(false);
                       setReportSubmitted(false);
                     }}
-                    className="mt-6 px-6 py-2 text-sm md:text-xs uppercase tracking-widest font-semibold btn-outline-luxury"
+                    className="mt-6 px-6 py-2 text-xs uppercase tracking-widest font-semibold btn-outline-luxury"
                   >
                     Close
                   </button>
@@ -521,13 +521,13 @@ export default function ConsumerVerificationPage() {
                   className="space-y-4"
                 >
                   <div>
-                    <label htmlFor="complaint-issue" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1">Issue Type</label>
+                    <label htmlFor="complaint-issue" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1">Issue Type</label>
                     <select
                       id="complaint-issue"
                       name="reportReason"
                       value={reportReason}
                       onChange={(e) => setReportReason(e.target.value)}
-                      className="w-full h-10 border-b border-charcoal/30 bg-transparent text-sm md:text-xs focus:border-gold focus:outline-none"
+                      className="w-full h-10 border-b border-charcoal/30 bg-transparent text-xs focus:border-gold focus:outline-none"
                     >
                       <option value="Broken QR seal on lid">Broken or damaged QR seal on lid</option>
                       <option value="Unusual fermented taste or thin syrup">Unusual fermented taste or thin syrup</option>
@@ -536,14 +536,14 @@ export default function ConsumerVerificationPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1" htmlFor="complaint-location">City / Purchase Location</label>
+                    <label className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1" htmlFor="complaint-location">City / Purchase Location</label>
                     <input
                       id="complaint-location"
                       name="location"
                       type="text"
                       required
                       placeholder="e.g. Connaught Place, New Delhi"
-                      className="w-full h-10 border-b border-charcoal/30 bg-transparent text-sm md:text-xs focus:border-gold focus:outline-none"
+                      className="w-full h-10 border-b border-charcoal/30 bg-transparent text-xs focus:border-gold focus:outline-none"
                     />
                   </div>
                   <div className="flex gap-3 pt-4">
