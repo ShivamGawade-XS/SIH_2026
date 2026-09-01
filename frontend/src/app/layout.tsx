@@ -9,8 +9,6 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { Toaster } from "@/components/ui/sonner";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/next";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -88,8 +86,6 @@ export default function RootLayout({
           <JudgeEvaluationBrief />
           <Toaster position="top-right" />
           <ServiceWorkerRegister />
-          <SpeedInsights />
-          <Analytics />
         </LanguageProvider>
       </body>
     </html>
