@@ -3,6 +3,7 @@ import prisma from "@/lib/db";
 import { BatchMetadata } from "@/lib/types";
 import { DEMO_BATCHES } from "@/lib/constants";
 import { generateSecureCid, generateSecureHex } from "@/lib/crypto-utils";
+import { getSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -106,6 +107,21 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const session = await getSession(req);
+    if (!session) {
+      return NextResponse.json(
+        { error: "Unauthorized: Active officer or admin session required to mint batches." },
+        { status: 401 }
+      );
+    }
+
+    if (session.role !== "FIELD_OFFICER" && session.role !== "ADMIN") {
+      return NextResponse.json(
+        { error: "Forbidden: Only Field Officers or Administrators can mint batches." },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
     const {
       farmerId,

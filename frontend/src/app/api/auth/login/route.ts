@@ -3,10 +3,27 @@ import prisma from "@/lib/db";
 import { verifyPassword } from "@/lib/password";
 import { createSession, SESSION_COOKIE_NAME, DEMO_OFFICERS } from "@/lib/auth";
 
-const IS_VERCEL = process.env.VERCEL === "1";
+// Sliding-window in-memory rate limiter (10 attempts per minute per IP)
+const LOGIN_RATE_LIMIT: Record<string, number[]> = {};
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_LOGIN_ATTEMPTS = 10;
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1";
+    const now = Date.now();
+
+    // Check & prune rate limit timestamps
+    const attempts = (LOGIN_RATE_LIMIT[ip] || []).filter((t) => now - t < RATE_LIMIT_WINDOW);
+    if (attempts.length >= MAX_LOGIN_ATTEMPTS) {
+      return NextResponse.json(
+        { error: "Too many login attempts. Please wait 1 minute before retrying." },
+        { status: 429 }
+      );
+    }
+    attempts.push(now);
+    LOGIN_RATE_LIMIT[ip] = attempts;
+
     const body = await req.json();
     const { email, password } = body;
 
@@ -19,15 +36,15 @@ export async function POST(req: NextRequest) {
 
     const normalizedEmail = email.toLowerCase().trim();
 
-    // Check hardcoded demo officers first (works on both local & Vercel)
-    const demoOfficer = DEMO_OFFICERS.find(
-      (o) => o.email.toLowerCase() === normalizedEmail && o.password === password
-    );
-
-    // Try DB lookup (safe — has .catch guard)
+    // 1. Check verified DB user first
     const user = await prisma.user
       .findUnique({ where: { email: normalizedEmail } })
       .catch(() => null);
+
+    // 2. Check pre-seeded demo officers
+    const demoOfficer = DEMO_OFFICERS.find(
+      (o) => o.email.toLowerCase() === normalizedEmail && o.password === password
+    );
 
     let sessionPayload: any = null;
     let userInfo: any = null;
@@ -58,7 +75,7 @@ export async function POST(req: NextRequest) {
         isPhoneVerified: user.isPhoneVerified,
       };
     } else if (demoOfficer) {
-      // Pre-seeded demo officer login (works even if DB is empty/read-only)
+      // Pre-seeded demo officer login
       sessionPayload = {
         id: `demo-${demoOfficer.role.toLowerCase()}`,
         email: demoOfficer.email,
@@ -72,30 +89,6 @@ export async function POST(req: NextRequest) {
         name: demoOfficer.name,
         role: demoOfficer.role,
         cooperative: demoOfficer.cooperative,
-        isEmailVerified: true,
-        isPhoneVerified: true,
-      };
-    } else if (IS_VERCEL && password.length >= 8) {
-      // Vercel Demo-Mode Fallback:
-      // Registration didn't persist to DB (SQLite read-only), so let any user
-      // who completed the simulated registration flow log in as a guest officer.
-      // Minimum password length (8) ensures the registration form was actually used.
-      const guestName = normalizedEmail.split("@")[0].replace(/[._-]/g, " ")
-        .replace(/\b\w/g, (c: string) => c.toUpperCase());
-      console.log(`[DEMO MODE] Guest login for simulated registered user: ${normalizedEmail}`);
-      sessionPayload = {
-        id: `demo-guest-${Date.now()}`,
-        email: normalizedEmail,
-        name: guestName,
-        role: "FIELD_OFFICER" as const,
-        cooperative: "KVIC-DEMO",
-      };
-      userInfo = {
-        id: `demo-guest-${Date.now()}`,
-        email: normalizedEmail,
-        name: guestName,
-        role: "FIELD_OFFICER",
-        cooperative: "KVIC-DEMO",
         isEmailVerified: true,
         isPhoneVerified: true,
       };

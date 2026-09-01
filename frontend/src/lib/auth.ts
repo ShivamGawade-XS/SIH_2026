@@ -1,4 +1,5 @@
 import { SignJWT, jwtVerify } from "jose";
+import { NextRequest } from "next/server";
 import { UserSession } from "./types";
 import { DEMO_OFFICERS, SESSION_COOKIE_NAME } from "./auth-constants";
 
@@ -28,4 +29,16 @@ export async function verifySession(token: string): Promise<UserSession | null> 
   } catch {
     return null;
   }
+}
+
+/**
+ * Extract and verify session from an incoming NextRequest (Cookie or Authorization Bearer header)
+ */
+export async function getSession(req: NextRequest): Promise<UserSession | null> {
+  const token =
+    req.cookies.get(SESSION_COOKIE_NAME)?.value ||
+    req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+
+  if (!token) return null;
+  return verifySession(token);
 }

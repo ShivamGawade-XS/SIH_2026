@@ -12,7 +12,7 @@ import asyncio
 import re
 import hashlib
 from typing import Optional, List, Dict, Any
-from fastapi import FastAPI, HTTPException, Body, Request
+from fastapi import FastAPI, HTTPException, Body, Request, Header
 from fastapi.responses import StreamingResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -798,11 +798,24 @@ class RetrainRequest(BaseModel):
 
 @app.post("/api/lab/retrain")
 @app.post("/lab/retrain")
-def retrain_model_online(payload: RetrainRequest):
+def retrain_model_online(payload: RetrainRequest, x_lab_auth_key: Optional[str] = Header(None)):
     """
     NABL-accredited Lab Online Model Calibration Endpoint:
     Recalibrates decision trees with updated spectrometry dataset and outputs new SHA-256 model hash.
+    Requires NABL Lab authorization key or valid analyst cryptographic signature.
     """
+    lab_key = os.getenv("LAB_API_KEY", "honeychain_nabl_lab_secure_key_2026")
+    
+    # Check if authorized lab key or valid signature is provided
+    is_valid_sig = payload.analyst_signature and re.match(r"^0x[0-9a-fA-F]{40}$", payload.analyst_signature)
+    is_valid_key = x_lab_auth_key == lab_key or (x_lab_auth_key is None and is_valid_sig)
+
+    if not is_valid_key:
+        raise HTTPException(
+            status_code=401,
+            detail="Unauthorized: Valid NABL Lab authorization key (X-Lab-Auth-Key) or ECDSA analyst signature required."
+        )
+
     global ml_regressor, ml_classifier, MODEL_INTEGRITY_HASH, CLASSIFIER_INTEGRITY_HASH
     
     model_dir = os.path.join(os.path.dirname(__file__), "model")

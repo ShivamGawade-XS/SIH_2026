@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,14 @@ export const dynamic = "force-dynamic";
  */
 export async function POST(req: NextRequest) {
   try {
+    const session = await getSession(req);
+    if (!session) {
+      return NextResponse.json(
+        { error: "Unauthorized: Active officer or admin session required for DBT processing." },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const { batchId, farmerId, farmerName, quantityKg, beeBoxes = 10, aadhaarLast4 = "9182" } = body;
 

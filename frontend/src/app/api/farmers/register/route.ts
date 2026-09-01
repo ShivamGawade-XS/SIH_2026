@@ -1,11 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { checkGIZone } from "@/lib/geo";
+import { getSession } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
+    const session = await getSession(req);
+    if (!session) {
+      return NextResponse.json(
+        { error: "Unauthorized: Active officer or admin session required." },
+        { status: 401 }
+      );
+    }
+
+    if (session.role !== "FIELD_OFFICER" && session.role !== "ADMIN") {
+      return NextResponse.json(
+        { error: "Forbidden: Only Field Officers or Administrators can register beekeepers." },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
-    const { name, location, cooperativeId, gpsLat, gpsLng, ipfsProfileHash, upiVpa, registeredById } = body;
+    const { name, location, cooperativeId, gpsLat, gpsLng, ipfsProfileHash, upiVpa } = body;
 
     if (!name || !location || !cooperativeId) {
       return NextResponse.json(
@@ -23,36 +39,6 @@ export async function POST(req: NextRequest) {
       giZone = checkGIZone(lat, lng);
     }
 
-    const IS_VERCEL = process.env.VERCEL === "1";
-
-    if (IS_VERCEL) {
-      const demoFarmerId = Math.floor(100 + Date.now() % 900);
-      return NextResponse.json({
-        success: true,
-        farmerId: demoFarmerId,
-        farmer: {
-          farmerId: demoFarmerId,
-          name: name.trim(),
-          location: location.trim(),
-          cooperativeId: cooperativeId.trim(),
-          gpsLat: lat,
-          gpsLng: lng,
-          upiVpa: upiVpa ? upiVpa.trim() : null,
-          isVerified: true,
-          registeredAt: Math.floor(Date.now() / 1000),
-        },
-        giZone: giZone
-          ? {
-              name: giZone.name,
-              giCertNo: giZone.giCertNo,
-              flora: giZone.flora,
-              verified: true,
-            }
-          : null,
-        message: `Beekeeper #${demoFarmerId} onboarded and verified successfully (Demo Mode)`,
-      });
-    }
-
     const farmer = await prisma.farmer.create({
       data: {
         name: name.trim(),
@@ -63,7 +49,7 @@ export async function POST(req: NextRequest) {
         ipfsProfileHash: ipfsProfileHash || "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
         upiVpa: upiVpa ? upiVpa.trim() : null,
         isVerified: true,
-        registeredById: registeredById || null,
+        registeredById: session.id && !session.id.startsWith("demo-") ? session.id : null,
       },
     });
 

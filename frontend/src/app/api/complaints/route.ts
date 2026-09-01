@@ -71,24 +71,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const IS_VERCEL = process.env.VERCEL === "1";
-
-    if (IS_VERCEL) {
-      const demoId = `CMP-2026-${Math.floor(100 + Date.now() % 900)}`;
-      return NextResponse.json({
-        success: true,
-        complaint: {
-          id: demoId,
-          batchId: Number(batchId),
-          qrToken: qrToken || "",
-          reportedBy: reportedBy || "Anonymous Consumer",
-          reason,
-          status: "Under Review",
-          date: new Date().toISOString().split("T")[0],
-        },
-      });
-    }
-
     const complaint = await prisma.complaint.create({
       data: {
         batchId: Number(batchId),

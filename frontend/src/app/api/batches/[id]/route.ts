@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { BatchMetadata } from "@/lib/types";
 import { DEMO_BATCHES } from "@/lib/constants";
+import { getSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -134,6 +135,14 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    const session = await getSession(req);
+    if (!session) {
+      return NextResponse.json(
+        { error: "Unauthorized: Active officer or admin session required." },
+        { status: 401 }
+      );
+    }
+
     const batchId = Number(params.id);
     const body = await req.json();
     const { action, actor, entity, details, disputeReason, restoreAuthentic } = body;
@@ -153,8 +162,8 @@ export async function PUT(
       await prisma.custodyLog.create({
         data: {
           batchId,
-          actor: actor || "Authorized Inspector",
-          entity: entity || "Supply Chain Node",
+          actor: actor || session.name || "Authorized Inspector",
+          entity: entity || session.cooperative || "Supply Chain Node",
           action: details || "Custody transfer verified and sealed",
           timestamp: new Date(),
         },
@@ -163,6 +172,13 @@ export async function PUT(
     }
 
     if (action === "FLAG_DISPUTE") {
+      if (session.role !== "ADMIN" && session.role !== "LAB_ANALYST") {
+        return NextResponse.json(
+          { error: "Forbidden: Only Admin or Lab Analysts can flag dispute records." },
+          { status: 403 }
+        );
+      }
+
       await prisma.batch.update({
         where: { id: batchId },
         data: {
@@ -174,8 +190,8 @@ export async function PUT(
       await prisma.custodyLog.create({
         data: {
           batchId,
-          actor: actor || "District Supervisor",
-          entity: "KVIC Fraud Prevention Unit",
+          actor: actor || session.name || "District Supervisor",
+          entity: entity || "KVIC Fraud Prevention Unit",
           action: `FRAUD DISPUTE FLAGGED: ${disputeReason || "Quality / Seal Anomaly"}`,
           timestamp: new Date(),
         },
@@ -185,6 +201,13 @@ export async function PUT(
     }
 
     if (action === "RESOLVE_DISPUTE") {
+      if (session.role !== "ADMIN" && session.role !== "LAB_ANALYST") {
+        return NextResponse.json(
+          { error: "Forbidden: Only Admin or Lab Analysts can resolve disputes." },
+          { status: 403 }
+        );
+      }
+
       await prisma.batch.update({
         where: { id: batchId },
         data: {
@@ -197,14 +220,44 @@ export async function PUT(
       await prisma.custodyLog.create({
         data: {
           batchId,
-          actor: actor || "Chief Quality Officer",
-          entity: "NBB Disciplinary Committee",
+          actor: actor || session.name || "Chief Quality Officer",
+          entity: entity || "NBB Disciplinary Committee",
           action: `DISPUTE RESOLVED: ${restoreAuthentic ? "Authenticity restored after re-testing" : "Batch permanently revoked"}`,
           timestamp: new Date(),
         },
       });
 
       return NextResponse.json({ success: true, message: "Dispute status resolved" });
+    }
+
+    if (action === "REVOKE_BATCH") {
+      if (session.role !== "ADMIN") {
+        return NextResponse.json(
+          { error: "Forbidden: Emergency batch revocation requires ADMIN privileges." },
+          { status: 403 }
+        );
+      }
+
+      await prisma.batch.update({
+        where: { id: batchId },
+        data: {
+          isRevoked: true,
+          isAuthentic: false,
+          disputeReason: disputeReason || "Emergency administrative revocation",
+        },
+      });
+
+      await prisma.custodyLog.create({
+        data: {
+          batchId,
+          actor: actor || session.name || "KVIC Central Administrator",
+          entity: "KVIC Central Administration",
+          action: `PERMANENT EMERGENCY REVOCATION: ${disputeReason || "Administrative Revocation Order"}`,
+          timestamp: new Date(),
+        },
+      });
+
+      return NextResponse.json({ success: true, message: "Batch permanently revoked" });
     }
 
     return NextResponse.json({ error: "Unknown action" }, { status: 400 });
