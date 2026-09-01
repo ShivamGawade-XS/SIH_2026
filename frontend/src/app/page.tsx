@@ -15,7 +15,7 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col justify-between bg-[#F9F8F6]">
       <Navbar />
 
-      <main className="flex-1 pb-24 md:pb-0">
+      <main className="flex-1">
         {/* 1. HERO SECTION */}
         <section className="py-20 sm:py-28 px-6 md:px-12 lg:px-24 border-b-2 border-charcoal/10 relative overflow-hidden bg-[#F9F8F6]">
           {/* Subtle gold decorative gradient corner */}

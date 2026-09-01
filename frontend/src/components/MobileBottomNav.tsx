@@ -24,8 +24,8 @@ export default function MobileBottomNav() {
   const navItems = [
     { label: "Home", href: "/", icon: Home },
     { label: "Verify", href: "/verify", icon: QrCode, highlight: true },
-    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Migration", href: "/dashboard/migration", icon: Compass },
+    { label: "Panel", href: "/dashboard", icon: LayoutDashboard },
+    { label: "Map", href: "/dashboard/migration", icon: Compass },
     {
       label: "AI Tools",
       onClick: () => setShowToolsSheet(true),

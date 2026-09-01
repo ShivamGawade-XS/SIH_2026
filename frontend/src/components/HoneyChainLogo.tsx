@@ -171,7 +171,7 @@ export default function HoneyChainLogo({
     <div className={`flex items-center gap-3 ${className}`}>
       {LogoIcon}
       <div className="flex flex-col">
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 whitespace-nowrap">
           <span className={`font-bold tracking-widest uppercase font-sans ${currentSize.text} ${primaryTextColor}`}>
             Honey<span className="text-gold">Chain</span>
           </span>
@@ -181,7 +181,7 @@ export default function HoneyChainLogo({
             </span>
           )}
         </div>
-        <span className={`uppercase tracking-ultra font-medium ${subTextColor} ${currentSize.sub}`}>
+        <span className={`uppercase tracking-wider sm:tracking-ultra font-medium ${subTextColor} ${currentSize.sub} whitespace-nowrap`}>
           KVIC • National Bee Board
         </span>
       </div>

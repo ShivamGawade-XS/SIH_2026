@@ -82,7 +82,7 @@ export default function RootLayout({
         <LanguageProvider>
           <NoiseOverlay />
           <GridLines />
-          <div className="relative z-10 pb-24 md:pb-0">{children}</div>
+          <div className="relative z-10 pb-44 md:pb-0">{children}</div>
           <MobileBottomNav />
           <IoTStageController />
           <JudgeEvaluationBrief />
