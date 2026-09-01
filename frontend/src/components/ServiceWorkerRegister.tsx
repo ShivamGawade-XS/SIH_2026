@@ -6,13 +6,24 @@ export default function ServiceWorkerRegister() {
   useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register("/sw.js")
-        .then((reg) => {
-          reg.update().catch(() => {});
+        .getRegistrations()
+        .then((registrations) => {
+          for (const registration of registrations) {
+            registration.unregister().catch(() => {});
+          }
         })
-        .catch((err) => {
-          console.log("ServiceWorker registration skipped:", err);
-        });
+        .catch(() => {});
+
+      if ("caches" in window) {
+        caches
+          .keys()
+          .then((keys) => {
+            for (const key of keys) {
+              caches.delete(key).catch(() => {});
+            }
+          })
+          .catch(() => {});
+      }
     }
   }, []);
 
