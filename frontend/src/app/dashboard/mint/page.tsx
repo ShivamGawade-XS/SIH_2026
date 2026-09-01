@@ -189,7 +189,7 @@ export default function MintBatchPage() {
       <main className="py-8 sm:py-16 px-4 sm:px-6 md:px-12 max-w-5xl mx-auto w-full flex-1">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-sm md:text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Operations Dashboard</span>
@@ -201,7 +201,7 @@ export default function MintBatchPage() {
               <Layers className="w-5 sm:w-6 h-5 sm:h-6" />
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">Polygon PoS Ledger</p>
+              <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">Polygon PoS Ledger</p>
               <h1 className="text-2xl sm:text-3xl md:text-4xl serif text-charcoal font-normal">Mint Honey Harvest Batch</h1>
             </div>
           </div>
@@ -210,12 +210,12 @@ export default function MintBatchPage() {
             <div className="p-8 border border-emerald-300 bg-emerald-50/50 text-center">
               <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
               <h2 className="text-3xl serif text-charcoal mb-2">Batch Minted & Anchored On-Chain</h2>
-              <p className="text-xs text-warm-grey max-w-md mx-auto mb-6">
+              <p className="text-sm md:text-xs text-warm-grey max-w-md mx-auto mb-6">
                 Assigned Batch ID <span className="font-mono font-bold text-charcoal">#00{successData.batchId}</span> with QR Token{" "}
                 <span className="font-mono font-bold text-charcoal">{successData.qrToken}</span>.
               </p>
 
-              <div className="p-4 border border-charcoal/10 bg-white max-w-lg mx-auto text-left font-mono text-xs mb-8 space-y-2">
+              <div className="p-4 border border-charcoal/10 bg-white max-w-lg mx-auto text-left font-mono text-sm md:text-xs mb-8 space-y-2">
                 <div className="flex justify-between">
                   <span className="text-warm-grey">AI Purity Score:</span>
                   <span className="font-bold text-gold">{successData.score}/100</span>
@@ -226,7 +226,7 @@ export default function MintBatchPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-warm-grey">Polygon Tx:</span>
-                  <span className="truncate max-w-[200px] text-[10px]">{successData.txHash}</span>
+                  <span className="truncate max-w-[200px] text-sm md:text-xs md:text-[10px]">{successData.txHash}</span>
                 </div>
               </div>
 
@@ -234,14 +234,14 @@ export default function MintBatchPage() {
                 <Link
                   href={`/verify/${successData.batchId}`}
                   target="_blank"
-                  className="px-8 py-4 text-xs uppercase tracking-widest font-semibold btn-gold-slide inline-flex items-center justify-center gap-2"
+                  className="px-8 py-4 text-sm md:text-xs uppercase tracking-widest font-semibold btn-gold-slide inline-flex items-center justify-center gap-2"
                 >
                   <span>Open Consumer Verify View</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </Link>
                 <Link
                   href="/dashboard/qr"
-                  className="px-8 py-4 text-xs uppercase tracking-widest font-semibold btn-outline-luxury inline-block"
+                  className="px-8 py-4 text-sm md:text-xs uppercase tracking-widest font-semibold btn-outline-luxury inline-block"
                 >
                   Print QR Label Sheet
                 </Link>
@@ -251,7 +251,7 @@ export default function MintBatchPage() {
             <form onSubmit={handleMint} className="space-y-8">
               {/* Farmer selection */}
               <div>
-                <label htmlFor="mint-farmer" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label htmlFor="mint-farmer" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                   Select Registered Beekeeper
                 </label>
                 <select
@@ -272,7 +272,7 @@ export default function MintBatchPage() {
               {/* Lab Parameters */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                 <div>
-                  <label htmlFor="mint-moisture" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="mint-moisture" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Moisture (%)
                   </label>
                   <input
@@ -285,11 +285,11 @@ export default function MintBatchPage() {
                     onChange={(e) => setMoisture(parseFloat(e.target.value) || 0)}
                     className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[10px] text-warm-grey mt-1 block">FSSAI ≤ 20%</span>
+                  <span className="text-sm md:text-xs md:text-[10px] text-warm-grey mt-1 block">FSSAI ≤ 20%</span>
                 </div>
 
                 <div>
-                  <label htmlFor="mint-brix" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="mint-brix" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Brix (°Bx)
                   </label>
                   <input
@@ -302,11 +302,11 @@ export default function MintBatchPage() {
                     onChange={(e) => setBrix(parseFloat(e.target.value) || 0)}
                     className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[10px] text-warm-grey mt-1 block">FSSAI ≥ 65°Bx</span>
+                  <span className="text-sm md:text-xs md:text-[10px] text-warm-grey mt-1 block">FSSAI ≥ 65°Bx</span>
                 </div>
 
                 <div>
-                  <label htmlFor="mint-hmf" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="mint-hmf" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     HMF (mg/kg)
                   </label>
                   <input
@@ -319,11 +319,11 @@ export default function MintBatchPage() {
                     onChange={(e) => setHmf(parseFloat(e.target.value) || 0)}
                     className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[10px] text-warm-grey mt-1 block">FSSAI ≤ 80</span>
+                  <span className="text-sm md:text-xs md:text-[10px] text-warm-grey mt-1 block">FSSAI ≤ 80</span>
                 </div>
 
                 <div>
-                  <label htmlFor="mint-diastase" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="mint-diastase" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Diastase (DN)
                   </label>
                   <input
@@ -336,11 +336,11 @@ export default function MintBatchPage() {
                     onChange={(e) => setDiastase(parseFloat(e.target.value) || 0)}
                     className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[10px] text-warm-grey mt-1 block">FSSAI ≥ 8 DN</span>
+                  <span className="text-sm md:text-xs md:text-[10px] text-warm-grey mt-1 block">FSSAI ≥ 8 DN</span>
                 </div>
 
                 <div>
-                  <label htmlFor="mint-conductivity" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="mint-conductivity" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Conductivity (mS)
                   </label>
                   <input
@@ -353,13 +353,13 @@ export default function MintBatchPage() {
                     onChange={(e) => setConductivity(parseFloat(e.target.value) || 0)}
                     className="w-full h-12 border-b border-charcoal/30 bg-transparent px-2 text-sm font-sans focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[10px] text-warm-grey mt-1 block">FSSAI ≤ 0.8</span>
+                  <span className="text-sm md:text-xs md:text-[10px] text-warm-grey mt-1 block">FSSAI ≤ 0.8</span>
                 </div>
               </div>
 
               {/* Yield */}
               <div>
-                <label htmlFor="mint-yield" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label htmlFor="mint-yield" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                   Harvest Yield Weight (kg)
                 </label>
                 <input
@@ -378,12 +378,12 @@ export default function MintBatchPage() {
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <Sparkles className="w-4 h-4 text-gold animate-spin" />
-                    <span className="text-[10px] uppercase tracking-widest text-gold font-semibold">
+                    <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-gold font-semibold">
                       FastAPI AI Microservice • Live Inference
                     </span>
                   </div>
                   <h3 className="text-2xl serif text-alabaster">{aiGrade}</h3>
-                  <p className="text-xs text-taupe/70 mt-1">
+                  <p className="text-sm md:text-xs text-taupe/70 mt-1">
                     Direct inference from Scikit-Learn RandomForest Model trained on 5,000 FSSAI samples
                   </p>
                 </div>
@@ -396,7 +396,7 @@ export default function MintBatchPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-14 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
+                className="w-full h-14 text-sm md:text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2"
               >
                 <span>{loading ? "Minting on Polygon Sepolia..." : "Mint Batch & Generate QR Token"}</span>
               </button>

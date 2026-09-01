@@ -67,12 +67,12 @@ export default function ApiaryMap({ farmer, batchId }: ApiaryMapProps) {
     <div className="border border-charcoal/10 bg-white p-8 md:p-12 my-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-charcoal/10">
         <div>
-          <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold mb-1">
+          <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-semibold mb-1">
             Geographic Provenance & Terroir
           </p>
           <h3 className="text-3xl serif text-charcoal font-normal">Botanical Origin Profile</h3>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 border border-charcoal/15 bg-alabaster text-xs font-mono text-charcoal">
+        <div className="flex items-center gap-2 px-3 py-1.5 border border-charcoal/15 bg-alabaster text-sm md:text-xs font-mono text-charcoal">
           <Compass className="w-3.5 h-3.5 text-gold" />
           <span>{terroir.lat}, {terroir.lng}</span>
         </div>
@@ -80,7 +80,7 @@ export default function ApiaryMap({ farmer, batchId }: ApiaryMapProps) {
 
       {/* Interactive OpenStreetMap Embed */}
       <div className="mb-8 border-2 border-charcoal/15 bg-alabaster overflow-hidden shadow-xs">
-        <div className="bg-charcoal px-4 py-2 flex justify-between items-center text-[10px] font-mono text-alabaster">
+        <div className="bg-charcoal px-4 py-2 flex justify-between items-center text-sm md:text-xs md:text-[10px] font-mono text-alabaster">
           <div className="flex items-center gap-2">
             <MapPin className="w-3.5 h-3.5 text-gold" />
             <span>OpenStreetMap Apiary Location Anchor</span>
@@ -115,10 +115,10 @@ export default function ApiaryMap({ farmer, batchId }: ApiaryMapProps) {
             <div className="w-10 h-10 border border-charcoal bg-charcoal text-gold flex items-center justify-center mb-4">
               <Flower2 className="w-5 h-5" />
             </div>
-            <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">Floral Forage Source</span>
+            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey block mb-1">Floral Forage Source</span>
             <h4 className="text-xl serif font-normal text-charcoal mb-2">{terroir.floralSource}</h4>
           </div>
-          <span className="text-[10px] text-emerald-700 font-semibold uppercase tracking-wider block mt-4">
+          <span className="text-sm md:text-xs md:text-[10px] text-emerald-700 font-semibold uppercase tracking-wider block mt-4">
             Single-Flora Monofloral
           </span>
         </div>
@@ -129,10 +129,10 @@ export default function ApiaryMap({ farmer, batchId }: ApiaryMapProps) {
             <div className="w-10 h-10 border border-charcoal bg-charcoal text-gold flex items-center justify-center mb-4">
               <Mountain className="w-5 h-5" />
             </div>
-            <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">Apiary Elevation</span>
+            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey block mb-1">Apiary Elevation</span>
             <h4 className="text-xl serif font-normal text-charcoal mb-2">{terroir.elevation}</h4>
           </div>
-          <p className="text-xs text-warm-grey leading-relaxed mt-2">{terroir.terroir}</p>
+          <p className="text-sm md:text-xs text-warm-grey leading-relaxed mt-2">{terroir.terroir}</p>
         </div>
 
         {/* Climate at Harvest */}
@@ -141,10 +141,10 @@ export default function ApiaryMap({ farmer, batchId }: ApiaryMapProps) {
             <div className="w-10 h-10 border border-charcoal bg-charcoal text-gold flex items-center justify-center mb-4">
               <ThermometerSun className="w-5 h-5" />
             </div>
-            <span className="text-[10px] uppercase tracking-widest text-warm-grey block mb-1">Harvest Microclimate</span>
+            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey block mb-1">Harvest Microclimate</span>
             <h4 className="text-xl serif font-normal text-charcoal mb-2">{terroir.harvestClimate}</h4>
           </div>
-          <span className="text-[10px] text-warm-grey font-mono block mt-4">
+          <span className="text-sm md:text-xs md:text-[10px] text-warm-grey font-mono block mt-4">
             Monitored via IoT Hive Sensor Nodes
           </span>
         </div>

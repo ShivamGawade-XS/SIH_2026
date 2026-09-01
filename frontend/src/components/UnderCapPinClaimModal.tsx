@@ -72,7 +72,7 @@ export default function UnderCapPinClaimModal({
             </div>
             <div>
               <h3 className="font-bold text-lg leading-tight">Under-Cap Jar Claim & Burn</h3>
-              <p className="text-xs text-amber-100/90 font-mono">Batch #{batchId} · Token: {qrToken}</p>
+              <p className="text-sm md:text-xs text-amber-100/90 font-mono">Batch #{batchId} · Token: {qrToken}</p>
             </div>
           </div>
           <button
@@ -87,7 +87,7 @@ export default function UnderCapPinClaimModal({
         <div className="p-6 space-y-5">
           {claimStatus === "idle" && (
             <form onSubmit={handleClaim} className="space-y-4">
-              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-charcoal/80 space-y-1">
+              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-sm md:text-xs text-charcoal/80 space-y-1">
                 <p className="font-bold flex items-center gap-1.5 text-amber-900">
                   <Lock className="w-3.5 h-3.5" /> Scratch-Off / Under-Cap Anti-Tamper Security
                 </p>
@@ -98,7 +98,7 @@ export default function UnderCapPinClaimModal({
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-charcoal/70">
+                <label className="block text-sm md:text-xs font-bold uppercase tracking-wider text-charcoal/70">
                   Enter 4-Digit Secret Under-Cap PIN
                 </label>
                 <div className="relative">
@@ -141,14 +141,14 @@ export default function UnderCapPinClaimModal({
               </div>
               <div>
                 <h4 className="text-xl font-black text-charcoal">Jar Authenticated &amp; Burned!</h4>
-                <p className="text-xs text-charcoal/70 mt-1 max-w-sm mx-auto">
+                <p className="text-sm md:text-xs text-charcoal/70 mt-1 max-w-sm mx-auto">
                   This jar is now permanently recorded as <span className="font-bold text-emerald-700">OPENED &amp; CONSUMED</span> on Polygon blockchain.
                 </p>
               </div>
 
               {claimTx && (
                 <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-left font-mono text-[11px] text-emerald-900 break-all space-y-1">
-                  <p className="font-bold uppercase tracking-wider text-[10px] text-emerald-700">Proof-of-Burn Polygon Tx:</p>
+                  <p className="font-bold uppercase tracking-wider text-sm md:text-xs md:text-[10px] text-emerald-700">Proof-of-Burn Polygon Tx:</p>
                   <p>{claimTx}</p>
                 </div>
               )}
@@ -156,7 +156,7 @@ export default function UnderCapPinClaimModal({
               <div className="p-4 bg-gradient-to-r from-amber-100 to-amber-50 rounded-2xl border border-amber-200 text-left flex items-center space-x-3 shadow-sm">
                 <Gift className="w-8 h-8 text-amber-600 shrink-0" />
                 <div>
-                  <p className="text-xs font-bold text-amber-900">KVIC Honey Mission Eco-Reward</p>
+                  <p className="text-sm md:text-xs font-bold text-amber-900">KVIC Honey Mission Eco-Reward</p>
                   <p className="text-[11px] text-amber-800">
                     You unlocked a <span className="font-bold">₹15 Recycle Voucher</span> for helping prevent counterfeit packaging in Indian apiculture!
                   </p>
@@ -179,12 +179,12 @@ export default function UnderCapPinClaimModal({
               </div>
               <div>
                 <h4 className="text-xl font-black text-red-700">TAMPER / CLONE ALERT</h4>
-                <p className="text-xs text-charcoal/80 mt-1 max-w-sm mx-auto font-medium">
+                <p className="text-sm md:text-xs text-charcoal/80 mt-1 max-w-sm mx-auto font-medium">
                   This jar was already opened or invalid PIN entered. High probability of middleman packaging refilling.
                 </p>
               </div>
 
-              <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-left text-xs text-red-900 space-y-1">
+              <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-left text-sm md:text-xs text-red-900 space-y-1">
                 <p className="font-bold">Safety Recommendation:</p>
                 <p>Do not consume this product. File an immediate complaint with KVIC Field Enforcement or return to point of sale.</p>
               </div>

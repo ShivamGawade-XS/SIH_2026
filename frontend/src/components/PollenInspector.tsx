@@ -66,7 +66,7 @@ export default function PollenInspector({
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Microscope className="w-4 h-4 text-gold" />
-            <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
               Melissopalynology & Micro-Spectroscopy
             </span>
           </div>
@@ -81,7 +81,7 @@ export default function PollenInspector({
             <button
               key={mag}
               onClick={() => setZoomLevel(mag)}
-              className={`px-2.5 py-1 text-[10px] font-mono font-bold uppercase transition-colors ${
+              className={`px-2.5 py-1 text-sm md:text-xs md:text-[10px] font-mono font-bold uppercase transition-colors ${
                 zoomLevel === mag ? "bg-charcoal text-gold" : "text-charcoal hover:bg-white"
               }`}
             >
@@ -133,15 +133,15 @@ export default function PollenInspector({
             </svg>
 
             {/* Live Reticle HUD overlay */}
-            <div className="absolute top-3 left-4 text-[9px] font-mono text-gold/90 font-bold uppercase tracking-widest">
+            <div className="absolute top-3 left-4 text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono text-gold/90 font-bold uppercase tracking-widest">
               NABL Optical Feed • {zoomLevel}
             </div>
-            <div className="absolute bottom-3 right-4 text-[9px] font-mono text-emerald-400 font-bold uppercase">
+            <div className="absolute bottom-3 right-4 text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono text-emerald-400 font-bold uppercase">
               {pollenProfile.dominantPollenPercent}% Monofloral
             </div>
           </div>
 
-          <p className="text-[10px] text-warm-grey font-mono mt-3 text-center">
+          <p className="text-sm md:text-xs md:text-[10px] text-warm-grey font-mono mt-3 text-center">
             Micrograph Calibration: ISO/IEC 17025 Certified Optical Stage
           </p>
         </div>
@@ -150,7 +150,7 @@ export default function PollenInspector({
         <div className="lg:col-span-7 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] uppercase font-bold font-mono border border-emerald-300">
+              <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-sm md:text-xs md:text-[10px] uppercase font-bold font-mono border border-emerald-300">
                 FSSAI Monofloral Verified (&gt;45% Threshold)
               </span>
             </div>
@@ -158,14 +158,14 @@ export default function PollenInspector({
             <h4 className="text-xl serif text-charcoal font-bold">
               {pollenProfile.primaryFlora}
             </h4>
-            <p className="text-xs font-serif italic text-warm-grey mb-4">
+            <p className="text-sm md:text-xs font-serif italic text-warm-grey mb-4">
               Scientific Classification: {pollenProfile.scientificName}
             </p>
 
             {/* Pollen Composition Spectrum Bars */}
             <div className="space-y-3 mt-4">
               <div>
-                <div className="flex justify-between text-xs font-mono mb-1">
+                <div className="flex justify-between text-sm md:text-xs font-mono mb-1">
                   <span className="font-bold text-charcoal">
                     {pollenProfile.primaryFlora.split("(")[0]} (Dominant)
                   </span>
@@ -199,21 +199,21 @@ export default function PollenInspector({
           </div>
 
           {/* Micro-Details Grid */}
-          <div className="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-charcoal/10 text-xs font-mono">
+          <div className="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-charcoal/10 text-sm md:text-xs font-mono">
             <div className="p-3 bg-[#F9F8F6] border border-charcoal/10">
-              <p className="text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-0.5">
+              <p className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-0.5">
                 Absolute Pollen Count (APC)
               </p>
               <p className="text-base font-bold text-charcoal">
-                {pollenProfile.pollenGrainDensityPerGram.toLocaleString("en-IN")} <span className="text-xs font-normal text-warm-grey">grains/g</span>
+                {pollenProfile.pollenGrainDensityPerGram.toLocaleString("en-IN")} <span className="text-sm md:text-xs font-normal text-warm-grey">grains/g</span>
               </p>
-              <p className="text-[9px] text-emerald-700 mt-0.5 font-sans">
+              <p className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-emerald-700 mt-0.5 font-sans">
                 Maurizio Class III Standard
               </p>
             </div>
 
             <div className="p-3 bg-[#F9F8F6] border border-charcoal/10">
-              <p className="text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-0.5">
+              <p className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-0.5">
                 Exine Morphology
               </p>
               <p className="text-[11px] font-medium text-charcoal line-clamp-2">

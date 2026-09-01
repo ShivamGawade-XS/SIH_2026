@@ -129,10 +129,10 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
           <div className="flex items-center gap-2.5">
             <span className="w-2.5 h-2.5 bg-amber-500 rounded-full animate-ping" />
             <div>
-              <p className="text-[10px] uppercase tracking-ultra font-bold text-charcoal">
+              <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra font-bold text-charcoal">
                 SIH Judge & Evaluator Live Persona Switcher
               </p>
-              <p className="text-xs text-warm-grey">
+              <p className="text-sm md:text-xs text-warm-grey">
                 Click any role to preview its dedicated real-time workflow instantly:
               </p>
             </div>
@@ -147,7 +147,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
                   type="button"
                   onClick={() => handleSwitchPersona(officer)}
                   disabled={isSwitching}
-                  className={`px-3 py-1.5 text-xs font-serif font-semibold border-2 transition-all flex items-center gap-1.5 shadow-2xs ${
+                  className={`px-3 py-1.5 text-sm md:text-xs font-serif font-semibold border-2 transition-all flex items-center gap-1.5 shadow-2xs ${
                     isActive
                       ? "bg-charcoal text-gold border-charcoal scale-105"
                       : "bg-white text-charcoal border-charcoal/20 hover:border-gold"
@@ -158,7 +158,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
                     officer.role === "LAB_ANALYST" ? "bg-blue-500" : "bg-rose-500"
                   }`} />
                   <span>{ROLE_LABEL[officer.role as Role]}: {officer.name.split(" ")[0]}</span>
-                  {isActive && <span className="text-[9px] uppercase font-sans font-bold bg-gold text-charcoal px-1 ml-0.5">Active</span>}
+                  {isActive && <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase font-sans font-bold bg-gold text-charcoal px-1 ml-0.5">Active</span>}
                 </button>
               );
             })}
@@ -170,25 +170,25 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
           <div>
             <div className="flex items-center gap-3 mb-3">
               <span className="w-2.5 h-2.5 bg-emerald-500 animate-pulse" />
-              <span className="text-[10px] uppercase tracking-ultra text-charcoal font-bold">{meta.station}</span>
-              <span className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border ${meta.badge}`}>
+              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-charcoal font-bold">{meta.station}</span>
+              <span className={`px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-bold uppercase tracking-wider border ${meta.badge}`}>
                 {ROLE_LABEL[role]}
               </span>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl serif text-charcoal font-normal">
               {t("dashWelcome")} <span className="italic text-gold font-serif">{currentUser.name.split(" ")[0]}</span>
             </h1>
-            <p className="text-xs sm:text-sm text-warm-grey mt-1 font-mono">{currentUser.email}</p>
+            <p className="text-sm md:text-xs sm:text-sm text-warm-grey mt-1 font-mono">{currentUser.email}</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             {role === "ADMIN" && (
-              <Link href="/dashboard/admin" className="px-4 py-2 text-xs uppercase tracking-widest font-bold border-2 border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 flex items-center gap-1.5 transition-colors shadow-xs">
+              <Link href="/dashboard/admin" className="px-4 py-2 text-sm md:text-xs uppercase tracking-widest font-bold border-2 border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 flex items-center gap-1.5 transition-colors shadow-xs">
                 <ShieldAlert className="w-3.5 h-3.5" />
                 <span>{t("dashAdminRecall")}</span>
               </Link>
             )}
-            <button onClick={handleLogout} className="px-4 py-2 text-xs uppercase tracking-widest font-bold border-2 border-charcoal/30 hover:border-charcoal bg-white flex items-center gap-1.5 transition-colors shadow-xs">
+            <button onClick={handleLogout} className="px-4 py-2 text-sm md:text-xs uppercase tracking-widest font-bold border-2 border-charcoal/30 hover:border-charcoal bg-white flex items-center gap-1.5 transition-colors shadow-xs">
               <LogOut className="w-3.5 h-3.5 text-charcoal" />
               <span>{t("dashLogout")}</span>
             </button>
@@ -252,7 +252,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               <div className="flex items-center gap-3 mb-6 pb-4 border-b border-rose-200">
                 <AlertTriangle className="w-5 h-5 text-rose-600" />
                 <h3 className="text-xl serif text-charcoal font-bold">{t("dashAdulterationQueue")}</h3>
-                <span className="ml-auto px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-rose-400 bg-rose-100 text-rose-800">18 Open</span>
+                <span className="ml-auto px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-bold uppercase tracking-wider border border-rose-400 bg-rose-100 text-rose-800">18 Open</span>
               </div>
               <div className="space-y-3">
                 {[
@@ -263,12 +263,12 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
                   <div key={alert.id} className="flex items-center justify-between p-4 bg-white border border-rose-200">
                     <div>
                       <p className="font-mono font-bold text-charcoal text-sm">{alert.id}</p>
-                      <p className="text-xs text-rose-700 font-semibold mt-0.5">{alert.marker}</p>
-                      <p className="text-[10px] text-warm-grey">{alert.location}</p>
+                      <p className="text-sm md:text-xs text-rose-700 font-semibold mt-0.5">{alert.marker}</p>
+                      <p className="text-sm md:text-xs md:text-[10px] text-warm-grey">{alert.location}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-serif font-bold text-rose-600">{alert.score}<span className="text-xs font-sans font-normal">/100</span></p>
-                      <Link href="/dashboard/quality" className="text-[10px] uppercase tracking-widest font-bold text-rose-600 hover:text-rose-800 transition-colors">
+                      <p className="text-2xl font-serif font-bold text-rose-600">{alert.score}<span className="text-sm md:text-xs font-sans font-normal">/100</span></p>
+                      <Link href="/dashboard/quality" className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold text-rose-600 hover:text-rose-800 transition-colors">
                         Analyse →
                       </Link>
                     </div>
@@ -298,9 +298,9 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               <span className="w-3 h-3 bg-emerald-500 animate-pulse" />
               <div className="flex-1">
                 <p className="font-bold text-charcoal text-sm">{t("dashAllSystemsLive")}</p>
-                <p className="text-xs text-emerald-700">Polygon PoS RPC • FastAPI NMR Service • IPFS Gateway • SSE IoT Stream — all live</p>
+                <p className="text-sm md:text-xs text-emerald-700">Polygon PoS RPC • FastAPI NMR Service • IPFS Gateway • SSE IoT Stream — all live</p>
               </div>
-              <span className="text-[10px] font-mono font-bold text-emerald-800 uppercase tracking-widest">99.97% uptime</span>
+              <span className="text-sm md:text-xs md:text-[10px] font-mono font-bold text-emerald-800 uppercase tracking-widest">99.97% uptime</span>
             </div>
 
             <SectionLabel>{t("dashAdminActions")}</SectionLabel>
@@ -319,7 +319,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
               <div className="flex items-center gap-3 mb-6 pb-4 border-b border-charcoal/10">
                 <Bell className="w-5 h-5 text-rose-600" />
                 <h3 className="text-2xl serif text-charcoal font-bold">{t("dashCitizenReports")}</h3>
-                <span className="ml-auto px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-rose-400 bg-rose-100 text-rose-800">
+                <span className="ml-auto px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-bold uppercase tracking-wider border border-rose-400 bg-rose-100 text-rose-800">
                   {complaints.length} Pending
                 </span>
               </div>
@@ -331,16 +331,16 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
                     <div key={i} className="p-4 border border-charcoal/10 bg-[#F9F8F6] flex items-start justify-between gap-4">
                       <div>
                         <p className="font-mono font-bold text-charcoal text-sm">Batch #{c.batchId} — {c.qrToken}</p>
-                        <p className="text-xs text-rose-700 font-semibold mt-0.5">{c.reportedBy}</p>
-                        <p className="text-[10px] text-warm-grey mt-1">{c.reason}</p>
+                        <p className="text-sm md:text-xs text-rose-700 font-semibold mt-0.5">{c.reportedBy}</p>
+                        <p className="text-sm md:text-xs md:text-[10px] text-warm-grey mt-1">{c.reason}</p>
                       </div>
-                      <Link href="/dashboard/admin" className="shrink-0 text-[10px] uppercase tracking-widest font-bold text-rose-600 hover:text-rose-800 transition-colors">
+                      <Link href="/dashboard/admin" className="shrink-0 text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold text-rose-600 hover:text-rose-800 transition-colors">
                         Review →
                       </Link>
                     </div>
                   ))}
                   {complaints.length > 5 && (
-                    <Link href="/dashboard/admin" className="block text-center text-[10px] uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors pt-2">
+                    <Link href="/dashboard/admin" className="block text-center text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors pt-2">
                       View all {complaints.length} complaints →
                     </Link>
                   )}
@@ -361,20 +361,20 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
 // ─── Shared Sub-Components ────────────────────────────────────────────────────
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-4">{children}</p>;
+  return <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-4">{children}</p>;
 }
 
 function StatCard({ icon, label, value, sub, suffix = "" }: { icon: React.ReactNode; label: string; value: string; sub: string; suffix?: string }) {
   return (
     <div className="p-3.5 sm:p-6 border-2 border-charcoal/15 bg-white shadow-xs hover:border-gold transition-all duration-300">
       <div className="flex justify-between items-start mb-2 sm:mb-4">
-        <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-warm-grey font-bold truncate max-w-[100px] sm:max-w-none">{label}</span>
+        <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] sm:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold truncate max-w-[100px] sm:max-w-none">{label}</span>
         {icon}
       </div>
       <p suppressHydrationWarning className="text-xl sm:text-3xl font-serif text-charcoal font-bold truncate">
-        {value}{suffix && <span className="text-xs sm:text-sm font-sans font-normal text-warm-grey">{suffix}</span>}
+        {value}{suffix && <span className="text-sm md:text-xs sm:text-sm font-sans font-normal text-warm-grey">{suffix}</span>}
       </p>
-      <p className="text-[8px] sm:text-[10px] text-emerald-800 mt-1 sm:mt-2 font-bold font-mono truncate">{sub}</p>
+      <p className="text-[8px] sm:text-xs md:text-[10px] text-emerald-800 mt-1 sm:mt-2 font-bold font-mono truncate">{sub}</p>
     </div>
   );
 }
@@ -385,9 +385,9 @@ function DarkCard({ href, icon, title, desc, cta }: { href: string; icon: React.
       <div>
         <div className="mb-3 group-hover:scale-110 transition-transform duration-300">{icon}</div>
         <h3 className="text-lg serif text-alabaster mb-1 font-bold">{title}</h3>
-        <p className="text-xs text-taupe/70 leading-relaxed font-light">{desc}</p>
+        <p className="text-sm md:text-xs text-taupe/70 leading-relaxed font-light">{desc}</p>
       </div>
-      <div className="mt-6 text-[10px] uppercase tracking-widest text-gold font-bold flex items-center gap-1">
+      <div className="mt-6 text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-gold font-bold flex items-center gap-1">
         <span>{cta}</span><span>→</span>
       </div>
     </Link>
@@ -405,14 +405,14 @@ function PendingRequestsTable({ t }: { t: (key: string) => string }) {
       <div className="flex items-center gap-3 mb-6 pb-4 border-b border-amber-200">
         <ClipboardList className="w-5 h-5 text-amber-600" />
         <h3 className="text-xl serif text-charcoal font-bold">{t("dashPendingSubmissions")}</h3>
-        <span className="ml-auto px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-amber-400 bg-amber-100 text-amber-800">
+        <span className="ml-auto px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-bold uppercase tracking-wider border border-amber-400 bg-amber-100 text-amber-800">
           {pending.length} Awaiting
         </span>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
+        <table className="w-full text-left text-sm md:text-xs">
           <thead>
-            <tr className="text-[10px] uppercase tracking-widest text-warm-grey border-b border-amber-200">
+            <tr className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey border-b border-amber-200">
               <th className="p-3 font-bold">Request ID</th>
               <th className="p-3 font-bold">Beekeeper</th>
               <th className="p-3 font-bold">Flora / Qty</th>
@@ -426,15 +426,15 @@ function PendingRequestsTable({ t }: { t: (key: string) => string }) {
                 <td className="p-3 font-mono font-bold text-charcoal">{r.id}</td>
                 <td className="p-3">
                   <p className="font-semibold text-charcoal">{r.farmer}</p>
-                  <p className="text-[10px] text-warm-grey">{r.location}</p>
+                  <p className="text-sm md:text-xs md:text-[10px] text-warm-grey">{r.location}</p>
                 </td>
                 <td className="p-3">
                   <p className="font-semibold">{r.flora}</p>
-                  <p className="text-[10px] text-warm-grey">{r.qty} kg</p>
+                  <p className="text-sm md:text-xs md:text-[10px] text-warm-grey">{r.qty} kg</p>
                 </td>
                 <td className="p-3 text-warm-grey">{r.submitted}</td>
                 <td className="p-3 text-right">
-                  <Link href="/dashboard/mint" className="inline-flex items-center gap-1 px-3 py-1 text-[10px] uppercase tracking-widest font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
+                  <Link href="/dashboard/mint" className="inline-flex items-center gap-1 px-3 py-1 text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
                     Review →
                   </Link>
                 </td>
@@ -452,12 +452,12 @@ function RecentBatchesTable({ batchesList, t }: { batchesList: BatchMetadata[]; 
     <div className="border-2 border-charcoal/15 bg-white p-4 sm:p-8 shadow-sm mt-8">
       <div className="flex justify-between items-center mb-6 pb-4 border-b border-charcoal/10">
         <h3 className="text-2xl serif text-charcoal font-bold">{t("dashRecentBatches")}</h3>
-        <span className="text-[10px] uppercase tracking-widest text-charcoal font-mono font-bold">Polygon PoS</span>
+        <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-charcoal font-mono font-bold">Polygon PoS</span>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
+        <table className="w-full text-left text-sm md:text-xs">
           <thead>
-            <tr className="border-b-2 border-charcoal/15 bg-[#F9F8F6] text-[10px] uppercase tracking-widest text-warm-grey">
+            <tr className="border-b-2 border-charcoal/15 bg-[#F9F8F6] text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey">
               <th className="p-3 font-bold">{t("batchId")}</th>
               <th className="p-3 font-bold">{t("registryToken")}</th>
               <th className="p-3 font-bold">{t("theSource")}</th>
@@ -473,18 +473,18 @@ function RecentBatchesTable({ batchesList, t }: { batchesList: BatchMetadata[]; 
                 <td className="p-3 font-mono font-semibold text-charcoal">{item.qrToken}</td>
                 <td className="p-3">
                   <p className="font-semibold text-charcoal">{item.farmer.name}</p>
-                  <p className="text-[10px] text-warm-grey">{item.farmer.location}</p>
+                  <p className="text-sm md:text-xs md:text-[10px] text-warm-grey">{item.farmer.location}</p>
                 </td>
                 <td className="p-3">
                   <span className="text-sm font-serif font-bold text-gold">{item.batch.qualityScore}/100</span>
                 </td>
                 <td className="p-3">
-                  <span className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border ${item.batch.isRevoked ? "border-rose-400 bg-rose-50 text-rose-800" : "border-emerald-300 bg-emerald-50 text-emerald-800"}`}>
+                  <span className={`px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-bold uppercase tracking-wider border ${item.batch.isRevoked ? "border-rose-400 bg-rose-50 text-rose-800" : "border-emerald-300 bg-emerald-50 text-emerald-800"}`}>
                     {item.batch.grade}
                   </span>
                 </td>
                 <td className="p-3 text-right">
-                  <Link href={`/verify/${item.batchId}`} className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors">
+                  <Link href={`/verify/${item.batchId}`} className="inline-flex items-center gap-1 text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors">
                     <span>View</span>
                     <ExternalLink className="w-3 h-3" />
                   </Link>

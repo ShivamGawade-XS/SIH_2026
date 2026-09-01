@@ -116,7 +116,7 @@ export default function PollinationCreditCalculator() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase tracking-ultra text-gold font-mono font-bold">
+              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-gold font-mono font-bold">
                 KVIC Green Pollination Credits
               </span>
               <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[8px] font-mono uppercase font-bold">
@@ -131,7 +131,7 @@ export default function PollinationCreditCalculator() {
         <button
           onClick={handleGenerate}
           disabled={isGenerating}
-          className="px-4 py-2 bg-gold text-charcoal hover:bg-gold/90 text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 shadow-xs transition-colors self-start md:self-auto disabled:opacity-70"
+          className="px-4 py-2 bg-gold text-charcoal hover:bg-gold/90 text-sm md:text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 shadow-xs transition-colors self-start md:self-auto disabled:opacity-70"
         >
           {isGenerating ? (
             <><RefreshCw className="w-4 h-4 animate-spin" /><span>Calculating...</span></>
@@ -151,7 +151,7 @@ export default function PollinationCreditCalculator() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="credit-colonies" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+              <label htmlFor="credit-colonies" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
                 Active Bee Colonies (boxes)
               </label>
               <input
@@ -166,7 +166,7 @@ export default function PollinationCreditCalculator() {
               />
             </div>
             <div>
-              <label htmlFor="credit-duration" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+              <label htmlFor="credit-duration" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
                 Active Bloom Days
               </label>
               <input
@@ -183,7 +183,7 @@ export default function PollinationCreditCalculator() {
           </div>
 
           <div>
-            <label htmlFor="credit-crop" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+            <label htmlFor="credit-crop" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
               Primary Crop Pollinated
             </label>
             <select
@@ -200,7 +200,7 @@ export default function PollinationCreditCalculator() {
           </div>
 
           <div>
-            <label htmlFor="credit-state" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+            <label htmlFor="credit-state" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
               State / UT of Apiary
             </label>
             <select
@@ -216,7 +216,7 @@ export default function PollinationCreditCalculator() {
 
           <div className="grid grid-cols-1 gap-3">
             <div>
-              <label htmlFor="credit-farmer-name" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+              <label htmlFor="credit-farmer-name" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
                 Registered Beekeeper / Farmer Name
               </label>
               <input
@@ -230,7 +230,7 @@ export default function PollinationCreditCalculator() {
               />
             </div>
             <div>
-              <label htmlFor="credit-coop-code" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
+              <label htmlFor="credit-coop-code" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-1.5 font-bold font-mono">
                 KVIC Cooperative Code
               </label>
               <input
@@ -245,7 +245,7 @@ export default function PollinationCreditCalculator() {
           </div>
 
           {/* Methodology note */}
-          <div className="p-3 bg-emerald-50 border border-emerald-200 text-[10px] font-mono text-emerald-800">
+          <div className="p-3 bg-emerald-50 border border-emerald-200 text-sm md:text-xs md:text-[10px] font-mono text-emerald-800">
             <strong>Methodology:</strong> Based on FAO Bee Pollination Services Standard (2018),
             ICAR foraging radius model, and India Carbon Market (ICM) 2024 credit schedule for
             agroforestry & pollination ecosystem services.
@@ -294,23 +294,23 @@ export default function PollinationCreditCalculator() {
               <div key={m.label} className={`p-4 border-2 border-charcoal/15 bg-[#F9F8F6]`}>
                 <div className="flex items-center gap-2 mb-2">
                   {m.icon}
-                  <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold font-mono truncate">{m.label}</span>
+                  <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold font-mono truncate">{m.label}</span>
                 </div>
                 <p className="text-2xl serif font-bold text-charcoal leading-tight">{m.value}</p>
-                <p className="text-[10px] font-mono text-warm-grey mt-0.5">{m.sub}</p>
+                <p className="text-sm md:text-xs md:text-[10px] font-mono text-warm-grey mt-0.5">{m.sub}</p>
               </div>
             ))}
           </div>
 
           {/* Total Ecological Value Banner */}
           <div className="p-5 bg-charcoal border-2 border-charcoal text-center">
-            <span className="text-[10px] uppercase tracking-ultra text-gold font-mono font-bold block mb-1">
+            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-gold font-mono font-bold block mb-1">
               Total Ecological Service Value (Carbon + Crop Yield)
             </span>
             <p className="text-4xl serif text-gold font-bold">
               ₹{Number(results.totalEcologicalValue).toLocaleString('en-IN')}
             </p>
-            <p className="text-[10px] font-mono text-warm-grey mt-1">
+            <p className="text-sm md:text-xs md:text-[10px] font-mono text-warm-grey mt-1">
               India Carbon Market Trade Value: ₹{Number(results.carbonMarketValue).toLocaleString('en-IN')}
               &nbsp;•&nbsp;Credit Tokens Issued: {results.creditTokens.toLocaleString('en-IN')} GPC-tokens
             </p>
@@ -318,7 +318,7 @@ export default function PollinationCreditCalculator() {
 
           {/* Token breakdown bar */}
           <div className="p-4 border border-charcoal/15 bg-alabaster space-y-2">
-            <div className="flex justify-between text-[10px] font-mono font-bold uppercase tracking-widest">
+            <div className="flex justify-between text-sm md:text-xs md:text-[10px] font-mono font-bold uppercase tracking-widest">
               <span className="text-emerald-700">Crop Yield Boost</span>
               <span className="text-charcoal">{((+results.yieldBoostRevenue / +results.totalEcologicalValue) * 100).toFixed(1)}%</span>
             </div>
@@ -329,7 +329,7 @@ export default function PollinationCreditCalculator() {
               />
               <div className="h-full bg-teal-500 flex-1" />
             </div>
-            <div className="flex justify-between text-[10px] font-mono text-warm-grey">
+            <div className="flex justify-between text-sm md:text-xs md:text-[10px] font-mono text-warm-grey">
               <span>Crop Pollination Value: ₹{Number(results.yieldBoostRevenue).toLocaleString('en-IN')}</span>
               <span>Carbon Credits: ₹{Number(results.carbonMarketValue).toLocaleString('en-IN')}</span>
             </div>
@@ -348,19 +348,19 @@ export default function PollinationCreditCalculator() {
               <div className="flex justify-center mb-2">
                 <HoneyChainLogo size="sm" variant="icon" />
               </div>
-              <p className="text-[9px] uppercase tracking-ultra text-warm-grey font-bold">
+              <p className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-ultra text-warm-grey font-bold">
                 Government of India • Ministry of MSME • KVIC • National Bee Board
               </p>
               <h3 className="text-xl sm:text-2xl serif font-bold text-charcoal mt-1">
                 Green Pollination Credit Certificate
               </h3>
-              <p className="text-[10px] font-mono text-gold font-bold">
+              <p className="text-sm md:text-xs md:text-[10px] font-mono text-gold font-bold">
                 Certificate ID: {certificateId} &nbsp;|&nbsp; India Carbon Market — Agroforestry Registry
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
-              <div className="sm:col-span-2 space-y-2 text-xs font-mono">
+              <div className="sm:col-span-2 space-y-2 text-sm md:text-xs font-mono">
                 <p><span className="text-warm-grey">Beekeeper / Farmer:</span> <strong className="text-charcoal">{input.farmerName}</strong></p>
                 <p><span className="text-warm-grey">KVIC Cooperative Code:</span> <strong className="text-charcoal">{input.cooperativeCode}</strong></p>
                 <p><span className="text-warm-grey">State / UT:</span> <strong className="text-charcoal">{input.stateName}</strong></p>
@@ -383,16 +383,16 @@ export default function PollinationCreditCalculator() {
               </div>
             </div>
 
-            <div className="p-3 bg-emerald-50 border border-emerald-300 text-[9px] font-mono text-emerald-800 mb-6">
+            <div className="p-3 bg-emerald-50 border border-emerald-300 text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono text-emerald-800 mb-6">
               ✓ Certified under India Carbon Market (ICM) — Agroforestry & Pollination Ecosystem Services Protocol (ICM-APES-2024).
               Corporate sponsors and government bodies may purchase these credits for CSR obligations under the Energy Conservation (Amendment) Act, 2022.
             </div>
 
             <div className="flex justify-between items-center">
-              <button onClick={() => setShowCertificate(false)} className="px-4 py-2 border border-charcoal text-xs uppercase tracking-widest font-mono font-bold text-charcoal hover:bg-alabaster">
+              <button onClick={() => setShowCertificate(false)} className="px-4 py-2 border border-charcoal text-sm md:text-xs uppercase tracking-widest font-mono font-bold text-charcoal hover:bg-alabaster">
                 Close
               </button>
-              <button onClick={() => window.print()} className="px-6 py-2.5 bg-charcoal text-gold hover:bg-black text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2">
+              <button onClick={() => window.print()} className="px-6 py-2.5 bg-charcoal text-gold hover:bg-black text-sm md:text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2">
                 <Download className="w-4 h-4" />
                 Print Official Certificate
               </button>

@@ -27,7 +27,7 @@ export default function Navbar() {
         </Link>
 
         {/* Center Pill: Live Status (Desktop only) */}
-        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 border border-charcoal/20 bg-white text-[10px] uppercase tracking-widest text-charcoal font-semibold shadow-xs">
+        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 border border-charcoal/20 bg-white text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-charcoal font-semibold shadow-xs">
           <span className="w-2 h-2 bg-emerald-500 animate-pulse" />
           <span>{t("liveStatus")}</span>
         </div>
@@ -35,7 +35,7 @@ export default function Navbar() {
         {/* Right Navigation + Language Switcher */}
         <nav className="flex items-center gap-2 sm:gap-4 md:gap-6">
           {/* Desktop Language Switcher */}
-          <div className="hidden sm:flex items-center border border-charcoal/30 bg-white text-[10px] font-bold shadow-xs">
+          <div className="hidden sm:flex items-center border border-charcoal/30 bg-white text-sm md:text-xs md:text-[10px] font-bold shadow-xs">
             {languages.map((l) => (
               <button
                 key={l.code}
@@ -59,7 +59,7 @@ export default function Navbar() {
               aria-label="Language Selector"
               value={lang}
               onChange={(e) => setLang(e.target.value as any)}
-              className="bg-transparent text-[10px] font-bold text-charcoal focus:outline-none py-0.5"
+              className="bg-transparent text-sm md:text-xs md:text-[10px] font-bold text-charcoal focus:outline-none py-0.5"
             >
               {languages.map((l) => (
                 <option key={l.code} value={l.code}>
@@ -72,7 +72,7 @@ export default function Navbar() {
           {/* Direct Verify Link */}
           <Link
             href="/verify"
-            className="hidden md:flex text-xs uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors duration-300 items-center gap-1.5"
+            className="hidden md:flex text-sm md:text-xs uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors duration-300 items-center gap-1.5"
           >
             <QrCode className="w-3.5 h-3.5 text-gold" />
             <span>{t("verifyNav")}</span>
@@ -81,7 +81,7 @@ export default function Navbar() {
           {/* Portal Button */}
           <Link
             href="/dashboard"
-            className="hidden xs:flex px-3 sm:px-5 py-2 sm:py-2.5 text-[9px] sm:text-[10px] uppercase tracking-widest font-bold btn-gold-slide items-center gap-1.5 shadow-xs"
+            className="hidden xs:flex px-3 sm:px-5 py-2 sm:py-2.5 text-sm md:text-xs md:text-[10px] md:text-[9px] sm:text-xs md:text-[10px] uppercase tracking-widest font-bold btn-gold-slide items-center gap-1.5 shadow-xs"
           >
             <LayoutDashboard className="w-3 h-3 text-gold" />
             <span className="hidden sm:inline">KVIC Portal</span>
@@ -103,8 +103,8 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-charcoal/15 bg-white px-6 py-6 space-y-4 shadow-xl animate-in slide-in-from-top-4 duration-200">
           <div className="flex items-center justify-between pb-3 border-b border-charcoal/10">
-            <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">Navigation Menu</span>
-            <span className="text-[9px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-300">
+            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold">Navigation Menu</span>
+            <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-300">
               Polygon PoS Live
             </span>
           </div>

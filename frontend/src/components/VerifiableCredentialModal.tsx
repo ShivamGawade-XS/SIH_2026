@@ -113,11 +113,11 @@ export default function VerifiableCredentialModal({ isOpen, onClose, batch }: Pr
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-xl serif font-bold text-charcoal">W3C Verifiable Credential (JSON-LD)</h3>
-                <span className="px-2 py-0.5 text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                <span className="px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
                   ECDSA Signed
                 </span>
               </div>
-              <p className="text-xs text-warm-grey">
+              <p className="text-sm md:text-xs text-warm-grey">
                 Tamper-evident W3C standard export for DigiLocker and National AgriStack Federation
               </p>
             </div>
@@ -133,19 +133,19 @@ export default function VerifiableCredentialModal({ isOpen, onClose, batch }: Pr
 
         {/* Code Content */}
         <div className="p-6 overflow-y-auto flex-1 bg-[#141414] text-[#E0E0E0]">
-          <pre className="text-xs font-mono leading-relaxed whitespace-pre-wrap select-all">
+          <pre className="text-sm md:text-xs font-mono leading-relaxed whitespace-pre-wrap select-all">
             {jsonString}
           </pre>
         </div>
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-charcoal/10 bg-[#F9F8F6] flex items-center justify-between gap-3">
-          <span className="text-xs font-mono text-warm-grey font-semibold">Standard: W3C VC 1.0 JSON-LD</span>
+          <span className="text-sm md:text-xs font-mono text-warm-grey font-semibold">Standard: W3C VC 1.0 JSON-LD</span>
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={handleCopy}
-              className="px-4 py-2 border border-charcoal/30 bg-white hover:border-gold text-charcoal text-xs uppercase tracking-wider font-bold flex items-center gap-1.5 transition-colors"
+              className="px-4 py-2 border border-charcoal/30 bg-white hover:border-gold text-charcoal text-sm md:text-xs uppercase tracking-wider font-bold flex items-center gap-1.5 transition-colors"
             >
               <Copy className="w-3.5 h-3.5 text-gold" />
               <span>{copied ? "Copied" : "Copy JSON-LD"}</span>
@@ -153,7 +153,7 @@ export default function VerifiableCredentialModal({ isOpen, onClose, batch }: Pr
             <button
               type="button"
               onClick={handleDownload}
-              className="px-5 py-2 text-xs uppercase tracking-wider font-bold btn-gold-slide flex items-center gap-1.5 shadow-sm"
+              className="px-5 py-2 text-sm md:text-xs uppercase tracking-wider font-bold btn-gold-slide flex items-center gap-1.5 shadow-sm"
             >
               <Download className="w-3.5 h-3.5 text-gold" />
               <span>Download .jsonld</span>

@@ -8,9 +8,9 @@ export const dynamic = "force-dynamic";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const rawId = params.id;
+  const { id: rawId } = await params;
   const isNumeric = /^\d+$/.test(rawId);
 
   try {
@@ -132,9 +132,10 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id: rawId } = await params;
     const session = await getSession(req);
     if (!session) {
       return NextResponse.json(
@@ -143,7 +144,7 @@ export async function PUT(
       );
     }
 
-    const batchId = Number(params.id);
+    const batchId = Number(rawId);
     const body = await req.json();
     const { action, actor, entity, details, disputeReason, restoreAuthentic } = body;
 

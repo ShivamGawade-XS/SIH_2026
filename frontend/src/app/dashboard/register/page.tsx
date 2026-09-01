@@ -151,7 +151,7 @@ export default function RegisterFarmerPage() {
       <main className="py-8 sm:py-16 px-4 sm:px-6 md:px-12 max-w-4xl mx-auto w-full flex-1">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-sm md:text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Operations Dashboard</span>
@@ -163,7 +163,7 @@ export default function RegisterFarmerPage() {
               <UserPlus className="w-5 sm:w-6 h-5 sm:h-6" />
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">KVIC Honey Mission</p>
+              <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">KVIC Honey Mission</p>
               <h1 className="text-2xl sm:text-3xl md:text-4xl serif text-charcoal font-normal">Onboard Verified Beekeeper</h1>
             </div>
           </div>
@@ -172,7 +172,7 @@ export default function RegisterFarmerPage() {
             <div className="p-8 border border-emerald-300 bg-emerald-50/50 text-center">
               <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
               <h2 className="text-3xl serif text-charcoal mb-2">Beekeeper Verified & Enrolled</h2>
-              <p className="text-xs text-warm-grey max-w-md mx-auto mb-6">
+              <p className="text-sm md:text-xs text-warm-grey max-w-md mx-auto mb-6">
                 <span className="font-semibold text-charcoal">{formData.name}</span> has been permanently assigned Beekeeper ID{" "}
                 <span className="font-mono font-bold text-charcoal">#00{newFarmerId}</span> in the SQLite database under cooperative{" "}
                 <span className="font-mono font-bold text-charcoal">{formData.cooperativeId}</span>.
@@ -181,7 +181,7 @@ export default function RegisterFarmerPage() {
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link
                   href="/dashboard/mint"
-                  className="px-8 py-4 text-xs uppercase tracking-widest font-semibold btn-gold-slide inline-block"
+                  className="px-8 py-4 text-sm md:text-xs uppercase tracking-widest font-semibold btn-gold-slide inline-block"
                 >
                   Mint First Harvest Batch
                 </Link>
@@ -198,7 +198,7 @@ export default function RegisterFarmerPage() {
                       ipfsHash: "",
                     });
                   }}
-                  className="px-8 py-4 text-xs uppercase tracking-widest font-semibold btn-outline-luxury inline-block"
+                  className="px-8 py-4 text-sm md:text-xs uppercase tracking-widest font-semibold btn-outline-luxury inline-block"
                 >
                   Register Another Beekeeper
                 </button>
@@ -211,7 +211,7 @@ export default function RegisterFarmerPage() {
                 <div>
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-gold" />
-                    <span className="text-xs uppercase font-bold tracking-wider text-charcoal">
+                    <span className="text-sm md:text-xs uppercase font-bold tracking-wider text-charcoal">
                       Hardware GPS Apiary Verification
                     </span>
                   </div>
@@ -223,7 +223,7 @@ export default function RegisterFarmerPage() {
                   type="button"
                   onClick={handleFetchGps}
                   disabled={gpsLoading}
-                  className="px-4 py-2.5 bg-charcoal text-alabaster hover:bg-gold hover:text-charcoal text-xs uppercase tracking-wider font-bold flex items-center gap-2 transition-colors shrink-0"
+                  className="px-4 py-2.5 bg-charcoal text-alabaster hover:bg-gold hover:text-charcoal text-sm md:text-xs uppercase tracking-wider font-bold flex items-center gap-2 transition-colors shrink-0"
                 >
                   {gpsLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Compass className="w-3.5 h-3.5 text-gold" />}
                   <span>{gpsLoading ? "Acquiring GPS..." : "📍 Fetch GPS Location"}</span>
@@ -231,8 +231,8 @@ export default function RegisterFarmerPage() {
               </div>
 
               {/* Quick GI Zone Presets */}
-              <div className="flex flex-wrap items-center gap-2 text-xs">
-                <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">GI Zone Presets:</span>
+              <div className="flex flex-wrap items-center gap-2 text-sm md:text-xs">
+                <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold">GI Zone Presets:</span>
                 {GI_ZONES.map((zone) => (
                   <button
                     key={zone.key}
@@ -246,7 +246,7 @@ export default function RegisterFarmerPage() {
               </div>
 
               {gpsNotice && (
-                <div className="p-3 bg-gold/10 border border-gold/30 text-xs font-mono font-semibold text-charcoal flex items-center gap-2">
+                <div className="p-3 bg-gold/10 border border-gold/30 text-sm md:text-xs font-mono font-semibold text-charcoal flex items-center gap-2">
                   <span>{gpsNotice}</span>
                 </div>
               )}
@@ -254,8 +254,8 @@ export default function RegisterFarmerPage() {
               {matchedGI && (
                 <div className="p-4 border border-emerald-300 bg-emerald-50 text-emerald-900 flex items-center gap-3">
                   <Award className="w-6 h-6 text-emerald-600 shrink-0" />
-                  <div className="text-xs">
-                    <p className="font-bold uppercase tracking-wider text-[10px]">
+                  <div className="text-sm md:text-xs">
+                    <p className="font-bold uppercase tracking-wider text-sm md:text-xs md:text-[10px]">
                       🛰️ Real-Time GI Zone Detected: {matchedGI.name}
                     </p>
                     <p className="text-[11px] opacity-80">
@@ -267,7 +267,7 @@ export default function RegisterFarmerPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <label htmlFor="reg-name" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-name" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Beekeeper Full Name
                   </label>
                   <input
@@ -284,7 +284,7 @@ export default function RegisterFarmerPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="reg-location" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-location" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     State & District Location
                   </label>
                   <input
@@ -300,7 +300,7 @@ export default function RegisterFarmerPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="reg-cooperative" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-cooperative" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     KVIC Cooperative Code
                   </label>
                   <input
@@ -316,7 +316,7 @@ export default function RegisterFarmerPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="reg-upi" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-upi" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Beekeeper UPI VPA (Direct Tip Settlement)
                   </label>
                   <div className="relative">
@@ -334,7 +334,7 @@ export default function RegisterFarmerPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="reg-lat" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-lat" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Apiary GPS Latitude
                   </label>
                   <input
@@ -349,7 +349,7 @@ export default function RegisterFarmerPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="reg-lng" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                  <label htmlFor="reg-lng" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                     Apiary GPS Longitude
                   </label>
                   <input
@@ -368,7 +368,7 @@ export default function RegisterFarmerPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-10 py-4 text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center gap-2 shadow-md"
+                  className="px-10 py-4 text-sm md:text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center gap-2 shadow-md"
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin text-gold" /> : <ShieldCheck className="w-4 h-4 text-gold" />}
                   <span>{loading ? "Persisting Beekeeper to Database..." : "Enroll Verified Beekeeper"}</span>

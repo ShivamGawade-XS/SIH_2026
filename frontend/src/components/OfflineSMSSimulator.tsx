@@ -71,7 +71,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
             <Smartphone className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+            <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
               Inclusive Rural Access Protocol
             </p>
             <h3 className="text-2xl serif text-charcoal font-bold">
@@ -80,7 +80,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
           </div>
         </div>
 
-        <p className="text-xs text-warm-grey mb-6">
+        <p className="text-sm md:text-xs text-warm-grey mb-6">
           Enables non-smartphone and rural feature phone users to authenticate honey jars via toll-free SMS (<strong>56767</strong>) or national USSD shortcode (<strong>*99*4941#</strong>).
         </p>
 
@@ -90,7 +90,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
             <button
               type="button"
               onClick={() => { setChannel("sms"); setQueryText("VERIFY TT-2026-00001"); }}
-              className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider ${
+              className={`px-3 py-1.5 text-sm md:text-xs font-bold uppercase tracking-wider ${
                 channel === "sms" ? "bg-charcoal text-alabaster" : "bg-white text-warm-grey hover:bg-alabaster"
               }`}
             >
@@ -99,7 +99,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
             <button
               type="button"
               onClick={() => { setChannel("ussd"); setQueryText("*99*4941*001#"); }}
-              className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider ${
+              className={`px-3 py-1.5 text-sm md:text-xs font-bold uppercase tracking-wider ${
                 channel === "ussd" ? "bg-charcoal text-alabaster" : "bg-white text-warm-grey hover:bg-alabaster"
               }`}
             >
@@ -113,7 +113,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
                 key={l}
                 type="button"
                 onClick={() => setLang(l)}
-                className={`px-2 py-1 text-[10px] font-bold uppercase border ${
+                className={`px-2 py-1 text-sm md:text-xs md:text-[10px] font-bold uppercase border ${
                   lang === l ? "border-gold bg-gold/20 text-charcoal" : "border-charcoal/20 text-warm-grey"
                 }`}
               >
@@ -134,13 +134,13 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
             value={queryText}
             onChange={(e) => setQueryText(e.target.value)}
             placeholder={channel === "sms" ? "e.g. VERIFY TT-2026-00001" : "*99*4941*001#"}
-            className="flex-1 h-11 border-2 border-charcoal/20 px-3 text-xs font-mono font-bold focus:border-gold focus:outline-none"
+            className="flex-1 h-11 border-2 border-charcoal/20 px-3 text-sm md:text-xs font-mono font-bold focus:border-gold focus:outline-none"
           />
           <button
             type="button"
             onClick={handleSend}
             disabled={isSending}
-            className="px-5 h-11 bg-charcoal text-alabaster uppercase tracking-widest text-xs font-bold btn-gold-slide flex items-center gap-1.5 shrink-0"
+            className="px-5 h-11 bg-charcoal text-alabaster uppercase tracking-widest text-sm md:text-xs font-bold btn-gold-slide flex items-center gap-1.5 shrink-0"
           >
             <Send className="w-3.5 h-3.5" />
             <span>{isSending ? "Querying..." : "Send"}</span>
@@ -149,26 +149,26 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
 
         {/* Quick Sample Presets */}
         <div className="flex flex-wrap gap-2 mb-6">
-          <span className="text-[10px] uppercase font-bold text-warm-grey self-center">Presets:</span>
+          <span className="text-sm md:text-xs md:text-[10px] uppercase font-bold text-warm-grey self-center">Presets:</span>
           <button
             type="button"
             onClick={() => setQueryText(channel === "sms" ? "VERIFY TT-2026-00001" : "*99*4941*001#")}
-            className="text-[10px] font-mono px-2 py-1 bg-[#F9F8F6] border border-charcoal/15 hover:border-gold text-charcoal"
+            className="text-sm md:text-xs md:text-[10px] font-mono px-2 py-1 bg-[#F9F8F6] border border-charcoal/15 hover:border-gold text-charcoal"
           >
             Batch #1 (Bihar Litchi)
           </button>
           <button
             type="button"
             onClick={() => setQueryText(channel === "sms" ? "VERIFY TT-2026-00002" : "*99*4941*002#")}
-            className="text-[10px] font-mono px-2 py-1 bg-[#F9F8F6] border border-charcoal/15 hover:border-gold text-charcoal"
+            className="text-sm md:text-xs md:text-[10px] font-mono px-2 py-1 bg-[#F9F8F6] border border-charcoal/15 hover:border-gold text-charcoal"
           >
             Batch #2 (Sundarbans)
           </button>
         </div>
 
         {/* Simulated Feature Phone Screen */}
-        <div className="border-4 border-charcoal bg-[#1A261A] text-[#76E076] p-4 rounded-lg font-mono text-xs shadow-inner min-h-[140px] flex flex-col justify-between">
-          <div className="flex justify-between items-center text-[9px] text-[#55A055] pb-2 border-b border-[#2A3F2A]">
+        <div className="border-4 border-charcoal bg-[#1A261A] text-[#76E076] p-4 rounded-lg font-mono text-sm md:text-xs shadow-inner min-h-[140px] flex flex-col justify-between">
+          <div className="flex justify-between items-center text-sm md:text-xs md:text-[10px] md:text-[9px] text-[#55A055] pb-2 border-b border-[#2A3F2A]">
             <span>SIGNAL: ■■■■ (BSNL/Jio)</span>
             <span>{channel === "sms" ? "SMS GATEWAY: 56767" : "USSD GATEWAY"}</span>
           </div>
@@ -176,7 +176,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
           <div className="py-3">
             {responseMsg ? (
               <div className="animate-in fade-in duration-300">
-                <p className="text-[10px] text-[#A0FFA0] mb-1 font-bold">
+                <p className="text-sm md:text-xs md:text-[10px] text-[#A0FFA0] mb-1 font-bold">
                   {channel === "sms" ? "➔ INCOMING FROM MD-KVICGOV:" : "➔ USSD SESSION ACTIVE:"}
                 </p>
                 <p className="whitespace-pre-line leading-relaxed">{responseMsg}</p>
@@ -195,7 +195,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
 
         <button
           onClick={onClose}
-          className="w-full h-10 mt-6 border border-charcoal/30 bg-white hover:bg-alabaster text-charcoal uppercase tracking-widest text-[10px] font-bold transition-colors"
+          className="w-full h-10 mt-6 border border-charcoal/30 bg-white hover:bg-alabaster text-charcoal uppercase tracking-widest text-sm md:text-xs md:text-[10px] font-bold transition-colors"
         >
           Close Simulator
         </button>

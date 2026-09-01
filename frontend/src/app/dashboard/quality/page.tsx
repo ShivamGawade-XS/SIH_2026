@@ -174,12 +174,12 @@ export default function QualityLabPage() {
         <div className="flex items-center justify-between gap-4 mb-8">
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors"
+            className="inline-flex items-center gap-2 text-sm md:text-xs uppercase tracking-widest font-bold text-charcoal hover:text-gold transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Dashboard</span>
           </Link>
-          <div className="flex items-center gap-2 text-[10px] uppercase tracking-ultra font-bold text-warm-grey">
+          <div className="flex items-center gap-2 text-sm md:text-xs md:text-[10px] uppercase tracking-ultra font-bold text-warm-grey">
             <span>National Bee Board Lab</span>
             <span>•</span>
             <span className="text-emerald-700">NABL IS 4941:2020 Certified</span>
@@ -190,14 +190,14 @@ export default function QualityLabPage() {
         <div className="mb-10 pb-6 border-b-2 border-charcoal/10">
           <div className="flex items-center gap-2 mb-2">
             <span className="w-2.5 h-2.5 bg-blue-500 rounded-full animate-pulse" />
-            <span className="text-[10px] uppercase tracking-ultra text-charcoal font-bold">
+            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-charcoal font-bold">
               AI NMR Spectrometry & Adulteration Diagnostic Suite
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl serif text-charcoal font-normal">
             Quality & <span className="italic text-gold font-serif">NMR Analysis</span>
           </h1>
-          <p className="text-xs text-warm-grey mt-1">
+          <p className="text-sm md:text-xs text-warm-grey mt-1">
             Conduct multi-parameter FSSAI physico-chemical scoring, &delta;&sup1;&sup3;C Carbon Isotope EA-IRMS testing, and 400 MHz &sup1;H-NMR resonance profiling.
           </p>
         </div>
@@ -209,17 +209,17 @@ export default function QualityLabPage() {
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-ultra font-bold text-charcoal">
+              <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra font-bold text-charcoal">
                 ✨ Gemini 2.0 Multimodal OCR Certificate Scanner
               </p>
-              <p className="text-xs text-warm-grey">
+              <p className="text-sm md:text-xs text-warm-grey">
                 Upload physical lab certificates or NMR spectrometry charts for automated parameter extraction and fraud diagnostics.
               </p>
             </div>
           </div>
           <Link
             href="/dashboard/quality/upload"
-            className="px-5 py-2.5 bg-charcoal text-alabaster hover:bg-gold hover:text-charcoal text-xs uppercase tracking-wider font-bold shrink-0 transition-colors shadow-xs"
+            className="px-5 py-2.5 bg-charcoal text-alabaster hover:bg-gold hover:text-charcoal text-sm md:text-xs uppercase tracking-wider font-bold shrink-0 transition-colors shadow-xs"
           >
             Upload Certificate Photo →
           </Link>
@@ -228,7 +228,7 @@ export default function QualityLabPage() {
         {/* Batch Quick-Selector Bar */}
         <div className="mb-8 p-4 border-2 border-charcoal/15 bg-white shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <span className="text-[10px] uppercase tracking-widest font-bold text-warm-grey">
+            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold text-warm-grey">
               Select Batch for Testing:
             </span>
             <div className="flex flex-wrap gap-2">
@@ -237,7 +237,7 @@ export default function QualityLabPage() {
                   key={b.batchId}
                   type="button"
                   onClick={() => handleBatchSelect(b.batchId)}
-                  className={`px-3 py-1 text-xs font-mono font-bold border transition-colors ${
+                  className={`px-3 py-1 text-sm md:text-xs font-mono font-bold border transition-colors ${
                     selectedBatchId === b.batchId
                       ? "bg-charcoal text-gold border-charcoal"
                       : "bg-[#F9F8F6] text-charcoal border-charcoal/20 hover:border-gold"
@@ -262,7 +262,7 @@ export default function QualityLabPage() {
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="q-moisture" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-moisture" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Moisture Content (%)
                   </label>
                   <input
@@ -274,11 +274,11 @@ export default function QualityLabPage() {
                     onChange={(e) => setMoisture(parseFloat(e.target.value) || 0)}
                     className="w-full h-10 border border-charcoal/20 px-3 text-sm font-mono font-bold focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[9px] text-warm-grey">FSSAI Limit: ≤ 20.0%</span>
+                  <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey">FSSAI Limit: ≤ 20.0%</span>
                 </div>
 
                 <div>
-                  <label htmlFor="q-brix" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-brix" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Total Soluble Solids (Brix %)
                   </label>
                   <input
@@ -290,13 +290,13 @@ export default function QualityLabPage() {
                     onChange={(e) => setBrix(parseFloat(e.target.value) || 0)}
                     className="w-full h-10 border border-charcoal/20 px-3 text-sm font-mono font-bold focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[9px] text-warm-grey">FSSAI Limit: ≥ 65.0%</span>
+                  <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey">FSSAI Limit: ≥ 65.0%</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="q-hmf" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-hmf" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     HMF Content (mg/kg)
                   </label>
                   <input
@@ -308,11 +308,11 @@ export default function QualityLabPage() {
                     onChange={(e) => setHmf(parseFloat(e.target.value) || 0)}
                     className="w-full h-10 border border-charcoal/20 px-3 text-sm font-mono font-bold focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[9px] text-warm-grey">FSSAI Limit: ≤ 80 mg/kg</span>
+                  <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey">FSSAI Limit: ≤ 80 mg/kg</span>
                 </div>
 
                 <div>
-                  <label htmlFor="q-diastase" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-diastase" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Diastase Activity (DN)
                   </label>
                   <input
@@ -324,13 +324,13 @@ export default function QualityLabPage() {
                     onChange={(e) => setDiastase(parseFloat(e.target.value) || 0)}
                     className="w-full h-10 border border-charcoal/20 px-3 text-sm font-mono font-bold focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[9px] text-warm-grey">FSSAI Limit: ≥ 8.0 Schade</span>
+                  <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey">FSSAI Limit: ≥ 8.0 Schade</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="q-conductivity" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-conductivity" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Elec. Conductivity (mS/cm)
                   </label>
                   <input
@@ -342,11 +342,11 @@ export default function QualityLabPage() {
                     onChange={(e) => setConductivity(parseFloat(e.target.value) || 0)}
                     className="w-full h-10 border border-charcoal/20 px-3 text-sm font-mono font-bold focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[9px] text-warm-grey">FSSAI Limit: ≤ 0.8 mS/cm</span>
+                  <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey">FSSAI Limit: ≤ 0.8 mS/cm</span>
                 </div>
 
                 <div>
-                  <label htmlFor="q-c13delta" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-c13delta" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     δ¹³C Isotope Delta (‰)
                   </label>
                   <input
@@ -358,13 +358,13 @@ export default function QualityLabPage() {
                     onChange={(e) => setC13Delta(parseFloat(e.target.value) || 0)}
                     className="w-full h-10 border border-charcoal/20 px-3 text-sm font-mono font-bold focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[9px] text-warm-grey">Natural Range: -23 to -28‰</span>
+                  <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey">Natural Range: -23 to -28‰</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="q-c4sugar" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-c4sugar" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Exogenous C4 Sugars (%)
                   </label>
                   <input
@@ -376,11 +376,11 @@ export default function QualityLabPage() {
                     onChange={(e) => setC4Sugar(parseFloat(e.target.value) || 0)}
                     className="w-full h-10 border border-charcoal/20 px-3 text-sm font-mono font-bold focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[9px] text-warm-grey">FSSAI Limit: ≤ 7.0%</span>
+                  <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey">FSSAI Limit: ≤ 7.0%</span>
                 </div>
 
                 <div>
-                  <label htmlFor="q-smrmarker" className="block text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="q-smrmarker" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     SMR Rice Syrup Marker
                   </label>
                   <input
@@ -392,7 +392,7 @@ export default function QualityLabPage() {
                     onChange={(e) => setSmrMarker(parseFloat(e.target.value) || 0)}
                     className="w-full h-10 border border-charcoal/20 px-3 text-sm font-mono font-bold focus:border-gold focus:outline-none"
                   />
-                  <span className="text-[9px] text-warm-grey">FSSAI Threshold: ≤ 0.05</span>
+                  <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey">FSSAI Threshold: ≤ 0.05</span>
                 </div>
               </div>
 
@@ -400,7 +400,7 @@ export default function QualityLabPage() {
                 type="button"
                 onClick={handleRunAnalysis}
                 disabled={analyzing}
-                className="w-full h-12 mt-6 bg-charcoal text-alabaster border-2 border-charcoal hover:border-gold text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2 shadow-xs transition-all"
+                className="w-full h-12 mt-6 bg-charcoal text-alabaster border-2 border-charcoal hover:border-gold text-sm md:text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2 shadow-xs transition-all"
               >
                 <Sparkles className="w-4 h-4 text-gold" />
                 <span>{analyzing ? "Executing AI Model & Spectrometry..." : "Run AI Analysis & NMR Diagnostic"}</span>
@@ -417,7 +417,7 @@ export default function QualityLabPage() {
                   <h3 className="text-xl serif text-charcoal font-bold">Diagnostic Output & Score</h3>
                 </div>
                 {result && (
-                  <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider border ${
+                  <span className={`px-2.5 py-1 text-sm md:text-xs md:text-[10px] font-bold uppercase tracking-wider border ${
                     result.passed
                       ? "border-emerald-300 bg-emerald-50 text-emerald-800"
                       : "border-rose-300 bg-rose-50 text-rose-800"
@@ -433,11 +433,11 @@ export default function QualityLabPage() {
                   <div className="p-6 bg-[#F9F8F6] border border-charcoal/10 flex items-center justify-between">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">
+                        <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold">
                           Calculated AI Purity Score
                         </span>
                         {result.confidenceInterval && (
-                          <span className="px-1.5 py-0.5 bg-gold/20 text-charcoal border border-gold/40 text-[9px] font-mono font-bold">
+                          <span className="px-1.5 py-0.5 bg-gold/20 text-charcoal border border-gold/40 text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono font-bold">
                             95% CI: [{result.confidenceInterval[0]} - {result.confidenceInterval[1]}]
                           </span>
                         )}
@@ -446,16 +446,16 @@ export default function QualityLabPage() {
                         {result.score}
                         <span className="text-lg text-warm-grey font-sans font-normal">/100</span>
                       </p>
-                      <p className="text-xs font-bold text-gold mt-1">{result.grade}</p>
+                      <p className="text-sm md:text-xs font-bold text-gold mt-1">{result.grade}</p>
                     </div>
                     <div className="text-right">
-                      <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">
+                      <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold">
                         Adulterant Status
                       </span>
                       <p className={`text-base font-bold mt-1 ${result.adulterant.includes("Pure") ? "text-emerald-700" : "text-rose-700"}`}>
                         {result.adulterant}
                       </p>
-                      <p className="text-[10px] font-mono text-warm-grey">
+                      <p className="text-sm md:text-xs md:text-[10px] font-mono text-warm-grey">
                         Confidence: {(result.adulterantProb * 100).toFixed(1)}%
                       </p>
                     </div>
@@ -465,17 +465,17 @@ export default function QualityLabPage() {
                   {result.featureShap && (
                     <div className="p-4 border border-charcoal/10 bg-[#F9F8F6]">
                       <div className="flex items-center justify-between mb-2 pb-1 border-b border-charcoal/10">
-                        <span className="text-[10px] uppercase tracking-widest text-charcoal font-bold flex items-center gap-1.5">
+                        <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-charcoal font-bold flex items-center gap-1.5">
                           <Sparkles className="w-3.5 h-3.5 text-gold" />
                           SHAP Feature Contribution & Impact
                         </span>
-                        <span className="text-[9px] font-mono text-warm-grey">FSSAI Reference Baseline</span>
+                        <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono text-warm-grey">FSSAI Reference Baseline</span>
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                         {Object.entries(result.featureShap).map(([name, impact]) => (
-                          <div key={name} className="p-2 bg-white border border-charcoal/10 text-xs">
-                            <span className="text-[9px] text-warm-grey block truncate">{name}</span>
-                            <span className={`font-mono font-bold text-xs ${impact >= 0 ? "text-emerald-700" : "text-rose-700"}`}>
+                          <div key={name} className="p-2 bg-white border border-charcoal/10 text-sm md:text-xs">
+                            <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey block truncate">{name}</span>
+                            <span className={`font-mono font-bold text-sm md:text-xs ${impact >= 0 ? "text-emerald-700" : "text-rose-700"}`}>
                               {impact >= 0 ? `+${impact.toFixed(1)}` : impact.toFixed(1)} pts
                             </span>
                           </div>
@@ -486,16 +486,16 @@ export default function QualityLabPage() {
 
                   {/* Violations / Compliance list */}
                   <div>
-                    <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold block mb-2">
+                    <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold block mb-2">
                       FSSAI IS 4941 Compliance Check
                     </span>
                     {result.fssaiViolations.length === 0 ? (
-                      <div className="p-4 border border-emerald-200 bg-emerald-50 text-emerald-900 text-xs flex items-center gap-2">
+                      <div className="p-4 border border-emerald-200 bg-emerald-50 text-emerald-900 text-sm md:text-xs flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                         <span>All parameters satisfy Gazette of India Food Safety & Standards (FSSAI) thresholds.</span>
                       </div>
                     ) : (
-                      <div className="p-4 border border-rose-200 bg-rose-50 text-rose-900 text-xs space-y-1">
+                      <div className="p-4 border border-rose-200 bg-rose-50 text-rose-900 text-sm md:text-xs space-y-1">
                         <div className="flex items-center gap-1.5 font-bold mb-1">
                           <AlertTriangle className="w-4 h-4 text-rose-600" />
                           <span>Quality Threshold Violations:</span>
@@ -513,13 +513,13 @@ export default function QualityLabPage() {
             <div className="pt-6 border-t border-charcoal/10 mt-6 flex gap-3">
               <Link
                 href="/dashboard/custody"
-                className="flex-1 px-4 py-2.5 border-2 border-charcoal bg-white hover:bg-charcoal hover:text-gold text-charcoal text-xs uppercase tracking-widest font-bold text-center transition-colors"
+                className="flex-1 px-4 py-2.5 border-2 border-charcoal bg-white hover:bg-charcoal hover:text-gold text-charcoal text-sm md:text-xs uppercase tracking-widest font-bold text-center transition-colors"
               >
                 Log Test to Custody Chain
               </Link>
               <Link
                 href="/dashboard/reports"
-                className="px-4 py-2.5 border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal text-xs uppercase tracking-widest font-bold text-center transition-colors flex items-center gap-1.5"
+                className="px-4 py-2.5 border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal text-sm md:text-xs uppercase tracking-widest font-bold text-center transition-colors flex items-center gap-1.5"
               >
                 <FileCheck className="w-3.5 h-3.5" />
                 <span>View Reports</span>
@@ -534,7 +534,7 @@ export default function QualityLabPage() {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <span className="w-2 h-2 bg-gold rounded-full" />
-                <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+                <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
                   Spectroscopy Analysis
                 </span>
               </div>
@@ -542,7 +542,7 @@ export default function QualityLabPage() {
                 400 MHz ¹H-NMR Resonance Frequency Curve
               </h3>
             </div>
-            <span className="text-[10px] font-mono font-bold text-charcoal uppercase tracking-widest bg-[#F9F8F6] px-3 py-1.5 border border-charcoal/15">
+            <span className="text-sm md:text-xs md:text-[10px] font-mono font-bold text-charcoal uppercase tracking-widest bg-[#F9F8F6] px-3 py-1.5 border border-charcoal/15">
               NMR Profile Simulation (IS 4941 Standard)
             </span>
           </div>

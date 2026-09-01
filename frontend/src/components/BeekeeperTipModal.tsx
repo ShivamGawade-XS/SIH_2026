@@ -123,17 +123,17 @@ export default function BeekeeperTipModal({
             <div className="w-16 h-16 bg-emerald-50 border-2 border-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
               <CheckCircle2 className="w-8 h-8" />
             </div>
-            <p className="text-[10px] uppercase tracking-ultra text-gold font-bold mb-1">
+            <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-gold font-bold mb-1">
               Direct Beneficiary Settlement Recorded
             </p>
             <h2 className="text-3xl serif text-charcoal font-bold mb-2">
               ₹{currentAmount} Sent Directly to {farmerName}
             </h2>
-            <p className="text-xs text-warm-grey max-w-sm mx-auto mb-6">
+            <p className="text-sm md:text-xs text-warm-grey max-w-sm mx-auto mb-6">
               Your direct micro-patronage token has been routed via UPI to{" "}
               <span className="font-mono font-bold text-charcoal">{farmerVpa}</span> and logged in the KVIC provenance ledger.
             </p>
-            <div className="p-4 bg-[#F9F8F6] border border-charcoal/10 text-left text-xs mb-6 space-y-1.5 font-mono">
+            <div className="p-4 bg-[#F9F8F6] border border-charcoal/10 text-left text-sm md:text-xs mb-6 space-y-1.5 font-mono">
               <p className="flex justify-between">
                 <span className="text-warm-grey">Beekeeper:</span>
                 <span className="font-bold text-charcoal">{farmerName}</span>
@@ -157,7 +157,7 @@ export default function BeekeeperTipModal({
             </div>
             <button
               onClick={handleReset}
-              className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-xs font-bold btn-gold-slide flex items-center justify-center"
+              className="w-full h-12 bg-charcoal text-alabaster uppercase tracking-widest text-sm md:text-xs font-bold btn-gold-slide flex items-center justify-center"
             >
               Close & Return to Batch Provenance
             </button>
@@ -170,7 +170,7 @@ export default function BeekeeperTipModal({
                 <Heart className="w-5 h-5 fill-gold/30 text-gold" />
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+                <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
                   KVIC Direct Fair-Trade Patronage
                 </p>
                 <h3 className="text-2xl serif text-charcoal font-bold">
@@ -179,13 +179,13 @@ export default function BeekeeperTipModal({
               </div>
             </div>
 
-            <p className="text-xs text-warm-grey mb-6">
+            <p className="text-sm md:text-xs text-warm-grey mb-6">
               Send a direct tip to reward traditional, pesticide-free beekeeping in <strong>{farmerLocation}</strong>. 100% settles directly to the farmer’s UPI VPA.
             </p>
 
             {/* Amount Selection Chips */}
             <div className="mb-6">
-              <div className="block text-[10px] uppercase tracking-widest text-charcoal font-bold mb-2">
+              <div className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-charcoal font-bold mb-2">
                 Select Micro-Patronage Amount:
               </div>
               <div className="grid grid-cols-4 gap-2 mb-3">
@@ -215,7 +215,7 @@ export default function BeekeeperTipModal({
                   placeholder="Or enter custom amount (e.g. 150)"
                   value={customAmount}
                   onChange={handleCustomChange}
-                  className="w-full h-11 border-2 border-charcoal/20 pl-8 pr-3 text-xs font-mono font-bold focus:border-gold focus:outline-none"
+                  className="w-full h-11 border-2 border-charcoal/20 pl-8 pr-3 text-sm md:text-xs font-mono font-bold focus:border-gold focus:outline-none"
                 />
               </div>
             </div>
@@ -239,7 +239,7 @@ export default function BeekeeperTipModal({
               <p className="text-[11px] font-mono font-bold text-charcoal">
                 Scan with GPay, PhonePe, Paytm, BHIM, or any UPI App
               </p>
-              <p className="text-[10px] font-mono text-warm-grey mt-0.5">
+              <p className="text-sm md:text-xs md:text-[10px] font-mono text-warm-grey mt-0.5">
                 VPA: {farmerVpa} • Amount: ₹{currentAmount}
               </p>
             </div>
@@ -248,7 +248,7 @@ export default function BeekeeperTipModal({
             <form onSubmit={handleConfirmPayment} className="space-y-3 mb-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="tip-tipper-name" className="block text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="tip-tipper-name" className="block text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     Your Name (Optional)
                   </label>
                   <input
@@ -259,11 +259,11 @@ export default function BeekeeperTipModal({
                     placeholder="e.g. Ananya"
                     value={tipperName}
                     onChange={(e) => setTipperName(e.target.value)}
-                    className="w-full h-10 border border-charcoal/30 px-2 text-xs focus:border-gold focus:outline-none"
+                    className="w-full h-10 border border-charcoal/30 px-2 text-sm md:text-xs focus:border-gold focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label htmlFor="tip-utr-number" className="block text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                  <label htmlFor="tip-utr-number" className="block text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                     UPI Ref / UTR No. (Optional)
                   </label>
                   <input
@@ -273,7 +273,7 @@ export default function BeekeeperTipModal({
                     placeholder="e.g. 423589012345"
                     value={utrNumber}
                     onChange={(e) => setUtrNumber(e.target.value)}
-                    className="w-full h-10 border border-charcoal/30 px-2 text-xs font-mono focus:border-gold focus:outline-none"
+                    className="w-full h-10 border border-charcoal/30 px-2 text-sm md:text-xs font-mono focus:border-gold focus:outline-none"
                   />
                 </div>
               </div>
@@ -281,7 +281,7 @@ export default function BeekeeperTipModal({
               <div className="space-y-2 pt-2">
                 <a
                   href={upiUrl}
-                  className="w-full h-11 bg-charcoal text-alabaster uppercase tracking-widest text-xs font-bold btn-gold-slide flex items-center justify-center gap-2 shadow-xs"
+                  className="w-full h-11 bg-charcoal text-alabaster uppercase tracking-widest text-sm md:text-xs font-bold btn-gold-slide flex items-center justify-center gap-2 shadow-xs"
                 >
                   <Smartphone className="w-4 h-4 text-gold" />
                   <span>Open in UPI App (₹{currentAmount})</span>
@@ -290,7 +290,7 @@ export default function BeekeeperTipModal({
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full h-11 border-2 border-emerald-600 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 uppercase tracking-widest text-[10px] font-bold flex items-center justify-center gap-1.5 transition-colors"
+                  className="w-full h-11 border-2 border-emerald-600 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 uppercase tracking-widest text-sm md:text-xs md:text-[10px] font-bold flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <FileCheck2 className="w-4 h-4 text-emerald-700" />
                   <span>{submitting ? "Logging Settlement..." : "Log & Confirm Payment to Database"}</span>
@@ -299,7 +299,7 @@ export default function BeekeeperTipModal({
             </form>
 
             {/* Zero Fee Guarantee Footer */}
-            <div className="pt-3 border-t border-charcoal/10 flex items-center justify-center gap-2 text-[10px] text-warm-grey">
+            <div className="pt-3 border-t border-charcoal/10 flex items-center justify-center gap-2 text-sm md:text-xs md:text-[10px] text-warm-grey">
               <ShieldCheck className="w-3.5 h-3.5 text-gold" />
               <span>0% Platform Commission • 100% Direct Farmer Benefit</span>
             </div>

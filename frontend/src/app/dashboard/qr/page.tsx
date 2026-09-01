@@ -92,7 +92,7 @@ export default function QrLabelsPage() {
         <div className="print:hidden">
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6 font-semibold"
+            className="inline-flex items-center gap-2 text-sm md:text-xs uppercase tracking-widest text-warm-grey hover:text-charcoal transition-colors mb-6 font-semibold"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Operations Dashboard</span>
@@ -102,14 +102,14 @@ export default function QrLabelsPage() {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <span className="w-2 h-2 rounded-full bg-gold" />
-                <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+                <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
                   Physical Cryptographic Security Studio
                 </p>
               </div>
               <h1 className="text-3xl serif text-charcoal font-normal">
                 TrueTag™ Cryptographic Label & Packaging Generator
               </h1>
-              <p className="text-xs text-warm-grey mt-1 max-w-2xl">
+              <p className="text-sm md:text-xs text-warm-grey mt-1 max-w-2xl">
                 Generate tamper-evident micro-QR seals, anti-counterfeit guilloche waveforms, and dynamic NFC tags for honey jars and bulk transport drums.
               </p>
             </div>
@@ -117,7 +117,7 @@ export default function QrLabelsPage() {
             {/* Batch Selector */}
             <div className="flex flex-wrap items-center gap-3">
               <div>
-                <label htmlFor="qr-batch-select" className="block text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+                <label htmlFor="qr-batch-select" className="block text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-widest text-warm-grey font-bold mb-1">
                   Active Batch
                 </label>
                 <select
@@ -125,7 +125,7 @@ export default function QrLabelsPage() {
                   name="selectedBatchId"
                   value={selectedBatchId}
                   onChange={(e) => setSelectedBatchId(Number(e.target.value))}
-                  className="h-11 border-2 border-charcoal/30 bg-white px-3 text-xs font-bold text-charcoal focus:border-gold focus:outline-none"
+                  className="h-11 border-2 border-charcoal/30 bg-white px-3 text-sm md:text-xs font-bold text-charcoal focus:border-gold focus:outline-none"
                 >
                   {batches.map((b) => (
                     <option key={b.batchId} value={b.batchId}>
@@ -139,7 +139,7 @@ export default function QrLabelsPage() {
                 <button
                   onClick={handleDownloadPDF}
                   disabled={isGeneratingPdf}
-                  className="h-11 px-5 bg-gold text-charcoal hover:bg-gold/90 text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-sm transition-all"
+                  className="h-11 px-5 bg-gold text-charcoal hover:bg-gold/90 text-sm md:text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-sm transition-all"
                 >
                   <Download className="w-4 h-4 text-charcoal" />
                   <span>{isGeneratingPdf ? "Generating PDF..." : "📥 Download A4 PDF Sheet"}</span>
@@ -147,7 +147,7 @@ export default function QrLabelsPage() {
 
                 <button
                   onClick={handlePrint}
-                  className="h-11 px-5 bg-charcoal text-alabaster hover:border-gold border border-charcoal text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-sm transition-all"
+                  className="h-11 px-5 bg-charcoal text-alabaster hover:border-gold border border-charcoal text-sm md:text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-sm transition-all"
                 >
                   <Printer className="w-4 h-4 text-gold" />
                   <span>Print Sheet</span>
@@ -167,11 +167,11 @@ export default function QrLabelsPage() {
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-mono uppercase font-bold text-gold">Format 01</span>
+                <span className="text-sm md:text-xs md:text-[10px] font-mono uppercase font-bold text-gold">Format 01</span>
                 <ShieldCheck className="w-4 h-4 text-gold" />
               </div>
               <h4 className="text-base serif font-bold">Jar Lid Tamper Seal (35mm)</h4>
-              <p className={`text-xs mt-1 ${selectedFormat === "LID_SEAL_35MM" ? "text-taupe" : "text-warm-grey"}`}>
+              <p className={`text-sm md:text-xs mt-1 ${selectedFormat === "LID_SEAL_35MM" ? "text-taupe" : "text-warm-grey"}`}>
                 Breakable circular lid strap with micro-QR & hologram slit.
               </p>
             </button>
@@ -185,11 +185,11 @@ export default function QrLabelsPage() {
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-mono uppercase font-bold text-gold">Format 02</span>
+                <span className="text-sm md:text-xs md:text-[10px] font-mono uppercase font-bold text-gold">Format 02</span>
                 <Tag className="w-4 h-4 text-gold" />
               </div>
               <h4 className="text-base serif font-bold">Front Jar Luxury Label (50×70mm)</h4>
-              <p className={`text-xs mt-1 ${selectedFormat === "FRONT_LABEL_50X70MM" ? "text-taupe" : "text-warm-grey"}`}>
+              <p className={`text-sm md:text-xs mt-1 ${selectedFormat === "FRONT_LABEL_50X70MM" ? "text-taupe" : "text-warm-grey"}`}>
                 Editorial gold frame, FSSAI mark, origin floral nectar & QR.
               </p>
             </button>
@@ -203,18 +203,18 @@ export default function QrLabelsPage() {
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-mono uppercase font-bold text-gold">Format 03</span>
+                <span className="text-sm md:text-xs md:text-[10px] font-mono uppercase font-bold text-gold">Format 03</span>
                 <Boxes className="w-4 h-4 text-gold" />
               </div>
               <h4 className="text-base serif font-bold">Bulk Logistics Drum Tag (100×150mm)</h4>
-              <p className={`text-xs mt-1 ${selectedFormat === "DRUM_TAG_100X150MM" ? "text-taupe" : "text-warm-grey"}`}>
+              <p className={`text-sm md:text-xs mt-1 ${selectedFormat === "DRUM_TAG_100X150MM" ? "text-taupe" : "text-warm-grey"}`}>
                 High-density 250kg harvest barrel tag with custody barcode.
               </p>
             </button>
           </div>
 
           {/* Security Customization Toolbar */}
-          <div className="p-4 border border-charcoal/15 bg-white mb-8 flex flex-wrap items-center justify-between gap-4 text-xs">
+          <div className="p-4 border border-charcoal/15 bg-white mb-8 flex flex-wrap items-center justify-between gap-4 text-sm md:text-xs">
             <div className="flex items-center gap-6">
               <label htmlFor="qr-guilloche" className="flex items-center gap-2 cursor-pointer select-none">
                 <input
@@ -317,7 +317,7 @@ export default function QrLabelsPage() {
 
                   {/* Bottom Verification Details */}
                   <div className="text-center z-10">
-                    <span className="text-[9px] font-mono font-bold text-charcoal block">
+                    <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono font-bold text-charcoal block">
                       {selectedBatch.qrToken}
                     </span>
                     <span className="text-[7px] uppercase tracking-widest text-warm-grey block">
@@ -380,7 +380,7 @@ export default function QrLabelsPage() {
                         }}
                       />
                     </div>
-                    <div className="text-left text-xs font-mono">
+                    <div className="text-left text-sm md:text-xs font-mono">
                       <div className="p-1.5 bg-gold/15 border border-gold text-center mb-1.5">
                         <span className="text-[8px] uppercase tracking-widest text-charcoal font-bold block">Purity</span>
                         <span className="text-base font-serif font-bold text-charcoal">{selectedBatch.batch.qualityScore}/100</span>
@@ -395,7 +395,7 @@ export default function QrLabelsPage() {
                   </div>
 
                   {/* Origin & Beekeeper */}
-                  <div className="z-10 border-t border-charcoal/15 pt-2.5 text-[9px]">
+                  <div className="z-10 border-t border-charcoal/15 pt-2.5 text-sm md:text-xs md:text-[10px] md:text-[9px]">
                     <div className="flex justify-between font-mono font-bold text-charcoal">
                       <span>Batch #{selectedBatch.batchId}</span>
                       <span>{selectedBatch.qrToken}</span>
@@ -431,14 +431,14 @@ export default function QrLabelsPage() {
 
                   <div className="flex justify-between items-start border-b border-white/20 pb-4 relative z-10">
                     <div>
-                      <span className="text-[10px] uppercase tracking-ultra text-gold font-mono font-bold block">
+                      <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-gold font-mono font-bold block">
                         KVIC HEAVY TRANSPORT DRUM TAG
                       </span>
                       <h3 className="text-2xl serif text-alabaster font-bold">
                         Batch #{selectedBatch.batchId} — 250 KG DRUM
                       </h3>
                     </div>
-                    <span className="px-3 py-1 bg-emerald-500 text-charcoal font-mono font-bold text-xs uppercase">
+                    <span className="px-3 py-1 bg-emerald-500 text-charcoal font-mono font-bold text-sm md:text-xs uppercase">
                       Pass Verified
                     </span>
                   </div>
@@ -457,18 +457,18 @@ export default function QrLabelsPage() {
                         }}
                       />
                     </div>
-                    <div className="text-xs font-mono space-y-1.5">
+                    <div className="text-sm md:text-xs font-mono space-y-1.5">
                       <p className="text-warm-grey">TrueTag Token: <span className="text-alabaster font-bold">{selectedBatch.qrToken}</span></p>
                       <p className="text-warm-grey">Beekeeper: <span className="text-alabaster">{selectedBatch.farmer.name}</span></p>
                       <p className="text-warm-grey">Cooperative: <span className="text-alabaster">{selectedBatch.farmer.cooperativeId}</span></p>
                       <p className="text-warm-grey">Quality Score: <span className="text-gold font-bold">{selectedBatch.batch.qualityScore}/100</span></p>
-                      <p className="text-[10px] text-emerald-400 font-sans mt-2">
+                      <p className="text-sm md:text-xs md:text-[10px] text-emerald-400 font-sans mt-2">
                         ✓ Tamper Sensor ID: TT-SENS-8841-A
                       </p>
                     </div>
                   </div>
 
-                  <div className="border-t border-white/20 pt-3 text-[10px] font-mono text-warm-grey flex justify-between relative z-10">
+                  <div className="border-t border-white/20 pt-3 text-sm md:text-xs md:text-[10px] font-mono text-warm-grey flex justify-between relative z-10">
                     <span>Tamper Law: Section 16 FSSAI Act 2006</span>
                     <span>Chain: Polygon PoS (Amoy)</span>
                   </div>
@@ -484,7 +484,7 @@ export default function QrLabelsPage() {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <Radio className="w-4 h-4 text-emerald-600 animate-pulse" />
-                <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+                <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
                   Hardware Tamper Verification
                 </span>
               </div>
@@ -495,32 +495,32 @@ export default function QrLabelsPage() {
 
             <button
               onClick={handleSimulateNfcTap}
-              className="px-4 py-2 bg-charcoal text-alabaster text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center gap-2"
+              className="px-4 py-2 bg-charcoal text-alabaster text-sm md:text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center gap-2"
             >
               <Radio className="w-3.5 h-3.5 text-gold" />
               <span>Simulate Physical NFC Tap (Tap #{nfcSimulatedCount})</span>
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 text-xs font-mono">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 text-sm md:text-xs font-mono">
             <div className="p-4 bg-[#F9F8F6] border border-charcoal/10">
-              <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold block mb-1">
+              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold block mb-1">
                 Hardware Tap Counter
               </span>
               <span className="text-2xl font-bold text-charcoal">{nfcSimulatedCount}</span>
-              <p className="text-[10px] text-emerald-700 mt-1 font-sans">
+              <p className="text-sm md:text-xs md:text-[10px] text-emerald-700 mt-1 font-sans">
                 Anti-replay monotonic counter incremented
               </p>
             </div>
 
             <div className="p-4 bg-[#F9F8F6] border border-charcoal/10 md:col-span-2">
-              <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold block mb-1">
+              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold block mb-1">
                 Single-Use AES-128 CMAC Token Generated
               </span>
               <span className="text-[11px] text-charcoal break-all block">
                 {nfcDynamicUri}
               </span>
-              <p className="text-[10px] text-warm-grey mt-1 font-sans">
+              <p className="text-sm md:text-xs md:text-[10px] text-warm-grey mt-1 font-sans">
                 Each phone tap mathematically produces a unique cryptographic signature preventing QR screenshot counterfeits.
               </p>
             </div>

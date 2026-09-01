@@ -69,20 +69,20 @@ export default function LoginPage() {
             <div className="text-center mb-10 flex flex-col items-center">
               <HoneyChainLogo variant="stacked" size="lg" className="mb-4" />
               <h1 className="text-3xl serif text-charcoal font-normal">Officer Portal Login</h1>
-              <p className="text-xs text-warm-grey mt-2">
+              <p className="text-sm md:text-xs text-warm-grey mt-2">
                 Restricted to authorized field officers, certified testing laboratories, and registry admins.
               </p>
             </div>
 
             {error && (
-              <div className="mb-6 p-4 border border-rose-200 bg-rose-50 text-rose-700 text-xs font-mono">
+              <div className="mb-6 p-4 border border-rose-200 bg-rose-50 text-rose-700 text-sm md:text-xs font-mono">
                 {error}
               </div>
             )}
 
             <form onSubmit={(e) => handleLogin(e)} className="space-y-6">
               <div>
-                <label htmlFor="login-email" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label htmlFor="login-email" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                   Official Email Address
                 </label>
                 <input
@@ -99,7 +99,7 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label htmlFor="login-password" className="block text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
+                <label htmlFor="login-password" className="block text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-2 font-medium">
                   Passcode / Token
                 </label>
                 <input
@@ -118,13 +118,13 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-14 text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2 mt-8"
+                className="w-full h-14 text-sm md:text-xs uppercase tracking-widest font-semibold btn-gold-slide flex items-center justify-center gap-2 mt-8"
               >
                 <Lock className="w-3.5 h-3.5" />
                 <span>{loading ? "Authenticating via Database..." : "Access Dashboard"}</span>
               </button>
 
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs pt-2">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm md:text-xs pt-2">
                 <span className="text-warm-grey">New field inspector or lab technician?</span>
                 <Link
                   href="/dashboard/register-account"
@@ -137,7 +137,7 @@ export default function LoginPage() {
 
             {/* Quick Demo Access Buttons */}
             <div className="mt-12 pt-8 border-t border-charcoal/10">
-              <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-4 text-center">
+              <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey mb-4 text-center">
                 SIH Judge & Evaluator 1-Click Access
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -148,11 +148,11 @@ export default function LoginPage() {
                     onClick={() => handleQuickLogin(officer)}
                     className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster hover:border-gold transition-colors text-left group"
                   >
-                    <div className="flex items-center gap-1 text-[10px] uppercase tracking-widest text-warm-grey font-semibold mb-1">
+                    <div className="flex items-center gap-1 text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-semibold mb-1">
                       <UserCheck className="w-3 h-3 text-gold" />
                       <span>{officer.role.replace("_", " ")}</span>
                     </div>
-                    <p className="text-xs font-serif font-medium text-charcoal truncate">{officer.name}</p>
+                    <p className="text-sm md:text-xs font-serif font-medium text-charcoal truncate">{officer.name}</p>
                   </button>
                 ))}
               </div>

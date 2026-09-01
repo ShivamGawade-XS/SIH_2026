@@ -57,7 +57,7 @@ export default function DBTPayoutCard({
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Landmark className="w-4 h-4 text-gold" />
-            <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
               KVIC Honey Mission • DBT Escrow Protocol
             </span>
           </div>
@@ -66,7 +66,7 @@ export default function DBTPayoutCard({
           </h3>
         </div>
 
-        <div className="px-3 py-1.5 bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-mono font-bold">
+        <div className="px-3 py-1.5 bg-emerald-50 border border-emerald-300 text-emerald-800 text-sm md:text-xs font-mono font-bold">
           PFMS Ministry Linked
         </div>
       </div>
@@ -74,37 +74,37 @@ export default function DBTPayoutCard({
       {/* Subsidy Calculation Breakdown */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
         <div className="p-4 bg-[#F9F8F6] border border-charcoal/10">
-          <p className="text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+          <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
             Certified Harvest Volume
           </p>
           <p className="text-2xl font-serif font-bold text-charcoal">
             {quantityKg} <span className="text-sm font-normal text-warm-grey">kg</span>
           </p>
-          <p className="text-[10px] text-warm-grey mt-1 font-mono">
+          <p className="text-sm md:text-xs md:text-[10px] text-warm-grey mt-1 font-mono">
             Batch #{batchId} Verified
           </p>
         </div>
 
         <div className="p-4 bg-[#F9F8F6] border border-charcoal/10">
-          <p className="text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+          <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
             Purity Quality Incentive
           </p>
           <p className="text-2xl font-serif font-bold text-gold">
             +₹{purityBonusPerKg} <span className="text-sm font-normal text-warm-grey">/ kg</span>
           </p>
-          <p className="text-[10px] text-emerald-700 mt-1 font-mono">
+          <p className="text-sm md:text-xs md:text-[10px] text-emerald-700 mt-1 font-mono">
             {qualityScore}/100 Purity Score Bonus
           </p>
         </div>
 
         <div className="p-4 bg-[#141414] text-alabaster border border-charcoal">
-          <p className="text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+          <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
             Total Govt. Direct Grant
           </p>
           <p className="text-2xl font-serif font-bold text-gold">
             ₹{totalSubsidyAmount.toLocaleString("en-IN")}
           </p>
-          <p className="text-[10px] text-emerald-400 mt-1 font-mono">
+          <p className="text-sm md:text-xs md:text-[10px] text-emerald-400 mt-1 font-mono">
             Zero Intermediary Deduction
           </p>
         </div>
@@ -113,25 +113,25 @@ export default function DBTPayoutCard({
       {/* Beneficiary & Disbursement Status */}
       <div className="p-5 border-2 border-charcoal/10 bg-[#F9F8F6] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <p className="text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-0.5">
+          <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-0.5">
             Registered Primary Beneficiary
           </p>
           <p className="text-base font-bold text-charcoal">{beekeeperName}</p>
-          <p className="text-xs font-mono text-warm-grey mt-0.5">
+          <p className="text-sm md:text-xs font-mono text-warm-grey mt-0.5">
             Cooperative: {cooperativeId} • UPI ID: {upiVpa || "beekeeper@upi (Aadhaar Seeded)"}
           </p>
         </div>
 
         {disbursed ? (
-          <div className="flex items-center gap-2 p-3 bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-mono">
+          <div className="flex items-center gap-2 p-3 bg-emerald-100 border border-emerald-300 text-emerald-900 text-sm md:text-xs font-mono">
             <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
             <div>
               <p className="font-bold">Grant Transferred Successfully</p>
-              <p className="text-[10px] text-emerald-800">UTR: {utrNumber}</p>
+              <p className="text-sm md:text-xs md:text-[10px] text-emerald-800">UTR: {utrNumber}</p>
             </div>
           </div>
         ) : isWithheld ? (
-          <div className="px-5 py-3 bg-red-100 border-2 border-red-400 text-red-800 text-xs uppercase tracking-wider font-bold flex items-center gap-2 shrink-0">
+          <div className="px-5 py-3 bg-red-100 border-2 border-red-400 text-red-800 text-sm md:text-xs uppercase tracking-wider font-bold flex items-center gap-2 shrink-0">
             <ShieldCheck className="w-4 h-4 text-red-600" />
             <span>Subsidy Withheld — FSSAI Adulteration Flag</span>
           </div>
@@ -139,7 +139,7 @@ export default function DBTPayoutCard({
           <button
             onClick={handleSimulatePayout}
             disabled={isDisbursing}
-            className="px-5 py-3 bg-charcoal text-alabaster text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center gap-2 shrink-0 shadow-sm"
+            className="px-5 py-3 bg-charcoal text-alabaster text-sm md:text-xs uppercase tracking-widest font-bold btn-gold-slide flex items-center gap-2 shrink-0 shadow-sm"
           >
             <Wallet className="w-4 h-4 text-gold" />
             <span>{isDisbursing ? "Initiating Direct Bank Transfer..." : "Simulate DBT Grant Payout"}</span>

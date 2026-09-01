@@ -96,7 +96,7 @@ export default function MobileBottomNav() {
                   <div className="relative p-1 rounded-full text-gold">
                     <Icon className="w-5 h-5 animate-pulse" />
                   </div>
-                  <span className="text-[10px] font-mono tracking-tight mt-0.5 text-gold font-bold">
+                  <span className="text-sm md:text-xs md:text-[10px] font-mono tracking-tight mt-0.5 text-gold font-bold">
                     {item.label}
                   </span>
                 </button>
@@ -113,7 +113,7 @@ export default function MobileBottomNav() {
                   <div className="w-12 h-12 rounded-full bg-gold text-charcoal border-2 border-[#121212] shadow-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                     <Icon className="w-6 h-6" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold tracking-tight mt-0.5 text-alabaster">
+                  <span className="text-sm md:text-xs md:text-[10px] font-mono font-bold tracking-tight mt-0.5 text-alabaster">
                     {item.label}
                   </span>
                 </Link>
@@ -131,7 +131,7 @@ export default function MobileBottomNav() {
                 <div className={`p-1 rounded-lg ${isActive ? "bg-gold/10" : ""}`}>
                   <Icon className="w-5 h-5" />
                 </div>
-                <span className="text-[10px] font-mono tracking-tight mt-0.5">
+                <span className="text-sm md:text-xs md:text-[10px] font-mono tracking-tight mt-0.5">
                   {item.label}
                 </span>
               </Link>
@@ -188,7 +188,7 @@ export default function MobileBottomNav() {
                         {tool.desc}
                       </p>
                     </div>
-                    <span className="text-xs text-gold font-mono font-bold shrink-0">
+                    <span className="text-sm md:text-xs text-gold font-mono font-bold shrink-0">
                       Launch →
                     </span>
                   </Link>

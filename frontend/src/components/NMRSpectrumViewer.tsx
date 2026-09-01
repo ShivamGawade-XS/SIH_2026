@@ -138,14 +138,14 @@ export default function NMRSpectrumViewer({ purityScore, adulterantClass }: NMRS
             <Activity className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-[9px] uppercase tracking-ultra text-warm-grey block">
+            <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-ultra text-warm-grey block">
               1H-Nuclear Magnetic Resonance (NMR) 400 MHz • Spectral Simulation
             </span>
             <h4 className="text-xl serif font-normal text-alabaster">Molecular Resonance Fingerprint Model</h4>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 text-xs font-mono">
+        <div className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 text-sm md:text-xs font-mono">
           <span className={`w-2 h-2 ${isPure ? "bg-emerald-400" : "bg-rose-500 animate-ping"}`} />
           <span className="text-gold font-bold">{isPure ? "Monofloral NMR Match" : "Adulterant Anomaly"}</span>
         </div>
@@ -162,27 +162,27 @@ export default function NMRSpectrumViewer({ purityScore, adulterantClass }: NMRS
       </div>
 
       {/* Footer Metrics */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-4 border-t border-white/10 text-xs font-mono">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-4 border-t border-white/10 text-sm md:text-xs font-mono">
         <div>
-          <span className="text-[9px] text-warm-grey uppercase tracking-widest block">δ13C Carbon Isotope</span>
+          <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey uppercase tracking-widest block">δ13C Carbon Isotope</span>
           <span className="text-sm font-bold text-gold">-26.2 ‰ (Pure C3)</span>
         </div>
         <div>
-          <span className="text-[9px] text-warm-grey uppercase tracking-widest block">F/G Ratio</span>
+          <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey uppercase tracking-widest block">F/G Ratio</span>
           <span className="text-sm font-bold text-alabaster">1.22 (Optimal)</span>
         </div>
         <div>
-          <span className="text-[9px] text-warm-grey uppercase tracking-widest block">SMR Oligosaccharides</span>
+          <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey uppercase tracking-widest block">SMR Oligosaccharides</span>
           <span className="text-sm font-bold text-emerald-400">0.0% (Zero Rice Syrup)</span>
         </div>
         <div>
-          <span className="text-[9px] text-warm-grey uppercase tracking-widest block">Spectrometry Confidence</span>
+          <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey uppercase tracking-widest block">Spectrometry Confidence</span>
           <span className="text-sm font-bold text-gold">99.4% Verified</span>
         </div>
       </div>
 
       {/* Scientific Disclaimer Footnote */}
-      <p className="text-[9px] text-warm-grey/70 font-sans mt-4 pt-3 border-t border-white/5 italic">
+      <p className="text-sm md:text-xs md:text-[10px] md:text-[9px] text-warm-grey/70 font-sans mt-4 pt-3 border-t border-white/5 italic">
         *Illustrative resonance simulation parameterized by standard 400 MHz 1H-NMR botanical markers. Official high-throughput spectroscopy is conducted at NABL-accredited national laboratories.
       </p>
     </div>

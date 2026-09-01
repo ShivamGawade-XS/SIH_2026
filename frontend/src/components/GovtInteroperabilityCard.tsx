@@ -55,7 +55,7 @@ export default function GovtInteroperabilityCard() {
             <Server className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
+            <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold">
               Government Infrastructure Integration
             </span>
             <h3 className="text-xl serif text-charcoal font-bold">
@@ -69,7 +69,7 @@ export default function GovtInteroperabilityCard() {
             type="button"
             onClick={handleSync}
             disabled={isSyncing}
-            className="px-3 py-1.5 border border-charcoal/20 hover:border-gold text-[10px] uppercase tracking-widest font-bold text-charcoal flex items-center gap-1.5 transition-colors"
+            className="px-3 py-1.5 border border-charcoal/20 hover:border-gold text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold text-charcoal flex items-center gap-1.5 transition-colors"
           >
             <RefreshCw className={`w-3 h-3 ${isSyncing ? "animate-spin text-gold" : "text-charcoal"}`} />
             <span>{isSyncing ? "Syncing..." : "Sync Gateway"}</span>
@@ -77,7 +77,7 @@ export default function GovtInteroperabilityCard() {
           <button
             type="button"
             onClick={() => setShowJson(!showJson)}
-            className="px-3 py-1.5 bg-charcoal text-alabaster text-[10px] uppercase tracking-widest font-bold flex items-center gap-1.5 hover:bg-gold hover:text-charcoal transition-colors"
+            className="px-3 py-1.5 bg-charcoal text-alabaster text-sm md:text-xs md:text-[10px] uppercase tracking-widest font-bold flex items-center gap-1.5 hover:bg-gold hover:text-charcoal transition-colors"
           >
             <Code className="w-3 h-3" />
             <span>{showJson ? "Hide JSON" : "View JSON Payload"}</span>
@@ -89,45 +89,45 @@ export default function GovtInteroperabilityCard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="p-4 bg-[#F9F8F6] border border-charcoal/10 flex items-start justify-between">
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+            <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
               National Bee Board
             </p>
             <p className="text-sm font-serif font-bold text-charcoal">MadhuKranti Portal</p>
-            <p className="text-[10px] font-mono text-emerald-700 mt-1 flex items-center gap-1">
+            <p className="text-sm md:text-xs md:text-[10px] font-mono text-emerald-700 mt-1 flex items-center gap-1">
               <CheckCircle2 className="w-3 h-3" /> 1,840 Batches Synchronized
             </p>
           </div>
-          <span className="px-2 py-0.5 text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+          <span className="px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
             200 OK
           </span>
         </div>
 
         <div className="p-4 bg-[#F9F8F6] border border-charcoal/10 flex items-start justify-between">
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+            <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
               Ministry of Agriculture
             </p>
             <p className="text-sm font-serif font-bold text-charcoal">AgriStack Farmer Registry</p>
-            <p className="text-[10px] font-mono text-emerald-700 mt-1 flex items-center gap-1">
+            <p className="text-sm md:text-xs md:text-[10px] font-mono text-emerald-700 mt-1 flex items-center gap-1">
               <CheckCircle2 className="w-3 h-3" /> FRID Federated Identity
             </p>
           </div>
-          <span className="px-2 py-0.5 text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+          <span className="px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
             FEDERATED
           </span>
         </div>
 
         <div className="p-4 bg-[#F9F8F6] border border-charcoal/10 flex items-start justify-between">
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
+            <p className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold mb-1">
               MSME KVIC Scheme
             </p>
             <p className="text-sm font-serif font-bold text-charcoal">Honey Mission 2026–27</p>
-            <p className="text-[10px] font-mono text-emerald-700 mt-1 flex items-center gap-1">
+            <p className="text-sm md:text-xs md:text-[10px] font-mono text-emerald-700 mt-1 flex items-center gap-1">
               <CheckCircle2 className="w-3 h-3" /> 14,240 Beekeepers Active
             </p>
           </div>
-          <span className="px-2 py-0.5 text-[9px] font-mono font-bold bg-gold/20 text-charcoal border border-gold/40">
+          <span className="px-2 py-0.5 text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono font-bold bg-gold/20 text-charcoal border border-gold/40">
             DIRECT DBT
           </span>
         </div>
@@ -136,7 +136,7 @@ export default function GovtInteroperabilityCard() {
       {/* JSON Schema Viewer Dropdown */}
       {showJson && (
         <div className="p-4 bg-[#141414] text-[#E0E0E0] border-2 border-charcoal rounded-sm font-mono text-[11px] overflow-x-auto mb-4 animate-in fade-in duration-200">
-          <div className="flex justify-between items-center pb-2 mb-2 border-b border-white/10 text-warm-grey text-[10px]">
+          <div className="flex justify-between items-center pb-2 mb-2 border-b border-white/10 text-warm-grey text-sm md:text-xs md:text-[10px]">
             <span>REST JSON WEBHOOK PAYLOAD (NBB & AGRISTACK RECONCILIATION)</span>
             <span className="text-gold">Status: LIVE_SYNC</span>
           </div>

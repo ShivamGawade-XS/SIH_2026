@@ -214,7 +214,7 @@ export default function MigratoryRoutePlanner() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase tracking-ultra text-gold font-mono font-bold">
+              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-gold font-mono font-bold">
                 KVIC National Apiculture Logistics
               </span>
               <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[8px] font-mono uppercase font-bold">
@@ -229,7 +229,7 @@ export default function MigratoryRoutePlanner() {
 
         <button
           onClick={() => setShowPassModal(true)}
-          className="px-4 py-2 bg-gold text-charcoal hover:bg-gold/90 text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 shadow-xs transition-colors self-start md:self-auto"
+          className="px-4 py-2 bg-gold text-charcoal hover:bg-gold/90 text-sm md:text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 shadow-xs transition-colors self-start md:self-auto"
         >
           <ShieldCheck className="w-4 h-4" />
           <span>Generate KVIC Transit Pass</span>
@@ -240,11 +240,11 @@ export default function MigratoryRoutePlanner() {
         {/* Month Selector Bar */}
         <div>
           <div className="flex justify-between items-center mb-3">
-            <div className="text-[10px] uppercase tracking-widest text-warm-grey font-bold font-mono flex items-center gap-1.5">
+            <div className="text-sm md:text-xs md:text-[10px] uppercase tracking-widest text-warm-grey font-bold font-mono flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-gold" />
               <span>Select Flowering Calendar Month (Active Blooming Seasons):</span>
             </div>
-            <span className="text-xs font-mono font-bold text-charcoal bg-alabaster px-2.5 py-1 border border-charcoal/15">
+            <span className="text-sm md:text-xs font-mono font-bold text-charcoal bg-alabaster px-2.5 py-1 border border-charcoal/15">
               Selected: <strong className="text-gold font-sans">{months[selectedMonth]}</strong>
             </span>
           </div>
@@ -284,7 +284,7 @@ export default function MigratoryRoutePlanner() {
           </h3>
 
           {activeBlooms.length === 0 ? (
-            <div className="p-8 border-2 border-dashed border-charcoal/20 bg-alabaster text-center text-warm-grey text-xs">
+            <div className="p-8 border-2 border-dashed border-charcoal/20 bg-alabaster text-center text-warm-grey text-sm md:text-xs">
               No primary commercial migratory blooms recorded for {months[selectedMonth]}. Colony maintenance & sugar-syrup supplementary feeding season.
             </div>
           ) : (
@@ -296,7 +296,7 @@ export default function MigratoryRoutePlanner() {
                 >
                   <div>
                     <div className="flex justify-between items-start mb-1.5">
-                      <span className="text-[9px] uppercase tracking-ultra text-warm-grey font-mono font-bold">
+                      <span className="text-sm md:text-xs md:text-[10px] md:text-[9px] uppercase tracking-ultra text-warm-grey font-mono font-bold">
                         {bloom.state}
                       </span>
                       <span
@@ -308,9 +308,9 @@ export default function MigratoryRoutePlanner() {
                     </div>
 
                     <h4 className="text-base serif font-bold text-charcoal mb-0.5">{bloom.name}</h4>
-                    <p className="text-[10px] font-serif italic text-warm-grey mb-3">{bloom.botanicalName}</p>
+                    <p className="text-sm md:text-xs md:text-[10px] font-serif italic text-warm-grey mb-3">{bloom.botanicalName}</p>
 
-                    <div className="space-y-1 text-xs font-mono mb-3">
+                    <div className="space-y-1 text-sm md:text-xs font-mono mb-3">
                       <p className="flex justify-between text-warm-grey">
                         <span>Hub:</span>
                         <strong className="text-charcoal">{bloom.region}</strong>
@@ -326,7 +326,7 @@ export default function MigratoryRoutePlanner() {
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-charcoal/10 flex items-center justify-between text-[10px] text-warm-grey">
+                  <div className="pt-2 border-t border-charcoal/10 flex items-center justify-between text-sm md:text-xs md:text-[10px] text-warm-grey">
                     <span className="truncate">{bloom.giTagStatus}</span>
                   </div>
                 </div>
@@ -339,14 +339,14 @@ export default function MigratoryRoutePlanner() {
         <div className="pt-4 border-t-2 border-charcoal/10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
             <div>
-              <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-bold font-mono">
+              <span className="text-sm md:text-xs md:text-[10px] uppercase tracking-ultra text-warm-grey font-bold font-mono">
                 Interstate Convoy Monitoring
               </span>
               <h3 className="text-lg serif font-bold text-charcoal">
                 Active & Scheduled Migration Convoys
               </h3>
             </div>
-            <span className="text-xs font-mono text-warm-grey">
+            <span className="text-sm md:text-xs font-mono text-warm-grey">
               Transit Safety Standard: <strong className="text-emerald-700">Night Hauling &lt; 34°C</strong>
             </span>
           </div>
@@ -373,7 +373,7 @@ export default function MigratoryRoutePlanner() {
                 >
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-[10px] font-mono font-bold text-gold">ROUTE #{route.id}</span>
+                      <span className="text-sm md:text-xs md:text-[10px] font-mono font-bold text-gold">ROUTE #{route.id}</span>
                       <span className={`px-2 py-0.5 text-[8px] font-mono font-bold uppercase border ${statusColor}`}>
                         {route.status.replace("_", " ")}
                       </span>
@@ -381,14 +381,14 @@ export default function MigratoryRoutePlanner() {
 
                     <h4 className="font-bold text-sm text-charcoal mb-2">{route.name}</h4>
 
-                    <div className="p-3 bg-alabaster border border-charcoal/10 rounded mb-3 space-y-1.5 text-xs font-mono">
+                    <div className="p-3 bg-alabaster border border-charcoal/10 rounded mb-3 space-y-1.5 text-sm md:text-xs font-mono">
                       <div className="flex items-center gap-1.5 text-charcoal font-semibold">
                         <MapPin className="w-3.5 h-3.5 text-rose-500 shrink-0" />
                         <span className="truncate">{route.origin}</span>
                       </div>
                       <div className="flex items-center gap-1.5 text-warm-grey pl-5">
                         <ArrowRight className="w-3 h-3 text-gold" />
-                        <span className="text-[10px]">{route.distanceKm} km ({route.transitHours} hrs)</span>
+                        <span className="text-sm md:text-xs md:text-[10px]">{route.distanceKm} km ({route.transitHours} hrs)</span>
                       </div>
                       <div className="flex items-center gap-1.5 text-charcoal font-semibold">
                         <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
@@ -396,7 +396,7 @@ export default function MigratoryRoutePlanner() {
                       </div>
                     </div>
 
-                    <div className="space-y-1 text-xs font-mono text-warm-grey mb-3">
+                    <div className="space-y-1 text-sm md:text-xs font-mono text-warm-grey mb-3">
                       <p className="flex justify-between">
                         <span>Convoy Payload:</span>
                         <strong className="text-charcoal">{route.convoySizeBoxes} Bee Boxes</strong>
@@ -412,7 +412,7 @@ export default function MigratoryRoutePlanner() {
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-charcoal/10 flex justify-between items-center text-[10px] font-mono">
+                  <div className="pt-2 border-t border-charcoal/10 flex justify-between items-center text-sm md:text-xs md:text-[10px] font-mono">
                     <span className="text-warm-grey">Driver: {route.driverName}</span>
                     <span className="text-gold font-bold">Select Pass →</span>
                   </div>
@@ -440,13 +440,13 @@ export default function MigratoryRoutePlanner() {
               <h3 className="text-xl serif font-bold text-charcoal">
                 Interstate Bee Migration Transit Pass
               </h3>
-              <p className="text-[9px] font-mono text-gold font-bold mt-0.5">
+              <p className="text-sm md:text-xs md:text-[10px] md:text-[9px] font-mono text-gold font-bold mt-0.5">
                 PASS ID: KVIC-MIG-{selectedRoute.id}-2026-NBB
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-              <div className="sm:col-span-2 space-y-2 text-xs font-mono">
+              <div className="sm:col-span-2 space-y-2 text-sm md:text-xs font-mono">
                 <p><span className="text-warm-grey">Origin:</span> <strong className="text-charcoal">{selectedRoute.origin}</strong></p>
                 <p><span className="text-warm-grey">Destination:</span> <strong className="text-charcoal">{selectedRoute.destination}</strong></p>
                 <p><span className="text-warm-grey">Transit Route:</span> <strong className="text-charcoal">{selectedRoute.name}</strong></p>
@@ -472,20 +472,20 @@ export default function MigratoryRoutePlanner() {
               </div>
             </div>
 
-            <div className="p-3 bg-emerald-50 border border-emerald-200 text-[10px] font-mono text-emerald-800 mb-6">
+            <div className="p-3 bg-emerald-50 border border-emerald-200 text-sm md:text-xs md:text-[10px] font-mono text-emerald-800 mb-6">
               ✓ Verified by KVIC State Apiculture Officer under National Bee Board Interstate Transit Protocol (Gazette 2020). Highway authorities are requested to grant priority clearance.
             </div>
 
             <div className="flex justify-between items-center">
               <button
                 onClick={() => setShowPassModal(false)}
-                className="px-4 py-2 border border-charcoal text-xs uppercase tracking-widest font-mono font-bold text-charcoal hover:bg-alabaster"
+                className="px-4 py-2 border border-charcoal text-sm md:text-xs uppercase tracking-widest font-mono font-bold text-charcoal hover:bg-alabaster"
               >
                 Close
               </button>
               <button
                 onClick={() => window.print()}
-                className="px-6 py-2.5 bg-charcoal text-gold hover:bg-black text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 shadow-xs"
+                className="px-6 py-2.5 bg-charcoal text-gold hover:bg-black text-sm md:text-xs uppercase tracking-widest font-mono font-bold flex items-center gap-2 shadow-xs"
               >
                 <Download className="w-4 h-4" />
                 <span>Print Official Transit Pass</span>
