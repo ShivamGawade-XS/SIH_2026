@@ -31,12 +31,15 @@ export default function DBTPayoutCard({
   // KVIC Honey Mission Subsidy Calculation:
   // Base Price Support = ₹20/kg
   // Purity Incentive (Score >= 90: ₹40/kg, Score >= 75: ₹25/kg)
-  const baseSubsidyPerKg = 20;
-  const purityBonusPerKg = qualityScore >= 90 ? 40 : qualityScore >= 75 ? 25 : 0;
+  // Adulterated/Disputed batches (< 50) have subsidies frozen
+  const isWithheld = qualityScore < 50;
+  const baseSubsidyPerKg = isWithheld ? 0 : 20;
+  const purityBonusPerKg = isWithheld ? 0 : qualityScore >= 90 ? 40 : qualityScore >= 75 ? 25 : 0;
   const totalRatePerKg = baseSubsidyPerKg + purityBonusPerKg;
   const totalSubsidyAmount = quantityKg * totalRatePerKg;
 
   const handleSimulatePayout = () => {
+    if (isWithheld) return;
     setIsDisbursing(true);
     setTimeout(() => {
       const utrRef = `DBT-KVIC-2026-${getSecureRandomInt(100000000, 999999999)}`;
@@ -126,6 +129,11 @@ export default function DBTPayoutCard({
               <p className="font-bold">Grant Transferred Successfully</p>
               <p className="text-[10px] text-emerald-800">UTR: {utrNumber}</p>
             </div>
+          </div>
+        ) : isWithheld ? (
+          <div className="px-5 py-3 bg-red-100 border-2 border-red-400 text-red-800 text-xs uppercase tracking-wider font-bold flex items-center gap-2 shrink-0">
+            <ShieldCheck className="w-4 h-4 text-red-600" />
+            <span>Subsidy Withheld — FSSAI Adulteration Flag</span>
           </div>
         ) : (
           <button
