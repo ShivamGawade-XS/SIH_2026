@@ -19,15 +19,15 @@ interface RouteStep {
 }
 
 interface SupplyChainMapReplayProps {
-  batchId: number;
-  custodyChain: CustodyEntry[];
+  batchId?: number;
+  custodyChain?: CustodyEntry[];
   botanicalOrigin?: string;
 }
 
 export default function SupplyChainMapReplay({
-  batchId,
-  custodyChain,
-  botanicalOrigin,
+  batchId = 1,
+  custodyChain = [],
+  botanicalOrigin = "Muzaffarpur Litchi Blossom",
 }: SupplyChainMapReplayProps) {
   // Construct rich transit steps based on actual custody logs or calibrated model
   const defaultSteps: RouteStep[] = [

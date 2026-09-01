@@ -7,6 +7,8 @@ import HoneyChainLogo from "@/components/HoneyChainLogo";
 import { ShieldCheck, Sparkles, QrCode, ArrowRight, Layers, Award, Activity, CheckCircle2, ChevronRight } from "lucide-react";
 import { DEMO_BATCHES } from "@/lib/constants";
 import { useLanguage } from "@/lib/LanguageContext";
+import LiveTelemetryStream from "@/components/LiveTelemetryStream";
+import SupplyChainMapReplay from "@/components/SupplyChainMapReplay";
 
 export default function HomePage() {
   const { t } = useLanguage();
@@ -55,9 +57,11 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Desktop Brand Seal Emblem */}
-            <div className="hidden lg:flex flex-col items-center justify-center shrink-0">
-              <HoneyChainLogo size="xl" variant="seal" />
+            {/* Brand Seal Emblem - Visible on all devices */}
+            <div className="flex flex-col items-center justify-center shrink-0 mt-8 lg:mt-0 w-full lg:w-auto">
+              <HoneyChainLogo size="md" variant="seal" className="sm:hidden" />
+              <HoneyChainLogo size="lg" variant="seal" className="hidden sm:inline-flex lg:hidden" />
+              <HoneyChainLogo size="xl" variant="seal" className="hidden lg:inline-flex" />
             </div>
           </div>
         </section>
@@ -207,6 +211,18 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* 5. LIVE SUPPLY CHAIN & IOT TELEMETRY SUITE */}
+        <section className="py-16 sm:py-24 px-4 sm:px-6 md:px-12 lg:px-24 bg-[#F9F8F6] border-b-2 border-charcoal/10">
+          <div className="max-w-6xl mx-auto space-y-12">
+            <div>
+              <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-1 font-bold">Autonomous Provenance Infrastructure</p>
+              <h2 className="text-3xl md:text-4xl serif text-charcoal font-normal">Live IoT Telemetry & Supply Chain Ledger</h2>
+            </div>
+            <LiveTelemetryStream />
+            <SupplyChainMapReplay />
           </div>
         </section>
       </main>

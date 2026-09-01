@@ -219,12 +219,6 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
             </div>
 
             <PendingRequestsTable t={t} />
-            <div className="mt-12"><LiveTelemetryStream /></div>
-            <div className="mt-12"><HiveAcousticAnalyzer /></div>
-            <div className="mt-12"><VoiceFieldAssistant /></div>
-            <div className="mt-12"><MigratoryRoutePlanner /></div>
-            <div className="mt-12"><PollinationCreditCalculator /></div>
-            <RecentBatchesTable batchesList={batchesList} t={t} />
           </>
         )}
 
@@ -276,9 +270,6 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
                 ))}
               </div>
             </div>
-
-            <div className="mt-12"><PollenVisionAnalyzer /></div>
-            <RecentBatchesTable batchesList={batchesList} t={t} />
           </>
         )}
 
@@ -347,10 +338,31 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
                 </div>
               )}
             </div>
-
-            <RecentBatchesTable batchesList={batchesList} t={t} />
           </>
         )}
+
+        {/* ════════════════════════════════════════════════════════════════ */}
+        {/* UNIFIED REAL-TIME AI & HARDWARE TELEMETRY SUITE (ALL ROLES)    */}
+        {/* ════════════════════════════════════════════════════════════════ */}
+        <section className="mt-16 pt-12 border-t-2 border-charcoal/10 space-y-12">
+          <div>
+            <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-1 font-bold">
+              National Honey Provenance Intelligence Suite
+            </p>
+            <h2 className="text-3xl serif text-charcoal font-normal">
+              Integrated Apiculture AI & Hardware Telemetry Engines
+            </h2>
+          </div>
+
+          <div id="telemetry"><LiveTelemetryStream /></div>
+          <div id="acoustic"><HiveAcousticAnalyzer /></div>
+          <div id="voice"><VoiceFieldAssistant /></div>
+          <div id="pollen"><PollenVisionAnalyzer /></div>
+          <div id="migration"><MigratoryRoutePlanner /></div>
+          <div id="credits"><PollinationCreditCalculator /></div>
+        </section>
+
+        <RecentBatchesTable batchesList={batchesList} t={t} />
       </main>
 
       <Footer />
