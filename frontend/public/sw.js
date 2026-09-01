@@ -1,4 +1,4 @@
-const CACHE_NAME = "honeychain-v3";
+const CACHE_NAME = "honeychain-v4";
 const STATIC_ASSETS = [
   "/",
   "/verify",
@@ -16,7 +16,7 @@ self.addEventListener("install", (event) => {
         STATIC_ASSETS.map((url) =>
           fetch(url, { cache: "reload" })
             .then((res) => {
-              if (res.ok) return cache.put(url, res);
+              if (res && res.ok) return cache.put(url, res);
             })
             .catch(() => {})
         )
@@ -33,12 +33,11 @@ self.addEventListener("activate", (event) => {
       return Promise.all(
         keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-// Fetch: Network-First with Offline Cache Fallback
+// Fetch: Network-First for HTML navigation only; never intercept Next.js chunks or APIs
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
@@ -47,37 +46,39 @@ self.addEventListener("fetch", (event) => {
   // Only handle http(s) requests
   if (!url.protocol.startsWith("http")) return;
 
-  // Skip dynamic API routes, auth, websockets, and HMR
+  // Never intercept Next.js internals, chunks, RSC payloads, Vercel scripts, or APIs
   if (
+    url.pathname.startsWith("/_next/") ||
+    url.pathname.startsWith("/_vercel/") ||
     url.pathname.startsWith("/api/") ||
-    url.pathname.startsWith("/_next/webpack-hmr") ||
-    url.pathname.includes("__nextjs")
+    url.searchParams.has("_rsc") ||
+    url.pathname.endsWith(".js") ||
+    url.pathname.endsWith(".css")
   ) {
     return;
   }
 
-  // Network-First strategy: fetch live version from server first
-  event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        if (
-          networkResponse &&
-          networkResponse.status === 200 &&
-          (networkResponse.type === "basic" || networkResponse.type === "cors")
-        ) {
-          const responseToCache = networkResponse.clone();
-          caches
-            .open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, responseToCache).catch(() => {});
-            })
-            .catch(() => {});
-        }
-        return networkResponse;
-      })
-      .catch(() => {
-        // Fallback to cache only if network is offline
-        return caches.match(event.request);
-      })
-  );
+  // Only handle HTML navigation requests
+  if (event.request.mode === "navigate" || event.request.destination === "document") {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone)).catch(() => {});
+          }
+          return networkResponse;
+        })
+        .catch(async () => {
+          const cached = await caches.match(event.request);
+          if (cached) return cached;
+          const fallback = await caches.match("/");
+          if (fallback) return fallback;
+          return new Response("Offline - HoneyChain by TrueTag", {
+            status: 503,
+            headers: { "Content-Type": "text/plain" },
+          });
+        })
+    );
+  }
 });
