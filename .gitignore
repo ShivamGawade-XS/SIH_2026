@@ -63,3 +63,7 @@ Thumbs.db
 # Redundant duplicate brand sub-folders
 assets/brand/
 frontend/public/brand/
+
+# Local Presentation Workspace (Never pushed)
+presentation_workspace/
+*.pptx
