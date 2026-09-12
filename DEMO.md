@@ -49,10 +49,10 @@ If the hackathon venue has slow or dropping WiFi:
 ```bash
 cd contracts
 npm install
-npx hardhat test      # Runs all 32 unit tests (100% pass)
+npx hardhat test      # Runs all 68 unit tests (100% pass)
 ```
 
-### 2. Next.js 14 Frontend Portal
+### 2. Next.js 16 Frontend Portal
 ```bash
 cd frontend
 npm install
