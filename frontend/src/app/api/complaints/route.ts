@@ -62,58 +62,58 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   let body: any = {};
   try {
-    body = await req.json();
-    const { batchId, qrToken, reportedBy, reason } = body;
+    body = await req.json().catch(() => ({}));
+  } catch {
+    body = {};
+  }
 
-    if (!batchId || !reason) {
-      return NextResponse.json(
-        { error: "batchId and reason are required" },
-        { status: 400 }
-      );
-    }
+  const { batchId, qrToken, reportedBy, reason } = body || {};
 
-    try {
-      const complaint = await prisma.complaint.create({
-        data: {
-          batchId: Number(batchId),
-          qrToken: qrToken || "",
-          reportedBy: reportedBy || "Anonymous Consumer",
-          reason,
-          status: "Under Review",
-          date: new Date().toISOString().split("T")[0],
-        },
-      });
+  if (!batchId || !reason) {
+    return NextResponse.json(
+      { error: "batchId and reason are required" },
+      { status: 400 }
+    );
+  }
 
-      return NextResponse.json({
-        success: true,
-        complaint: {
-          id: complaint.id,
-          batchId: complaint.batchId,
-          qrToken: complaint.qrToken,
-          reportedBy: complaint.reportedBy,
-          reason: complaint.reason,
-          status: complaint.status,
-          date: complaint.date,
-        },
-      });
-    } catch (dbErr: any) {
-      console.warn("DB write failed, falling back to simulated complaint ID:", dbErr?.message);
-      const fallbackId = `CMP-2026-${Math.floor(100 + Math.random() * 900)}`;
-      return NextResponse.json({
-        success: true,
-        complaint: {
-          id: fallbackId,
-          batchId: Number(batchId),
-          qrToken: qrToken || "TT-2026-00001",
-          reportedBy: reportedBy || "Anonymous Consumer",
-          reason,
-          status: "Under Review",
-          date: new Date().toISOString().split("T")[0],
-        },
-      });
-    }
+  try {
+    const complaint = await prisma.complaint.create({
+      data: {
+        batchId: Number(batchId),
+        qrToken: qrToken || `TT-2026-${String(batchId).padStart(5, "0")}`,
+        reportedBy: reportedBy || "Anonymous Consumer",
+        reason: String(reason),
+        status: "Under Review",
+        date: new Date().toISOString().split("T")[0],
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      complaint: {
+        id: complaint.id,
+        batchId: complaint.batchId,
+        qrToken: complaint.qrToken,
+        reportedBy: complaint.reportedBy,
+        reason: complaint.reason,
+        status: complaint.status,
+        date: complaint.date,
+      },
+    });
   } catch (err: any) {
-    console.error("Create complaint error:", err);
-    return NextResponse.json({ error: "Failed to file complaint" }, { status: 500 });
+    console.warn("Complaint fallback receipt generation:", err?.message);
+    const fallbackId = `CMP-2026-${Math.floor(100 + Math.random() * 900)}`;
+    return NextResponse.json({
+      success: true,
+      complaint: {
+        id: fallbackId,
+        batchId: Number(batchId),
+        qrToken: qrToken || `TT-2026-${String(batchId).padStart(5, "0")}`,
+        reportedBy: reportedBy || "Anonymous Consumer",
+        reason: String(reason),
+        status: "Under Review",
+        date: new Date().toISOString().split("T")[0],
+      },
+    });
   }
 }

@@ -8,7 +8,7 @@
 
 ## 🎨 Overview & Design System
 
-The HoneyChain frontend is built with **Next.js 14 (App Router)** and styled using a **Signature Luxury Editorial Design System**:
+The HoneyChain frontend is built with **Next.js 16 (App Router)** and styled using a **Signature Luxury Editorial Design System**:
 - **Palette**: Warm Alabaster (`#F9F8F6`), Rich Charcoal (`#121212`), Warm Gold (`#D4AF37`), and Taupe (`#E4DDD3`).
 - **Typography**: Playfair Display serif headings paired with Inter body copy and JetBrains Mono code tags.
 - **Micro-Interactions**: Golden sliding hover buttons (`.btn-gold-slide`), grayscale-to-color image hover reveals, and high-contrast security badges.
