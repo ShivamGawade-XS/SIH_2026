@@ -20,6 +20,12 @@ import UnderCapPinClaimModal from "@/components/UnderCapPinClaimModal";
 import ExplainableQualityCard from "@/components/ExplainableQualityCard";
 import ApedaCertificateView from "@/components/ApedaCertificateView";
 import BlockchainStatusBadge from "@/components/BlockchainStatusBadge";
+import MultiSignalFusionCard from "@/components/MultiSignalFusionCard";
+import ShelfLifeDecayPredictor from "@/components/ShelfLifeDecayPredictor";
+import ValueDistributionCard from "@/components/ValueDistributionCard";
+import EUDigitalProductPassportModal from "@/components/EUDigitalProductPassportModal";
+import DisputeGovernanceModal from "@/components/DisputeGovernanceModal";
+import VerifiableAIProofBadge from "@/components/VerifiableAIProofBadge";
 import { getTxUrl } from "@/lib/contract-config";
 import { fetchBatchById, fetchBatchByQR } from "@/lib/contract";
 import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
@@ -59,6 +65,8 @@ export default function ConsumerVerificationPage() {
   const [showVCModal, setShowVCModal] = useState(false);
   const [showPinClaimModal, setShowPinClaimModal] = useState(false);
   const [showApedaModal, setShowApedaModal] = useState(false);
+  const [showDppModal, setShowDppModal] = useState(false);
+  const [showDisputeModal, setShowDisputeModal] = useState(false);
   const [reportSubmitted, setReportSubmitted] = useState(false);
   const [reportReason, setReportReason] = useState("Broken or damaged QR seal on lid");
   const [reportTicketId, setReportTicketId] = useState("CMP-2026-482");
@@ -258,6 +266,21 @@ export default function ConsumerVerificationPage() {
                     <ShieldCheck className="w-4 h-4 text-amber-600 group-hover:text-white" />
                     <span>🔓 Claim Under-Cap PIN</span>
                   </button>
+
+                  <button
+                    onClick={() => setShowDppModal(true)}
+                    className="px-4 py-2.5 border-2 border-blue-600 bg-blue-600/10 hover:bg-blue-600 hover:text-white text-charcoal transition-colors text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-xs"
+                  >
+                    <Globe className="w-4 h-4 text-blue-600 group-hover:text-white" />
+                    <span>🇪🇺 EU Product Passport (DPP)</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShowDisputeModal(true)}
+                    className="px-4 py-2.5 border-2 border-charcoal/20 bg-alabaster hover:bg-charcoal hover:text-alabaster text-charcoal transition-colors text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-xs"
+                  >
+                    <span>⚖️ Dispute Council</span>
+                  </button>
                 </div>
               </div>
               <div className="text-left md:text-right">
@@ -313,6 +336,10 @@ export default function ConsumerVerificationPage() {
               </span>
             </div>
           </div>
+
+          <div className="max-w-6xl mx-auto mt-8">
+            <VerifiableAIProofBadge score={batch.qualityScore} batchId={batch.batchId} />
+          </div>
         </section>
 
         {/* 3. FARMER PROVENANCE & GEOGRAPHIC TERROIR */}
@@ -359,6 +386,8 @@ export default function ConsumerVerificationPage() {
           <div className="max-w-6xl mx-auto space-y-16">
             <Scorecard report={labReport} />
             <ExplainableQualityCard report={labReport} />
+            <MultiSignalFusionCard batchId={batch.batchId} initialScore={batch.qualityScore} flowerSource={data.botanicalFlora || farmer.location} />
+            <ShelfLifeDecayPredictor batchId={batch.batchId} initialHmf={Number(labReport.hmfMgPerKg) || 8.4} initialDiastase={labReport.diastaseNumber || 18.2} bottlingDate={harvestDate} />
             <PollenInspector botanicalFlora={data.botanicalFlora || farmer.location} batchId={batch.batchId} />
             <NMRSpectrumViewer purityScore={batch.qualityScore} />
           </div>
@@ -375,6 +404,11 @@ export default function ConsumerVerificationPage() {
               qualityScore={batch.qualityScore}
               grade={batch.grade}
               batchId={batch.batchId}
+            />
+            <ValueDistributionCard
+              beekeeperName={farmer.name}
+              cooperativeName={farmer.cooperativeId}
+              settlementTx={txHash}
             />
           </div>
         </section>
@@ -457,6 +491,20 @@ export default function ConsumerVerificationPage() {
                   >
                     <Download className="w-4 h-4 shrink-0" />
                     <span>W3C Credential (JSON-LD)</span>
+                  </button>
+                  <button
+                    onClick={() => setShowDppModal(true)}
+                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold border-2 border-blue-400 bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-900 flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
+                  >
+                    <Globe className="w-4 h-4 shrink-0" />
+                    <span>EU Digital Product Passport</span>
+                  </button>
+                  <button
+                    onClick={() => setShowDisputeModal(true)}
+                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold border-2 border-amber-400 bg-amber-50 hover:bg-amber-500 hover:text-white text-amber-900 flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
+                  >
+                    <ShieldCheck className="w-4 h-4 shrink-0" />
+                    <span>Dispute Council</span>
                   </button>
                   <a
                     href={getTxUrl(txHash || "0x98f4c2b1e7a6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0")}
@@ -616,6 +664,25 @@ export default function ConsumerVerificationPage() {
           data={data}
           isOpen={showApedaModal}
           onClose={() => setShowApedaModal(false)}
+        />
+
+        {/* EU DIGITAL PRODUCT PASSPORT MODAL (CIRPASS / ESPR) */}
+        <EUDigitalProductPassportModal
+          isOpen={showDppModal}
+          onClose={() => setShowDppModal(false)}
+          batchId={batch.batchId}
+          qrToken={qrToken}
+          farmerName={farmer.name}
+          location={farmer.location}
+          harvestDate={harvestDate}
+        />
+
+        {/* DISPUTE GOVERNANCE COUNCIL MODAL */}
+        <DisputeGovernanceModal
+          isOpen={showDisputeModal}
+          onClose={() => setShowDisputeModal(false)}
+          batchId={batch.batchId}
+          qrToken={qrToken}
         />
       </main>
 

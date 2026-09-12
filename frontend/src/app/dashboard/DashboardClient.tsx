@@ -12,6 +12,8 @@ import PollinationCreditCalculator from "@/components/PollinationCreditCalculato
 import VoiceFieldAssistant from "@/components/VoiceFieldAssistant";
 import PollenVisionAnalyzer from "@/components/PollenVisionAnalyzer";
 import HardwareDemoGuide from "@/components/HardwareDemoGuide";
+import ParametricInsuranceCard from "@/components/ParametricInsuranceCard";
+import DisputeGovernanceModal from "@/components/DisputeGovernanceModal";
 import { useLanguage } from "@/lib/LanguageContext";
 import { DEMO_BATCHES } from "@/lib/constants";
 import {
@@ -70,6 +72,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
   const [farmerCount, setFarmerCount] = useState(14240);
   const [complaints, setComplaints] = useState<ConsumerComplaint[]>([]);
   const [isSwitching, setIsSwitching] = useState(false);
+  const [showDisputeModal, setShowDisputeModal] = useState(false);
 
   useEffect(() => {
     setCurrentUser(user);
@@ -362,10 +365,56 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
           <div id="pollen"><PollenVisionAnalyzer /></div>
           <div id="migration"><MigratoryRoutePlanner /></div>
           <div id="credits"><PollinationCreditCalculator /></div>
+
+          {/* ── PARAMETRIC MICRO-INSURANCE PILOT ── */}
+          <div id="insurance">
+            <ParametricInsuranceCard />
+          </div>
+
+          {/* ── ON-CHAIN DISPUTE GOVERNANCE ── */}
+          <div id="dispute" className="pt-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-charcoal/10">
+              <div>
+                <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-1 font-bold">On-Chain Arbitration</p>
+                <h3 className="text-2xl serif text-charcoal font-normal">Dispute Governance Council</h3>
+              </div>
+              <button
+                onClick={() => setShowDisputeModal(true)}
+                className="px-5 py-3 text-[11px] uppercase tracking-wider font-bold border-2 border-amber-400 bg-amber-50 hover:bg-amber-500 hover:text-white text-amber-900 transition-colors whitespace-nowrap flex items-center gap-2"
+              >
+                <span>⚖</span>
+                <span>Open Arbitration Council</span>
+              </button>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                { role: "KVIC District Supervisor", status: "Ready", badge: "bg-emerald-100 text-emerald-800 border-emerald-300", icon: "🏛" },
+                { role: "NABL Lab Chemist", status: "Ready", badge: "bg-blue-100 text-blue-800 border-blue-300", icon: "🔬" },
+                { role: "Cooperative President", status: "Ready", badge: "bg-amber-100 text-amber-800 border-amber-300", icon: "🤝" },
+              ].map((m) => (
+                <div key={m.role} className="p-5 border-2 border-charcoal/15 bg-white flex items-start gap-4">
+                  <span className="text-2xl">{m.icon}</span>
+                  <div>
+                    <p className="font-semibold text-charcoal text-sm">{m.role}</p>
+                    <span className={`mt-1 inline-block px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border ${m.badge}`}>{m.status}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-warm-grey mt-4">Quorum: 2-of-3 council votes required to revoke or clear any disputed batch. All votes recorded on-chain with cryptographic signatures.</p>
+          </div>
         </section>
 
         <RecentBatchesTable batchesList={batchesList} t={t} />
       </main>
+
+      {/* DISPUTE GOVERNANCE COUNCIL MODAL */}
+      <DisputeGovernanceModal
+        isOpen={showDisputeModal}
+        onClose={() => setShowDisputeModal(false)}
+        batchId={batchesList[0]?.batchId ?? 1}
+        qrToken={batchesList[0]?.qrToken ?? "HC-BATCH"}
+      />
 
       <Footer />
     </div>
