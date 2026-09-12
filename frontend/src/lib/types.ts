@@ -8,6 +8,7 @@ export interface Farmer {
   name: string;
   location: string;
   cooperativeId: string;
+  society?: string;
   gpsLat?: number | null;
   gpsLng?: number | null;
   ipfsProfileHash: string;
@@ -27,6 +28,8 @@ export interface HoneyBatch {
   isRevoked: boolean;
   isDisputed?: boolean;
   disputeReason?: string | null;
+  botanicalOrigin?: string;
+  totalWeightKg?: number;
 }
 
 export interface CustodyEntry {
