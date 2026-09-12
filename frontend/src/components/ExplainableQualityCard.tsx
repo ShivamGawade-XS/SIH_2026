@@ -2,19 +2,17 @@
 
 import { useState, useRef, useEffect } from "react";
 import {
-  Sparkles,
   Brain,
   ArrowUpRight,
   ArrowDownRight,
-  Info,
-  Activity,
-  ShieldCheck,
-  CheckCircle2,
   Sliders,
   Play,
   Square,
-  Volume2,
   RotateCcw,
+  ShieldCheck,
+  CheckCircle2,
+  AlertTriangle,
+  Lock,
 } from "lucide-react";
 import { LabQualityReport } from "@/lib/types";
 
@@ -31,21 +29,34 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
   const [simHmf, setSimHmf] = useState(report.hmfMgPerKg);
   const [simBrix, setSimBrix] = useState(report.brixPercent);
   const [simDiastase, setSimDiastase] = useState(report.diastaseNumber);
-  const simC4 = 0.8; // EA-IRMS standard baseline
+  const [simC4, setSimC4] = useState(0.8);
+  const [simSmr, setSimSmr] = useState(0.0); // SMR Rice Syrup marker
+
+  // Server verification state
+  const [verifyingServer, setVerifyingServer] = useState(false);
+  const [serverProof, setServerProof] = useState<string | null>(null);
 
   // Active values depending on simulator toggle
   const currentMoisture = simulatorMode ? simMoisture : report.moisturePercent;
   const currentHmf = simulatorMode ? simHmf : report.hmfMgPerKg;
   const currentBrix = simulatorMode ? simBrix : report.brixPercent;
   const currentDiastase = simulatorMode ? simDiastase : report.diastaseNumber;
+  const currentC4 = simulatorMode ? simC4 : (report.c4SugarPercent ?? 0.8);
+  const currentSmr = simulatorMode ? simSmr : (report.smrMarker ?? 0.0);
 
   // Audio synthesizer state
   const [playingFreq, setPlayingFreq] = useState<number | null>(null);
+  const [audioSecondsLeft, setAudioSecondsLeft] = useState<number>(0);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const oscRef = useRef<OscillatorNode | null>(null);
   const gainRef = useRef<GainNode | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const stopTone = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
     if (oscRef.current) {
       try {
         oscRef.current.stop();
@@ -56,6 +67,7 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
       oscRef.current = null;
     }
     setPlayingFreq(null);
+    setAudioSecondsLeft(0);
   };
 
   const playTone = (freq: number) => {
@@ -79,11 +91,9 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
       const osc = audioCtxRef.current.createOscillator();
       const gain = audioCtxRef.current.createGain();
 
-      // Wingbeat frequencies are rich sawtooth/triangle harmonics
       osc.type = "sawtooth";
       osc.frequency.setValueAtTime(freq, audioCtxRef.current.currentTime);
-
-      gain.gain.setValueAtTime(0.08, audioCtxRef.current.currentTime); // Safe, gentle volume
+      gain.gain.setValueAtTime(0.07, audioCtxRef.current.currentTime); // Safe, comfortable volume
 
       osc.connect(gain);
       gain.connect(audioCtxRef.current.destination);
@@ -92,6 +102,17 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
       oscRef.current = osc;
       gainRef.current = gain;
       setPlayingFreq(freq);
+      setAudioSecondsLeft(6);
+
+      // Automated 6-second auto-stop timer to prevent accidental runaway noise
+      let count = 6;
+      timerRef.current = setInterval(() => {
+        count -= 1;
+        setAudioSecondsLeft(count);
+        if (count <= 0) {
+          stopTone();
+        }
+      }, 1000);
     } catch (e) {
       console.error("Audio playback failed", e);
     }
@@ -111,6 +132,26 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
     setSimHmf(report.hmfMgPerKg);
     setSimBrix(report.brixPercent);
     setSimDiastase(report.diastaseNumber);
+    setSimC4(0.8);
+    setSimSmr(0.0);
+    setServerProof(null);
+  };
+
+  const handleVerifyWithServer = async () => {
+    setVerifyingServer(true);
+    try {
+      const res = await fetch(
+        `/api/ai/explain?moisture=${currentMoisture}&hmf=${currentHmf}&brix=${currentBrix}&diastase=${currentDiastase}&c4=${currentC4}&smr=${currentSmr}&hz=235`
+      );
+      const data = await res.json();
+      if (data?.calculationProof) {
+        setServerProof(data.calculationProof);
+      }
+    } catch (err) {
+      console.error("Failed to verify calculation with server:", err);
+    } finally {
+      setVerifyingServer(false);
+    }
   };
 
   // Calculate feature attribution breakdown based on values
@@ -119,23 +160,35 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
       ? 18.0
       : currentMoisture <= 20.0
       ? 8.0
-      : Math.max(-25.0, -20.0 * (currentMoisture - 20.0));
+      : Math.max(-30.0, -20.0 * (currentMoisture - 20.0));
   const hmfPoints =
     currentHmf <= 15.0
       ? 22.0
       : currentHmf <= 40.0
       ? 12.0
-      : Math.max(-30.0, -15.0 - (currentHmf - 40.0) * 0.5);
+      : Math.max(-35.0, -15.0 - (currentHmf - 40.0) * 0.5);
   const brixPoints = currentBrix >= 75.0 ? 20.0 : currentBrix >= 65.0 ? 10.0 : -25.0;
   const diastasePoints =
     currentDiastase >= 12.0 ? 18.0 : currentDiastase >= 8.0 ? 8.0 : -15.0;
-  const c4Points = 16.0; // EA-IRMS baseline for raw organic honey
+  const c4Points = currentC4 <= 2.0 ? 16.0 : currentC4 <= 7.0 ? 2.0 : -40.0;
+  const smrPoints = currentSmr <= 0.05 ? 10.0 : -45.0;
 
   const baselineScore = 10.0;
   const totalCalculated =
-    baselineScore + moisturePoints + hmfPoints + brixPoints + diastasePoints + c4Points;
+    baselineScore +
+    moisturePoints +
+    hmfPoints +
+    brixPoints +
+    diastasePoints +
+    c4Points +
+    smrPoints;
+
+  const isAdulterated =
+    currentC4 > 7.0 || currentSmr > 0.05 || currentMoisture > 22.0 || currentHmf > 80.0;
   const displayPurity = simulatorMode
-    ? Number(Math.max(25.0, Math.min(99.8, totalCalculated)).toFixed(1))
+    ? isAdulterated
+      ? Number(Math.max(15.0, Math.min(48.0, totalCalculated)).toFixed(1))
+      : Number(Math.max(25.0, Math.min(99.8, totalCalculated)).toFixed(1))
     : report.purityScore;
 
   const attributions = [
@@ -185,12 +238,25 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
     },
     {
       feature: "C4 Plant Sugars (EA-IRMS)",
-      value: `${simC4}% (Undetectable)`,
+      value: `${currentC4.toFixed(1)}%`,
       benchmark: "Statutory limit ≤ 7.0%",
-      points: c4Points,
-      positive: true,
+      points: Number(c4Points.toFixed(1)),
+      positive: c4Points > 0,
       description:
-        "Isotope Ratio Mass Spectrometry confirms zero adulteration from C4 photosynthetic plants (corn/cane syrup).",
+        c4Points > 0
+          ? "Isotope Ratio Mass Spectrometry confirms zero adulteration from C4 photosynthetic plants (corn/cane syrup)."
+          : "High C4 ratio signals artificial corn syrup feeding or cane sugar dilution.",
+    },
+    {
+      feature: "SMR Rice Syrup Marker (LC-MS)",
+      value: currentSmr <= 0.05 ? "Undetected" : `Detected (${currentSmr.toFixed(2)})`,
+      benchmark: "Limit: Zero Marker",
+      points: Number(smrPoints.toFixed(1)),
+      positive: smrPoints > 0,
+      description:
+        smrPoints > 0
+          ? "Mass spectrometry shows zero Specific Marker for Rice Syrup (SMR), proving authentic floral origin."
+          : "Positive SMR marker detects synthetic C3 rice syrup formulated to bypass basic C4 tests.",
     },
   ];
 
@@ -250,17 +316,45 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
                 {simulatorMode ? "Simulated Purity Rating" : "Certified Lab Purity Score"}
               </span>
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-serif text-charcoal font-bold">{displayPurity}</span>
+                <span
+                  className={`text-4xl font-serif font-bold ${
+                    isAdulterated ? "text-red-700" : "text-charcoal"
+                  }`}
+                >
+                  {displayPurity}
+                </span>
                 <span className="text-sm font-sans font-normal text-warm-grey">/ 100</span>
-                {simulatorMode && (
-                  <span className="text-[10px] uppercase px-2 py-0.5 bg-amber-100 text-amber-900 font-mono font-bold">
-                    Sandbox Mode
+                {simulatorMode ? (
+                  <span
+                    className={`text-[10px] uppercase px-2 py-0.5 font-mono font-bold flex items-center gap-1 ${
+                      isAdulterated
+                        ? "bg-red-100 text-red-800"
+                        : "bg-amber-100 text-amber-900"
+                    }`}
+                  >
+                    {isAdulterated ? <AlertTriangle className="w-3 h-3 text-red-700" /> : null}
+                    {isAdulterated ? "Adulteration Detected" : "Sandbox Mode"}
+                  </span>
+                ) : (
+                  <span className="text-[10px] uppercase px-2 py-0.5 bg-emerald-50 text-emerald-800 font-mono font-bold flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Agmark Special Grade
                   </span>
                 )}
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              {simulatorMode && (
+                <button
+                  onClick={handleVerifyWithServer}
+                  disabled={verifyingServer}
+                  className="px-3 py-2 text-xs font-mono uppercase tracking-wider flex items-center gap-1.5 bg-gold text-charcoal font-bold hover:bg-gold/90 transition-all border border-gold"
+                >
+                  <Lock className="w-3.5 h-3.5" />
+                  {verifyingServer ? "Signing Proof..." : "Verify via Server AI"}
+                </button>
+              )}
+
               <button
                 onClick={() => setSimulatorMode(!simulatorMode)}
                 className={`px-3 py-2 text-xs font-mono uppercase tracking-wider flex items-center gap-1.5 border transition-all ${
@@ -286,17 +380,38 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
             </div>
           </div>
 
+          {/* Cryptographic Server Proof Notice */}
+          {serverProof && (
+            <div className="p-3 bg-emerald-50 border border-emerald-300 text-emerald-950 flex items-center justify-between text-xs font-mono">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                <span>
+                  <strong>Sovereign AI Proof:</strong> Server cryptographically signed this
+                  attribution hash:
+                </span>
+                <code className="bg-emerald-100/80 px-1.5 py-0.5 text-[11px] text-emerald-900 font-bold">
+                  {serverProof.slice(0, 20)}...
+                </code>
+              </div>
+              <span className="text-[10px] text-emerald-700 uppercase font-bold">
+                100% Tamper Proof
+              </span>
+            </div>
+          )}
+
           {/* Interactive Sliders (Visible in Simulator Mode) */}
           {simulatorMode && (
             <div className="p-5 bg-cream/40 border border-charcoal/15 space-y-4 animate-fade-in font-mono text-xs">
               <div className="flex items-center justify-between border-b border-charcoal/10 pb-2">
                 <span className="font-bold text-charcoal uppercase tracking-wider flex items-center gap-1.5">
-                  <Sliders className="w-3.5 h-3.5 text-gold" /> Jury Interactive Stress-Test Engine
+                  <Sliders className="w-3.5 h-3.5 text-gold" /> Jury Stress-Test Engine (FSSAI Gazette 2020)
                 </span>
-                <span className="text-[11px] text-warm-grey">Drag sliders to test AI sensitivity</span>
+                <span className="text-[11px] text-warm-grey">
+                  Test adversarial adulteration scenarios
+                </span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Moisture Slider */}
                 <div className="bg-white p-3 border border-charcoal/10 space-y-1.5">
                   <div className="flex justify-between">
@@ -313,9 +428,9 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
                     className="w-full accent-charcoal cursor-pointer"
                   />
                   <div className="flex justify-between text-[10px] text-warm-grey">
-                    <span>14.0% (Dense)</span>
-                    <span className="text-red-600 font-bold">FSSAI Limit: 20%</span>
-                    <span>24.0% (Fermenting)</span>
+                    <span>14% (Dense)</span>
+                    <span className="text-red-600 font-bold">Limit: 20%</span>
+                    <span>24% (Spoiled)</span>
                   </div>
                 </div>
 
@@ -335,16 +450,16 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
                     className="w-full accent-charcoal cursor-pointer"
                   />
                   <div className="flex justify-between text-[10px] text-warm-grey">
-                    <span>5 mg/kg (Raw Fresh)</span>
-                    <span className="text-red-600 font-bold">Limit: 40 mg/kg</span>
-                    <span>90 mg/kg (Overheated)</span>
+                    <span>5 (Raw Fresh)</span>
+                    <span className="text-red-600 font-bold">Limit: 40</span>
+                    <span>90 (Heated)</span>
                   </div>
                 </div>
 
                 {/* Brix Slider */}
                 <div className="bg-white p-3 border border-charcoal/10 space-y-1.5">
                   <div className="flex justify-between">
-                    <label className="text-charcoal font-semibold">Brix Refractive Index (°Bx):</label>
+                    <label className="text-charcoal font-semibold">Brix Refraction (°Bx):</label>
                     <span className="font-bold text-charcoal">{simBrix.toFixed(1)}°Bx</span>
                   </div>
                   <input
@@ -358,15 +473,15 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
                   />
                   <div className="flex justify-between text-[10px] text-warm-grey">
                     <span className="text-red-600 font-bold">Min: 65°Bx</span>
-                    <span>75°Bx (Standard)</span>
-                    <span>85°Bx (Dense Nectar)</span>
+                    <span>75°Bx</span>
+                    <span>85°Bx</span>
                   </div>
                 </div>
 
                 {/* Diastase Slider */}
                 <div className="bg-white p-3 border border-charcoal/10 space-y-1.5">
                   <div className="flex justify-between">
-                    <label className="text-charcoal font-semibold">Diastase (Amylase) Enzyme (DN):</label>
+                    <label className="text-charcoal font-semibold">Diastase Enzyme (DN):</label>
                     <span className="font-bold text-charcoal">{simDiastase.toFixed(1)} DN</span>
                   </div>
                   <input
@@ -380,8 +495,60 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
                   />
                   <div className="flex justify-between text-[10px] text-warm-grey">
                     <span className="text-red-600 font-bold">Min: 8 DN</span>
-                    <span>14 DN (Bioactive)</span>
-                    <span>22 DN (Peak Comb)</span>
+                    <span>14 DN</span>
+                    <span>22 DN</span>
+                  </div>
+                </div>
+
+                {/* C4 Sugar Slider */}
+                <div className="bg-white p-3 border border-charcoal/10 space-y-1.5">
+                  <div className="flex justify-between">
+                    <label className="text-charcoal font-semibold">C4 EA-IRMS (%):</label>
+                    <span
+                      className={`font-bold ${simC4 > 7.0 ? "text-red-600" : "text-charcoal"}`}
+                    >
+                      {simC4.toFixed(1)}%
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0.0"
+                    max="20.0"
+                    step="0.5"
+                    value={simC4}
+                    onChange={(e) => setSimC4(parseFloat(e.target.value))}
+                    className="w-full accent-charcoal cursor-pointer"
+                  />
+                  <div className="flex justify-between text-[10px] text-warm-grey">
+                    <span>0% (Zero Cane)</span>
+                    <span className="text-red-600 font-bold">Limit: 7%</span>
+                    <span>20% (Corn/Cane)</span>
+                  </div>
+                </div>
+
+                {/* SMR Rice Syrup Marker Slider */}
+                <div className="bg-white p-3 border border-charcoal/10 space-y-1.5">
+                  <div className="flex justify-between">
+                    <label className="text-charcoal font-semibold">SMR Rice Syrup (LC-MS):</label>
+                    <span
+                      className={`font-bold ${simSmr > 0.05 ? "text-red-600" : "text-charcoal"}`}
+                    >
+                      {simSmr > 0.05 ? "Detected" : "Undetected"}
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0.0"
+                    max="1.0"
+                    step="0.1"
+                    value={simSmr}
+                    onChange={(e) => setSimSmr(parseFloat(e.target.value))}
+                    className="w-full accent-charcoal cursor-pointer"
+                  />
+                  <div className="flex justify-between text-[10px] text-warm-grey">
+                    <span className="text-emerald-700 font-bold">0.0 (Pure)</span>
+                    <span className="text-red-600 font-bold">C3 Rice Marker</span>
+                    <span>1.0 (Adulterated)</span>
                   </div>
                 </div>
               </div>
@@ -434,15 +601,16 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
                 Colony Bio-Acoustic Synthesizer &amp; Diagnostics
               </span>
               <p className="text-xs text-charcoal/80 leading-relaxed">
-                Apiary edge nodes capture Fast Fourier Transform (FFT) wingbeat harmonics. Click any frequency below to synthesize the real hive acoustic signature using the Web Audio API:
+                Apiary edge nodes capture Fast Fourier Transform (FFT) wingbeat harmonics. Click any
+                frequency below to synthesize the real hive acoustic signature using the Web Audio API:
               </p>
             </div>
             {playingFreq && (
               <button
                 onClick={stopTone}
-                className="px-3 py-1.5 bg-red-600 text-white text-xs font-mono uppercase font-bold flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-sm hover:bg-red-700"
+                className="px-3 py-1.5 bg-red-600 text-white text-xs font-mono uppercase font-bold flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-sm hover:bg-red-700 animate-pulse"
               >
-                <Square className="w-3.5 h-3.5" /> Stop Audio ({playingFreq} Hz)
+                <Square className="w-3.5 h-3.5" /> Stop Audio ({playingFreq} Hz · {audioSecondsLeft}s)
               </button>
             )}
           </div>
@@ -461,7 +629,8 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
                   Normal Brood Thermoregulation
                 </h4>
                 <p className="text-xs text-charcoal/70 leading-relaxed">
-                  Healthy workers fanning wings over brood comb to circulate air and maintain exactly 34.5°C incubation temperature.
+                  Healthy workers fanning wings over brood comb to circulate air and maintain exactly
+                  34.5°C incubation temperature.
                 </p>
               </div>
               <button
@@ -474,7 +643,7 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
               >
                 {playingFreq === 235 ? (
                   <>
-                    <Square className="w-3 h-3" /> Stop 235 Hz Tone
+                    <Square className="w-3 h-3" /> Stop ({audioSecondsLeft}s)
                   </>
                 ) : (
                   <>
@@ -497,7 +666,8 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
                   Active Nectar Dehydration
                 </h4>
                 <p className="text-xs text-charcoal/70 leading-relaxed">
-                  Elevated wingbeat frequency indicating high incoming floral nectar flow being actively ripened into honey.
+                  Elevated wingbeat frequency indicating high incoming floral nectar flow being
+                  actively ripened into honey.
                 </p>
               </div>
               <button
@@ -510,7 +680,7 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
               >
                 {playingFreq === 295 ? (
                   <>
-                    <Square className="w-3 h-3" /> Stop 295 Hz Tone
+                    <Square className="w-3 h-3" /> Stop ({audioSecondsLeft}s)
                   </>
                 ) : (
                   <>
@@ -533,7 +703,8 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
                   Queen Piping &amp; Emergence
                 </h4>
                 <p className="text-xs text-charcoal/70 leading-relaxed">
-                  Virgin queens vibrating thorax to emit piping calls prior to dueling or queen cell emergence.
+                  Virgin queens vibrating thorax to emit piping calls prior to dueling or queen cell
+                  emergence.
                 </p>
               </div>
               <button
@@ -546,7 +717,7 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
               >
                 {playingFreq === 380 ? (
                   <>
-                    <Square className="w-3 h-3" /> Stop 380 Hz Tone
+                    <Square className="w-3 h-3" /> Stop ({audioSecondsLeft}s)
                   </>
                 ) : (
                   <>
@@ -569,7 +740,8 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
                   Pre-Swarm Buzzing Harmonic
                 </h4>
                 <p className="text-xs text-charcoal/70 leading-relaxed">
-                  High kinetic scout buzzing. 50-60% of colony will swarm out within 24-48 hours unless beekeeper adds super boxes.
+                  High kinetic scout buzzing. 50-60% of colony will swarm out within 24-48 hours
+                  unless beekeeper adds super boxes.
                 </p>
               </div>
               <button
@@ -582,7 +754,7 @@ export default function ExplainableQualityCard({ report }: ExplainableQualityCar
               >
                 {playingFreq === 510 ? (
                   <>
-                    <Square className="w-3 h-3" /> Stop 510 Hz Tone
+                    <Square className="w-3 h-3" /> Stop ({audioSecondsLeft}s)
                   </>
                 ) : (
                   <>

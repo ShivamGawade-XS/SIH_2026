@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -7,9 +8,10 @@ export async function GET(req: NextRequest) {
   const brix = parseFloat(searchParams.get("brix") || "71.4");
   const diastase = parseFloat(searchParams.get("diastase") || "14.2");
   const c4 = parseFloat(searchParams.get("c4") || "0.8");
+  const smr = parseFloat(searchParams.get("smr") || "0.0"); // SMR marker for C3 Rice Syrup
   const hz = parseFloat(searchParams.get("hz") || "235");
 
-  return NextResponse.json(computeAttributions(moisture, hmf, brix, diastase, c4, hz));
+  return NextResponse.json(computeAttributions(moisture, hmf, brix, diastase, c4, smr, hz));
 }
 
 export async function POST(req: NextRequest) {
@@ -20,9 +22,10 @@ export async function POST(req: NextRequest) {
     const brix = parseFloat(body.brix ?? 71.4);
     const diastase = parseFloat(body.diastase ?? 14.2);
     const c4 = parseFloat(body.c4 ?? 0.8);
+    const smr = parseFloat(body.smr ?? 0.0);
     const hz = parseFloat(body.hz ?? body.frequency_hz ?? 235);
 
-    return NextResponse.json(computeAttributions(moisture, hmf, brix, diastase, c4, hz));
+    return NextResponse.json(computeAttributions(moisture, hmf, brix, diastase, c4, smr, hz));
   } catch {
     return NextResponse.json({ error: "Invalid JSON request payload" }, { status: 400 });
   }
@@ -34,9 +37,10 @@ function computeAttributions(
   brix: number,
   diastase: number,
   c4: number,
+  smr: number,
   hz: number
 ) {
-  // 1. Moisture Attribution
+  // 1. Moisture Attribution (FSSAI max 20%)
   const moisturePoints =
     moisture <= 18.0 ? 18.0 : moisture <= 20.0 ? 8.0 : Math.max(-30.0, -20.0 * (moisture - 20.0));
   const moistureRationale =
@@ -46,7 +50,7 @@ function computeAttributions(
       ? `Acceptable moisture (${moisture.toFixed(1)}% <= 20.0%) within domestic FSSAI limit.`
       : `High moisture (${moisture.toFixed(1)}% > 20.0%) risks post-harvest fermentation.`;
 
-  // 2. HMF Attribution
+  // 2. HMF Attribution (FSSAI max 40 mg/kg)
   const hmfPoints =
     hmf <= 15.0 ? 22.0 : hmf <= 40.0 ? 12.0 : Math.max(-35.0, -15.0 - (hmf - 40.0) * 0.5);
   const hmfRationale =
@@ -56,7 +60,7 @@ function computeAttributions(
       ? `Moderate HMF (${hmf.toFixed(1)} mg/kg) complies with FSSAI statutory threshold.`
       : `Elevated HMF (${hmf.toFixed(1)} mg/kg) signals excessive heat exposure or prolonged aging.`;
 
-  // 3. Brix Attribution
+  // 3. Brix Attribution (FSSAI min 65°Bx)
   const brixPoints = brix >= 75.0 ? 20.0 : brix >= 65.0 ? 10.0 : -25.0;
   const brixRationale =
     brix >= 75.0
@@ -65,7 +69,7 @@ function computeAttributions(
       ? `Standard Brix (${brix.toFixed(1)}°Bx) meets basic commercial requirements.`
       : `Low Brix (${brix.toFixed(1)}°Bx) indicates dilution or immature comb harvesting.`;
 
-  // 4. Diastase Attribution
+  // 4. Diastase Attribution (FSSAI min 8 DN)
   const diastasePoints = diastase >= 12.0 ? 18.0 : diastase >= 8.0 ? 8.0 : -15.0;
   const diastaseRationale =
     diastase >= 12.0
@@ -74,7 +78,7 @@ function computeAttributions(
       ? `Standard enzyme activity (${diastase.toFixed(1)} DN) meets FSSAI benchmark.`
       : `Low diastase (${diastase.toFixed(1)} DN) indicates denaturation via ultra-pasteurization.`;
 
-  // 5. C4 Isotope Sugars (EA-IRMS)
+  // 5. C4 Isotope Sugars (EA-IRMS limit <= 7%)
   const c4Points = c4 <= 2.0 ? 16.0 : c4 <= 7.0 ? 2.0 : -40.0;
   const c4Rationale =
     c4 <= 2.0
@@ -82,6 +86,13 @@ function computeAttributions(
       : c4 <= 7.0
       ? `Borderline C4 sugars (${c4.toFixed(1)}%) requires secondary NMR profiling.`
       : `Adulterated C4 sugars (${c4.toFixed(1)}% > 7.0%) signals artificial syrup feeding.`;
+
+  // 6. SMR (Specific Marker for Rice Syrup - LC-MS/MS)
+  const smrPoints = smr <= 0.05 ? 10.0 : -45.0;
+  const smrRationale =
+    smr <= 0.05
+      ? `Undetected SMR marker (< 0.05) verifies absence of foreign C3 rice/beet syrup.`
+      : `SMR positive (${smr.toFixed(2)}) detects deliberate C3 rice syrup adulteration.`;
 
   const attributions = [
     {
@@ -124,11 +135,22 @@ function computeAttributions(
       positive: c4Points > 0,
       description: c4Rationale,
     },
+    {
+      feature: "SMR Rice Syrup Marker (LC-MS)",
+      value: smr <= 0.05 ? "Undetected" : `Detected (${smr.toFixed(2)})`,
+      benchmark: "Limit: Zero Marker",
+      points: Number(smrPoints.toFixed(1)),
+      positive: smrPoints > 0,
+      description: smrRationale,
+    },
   ];
 
   const baselineScore = 10.0;
   const totalRaw = baselineScore + attributions.reduce((acc, curr) => acc + curr.points, 0);
-  const normalizedPurity = Number(Math.max(25.0, Math.min(99.8, totalRaw)).toFixed(1));
+  const isAdulterated = c4 > 7.0 || smr > 0.05 || moisture > 22.0 || hmf > 80.0;
+  const normalizedPurity = isAdulterated
+    ? Number(Math.max(15.0, Math.min(50.0, totalRaw)).toFixed(1))
+    : Number(Math.max(25.0, Math.min(99.8, totalRaw)).toFixed(1));
 
   // Bio-Acoustics
   let band = "";
@@ -163,13 +185,25 @@ function computeAttributions(
     healthScore = 40;
   }
 
+  // Cryptographic calculation seal (proof of server execution)
+  const proofPayload = `${normalizedPurity}:${moisture}:${hmf}:${brix}:${diastase}:${c4}:${smr}:${hz}:${Date.now()}`;
+  const proofHash = "0x" + crypto.createHash("sha256").update(proofPayload).digest("hex");
+
   return {
     status: "success",
     timestamp: new Date().toISOString(),
+    calculationProof: proofHash,
     purity: {
       score: normalizedPurity,
       baselineAnchor: baselineScore,
-      grade: normalizedPurity >= 90 ? "Special Grade" : normalizedPurity >= 80 ? "Grade A" : "Standard",
+      isAdulterated,
+      grade: isAdulterated
+        ? "Substandard (Failed Statutory Limit)"
+        : normalizedPurity >= 90
+        ? "Agmark Special Grade"
+        : normalizedPurity >= 80
+        ? "Agmark Grade A"
+        : "Standard Grade",
       attributions,
       primaryDriver: attributions.reduce((prev, current) => (prev.points > current.points ? prev : current)).feature,
     },

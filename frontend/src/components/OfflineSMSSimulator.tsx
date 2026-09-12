@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MessageSquare, PhoneCall, Smartphone, X, Send, Sparkles, CheckCircle2 } from "lucide-react";
+import { MessageSquare, PhoneCall, Smartphone, X, Send, Sparkles, CheckCircle2, ShieldCheck } from "lucide-react";
 
 interface OfflineSMSSimulatorProps {
   isOpen: boolean;
@@ -26,7 +26,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
         const res = await fetch("/api/webhook/whatsapp", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: queryText, sender: "919876543210" }),
+          body: JSON.stringify({ message: queryText, sender: "919876543210", lang }),
         });
         const data = await res.json();
         setIsSending(false);
@@ -40,9 +40,16 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
     setTimeout(() => {
       setIsSending(false);
       const isBatch2 = queryText.includes("2") || queryText.toLowerCase().includes("sundarban");
+      const isDbt = queryText.toUpperCase().includes("DBT") || queryText.includes("*99*2026");
 
       if (channel === "sms") {
-        if (lang === "hi") {
+        if (isDbt) {
+          setResponseMsg(
+            lang === "hi"
+              ? `[KVIC-DBT]: लाभार्थी: राजेश वर्मा। स्वीकृत: ₹25,000 (हनी मिशन)। जारी: ₹15,000। लंबित: ₹10,000 (क्वालिटी रिपोर्ट के बाद)। ब्लॉकचेन सुरक्षित।`
+              : `[KVIC-DBT]: Beneficiary: Rajesh Verma. Sanctioned: Rs.25,000. Disbursed: Rs.15,000 (Milestone 1&2). Escrow Pending: Rs.10,000. Polygon PoS Verified.`
+          );
+        } else if (lang === "hi") {
           setResponseMsg(
             isBatch2
               ? `[KVIC-HONEY]: बैच #002 (सुंदरबन मैंग्रोव हनी) प्रमाणित शुद्ध है। उत्पादक: लक्ष्मी देवी (प. बंगाल)। शुद्धता स्कोर: 91/100 (FSSAI IS 4941 पास)। पॉलीगॉन ब्लॉकचेन पर सुरक्षित।`
@@ -63,9 +70,15 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
         }
       } else {
         // USSD response
-        setResponseMsg(
-          `*99*4941# KVIC HoneyChain:\n1. Status: VERIFIED PURE\n2. Batch: #001 (Litchi Honey)\n3. Farmer: Rajesh Verma (Bihar)\n4. Score: 94/100 (Grade A+)\nPress 0 for Voice Hindi`
-        );
+        if (isDbt) {
+          setResponseMsg(
+            `*99*2026# KVIC Honey Mission DBT:\n1. Farmer: Rajesh Verma\n2. Subsidy: Rs.25,000 (80% Aid)\n3. Paid: Rs.15,000 (PFMS/UPI)\n4. Escrow Lock: Rs.10,000\nPolygon Tx: 0x8E2a...a82E\nPress 0 for Hindi Voice`
+          );
+        } else {
+          setResponseMsg(
+            `*99*4941# KVIC HoneyChain:\n1. Status: VERIFIED PURE\n2. Batch: #001 (Litchi Honey)\n3. Farmer: Rajesh Verma (Bihar)\n4. Score: 94/100 (Grade A+)\nPress 1 for DBT Subsidy Status\nPress 0 for Voice Hindi`
+          );
+        }
       }
     }, 350);
   };
@@ -91,13 +104,14 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
               Inclusive Rural Access Protocol
             </p>
             <h3 className="text-2xl serif text-charcoal font-bold">
-              Offline SMS & USSD Verification
+              Offline SMS, USSD &amp; WhatsApp Bot
             </h3>
           </div>
         </div>
 
         <p className="text-xs text-warm-grey mb-6">
-          Enables non-smartphone and rural feature phone users to authenticate honey jars via toll-free SMS (<strong>56767</strong>) or national USSD shortcode (<strong>*99*4941#</strong>).
+          Enables non-smartphone and rural feature phone beekeepers to authenticate honey jars, track
+          IoT hives, and check KVIC DBT subsidies via toll-free SMS (<strong>56767</strong>), national USSD (<strong>*99*4941#</strong>), or WhatsApp Cloud Bot.
         </p>
 
         {/* Mode & Language Tabs */}
@@ -105,27 +119,42 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
           <div className="flex border border-charcoal/20">
             <button
               type="button"
-              onClick={() => { setChannel("whatsapp"); setQueryText("VERIFY TT-2026-00001"); }}
+              onClick={() => {
+                setChannel("whatsapp");
+                setQueryText("VERIFY TT-2026-00001");
+              }}
               className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider ${
-                channel === "whatsapp" ? "bg-emerald-700 text-white" : "bg-white text-warm-grey hover:bg-alabaster"
+                channel === "whatsapp"
+                  ? "bg-emerald-700 text-white"
+                  : "bg-white text-warm-grey hover:bg-alabaster"
               }`}
             >
               WhatsApp Bot
             </button>
             <button
               type="button"
-              onClick={() => { setChannel("sms"); setQueryText("VERIFY TT-2026-00001"); }}
+              onClick={() => {
+                setChannel("sms");
+                setQueryText("VERIFY TT-2026-00001");
+              }}
               className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider ${
-                channel === "sms" ? "bg-charcoal text-alabaster" : "bg-white text-warm-grey hover:bg-alabaster"
+                channel === "sms"
+                  ? "bg-charcoal text-alabaster"
+                  : "bg-white text-warm-grey hover:bg-alabaster"
               }`}
             >
               SMS (56767)
             </button>
             <button
               type="button"
-              onClick={() => { setChannel("ussd"); setQueryText("*99*4941*001#"); }}
+              onClick={() => {
+                setChannel("ussd");
+                setQueryText("*99*4941*001#");
+              }}
               className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider ${
-                channel === "ussd" ? "bg-charcoal text-alabaster" : "bg-white text-warm-grey hover:bg-alabaster"
+                channel === "ussd"
+                  ? "bg-charcoal text-alabaster"
+                  : "bg-white text-warm-grey hover:bg-alabaster"
               }`}
             >
               USSD (*99#)
@@ -139,7 +168,9 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
                 type="button"
                 onClick={() => setLang(l)}
                 className={`px-2 py-1 text-[10px] font-bold uppercase border ${
-                  lang === l ? "border-gold bg-gold/20 text-charcoal" : "border-charcoal/20 text-warm-grey"
+                  lang === l
+                    ? "border-gold bg-gold/20 text-charcoal"
+                    : "border-charcoal/20 text-warm-grey"
                 }`}
               >
                 {l === "en" ? "EN" : l === "hi" ? "हिंदी" : "বাংলা"}
@@ -150,7 +181,9 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
 
         {/* Input Query Bar */}
         <div className="flex gap-2 mb-6">
-          <label htmlFor="sms-query" className="sr-only">Offline SMS or USSD verification query input</label>
+          <label htmlFor="sms-query" className="sr-only">
+            Offline SMS or USSD verification query input
+          </label>
           <input
             id="sms-query"
             name="query"
@@ -177,14 +210,18 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
           <span className="text-[10px] uppercase font-bold text-warm-grey self-center">Presets:</span>
           <button
             type="button"
-            onClick={() => setQueryText(channel === "sms" ? "VERIFY TT-2026-00001" : "*99*4941*001#")}
+            onClick={() =>
+              setQueryText(channel === "sms" ? "VERIFY TT-2026-00001" : "*99*4941*001#")
+            }
             className="text-[10px] font-mono px-2 py-1 bg-[#F9F8F6] border border-charcoal/15 hover:border-gold text-charcoal"
           >
             Batch #1 (Bihar Litchi)
           </button>
           <button
             type="button"
-            onClick={() => setQueryText(channel === "sms" ? "VERIFY TT-2026-00002" : "*99*4941*002#")}
+            onClick={() =>
+              setQueryText(channel === "sms" ? "VERIFY TT-2026-00002" : "*99*4941*002#")
+            }
             className="text-[10px] font-mono px-2 py-1 bg-[#F9F8F6] border border-charcoal/15 hover:border-gold text-charcoal"
           >
             Batch #2 (Sundarbans)
@@ -194,7 +231,14 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
             onClick={() => setQueryText("HIVE")}
             className="text-[10px] font-mono px-2 py-1 bg-[#F9F8F6] border border-charcoal/15 hover:border-gold text-charcoal"
           >
-            HIVE Status Query
+            IoT HIVE Telemetry
+          </button>
+          <button
+            type="button"
+            onClick={() => setQueryText(channel === "ussd" ? "*99*2026*1#" : "DBT")}
+            className="text-[10px] font-mono px-2 py-1 bg-amber-50 border border-amber-300 text-amber-900 font-bold hover:border-gold"
+          >
+            KVIC DBT Subsidy Status
           </button>
         </div>
 
@@ -202,14 +246,24 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
         <div className="border-4 border-charcoal bg-[#1A261A] text-[#76E076] p-4 rounded-lg font-mono text-xs shadow-inner min-h-[140px] flex flex-col justify-between">
           <div className="flex justify-between items-center text-[9px] text-[#55A055] pb-2 border-b border-[#2A3F2A]">
             <span>SIGNAL: ■■■■ (BSNL/Jio)</span>
-            <span>{channel === "whatsapp" ? "WHATSAPP BOT GATEWAY: +91-KVIC-HONEY" : channel === "sms" ? "SMS GATEWAY: 56767" : "USSD GATEWAY: *99*4941#"}</span>
+            <span>
+              {channel === "whatsapp"
+                ? "WHATSAPP BOT GATEWAY: +91-KVIC-HONEY"
+                : channel === "sms"
+                ? "SMS GATEWAY: 56767"
+                : "USSD GATEWAY: *99*4941#"}
+            </span>
           </div>
 
           <div className="py-3">
             {responseMsg ? (
               <div className="animate-in fade-in duration-300">
                 <p className="text-[10px] text-[#A0FFA0] mb-1 font-bold">
-                  {channel === "whatsapp" ? "➔ WHATSAPP CLOUD BOT REPLY:" : channel === "sms" ? "➔ INCOMING FROM MD-KVICGOV:" : "➔ USSD SESSION ACTIVE:"}
+                  {channel === "whatsapp"
+                    ? "➔ WHATSAPP CLOUD BOT REPLY:"
+                    : channel === "sms"
+                    ? "➔ INCOMING FROM MD-KVICGOV:"
+                    : "➔ USSD SESSION ACTIVE:"}
                 </p>
                 <p className="whitespace-pre-line leading-relaxed">{responseMsg}</p>
               </div>
