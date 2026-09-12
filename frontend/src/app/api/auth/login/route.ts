@@ -35,31 +35,29 @@ export async function POST(req: NextRequest) {
     }
 
     const normalizedEmail = email.toLowerCase().trim();
+    const normalizedPassword = (password || "").trim();
 
     // 1. Check pre-seeded demo officers first (guaranteed 100% reliability for evaluation)
     const demoOfficer = DEMO_OFFICERS.find(
-      (o) => o.email.toLowerCase() === normalizedEmail && o.password === password
+      (o) =>
+        o.email.toLowerCase().trim() === normalizedEmail &&
+        o.password.trim() === normalizedPassword
     );
-
-    // 2. Check verified DB user
-    const user = await prisma.user
-      .findUnique({ where: { email: normalizedEmail } })
-      .catch(() => null);
 
     let sessionPayload: any = null;
     let userInfo: any = null;
 
     if (demoOfficer) {
-      // Guaranteed demo officer login
+      // Guaranteed demo officer login without DB dependency
       sessionPayload = {
-        id: user ? user.id : `demo-${demoOfficer.role.toLowerCase()}`,
+        id: `demo-${demoOfficer.role.toLowerCase()}`,
         email: demoOfficer.email,
         name: demoOfficer.name,
         role: demoOfficer.role,
         cooperative: demoOfficer.cooperative,
       };
       userInfo = {
-        id: user ? user.id : `demo-${demoOfficer.role.toLowerCase()}`,
+        id: `demo-${demoOfficer.role.toLowerCase()}`,
         email: demoOfficer.email,
         name: demoOfficer.name,
         role: demoOfficer.role,
@@ -67,7 +65,19 @@ export async function POST(req: NextRequest) {
         isEmailVerified: true,
         isPhoneVerified: true,
       };
-    } else if (user) {
+    } else {
+      // 2. Check verified DB user only if not a demo account
+      const user = await prisma?.user
+        ?.findUnique({ where: { email: normalizedEmail } })
+        .catch(() => null);
+
+      if (!user) {
+        return NextResponse.json(
+          { error: "Invalid credentials. Account not found." },
+          { status: 401 }
+        );
+      }
+
       // Real DB user found — verify bcrypt password
       const isValid = await verifyPassword(password, user.passwordHash);
       if (!isValid) {
@@ -92,11 +102,6 @@ export async function POST(req: NextRequest) {
         isEmailVerified: user.isEmailVerified,
         isPhoneVerified: user.isPhoneVerified,
       };
-    } else {
-      return NextResponse.json(
-        { error: "Invalid credentials. Account not found." },
-        { status: 401 }
-      );
     }
 
     const token = await createSession(sessionPayload);

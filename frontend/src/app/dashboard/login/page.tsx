@@ -146,13 +146,19 @@ export default function LoginPage() {
                     key={idx}
                     type="button"
                     onClick={() => handleQuickLogin(officer)}
-                    className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-alabaster hover:border-gold transition-colors text-left group"
+                    className="p-3 border border-charcoal/15 bg-alabaster/50 hover:bg-amber-50 hover:border-gold transition-colors text-left group flex flex-col justify-between"
                   >
-                    <div className="flex items-center gap-1 text-[10px] uppercase tracking-widest text-warm-grey font-semibold mb-1">
-                      <UserCheck className="w-3 h-3 text-gold" />
-                      <span>{officer.role.replace("_", " ")}</span>
+                    <div>
+                      <div className="flex items-center gap-1 text-[10px] uppercase tracking-widest text-warm-grey font-semibold mb-1">
+                        <UserCheck className="w-3 h-3 text-gold" />
+                        <span>{officer.role.replace("_", " ")}</span>
+                      </div>
+                      <p className="text-xs font-serif font-medium text-charcoal truncate">{officer.name}</p>
                     </div>
-                    <p className="text-xs font-serif font-medium text-charcoal truncate">{officer.name}</p>
+                    <div className="mt-2 pt-2 border-t border-charcoal/10 text-[9px] font-mono text-charcoal/60 truncate">
+                      <div>{officer.email}</div>
+                      <div className="text-gold font-bold">{officer.password}</div>
+                    </div>
                   </button>
                 ))}
               </div>
