@@ -5,6 +5,7 @@ import Link from "next/link";
 import HoneyChainLogo from "@/components/HoneyChainLogo";
 import { useLanguage } from "@/lib/LanguageContext";
 import { QrCode, LayoutDashboard, Menu, X, PlusCircle, Microscope, Globe } from "lucide-react";
+import BlockchainStatusBadge from "@/components/BlockchainStatusBadge";
 
 export default function Navbar() {
   const { lang, setLang, t } = useLanguage();
@@ -28,9 +29,12 @@ export default function Navbar() {
         </Link>
 
         {/* Center Pill: Live Status (Desktop only) */}
-        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 border border-charcoal/20 bg-white text-[10px] uppercase tracking-widest text-charcoal font-semibold shadow-xs shrink-0">
-          <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shrink-0" />
-          <span>{t("liveStatus")}</span>
+        <div className="hidden lg:flex items-center gap-2.5 shrink-0">
+          <div className="flex items-center gap-2 px-3 py-1.5 border border-charcoal/20 bg-white text-[10px] uppercase tracking-widest text-charcoal font-semibold shadow-xs shrink-0">
+            <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shrink-0" />
+            <span>{t("liveStatus")}</span>
+          </div>
+          <BlockchainStatusBadge compact />
         </div>
 
         {/* Right Navigation & Action Items */}
@@ -107,9 +111,7 @@ export default function Navbar() {
         <div className="md:hidden border-t border-charcoal/15 bg-white px-6 py-6 space-y-4 shadow-xl animate-in slide-in-from-top-4 duration-200">
           <div className="flex items-center justify-between pb-3 border-b border-charcoal/10">
             <span className="text-[10px] uppercase tracking-widest text-warm-grey font-bold">Navigation Menu</span>
-            <span className="text-[9px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-300">
-              Polygon PoS Live
-            </span>
+            <BlockchainStatusBadge compact />
           </div>
 
           <div className="grid grid-cols-1 gap-2">

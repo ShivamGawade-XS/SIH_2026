@@ -91,7 +91,7 @@ export default function MobileBottomNav() {
                 <button
                   key={item.label}
                   onClick={item.onClick}
-                  className="flex flex-col items-center justify-center py-1 px-2.5 min-w-[56px] text-warm-grey hover:text-gold active:scale-95 transition-all"
+                  className="flex flex-col items-center justify-center py-1 px-2.5 min-w-[56px] min-h-[48px] text-warm-grey hover:text-gold active:scale-95 transition-all"
                 >
                   <div className="relative p-1 rounded-full text-gold">
                     <Icon className="w-5 h-5 animate-pulse" />
@@ -108,14 +108,19 @@ export default function MobileBottomNav() {
                 <Link
                   key={item.label}
                   href={item.href!}
-                  className="flex flex-col items-center justify-center py-1 px-3 -mt-4 group active:scale-95 transition-all"
+                  className="flex flex-col items-center justify-center py-1 px-3 -mt-5 group active:scale-95 transition-all"
                 >
-                  <div className="w-12 h-12 rounded-full bg-gold text-charcoal border-2 border-[#121212] shadow-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <div className={`w-12 h-12 rounded-full bg-gold text-charcoal border-2 border-[#121212] shadow-lg flex items-center justify-center group-hover:scale-105 transition-transform ${
+                    isActive ? "ring-2 ring-gold/60 ring-offset-2 ring-offset-[#121212]" : ""
+                  }`}>
                     <Icon className="w-6 h-6" />
                   </div>
                   <span className="text-[10px] font-mono font-bold tracking-tight mt-0.5 text-alabaster">
                     {item.label}
                   </span>
+                  {isActive && (
+                    <span className="w-1 h-1 rounded-full bg-gold mt-0.5 animate-pulse" />
+                  )}
                 </Link>
               );
             }
@@ -124,7 +129,7 @@ export default function MobileBottomNav() {
               <Link
                 key={item.label}
                 href={item.href!}
-                className={`flex flex-col items-center justify-center py-1 px-2.5 min-w-[56px] active:scale-95 transition-all ${
+                className={`relative flex flex-col items-center justify-center py-1 px-2.5 min-w-[56px] min-h-[48px] active:scale-95 transition-all ${
                   isActive ? "text-gold font-bold" : "text-warm-grey/80 hover:text-alabaster"
                 }`}
               >
@@ -134,6 +139,9 @@ export default function MobileBottomNav() {
                 <span className="text-[10px] font-mono tracking-tight mt-0.5">
                   {item.label}
                 </span>
+                {isActive && (
+                  <span className="w-1 h-1 rounded-full bg-gold mt-0.5 animate-pulse" />
+                )}
               </Link>
             );
           })}

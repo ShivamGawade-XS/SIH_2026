@@ -26,9 +26,13 @@
     touch-action: manipulation;
   }
 
-  /* Prevent awkward mobile tap flashes */
+  /* Prevent awkward mobile tap flashes and 300ms delay */
   * {
     -webkit-tap-highlight-color: transparent;
+  }
+
+  button, a, input, select, textarea {
+    touch-action: manipulation;
   }
 
   h1, h2, h3, h4, .serif {

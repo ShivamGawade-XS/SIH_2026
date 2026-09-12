@@ -19,6 +19,8 @@ import VerifiableCredentialModal from "@/components/VerifiableCredentialModal";
 import UnderCapPinClaimModal from "@/components/UnderCapPinClaimModal";
 import ExplainableQualityCard from "@/components/ExplainableQualityCard";
 import ApedaCertificateView from "@/components/ApedaCertificateView";
+import BlockchainStatusBadge from "@/components/BlockchainStatusBadge";
+import { getTxUrl } from "@/lib/contract-config";
 import { fetchBatchById, fetchBatchByQR } from "@/lib/contract";
 import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
 import { generateCertificatePDF } from "@/lib/pdf-certificate";
@@ -383,7 +385,10 @@ export default function ConsumerVerificationPage() {
             <div className="flex flex-col lg:flex-row gap-20">
               {/* Left Col: Cryptographic Proof */}
               <div className="w-full lg:w-1/2">
-                <p className="text-[10px] uppercase tracking-ultra text-warm-grey mb-2 font-semibold">{t("chainOfTrust")}</p>
+                <div className="flex flex-wrap items-center gap-3 mb-2">
+                  <p className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">{t("chainOfTrust")}</p>
+                  <BlockchainStatusBadge compact txHash={txHash} />
+                </div>
                 <h3 className="text-4xl md:text-5xl serif text-charcoal mb-8 font-normal">{t("immutableEvidence")}</h3>
                 <p className="text-xs text-warm-grey leading-relaxed mb-10">
                   Every honey batch is permanently anchored onto the Polygon PoS blockchain with cryptographic hashes matching the physical micro-QR seal on the jar.
@@ -454,7 +459,7 @@ export default function ConsumerVerificationPage() {
                     <span>W3C Credential (JSON-LD)</span>
                   </button>
                   <a
-                    href={`https://amoy.polygonscan.com/tx/${txHash || "0x98f4c2b1e7a6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0"}`}
+                    href={getTxUrl(txHash || "0x98f4c2b1e7a6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0")}
                     target="_blank"
                     rel="noreferrer"
                     className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-outline-luxury flex items-center justify-center gap-2"

@@ -15,9 +15,11 @@ import {
   Nfc,
   Radio,
   FileWarning,
+  ExternalLink,
 } from "lucide-react";
 import { saveComplaint } from "@/lib/registry";
 import { getSecureRandomInt } from "@/lib/crypto-utils";
+import { getTxUrl } from "@/lib/contract-config";
 
 interface UnderCapPinClaimModalProps {
   isOpen: boolean;
@@ -255,7 +257,15 @@ export default function UnderCapPinClaimModal({
               {claimTx && (
                 <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-left font-mono text-[11px] text-emerald-900 break-all space-y-1">
                   <p className="font-bold uppercase tracking-wider text-[10px] text-emerald-700">Proof-of-Burn Polygon Tx:</p>
-                  <p>{claimTx}</p>
+                  <a
+                    href={getTxUrl(claimTx)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-emerald-800 hover:text-emerald-950 underline font-semibold transition-colors"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                    <span>{claimTx}</span>
+                  </a>
                 </div>
               )}
 

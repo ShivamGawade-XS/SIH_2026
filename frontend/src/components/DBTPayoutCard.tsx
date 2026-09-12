@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { Landmark, CheckCircle2, ArrowRight, Wallet, ShieldCheck, Sparkles, ReceiptText, ExternalLink, Lock } from "lucide-react";
 import confetti from "canvas-confetti";
 import { getSecureRandomInt } from "@/lib/crypto-utils";
+import { getTxUrl } from "@/lib/contract-config";
+import BlockchainStatusBadge from "@/components/BlockchainStatusBadge";
 
 interface DBTPayoutCardProps {
   beekeeperName: string;
@@ -97,13 +99,11 @@ export default function DBTPayoutCard({
           </h3>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="px-3 py-1 bg-emerald-50 border border-emerald-300 text-emerald-800 text-[11px] font-mono font-bold flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> PFMS / APB Escrow
           </span>
-          <span className="px-3 py-1 bg-charcoal text-alabaster text-[11px] font-mono font-bold">
-            Polygon PoS
-          </span>
+          <BlockchainStatusBadge compact />
         </div>
       </div>
 
@@ -207,10 +207,18 @@ export default function DBTPayoutCard({
               <span>Milestone 3 Grant Disbursed: ₹{disbursedAmount.toLocaleString("en-IN")}</span>
             </div>
             <p className="text-[11px] text-warm-grey">UTR: <strong>{utrNumber}</strong></p>
-            <p className="text-[10px] text-charcoal/80 flex items-center gap-1">
-              <span>Polygon PoS:</span>
-              <code className="bg-emerald-100 px-1 text-[9px] font-bold">{txHash?.slice(0, 22)}...</code>
-            </p>
+            {txHash && (
+              <a
+                href={getTxUrl(txHash)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] text-emerald-700 flex items-center gap-1 hover:text-emerald-900 transition-colors"
+              >
+                <ExternalLink className="w-2.5 h-2.5 shrink-0" />
+                <span>On-Chain Proof:</span>
+                <code className="bg-emerald-100 px-1 text-[9px] font-bold">{txHash.slice(0, 20)}...</code>
+              </a>
+            )}
           </div>
         ) : isWithheld ? (
           <div className="px-5 py-3 bg-red-100 border-2 border-red-400 text-red-800 text-xs uppercase tracking-wider font-bold flex items-center gap-2 shrink-0">
