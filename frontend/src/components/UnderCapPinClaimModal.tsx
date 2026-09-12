@@ -33,32 +33,52 @@ export default function UnderCapPinClaimModal({
   const [claiming, setClaiming] = useState(false);
   const [claimStatus, setClaimStatus] = useState<"idle" | "claimed" | "tampered">("idle");
   const [claimTx, setClaimTx] = useState<string | null>(null);
+  const [tamperDetails, setTamperDetails] = useState<any>(null);
 
   if (!isOpen) return null;
 
-  const handleClaim = (e: React.FormEvent) => {
+  const handleClaim = async (e: React.FormEvent) => {
     e.preventDefault();
     if (pin.length < 4) return;
 
     setClaiming(true);
 
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/verify/seal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pin,
+          batchId,
+          qrToken,
+        }),
+      });
+      const result = await res.json();
       setClaiming(false);
 
-      // Tamper check simulation: PIN "0000" or already consumed triggers tamper alert
-      if (pin === "0000" || pin === "9999") {
-        setClaimStatus("tampered");
-      } else {
+      if (result.status === "claimed") {
         setClaimStatus("claimed");
-        setClaimTx(`0x${Date.now().toString(16).padEnd(64, "7")}`);
+        setClaimTx(result.details?.burnTxHash || `0x${Date.now().toString(16).padEnd(64, "7")}`);
         confetti({
           particleCount: 120,
           spread: 80,
           origin: { y: 0.6 },
           colors: ["#D4AF37", "#138808", "#FF9933", "#1A1A1A"],
         });
+      } else {
+        setClaimStatus("tampered");
+        setTamperDetails(result.details || null);
       }
-    }, 900);
+    } catch {
+      setClaiming(false);
+      // Fallback
+      if (pin === "0000" || pin === "9999") {
+        setClaimStatus("tampered");
+      } else {
+        setClaimStatus("claimed");
+        setClaimTx(`0x${Date.now().toString(16).padEnd(64, "7")}`);
+      }
+    }
   };
 
   return (
@@ -187,6 +207,13 @@ export default function UnderCapPinClaimModal({
               <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-left text-xs text-red-900 space-y-1">
                 <p className="font-bold">Safety Recommendation:</p>
                 <p>Do not consume this product. File an immediate complaint with KVIC Field Enforcement or return to point of sale.</p>
+                {tamperDetails && (
+                  <div className="mt-2 pt-2 border-t border-red-200/60 font-mono text-[10px] space-y-0.5 text-red-800">
+                    <p><strong>Originally Claimed:</strong> {new Date(tamperDetails.originallyClaimedAt).toLocaleString()}</p>
+                    <p><strong>Location:</strong> {tamperDetails.claimedLocation}</p>
+                    <p className="break-all"><strong>Tx:</strong> {tamperDetails.burnTxHash?.slice(0, 24)}...</p>
+                  </div>
+                )}
               </div>
 
               <button

@@ -17,6 +17,8 @@ import PollenInspector from "@/components/PollenInspector";
 import DBTPayoutCard from "@/components/DBTPayoutCard";
 import VerifiableCredentialModal from "@/components/VerifiableCredentialModal";
 import UnderCapPinClaimModal from "@/components/UnderCapPinClaimModal";
+import ExplainableQualityCard from "@/components/ExplainableQualityCard";
+import ApedaCertificateView from "@/components/ApedaCertificateView";
 import { fetchBatchById, fetchBatchByQR } from "@/lib/contract";
 import { exportHoneyBatchCredential } from "@/lib/vc-serializer";
 import { generateCertificatePDF } from "@/lib/pdf-certificate";
@@ -54,6 +56,7 @@ export default function ConsumerVerificationPage() {
   const [showTipModal, setShowTipModal] = useState(false);
   const [showVCModal, setShowVCModal] = useState(false);
   const [showPinClaimModal, setShowPinClaimModal] = useState(false);
+  const [showApedaModal, setShowApedaModal] = useState(false);
   const [reportSubmitted, setReportSubmitted] = useState(false);
   const [reportReason, setReportReason] = useState("Broken or damaged QR seal on lid");
   const [reportTicketId, setReportTicketId] = useState("CMP-2026-482");
@@ -353,6 +356,7 @@ export default function ConsumerVerificationPage() {
         <section className="py-24 px-6 md:px-12 lg:px-24 border-b border-charcoal/10 bg-white">
           <div className="max-w-6xl mx-auto space-y-16">
             <Scorecard report={labReport} />
+            <ExplainableQualityCard report={labReport} />
             <PollenInspector botanicalFlora={data.botanicalFlora || farmer.location} batchId={batch.batchId} />
             <NMRSpectrumViewer purityScore={batch.qualityScore} />
           </div>
@@ -428,12 +432,19 @@ export default function ConsumerVerificationPage() {
                     <span>{pdfLoading ? "Generating…" : t("downloadPDF")}</span>
                   </button>
                   <button
-                    onClick={handleDownloadAPEDA}
-                    disabled={apedaLoading}
-                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal flex items-center justify-center gap-2 transition-colors whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed"
+                    onClick={() => setShowApedaModal(true)}
+                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold border-2 border-gold bg-gold/10 hover:bg-gold hover:text-charcoal text-charcoal flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
                   >
                     <Globe className="w-4 h-4 text-gold shrink-0" />
-                    <span>{t("apedaPassport")}</span>
+                    <span>View APEDA Passport</span>
+                  </button>
+                  <button
+                    onClick={handleDownloadAPEDA}
+                    disabled={apedaLoading}
+                    className="w-full sm:w-auto py-3 px-5 text-[11px] uppercase tracking-wider font-bold btn-outline-luxury flex items-center justify-center gap-2 transition-colors whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    <Download className="w-4 h-4 text-gold shrink-0" />
+                    <span>{t("apedaPassport")} (PDF)</span>
                   </button>
                   <button
                     onClick={() => setShowVCModal(true)}
@@ -593,6 +604,13 @@ export default function ConsumerVerificationPage() {
           batchId={batch.batchId}
           qrToken={qrToken}
           farmerName={farmer.name}
+        />
+
+        {/* APEDA & AGMARK DIGITAL EXPORT CERTIFICATE MODAL */}
+        <ApedaCertificateView
+          data={data}
+          isOpen={showApedaModal}
+          onClose={() => setShowApedaModal(false)}
         />
       </main>
 

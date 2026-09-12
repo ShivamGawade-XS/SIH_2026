@@ -52,6 +52,33 @@ export default function LiveTelemetryStream() {
       console.warn("EventSource not supported or failed:", e);
     }
 
+    // Periodically poll internal HoneyChain IoT telemetry API route
+    const pollTelemetry = async () => {
+      try {
+        const res = await fetch("/api/iot/telemetry?hive_id=HIVE-WB-0391");
+        if (res.ok) {
+          const json = await res.json();
+          if (json.hive) {
+            setData((prev) => ({
+              ...prev,
+              weight_kg: json.hive.weight_kg,
+              internal_temp_c: json.hive.internal_temp_c,
+              humidity_percent: json.hive.humidity_percent,
+              acoustic_frequency_hz: json.hive.acoustic_frequency_hz,
+              status: json.hive.acoustic_classification || prev.status,
+              has_alert: json.hive.status === "Critical" || json.hive.status === "Warning",
+            }));
+            setConnected(true);
+          }
+        }
+      } catch {
+        // Graceful fallback to simulated values
+      }
+    };
+
+    pollTelemetry();
+    const pollInterval = setInterval(pollTelemetry, 3000);
+
     // Handle local controller event dispatching
     const handleLocalUpdate = (e: Event) => {
       const custom = e as CustomEvent<TelemetryPacket>;
@@ -80,6 +107,7 @@ export default function LiveTelemetryStream() {
     return () => {
       if (eventSource) eventSource.close();
       if (fallbackInterval) clearInterval(fallbackInterval);
+      if (pollInterval) clearInterval(pollInterval);
       window.removeEventListener("honeychain_iot_telemetry_update", handleLocalUpdate);
     };
   }, []);

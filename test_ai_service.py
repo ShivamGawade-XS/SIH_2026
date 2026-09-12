@@ -148,6 +148,34 @@ record(sig_valid, "Hardware Enclave: ATECC608A Silicon Signature Validated")
 sig_invalid = verify_enclave_signature("UNAUTHORIZED-DEVICE", "1234", "abcd")
 record(not sig_invalid, "Hardware Enclave: Unauthorized device rejected")
 
+# ─── Test 6: FSSAI Gazette 2020 Standards & Agmark Classification ──────────────
+from ai_service.fssai_standards import evaluate_fssai_compliance
+fssai_clean = evaluate_fssai_compliance({
+    "moisture_percent": 18.0, "hmf_mg_per_kg": 14.0, "reducing_sugars": 72.0,
+    "f_g_ratio": 1.15, "sucrose_percent": 2.0, "diastase_number": 14.0, "c4_sugars_percent": 0.8
+})
+record(fssai_clean["is_fssai_compliant"], "FSSAI 2020: Pure sample passes all statutory checks")
+record("Special Grade" in fssai_clean["agmark_grade"], "FSSAI 2020: High quality sample achieves Agmark Special Grade")
+record(fssai_clean["apeda_export_eligible"], "FSSAI 2020: Compliant sample eligible for APEDA export")
+
+fssai_bad = evaluate_fssai_compliance({
+    "moisture_percent": 22.5, "hmf_mg_per_kg": 95.0, "c4_sugars_percent": 12.0
+})
+record(not fssai_bad["is_fssai_compliant"], "FSSAI 2020: Adulterated sample fails statutory checks")
+record("Substandard" in fssai_bad["agmark_grade"], "FSSAI 2020: Adulterated sample classified as Substandard")
+
+# ─── Test 7: Explainable AI (XAI) & Bio-Acoustics ─────────────────────────────
+from ai_service.explainable import compute_honey_purity_attribution, explain_bioacoustic_signature
+xai_purity = compute_honey_purity_attribution(moisture=17.8, hmf=12.5, brix=81.0, diastase=15.0, sucrose=1.9, c4_sugars=0.8)
+record(len(xai_purity["feature_attributions"]) == 5, "XAI: Generates 5-factor marginal feature attribution")
+record(xai_purity["purity_score"] >= 90.0, "XAI: Raw organic batch achieves >90 purity score")
+
+acoustic_normal = explain_bioacoustic_signature(235.0)
+record("Thermoregulation" in acoustic_normal["harmonic_band"], "Bio-Acoustics: 235Hz correctly classified as brood thermoregulation")
+
+acoustic_swarm = explain_bioacoustic_signature(520.0)
+record("Pre-Swarm" in acoustic_swarm["harmonic_band"], "Bio-Acoustics: 520Hz correctly classified as pre-swarm warning")
+
 # ─── Summary ──────────────────────────────────────────────────────────────────
 total  = len(results)
 passed = sum(1 for ok, _ in results if ok)

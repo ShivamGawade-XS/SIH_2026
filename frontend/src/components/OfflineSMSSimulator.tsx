@@ -9,7 +9,7 @@ interface OfflineSMSSimulatorProps {
 }
 
 export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimulatorProps) {
-  const [channel, setChannel] = useState<"sms" | "ussd">("sms");
+  const [channel, setChannel] = useState<"sms" | "ussd" | "whatsapp">("whatsapp");
   const [queryText, setQueryText] = useState("VERIFY TT-2026-00001");
   const [lang, setLang] = useState<"en" | "hi" | "bn">("en");
   const [responseMsg, setResponseMsg] = useState<string | null>(null);
@@ -17,9 +17,25 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
 
   if (!isOpen) return null;
 
-  const handleSend = () => {
+  const handleSend = async () => {
     setIsSending(true);
     setResponseMsg(null);
+
+    if (channel === "whatsapp") {
+      try {
+        const res = await fetch("/api/webhook/whatsapp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: queryText, sender: "919876543210" }),
+        });
+        const data = await res.json();
+        setIsSending(false);
+        setResponseMsg(data.reply || "No reply from WhatsApp Bot");
+        return;
+      } catch (err) {
+        console.error("WhatsApp webhook call failed:", err);
+      }
+    }
 
     setTimeout(() => {
       setIsSending(false);
@@ -51,7 +67,7 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
           `*99*4941# KVIC HoneyChain:\n1. Status: VERIFIED PURE\n2. Batch: #001 (Litchi Honey)\n3. Farmer: Rajesh Verma (Bihar)\n4. Score: 94/100 (Grade A+)\nPress 0 for Voice Hindi`
         );
       }
-    }, 400);
+    }, 350);
   };
 
   return (
@@ -87,6 +103,15 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
         {/* Mode & Language Tabs */}
         <div className="flex justify-between items-center gap-2 mb-4">
           <div className="flex border border-charcoal/20">
+            <button
+              type="button"
+              onClick={() => { setChannel("whatsapp"); setQueryText("VERIFY TT-2026-00001"); }}
+              className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider ${
+                channel === "whatsapp" ? "bg-emerald-700 text-white" : "bg-white text-warm-grey hover:bg-alabaster"
+              }`}
+            >
+              WhatsApp Bot
+            </button>
             <button
               type="button"
               onClick={() => { setChannel("sms"); setQueryText("VERIFY TT-2026-00001"); }}
@@ -164,20 +189,27 @@ export default function OfflineSMSSimulator({ isOpen, onClose }: OfflineSMSSimul
           >
             Batch #2 (Sundarbans)
           </button>
+          <button
+            type="button"
+            onClick={() => setQueryText("HIVE")}
+            className="text-[10px] font-mono px-2 py-1 bg-[#F9F8F6] border border-charcoal/15 hover:border-gold text-charcoal"
+          >
+            HIVE Status Query
+          </button>
         </div>
 
         {/* Simulated Feature Phone Screen */}
         <div className="border-4 border-charcoal bg-[#1A261A] text-[#76E076] p-4 rounded-lg font-mono text-xs shadow-inner min-h-[140px] flex flex-col justify-between">
           <div className="flex justify-between items-center text-[9px] text-[#55A055] pb-2 border-b border-[#2A3F2A]">
             <span>SIGNAL: ■■■■ (BSNL/Jio)</span>
-            <span>{channel === "sms" ? "SMS GATEWAY: 56767" : "USSD GATEWAY"}</span>
+            <span>{channel === "whatsapp" ? "WHATSAPP BOT GATEWAY: +91-KVIC-HONEY" : channel === "sms" ? "SMS GATEWAY: 56767" : "USSD GATEWAY: *99*4941#"}</span>
           </div>
 
           <div className="py-3">
             {responseMsg ? (
               <div className="animate-in fade-in duration-300">
                 <p className="text-[10px] text-[#A0FFA0] mb-1 font-bold">
-                  {channel === "sms" ? "➔ INCOMING FROM MD-KVICGOV:" : "➔ USSD SESSION ACTIVE:"}
+                  {channel === "whatsapp" ? "➔ WHATSAPP CLOUD BOT REPLY:" : channel === "sms" ? "➔ INCOMING FROM MD-KVICGOV:" : "➔ USSD SESSION ACTIVE:"}
                 </p>
                 <p className="whitespace-pre-line leading-relaxed">{responseMsg}</p>
               </div>

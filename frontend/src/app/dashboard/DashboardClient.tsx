@@ -11,6 +11,7 @@ import MigratoryRoutePlanner from "@/components/MigratoryRoutePlanner";
 import PollinationCreditCalculator from "@/components/PollinationCreditCalculator";
 import VoiceFieldAssistant from "@/components/VoiceFieldAssistant";
 import PollenVisionAnalyzer from "@/components/PollenVisionAnalyzer";
+import HardwareDemoGuide from "@/components/HardwareDemoGuide";
 import { useLanguage } from "@/lib/LanguageContext";
 import { DEMO_BATCHES } from "@/lib/constants";
 import {
@@ -355,6 +356,7 @@ export default function DashboardClient({ user }: { user: SessionUser }) {
           </div>
 
           <div id="telemetry"><LiveTelemetryStream /></div>
+          <div id="hardware"><HardwareDemoGuide /></div>
           <div id="acoustic"><HiveAcousticAnalyzer /></div>
           <div id="voice"><VoiceFieldAssistant /></div>
           <div id="pollen"><PollenVisionAnalyzer /></div>

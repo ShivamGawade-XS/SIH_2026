@@ -104,8 +104,24 @@ contract HoneyChain is AccessControl, ReentrancyGuard {
     mapping(uint256 => bool)           private _farmerExists;
     mapping(uint256 => bool)           private _requestExists;
     mapping(uint256 => bool)           private _batchExists;
+    mapping(bytes32 => bool)           public burnedSeals;
 
     // ─── Events ───────────────────────────────────────────────────────────────
+    event TamperSealBurned(
+        uint256 indexed batchId,
+        bytes32 indexed sealHash,
+        uint256 timestamp,
+        string  burnLocation
+    );
+
+    event DbtSubsidyDisbursed(
+        uint256 indexed batchId,
+        uint256 indexed farmerId,
+        uint256 amountInr,
+        string  utrReference,
+        address indexed officer
+    );
+
     event FarmerRegistered(
         uint256 indexed farmerId,
         address indexed walletAddress,
@@ -701,5 +717,33 @@ contract HoneyChain is AccessControl, ReentrancyGuard {
 
     function totalBatches() external view returns (uint256) {
         return _batchIdCounter;
+    }
+
+    /**
+     * @notice Burns a single-use under-cap seal nonce to prevent physical jar refilling fraud
+     */
+    function burnTamperSeal(
+        uint256 batchId,
+        bytes32 sealHash,
+        string calldata location
+    ) external nonReentrant {
+        require(_batchExists[batchId], "HoneyChain: Batch does not exist");
+        require(!burnedSeals[sealHash], "HoneyChain: Tamper seal already burned");
+        burnedSeals[sealHash] = true;
+        emit TamperSealBurned(batchId, sealHash, block.timestamp, location);
+    }
+
+    /**
+     * @notice Logs official KVIC DBT subsidy disbursement linked to verified batch production
+     */
+    function recordDbtSubsidy(
+        uint256 batchId,
+        uint256 farmerId,
+        uint256 amountInr,
+        string calldata utrRef
+    ) external onlyRole(FIELD_OFFICER_ROLE) {
+        require(_batchExists[batchId], "HoneyChain: Batch does not exist");
+        require(_farmerExists[farmerId], "HoneyChain: Farmer does not exist");
+        emit DbtSubsidyDisbursed(batchId, farmerId, amountInr, utrRef, msg.sender);
     }
 }
