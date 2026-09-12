@@ -23,7 +23,9 @@ export function getTxUrl(txHash: string): string {
 
 /** Returns a Polygonscan link to the deployed contract */
 export function getContractUrl(): string {
-  return `${CONTRACT_CONFIG.explorerUrl}/address/${CONTRACT_CONFIG.address}`;
+  return CONTRACT_CONFIG.address
+    ? `${CONTRACT_CONFIG.explorerUrl}/address/${CONTRACT_CONFIG.address}`
+    : CONTRACT_CONFIG.explorerUrl;
 }
 
 /** Returns a Polygonscan link to a wallet address */

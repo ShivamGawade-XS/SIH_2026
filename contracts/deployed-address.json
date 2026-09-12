@@ -1,0 +1,9 @@
+{
+  "network": "hardhat",
+  "chainId": 137,
+  "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "deployTxHash": "0xf92107e71815072fcee7015990f1bd2635710a9c48b3bc0a293488f0b2c27559",
+  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "deployedAt": "2026-09-12T07:02:33.148Z",
+  "explorerUrl": "https://polygonscan.com/address/0x5FbDB2315678afecb367f032d93F642f64180aa3"
+}
