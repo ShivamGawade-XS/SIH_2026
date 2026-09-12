@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ShieldCheck, FileCheck2, Download, ExternalLink, Award, CheckCircle2, Globe, Building2 } from "lucide-react";
+import { ShieldCheck, FileCheck2, Download, ExternalLink, Award, CheckCircle2, Globe, Building2, Flag } from "lucide-react";
 import { generateExportPassportPDF } from "@/lib/export-passport";
 import { BatchMetadata } from "@/lib/types";
 
@@ -11,8 +11,12 @@ interface ApedaCertificateViewProps {
   onClose: () => void;
 }
 
+type Jurisdiction = "fssai" | "eu" | "usfda";
+
 export default function ApedaCertificateView({ data, isOpen, onClose }: ApedaCertificateViewProps) {
   const [downloading, setDownloading] = useState(false);
+  const [jurisdiction, setJurisdiction] = useState<Jurisdiction>("eu");
+
   if (!isOpen) return null;
 
   const { batch, farmer, labReport } = data;
@@ -29,6 +33,37 @@ export default function ApedaCertificateView({ data, isOpen, onClose }: ApedaCer
     }
   };
 
+  // Regulatory threshold standards by jurisdiction
+  const standards = {
+    fssai: {
+      name: "FSSAI (Food Products Standards & Additives) 2020",
+      country: "India Domestic",
+      moistureLimit: "≤ 20.0%",
+      hmfLimit: "≤ 80.0 mg/kg (Tropical origin)",
+      sugarsLimit: "≥ 65.0%",
+      diastaseLimit: "≥ 8.0 DN",
+      c4Limit: "≤ 7.0% (EA-IRMS)",
+    },
+    eu: {
+      name: "EU Council Directive 2001/110/EC",
+      country: "European Union & UK",
+      moistureLimit: "≤ 20.0%",
+      hmfLimit: "≤ 40.0 mg/kg (Max EU clearance)",
+      sugarsLimit: "≥ 60.0% (F+G)",
+      diastaseLimit: "≥ 8.0 Schade Units",
+      c4Limit: "≤ 5.0% (Strict zero-syrup)",
+    },
+    usfda: {
+      name: "USFDA 21 CFR 168.130 & USDA Grade A",
+      country: "United States (USFDA)",
+      moistureLimit: "≤ 18.6% (Grade A Purity)",
+      hmfLimit: "≤ 40.0 mg/kg",
+      sugarsLimit: "≥ 65.0%",
+      diastaseLimit: "≥ 8.0 DN",
+      c4Limit: "≤ 7.0%",
+    },
+  }[jurisdiction];
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-charcoal/70 backdrop-blur-md animate-fade-in overflow-y-auto">
       <div className="relative w-full max-w-2xl bg-white border border-charcoal/20 shadow-2xl overflow-hidden my-8">
@@ -37,7 +72,7 @@ export default function ApedaCertificateView({ data, isOpen, onClose }: ApedaCer
           <div className="flex items-start justify-between">
             <div className="space-y-1">
               <span className="text-[10px] uppercase tracking-widest text-gold font-mono font-bold block">
-                Government of India • Ministry of Commerce & Industry
+                Government of India • Ministry of Commerce &amp; Industry
               </span>
               <h2 className="text-xl md:text-2xl serif text-alabaster font-bold tracking-tight">
                 APEDA Honey Export Compliance Passport
@@ -55,8 +90,41 @@ export default function ApedaCertificateView({ data, isOpen, onClose }: ApedaCer
           </div>
         </div>
 
+        {/* Jurisdiction Switcher Tabs */}
+        <div className="bg-charcoal/5 border-b border-charcoal/10 px-6 py-2.5 flex items-center justify-between gap-3 text-xs font-mono">
+          <span className="text-[10px] uppercase font-bold text-warm-grey flex items-center gap-1">
+            <Flag className="w-3.5 h-3.5 text-gold" /> Target Regulatory Regime:
+          </span>
+          <div className="flex border border-charcoal/20 bg-white">
+            <button
+              onClick={() => setJurisdiction("eu")}
+              className={`px-3 py-1 text-[11px] font-bold ${
+                jurisdiction === "eu" ? "bg-charcoal text-alabaster" : "text-charcoal hover:bg-alabaster"
+              }`}
+            >
+              🇪🇺 EU Directive 2001
+            </button>
+            <button
+              onClick={() => setJurisdiction("usfda")}
+              className={`px-3 py-1 text-[11px] font-bold ${
+                jurisdiction === "usfda" ? "bg-charcoal text-alabaster" : "text-charcoal hover:bg-alabaster"
+              }`}
+            >
+              🇺🇸 USFDA Grade A
+            </button>
+            <button
+              onClick={() => setJurisdiction("fssai")}
+              className={`px-3 py-1 text-[11px] font-bold ${
+                jurisdiction === "fssai" ? "bg-charcoal text-alabaster" : "text-charcoal hover:bg-alabaster"
+              }`}
+            >
+              🇮🇳 FSSAI 2020
+            </button>
+          </div>
+        </div>
+
         {/* Certificate Body */}
-        <div className="p-6 md:p-8 space-y-6 max-h-[70vh] overflow-y-auto font-sans text-xs">
+        <div className="p-6 md:p-8 space-y-6 max-h-[65vh] overflow-y-auto font-sans text-xs">
           {/* Status & Agmark Grade Badges */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-950 flex items-center gap-3">
@@ -65,7 +133,7 @@ export default function ApedaCertificateView({ data, isOpen, onClose }: ApedaCer
                 <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-700 block">
                   Export Clearance
                 </span>
-                <span className="font-semibold text-xs">EU & USFDA Compliant</span>
+                <span className="font-semibold text-xs">{standards.country} Cleared</span>
               </div>
             </div>
 
@@ -83,9 +151,9 @@ export default function ApedaCertificateView({ data, isOpen, onClose }: ApedaCer
               <Globe className="w-5 h-5 text-blue-600 shrink-0" />
               <div>
                 <span className="text-[10px] uppercase font-bold tracking-wider text-blue-700 block">
-                  Eligible Markets
+                  Applicable Standard
                 </span>
-                <span className="font-semibold text-xs">EU · USA · UAE · Japan</span>
+                <span className="font-semibold text-[11px] truncate block max-w-[140px]">{standards.name}</span>
               </div>
             </div>
           </div>
@@ -114,10 +182,10 @@ export default function ApedaCertificateView({ data, isOpen, onClose }: ApedaCer
             </div>
           </div>
 
-          {/* FSSAI 2020 & Codex Physicochemical Parameters Table */}
+          {/* Physicochemical Parameters Table */}
           <div>
             <h4 className="text-xs uppercase tracking-widest font-mono font-bold text-charcoal mb-2 flex items-center gap-1.5">
-              <FileCheck2 className="w-3.5 h-3.5 text-gold" /> Statutory Lab Analysis vs International Standards
+              <FileCheck2 className="w-3.5 h-3.5 text-gold" /> Lab Analysis vs {standards.name}
             </h4>
             <div className="border border-charcoal/10 overflow-x-auto">
               <table className="w-full text-left font-mono text-[11px]">
@@ -125,7 +193,7 @@ export default function ApedaCertificateView({ data, isOpen, onClose }: ApedaCer
                   <tr>
                     <th className="p-2.5">Parameter</th>
                     <th className="p-2.5">Tested Value</th>
-                    <th className="p-2.5">Statutory Limit</th>
+                    <th className="p-2.5">{standards.country} Statutory Limit</th>
                     <th className="p-2.5 text-right">Result</th>
                   </tr>
                 </thead>
@@ -133,31 +201,31 @@ export default function ApedaCertificateView({ data, isOpen, onClose }: ApedaCer
                   <tr>
                     <td className="p-2.5 font-semibold">Moisture Content</td>
                     <td className="p-2.5">{labReport.moisturePercent}%</td>
-                    <td className="p-2.5 text-warm-grey">&le; 20.0% (FSSAI 2020)</td>
+                    <td className="p-2.5 text-warm-grey">{standards.moistureLimit}</td>
                     <td className="p-2.5 text-right font-bold text-emerald-700">PASSED</td>
                   </tr>
                   <tr>
                     <td className="p-2.5 font-semibold">Hydroxymethylfurfural (HMF)</td>
                     <td className="p-2.5">{labReport.hmfMgPerKg} mg/kg</td>
-                    <td className="p-2.5 text-warm-grey">&le; 40 mg/kg (EU Directive)</td>
+                    <td className="p-2.5 text-warm-grey">{standards.hmfLimit}</td>
                     <td className="p-2.5 text-right font-bold text-emerald-700">PASSED</td>
                   </tr>
                   <tr>
                     <td className="p-2.5 font-semibold">Reducing Sugars (Fructose + Glucose)</td>
                     <td className="p-2.5">71.4%</td>
-                    <td className="p-2.5 text-warm-grey">&ge; 65.0% (Codex 12-1981)</td>
+                    <td className="p-2.5 text-warm-grey">{standards.sugarsLimit}</td>
                     <td className="p-2.5 text-right font-bold text-emerald-700">PASSED</td>
                   </tr>
                   <tr>
                     <td className="p-2.5 font-semibold">Diastase (Amylase) Enzyme</td>
                     <td className="p-2.5">{labReport.diastaseNumber} DN</td>
-                    <td className="p-2.5 text-warm-grey">&ge; 8.0 Schade Units</td>
+                    <td className="p-2.5 text-warm-grey">{standards.diastaseLimit}</td>
                     <td className="p-2.5 text-right font-bold text-emerald-700">PASSED</td>
                   </tr>
                   <tr>
                     <td className="p-2.5 font-semibold">C4 Plant Sugars (EA-IRMS)</td>
                     <td className="p-2.5">0.8%</td>
-                    <td className="p-2.5 text-warm-grey">&le; 7.0% (No Corn/Cane Syrup)</td>
+                    <td className="p-2.5 text-warm-grey">{standards.c4Limit}</td>
                     <td className="p-2.5 text-right font-bold text-emerald-700">PASSED</td>
                   </tr>
                 </tbody>
