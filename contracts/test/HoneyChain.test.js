@@ -352,4 +352,108 @@ describe("HoneyChain — 3-Role Approval Workflow", function () {
       expect(chain[2].entity).to.include("Jaipur");
     });
   });
+
+  // ─── Direct Field Officer Minting (mintBatch) ────────────────────────────
+
+  describe("Direct Field Officer Minting: mintBatch()", function () {
+    it("allows approved Field Officer to register a farmer and mint directly", async () => {
+      const tx = await contract.connect(fieldOfficer).mintBatch(
+        101,
+        1, // farmerId 1 (registered in beforeEach)
+        200,
+        VALID_CID_2,
+        95,
+        "Grade A+ (Premium Raw Organic)",
+        "TT-DEMO-101"
+      );
+      await tx.wait();
+
+      const batch = await contract.getBatch(101);
+      expect(batch.batchId).to.equal(101n);
+      expect(batch.totalKg).to.equal(200n);
+      expect(batch.qualityScore).to.equal(95);
+      expect(batch.isAuthentic).to.equal(true);
+      expect(batch.isRevoked).to.equal(false);
+
+      const contributors = await contract.getBatchContributors(101);
+      expect(contributors.farmerIds[0]).to.equal(1n);
+      expect(contributors.contributions[0]).to.equal(200n);
+    });
+
+    it("blocks stranger wallet from minting a batch (reverts)", async () => {
+      await expect(
+        contract.connect(stranger).mintBatch(
+          102,
+          1,
+          200,
+          VALID_CID_2,
+          90,
+          "Grade A",
+          "TT-DEMO-102"
+        )
+      ).to.be.reverted;
+    });
+
+    it("reverts when minting with an unregistered farmer ID", async () => {
+      await expect(
+        contract.connect(fieldOfficer).mintBatch(
+          103,
+          999, // Non-existent farmer ID
+          150,
+          VALID_CID_2,
+          88,
+          "Grade A",
+          "TT-DEMO-103"
+        )
+      ).to.be.revertedWith("HoneyChain: Farmer not registered");
+    });
+
+    it("reverts when attempting to mint with a duplicate batchId", async () => {
+      await contract.connect(fieldOfficer).mintBatch(
+        104,
+        1,
+        100,
+        VALID_CID_2,
+        92,
+        "Grade A",
+        "TT-DEMO-104"
+      );
+
+      await expect(
+        contract.connect(fieldOfficer).mintBatch(
+          104, // Duplicate ID
+          1,
+          100,
+          VALID_CID_3,
+          92,
+          "Grade A",
+          "TT-DEMO-104-DUP"
+        )
+      ).to.be.revertedWith("HoneyChain: Batch ID already exists");
+    });
+
+    it("reverts when attempting to mint with a duplicate QR token", async () => {
+      await contract.connect(fieldOfficer).mintBatch(
+        105,
+        1,
+        100,
+        VALID_CID_2,
+        92,
+        "Grade A",
+        "TT-SAME-QR"
+      );
+
+      await expect(
+        contract.connect(fieldOfficer).mintBatch(
+          106,
+          1,
+          100,
+          VALID_CID_3,
+          92,
+          "Grade A",
+          "TT-SAME-QR"
+        )
+      ).to.be.revertedWith("HoneyChain: QR token already assigned");
+    });
+  });
 });

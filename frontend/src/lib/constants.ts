@@ -3,12 +3,10 @@
  */
 
 export const HONEYCHAIN_CONTRACT_ADDRESS =
-  process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "";
 
 export const POLYGON_AMOY_RPC =
   process.env.NEXT_PUBLIC_RPC_URL || "https://rpc-amoy.polygon.technology";
-
-export const POLYGON_SEPOLIA_RPC = POLYGON_AMOY_RPC;
 
 export const HONEYCHAIN_ABI = [
   "function totalFarmers() view returns (uint256)",
@@ -21,6 +19,7 @@ export const HONEYCHAIN_ABI = [
   "function registerFarmer(address walletAddress, string name, string location, string cooperativeId, string ipfsProfileHash) returns (uint256)",
   "function submitHarvest(string floraSource, uint256 quantityKg, string ipfsMetadataHash) returns (uint256)",
   "function approveHarvestAndMint(uint256 requestId, string ipfsMetadataHash, uint8 qualityScore, string grade, string qrToken) returns (uint256)",
+  "function mintBatch(uint256 batchId, uint256 farmerId, uint256 totalKg, string ipfsMetadataHash, uint8 qualityScore, string grade, string qrToken) returns (uint256)",
   "function addCustody(uint256 batchId, string entity, string action)",
   "function flagFraud(uint256 batchId, string reason)",
   "function resolveDispute(uint256 batchId, bool restoreAuthentic, string resolutionRemarks)",
@@ -28,7 +27,7 @@ export const HONEYCHAIN_ABI = [
   "event FarmerRegistered(uint256 indexed farmerId, address indexed walletAddress, string name, string location, address registeredBy)",
   "event HarvestSubmitted(uint256 indexed requestId, uint256 indexed farmerId, address indexed beekeeper, uint256 quantityKg, string floraSource, string ipfsMetadataHash)",
   "event HarvestApproved(uint256 indexed requestId, uint256 indexed batchId, address indexed officer, uint8 qualityScore, string grade)",
-  "event BatchMinted(uint256 indexed batchId, uint256 indexed requestId, uint256 indexed farmerId, string ipfsMetadataHash, uint8 qualityScore, string grade, address mintedBy)",
+  "event BatchMinted(uint256 indexed batchId, uint256 indexed requestId, uint256[] farmerIds, uint256 totalKg, string ipfsMetadataHash, uint8 qualityScore, string grade, address mintedBy)",
   "event CustodyLogged(uint256 indexed batchId, string entity, string action, address loggedBy)",
   "event BatchRevoked(uint256 indexed batchId, address revokedBy)"
 ];

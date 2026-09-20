@@ -148,7 +148,7 @@ export default function LiveTelemetryStream() {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] uppercase tracking-ultra text-warm-grey">
-                National Bee Board • LoRaWAN-Compatible IoT Telemetry Feed
+                National Bee Board &bull; [SIMULATED] LoRaWAN IoT Telemetry Feed
               </span>
               <span className={`w-2 h-2 rounded-full ${
                 hasAnomaly
@@ -164,7 +164,7 @@ export default function LiveTelemetryStream() {
 
         <div className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 text-[10px] font-mono uppercase tracking-widest text-gold">
           <Activity className="w-3.5 h-3.5 text-gold" />
-          <span>{connected ? "Live SSE Stream Active" : "Simulated Local Loop"}</span>
+          <span>{connected ? "Live Stream (Simulated)" : "SIMULATED Local Loop"}</span>
         </div>
       </div>
 

@@ -56,7 +56,7 @@ export default function VerifySearchPage() {
       return;
     }
 
-    router.push(`/verify/1?qr=${encodeURIComponent(clean)}`);
+    router.push(`/verify/lookup?qr=${encodeURIComponent(clean)}`);
   };
 
   const sampleBatches = [

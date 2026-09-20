@@ -429,6 +429,72 @@ contract HoneyChain is AccessControl, ReentrancyGuard {
     }
 
     /**
+     * @notice Direct Batch Minting by authorized Field Officer
+     * @param batchId          Target batch ID
+     * @param farmerId         Contributing registered beekeeper ID
+     * @param totalKg          Total harvest weight in kg
+     * @param ipfsMetadataHash Full verified laboratory & provenance metadata IPFS CID (>= 44 chars)
+     * @param qualityScore     AI / Lab Purity Score (0-100)
+     * @param grade            Grade classification string
+     * @param qrToken          Unique physical QR token identifier
+     */
+    function mintBatch(
+        uint256 batchId,
+        uint256 farmerId,
+        uint256 totalKg,
+        string  calldata ipfsMetadataHash,
+        uint8   qualityScore,
+        string  calldata grade,
+        string  calldata qrToken
+    ) external onlyRole(FIELD_OFFICER_ROLE) returns (uint256) {
+        require(batchId > 0,                          "HoneyChain: Batch ID must be > 0");
+        require(!_batchExists[batchId],               "HoneyChain: Batch ID already exists");
+        require(_farmerExists[farmerId],              "HoneyChain: Farmer not registered");
+        require(totalKg > 0,                          "HoneyChain: Quantity must be > 0");
+        require(qualityScore <= 100,                  "HoneyChain: Quality score must be 0-100");
+        require(bytes(qrToken).length > 0,            "HoneyChain: QR token cannot be empty");
+        require(qrToBatch[qrToken] == 0,              "HoneyChain: QR token already assigned");
+        require(bytes(ipfsMetadataHash).length >= 44, "HoneyChain: Invalid IPFS metadata CID length");
+
+        if (batchId > _batchIdCounter) {
+            _batchIdCounter = batchId;
+        }
+
+        uint256[] memory initFarmerIds    = new uint256[](1);
+        uint256[] memory initContribution = new uint256[](1);
+        initFarmerIds[0]    = farmerId;
+        initContribution[0] = totalKg;
+
+        batches[batchId].batchId          = batchId;
+        batches[batchId].requestId        = 0;
+        batches[batchId].farmerIds        = initFarmerIds;
+        batches[batchId].contributionKg   = initContribution;
+        batches[batchId].totalKg          = totalKg;
+        batches[batchId].harvestTimestamp = block.timestamp;
+        batches[batchId].ipfsMetadataHash = ipfsMetadataHash;
+        batches[batchId].qualityScore     = qualityScore;
+        batches[batchId].grade            = grade;
+        batches[batchId].isAuthentic      = true;
+        batches[batchId].isDisputed       = false;
+        batches[batchId].disputeReason    = "";
+        batches[batchId].flaggedBy        = address(0);
+        batches[batchId].isRevoked        = false;
+
+        _batchExists[batchId] = true;
+        qrToBatch[qrToken]    = batchId;
+
+        _custodyChain[batchId].push(CustodyEntry({
+            actor:     msg.sender,
+            entity:    "Field Inspection Station",
+            timestamp: block.timestamp,
+            action:    "Direct Harvest Verified & Minted on HoneyChain"
+        }));
+
+        emit BatchMinted(batchId, 0, initFarmerIds, totalKg, ipfsMetadataHash, qualityScore, grade, msg.sender);
+        return batchId;
+    }
+
+    /**
      * @notice Add an additional beekeeper's honey contribution to an existing pooled batch.
      * @dev Reflects cooperative collection reality: honey from multiple farmers is pooled
      *      before processing. Callable only by Field Officers who witnessed the collection.

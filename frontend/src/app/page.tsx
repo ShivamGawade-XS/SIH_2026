@@ -72,29 +72,29 @@ export default function HomePage() {
             <div className="flex items-center gap-2 mb-6">
               <span className="w-1.5 h-1.5 bg-gold rounded-full" />
               <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-mono">
-                {t("statsHeader")}
+                Live Traceability Ledger &bull; Polygon Amoy Testnet Demo
               </span>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="border-t border-white/15 pt-6">
-                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">{t("statsBeekeepers")}</p>
-                <p className="text-4xl serif text-gold font-bold">14,240+</p>
-                <p className="text-[10px] text-taupe/70 mt-1 font-mono">{t("statsBeekeepersSub")}</p>
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Registered Beekeepers</p>
+                <p className="text-4xl serif text-gold font-bold">2</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">KVIC Verified Demo Producers</p>
               </div>
               <div className="border-t border-white/15 pt-6">
-                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">{t("statsBatches")}</p>
-                <p className="text-4xl serif text-alabaster font-bold">1.8M+</p>
-                <p className="text-[10px] text-taupe/70 mt-1 font-mono">{t("statsBatchesSub")}</p>
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Batches Minted</p>
+                <p className="text-4xl serif text-alabaster font-bold">2</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">On-Chain Polygon Amoy Batches</p>
               </div>
               <div className="border-t border-white/15 pt-6">
-                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">{t("statsCompliance")}</p>
-                <p className="text-4xl serif text-emerald-400 font-bold">99.4%</p>
-                <p className="text-[10px] text-taupe/70 mt-1 font-mono">{t("statsComplianceSub")}</p>
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Blockchain Network</p>
+                <p className="text-4xl serif text-emerald-400 font-bold">Amoy</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">Chain ID: 80002 (Polygon PoS)</p>
               </div>
               <div className="border-t border-white/15 pt-6">
-                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">{t("statsScans")}</p>
-                <p className="text-4xl serif text-gold font-bold">4.2M+</p>
-                <p className="text-[10px] text-taupe/70 mt-1 font-mono">{t("statsScansSub")}</p>
+                <p className="text-[10px] uppercase tracking-widest text-warm-grey mb-1 font-semibold">Deployment State</p>
+                <p className="text-4xl serif text-gold font-bold">Demo</p>
+                <p className="text-[10px] text-taupe/70 mt-1 font-mono">SIH 2026 Testnet Demo</p>
               </div>
             </div>
           </div>

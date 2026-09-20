@@ -31,7 +31,7 @@ export default function Footer() {
           {/* Col 3 */}
           <div className="flex flex-col items-start md:items-end">
             <div className="bg-alabaster text-charcoal px-4 py-2 font-bold text-xs uppercase tracking-widest mb-4">
-              SIH 2026 Finalist
+              SIH 2026 &middot; Team Crimson Syndicate
             </div>
             <p className="text-[10px] text-warm-grey uppercase tracking-widest">Problem Statement: SIH26021</p>
             <p className="text-xs text-taupe/80 mt-2">Lead Developer: <span className="text-gold font-medium">Shivam Gawade</span></p>

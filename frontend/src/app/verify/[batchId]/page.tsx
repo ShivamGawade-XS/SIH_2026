@@ -37,6 +37,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { formatDeterministicDate } from "@/lib/utils";
 import { getSecureRandomInt } from "@/lib/crypto-utils";
 import confetti from "canvas-confetti";
+import Link from "next/link";
 import {
   ShieldCheck,
   CheckCircle2,
@@ -47,15 +48,29 @@ import {
   Heart,
   Globe,
   FileText,
+  AlertTriangle,
+  QrCode,
+  ShieldAlert,
 } from "lucide-react";
 
 export default function ConsumerVerificationPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const qrParam = searchParams.get("qr");
+  const demoCityParam = searchParams.get("demoCity");
   const batchIdNum = Number(params.batchId) || 1;
 
   const [data, setData] = useState<BatchMetadata | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [cloneAlert, setCloneAlert] = useState<{
+    isClone: boolean;
+    warningMessage?: string;
+    distanceKm?: number;
+    timeDeltaSeconds?: number;
+    impliedSpeedKmh?: number;
+  } | null>(null);
+  const [demoLocation, setDemoLocation] = useState<string | null>(null);
+
   const { lang, t } = useLanguage();
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [copiedTx, setCopiedTx] = useState(false);
@@ -74,11 +89,51 @@ export default function ConsumerVerificationPage() {
   const [apedaLoading, setApedaLoading] = useState(false);
 
   useEffect(() => {
-    if (qrParam) {
-      fetchBatchByQR(qrParam).then((res) => setData(res));
-    } else {
-      fetchBatchById(batchIdNum).then((res) => setData(res));
-    }
+    setLoading(true);
+    const fetchPromise = qrParam
+      ? fetchBatchByQR(qrParam)
+      : fetchBatchById(batchIdNum);
+
+    fetchPromise
+      .then((res) => {
+        setData(res);
+        if (res) {
+          // Record scan for clone detection
+          fetch("/api/verify/scan", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              batchId: res.batchId,
+              qrToken: res.qrToken,
+              demoCity: demoCityParam,
+            }),
+          })
+            .then((r) => r.json())
+            .then((scanRes) => {
+              if (scanRes.isClone) {
+                setCloneAlert({
+                  isClone: true,
+                  warningMessage: scanRes.warningMessage || "This QR was scanned in two places that are too far apart. It may be copied.",
+                  distanceKm: scanRes.distanceKm,
+                  timeDeltaSeconds: scanRes.timeDeltaSeconds,
+                  impliedSpeedKmh: scanRes.impliedSpeedKmh,
+                });
+              }
+              if (scanRes.isDemoLocation) {
+                setDemoLocation(scanRes.locationCity || demoCityParam);
+              }
+            })
+            .catch(() => {
+              // Ignore background scan recording errors
+            });
+        }
+      })
+      .catch(() => {
+        setData(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
     const unsubscribe = subscribeToBatchUpdates((updated) => {
       setData((prev) => {
@@ -93,7 +148,7 @@ export default function ConsumerVerificationPage() {
     return () => {
       unsubscribe();
     };
-  }, [batchIdNum, qrParam]);
+  }, [batchIdNum, qrParam, demoCityParam]);
 
   const handleSpeakAudio = () => {
     if (!data || typeof window === "undefined" || !("speechSynthesis" in window)) return;
@@ -128,7 +183,7 @@ export default function ConsumerVerificationPage() {
     window.speechSynthesis.speak(utterance);
   };
 
-  if (!data) {
+  if (loading) {
     return (
       <div className="min-h-screen flex flex-col justify-between bg-[#F9F8F6]">
         <Navbar />
@@ -139,7 +194,7 @@ export default function ConsumerVerificationPage() {
             <div className="h-48 w-full bg-white border-2 border-charcoal/10 p-8 flex flex-col justify-center items-center gap-3">
               <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
               <p className="text-xs uppercase tracking-widest text-warm-grey font-bold">
-                Querying Polygon Amoy Ledger & IPFS Provenance...
+                Querying Polygon Amoy Ledger &amp; IPFS Provenance...
               </p>
             </div>
           </div>
@@ -149,7 +204,74 @@ export default function ConsumerVerificationPage() {
     );
   }
 
-  const { farmer, batch, custodyChain, labReport, qrToken, txHash } = data;
+  // Clear RED NOT FOUND State if batch doesn't exist on chain / database
+  if (!loading && !data) {
+    return (
+      <div className="min-h-screen flex flex-col justify-between bg-[#F9F8F6]">
+        <Navbar />
+        <main className="py-16 sm:py-24 px-4 sm:px-6 md:px-12 max-w-3xl mx-auto w-full flex-1 flex flex-col justify-center">
+          <div className="border-2 border-red-500/40 bg-white p-8 sm:p-12 shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-2 bg-red-600" />
+
+            <div className="flex flex-col items-center text-center space-y-6">
+              <div className="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center border-2 border-red-300 shadow-sm">
+                <AlertTriangle className="w-8 h-8" />
+              </div>
+
+              <div className="space-y-2">
+                <span className="px-3 py-1 bg-red-100 text-red-700 text-[10px] font-mono uppercase tracking-widest font-bold inline-block border border-red-200">
+                  Verification Failed &bull; Unregistered Identifier
+                </span>
+                <h1 className="text-3xl sm:text-4xl font-serif text-charcoal font-bold">
+                  NOT FOUND ON CHAIN
+                </h1>
+                <p className="text-sm sm:text-base text-red-600 font-bold max-w-lg mx-auto">
+                  This jar could not be verified.
+                </p>
+                <p className="text-xs text-warm-grey max-w-md mx-auto leading-relaxed">
+                  The requested batch ID or QR token was not found on the Polygon Amoy blockchain ledger. It may be unminted, malformed, or an unauthorized copy.
+                </p>
+              </div>
+
+              <div className="w-full max-w-md bg-neutral-50 border border-charcoal/10 p-4 font-mono text-xs space-y-2 text-left">
+                <div className="flex justify-between border-b border-charcoal/5 pb-2">
+                  <span className="text-warm-grey uppercase">Queried Identifier</span>
+                  <span className="font-bold text-charcoal">{qrParam ? `QR: ${qrParam}` : `Batch #${batchIdNum}`}</span>
+                </div>
+                <div className="flex justify-between border-b border-charcoal/5 pb-2">
+                  <span className="text-warm-grey uppercase">Ledger Network</span>
+                  <span className="text-charcoal">Polygon Amoy (Chain ID 80002)</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-warm-grey uppercase">Verification Status</span>
+                  <span className="text-red-600 font-bold">REVERT / NOT RECORDED</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md pt-4">
+                <Link
+                  href="/verify"
+                  className="flex-1 py-3 px-6 bg-charcoal hover:bg-black text-white text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2 transition-colors shadow-sm"
+                >
+                  <QrCode className="w-4 h-4 text-gold" />
+                  <span>Scan Another Jar</span>
+                </Link>
+                <Link
+                  href="/"
+                  className="flex-1 py-3 px-6 border border-charcoal/20 hover:border-charcoal text-charcoal text-xs uppercase tracking-widest font-bold flex items-center justify-center transition-colors"
+                >
+                  Return Home
+                </Link>
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  const { farmer, batch, custodyChain, labReport, qrToken, txHash } = data!;
   const harvestDate = formatDeterministicDate(batch.harvestTimestamp);
 
   const handleCopyTx = () => {
@@ -169,7 +291,7 @@ export default function ConsumerVerificationPage() {
   };
 
   const handleDownloadVC = () => {
-    const vc = exportHoneyBatchCredential(data);
+    const vc = exportHoneyBatchCredential(data!);
     const blob = new Blob([JSON.stringify(vc, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -182,7 +304,7 @@ export default function ConsumerVerificationPage() {
   const handleDownloadPDF = () => {
     setPdfLoading(true);
     try {
-      generateCertificatePDF(data);
+      generateCertificatePDF(data!);
       confetti({
         particleCount: 50,
         spread: 60,
@@ -200,7 +322,7 @@ export default function ConsumerVerificationPage() {
   const handleDownloadAPEDA = () => {
     setApedaLoading(true);
     try {
-      generateExportPassportPDF(data);
+      generateExportPassportPDF(data!);
       confetti({
         particleCount: 50,
         spread: 60,
@@ -219,6 +341,55 @@ export default function ConsumerVerificationPage() {
     <div className="min-h-screen flex flex-col justify-between">
       <Navbar />
 
+      {/* CLONE DETECTION WARNING BANNER (Phase 2B) */}
+      {cloneAlert && (
+        <div className="bg-amber-500/15 border-b-2 border-amber-600 text-amber-950 px-4 sm:px-6 py-4 shadow-sm">
+          <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5 animate-bounce" />
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-bold text-sm text-amber-900 uppercase tracking-wide">
+                    ⚠️ CLONE DETECTION WARNING
+                  </span>
+                  <span className="px-2 py-0.5 bg-amber-200 text-amber-900 text-[10px] font-mono font-bold uppercase tracking-wider rounded">
+                    Geo-Velocity Teleportation Flagged
+                  </span>
+                  {demoLocation && (
+                    <span className="px-2 py-0.5 bg-amber-100 border border-amber-400 text-amber-900 text-[10px] font-mono font-bold uppercase tracking-wider rounded">
+                      DEMO LOCATION: {demoLocation}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-amber-900 font-semibold mt-1">
+                  This QR was scanned in two places that are too far apart. It may be copied.
+                </p>
+                {cloneAlert.distanceKm && cloneAlert.timeDeltaSeconds && (
+                  <p className="text-[11px] font-mono text-amber-800 mt-0.5">
+                    Physical Impossible Travel: ~{cloneAlert.distanceKm} km apart within {cloneAlert.timeDeltaSeconds}s (implied velocity: {cloneAlert.impliedSpeedKmh} km/h)
+                  </p>
+                )}
+              </div>
+            </div>
+            <span className="text-[10px] uppercase font-mono tracking-widest text-amber-900 bg-amber-200/80 px-3 py-1.5 rounded font-bold border border-amber-300 shrink-0">
+              SUSPICIOUS QR FLAGGED
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* DEMO LOCATION INDICATOR (When no clone alert) */}
+      {!cloneAlert && demoLocation && (
+        <div className="bg-amber-500/10 border-b border-amber-500/20 text-amber-900 px-4 sm:px-6 py-2 text-xs font-mono">
+          <div className="max-w-6xl mx-auto flex items-center gap-2">
+            <span className="font-bold uppercase tracking-wider text-[10px] bg-amber-200/90 text-amber-900 px-2 py-0.5 rounded border border-amber-300">
+              DEMO LOCATION
+            </span>
+            <span>Simulated Scan Location Override: <strong>{demoLocation}</strong></span>
+          </div>
+        </div>
+      )}
+
       <main className="flex-1">
         {/* 1. HERO SECTION */}
         <section className="py-12 sm:py-20 md:py-24 px-4 sm:px-6 md:px-12 lg:px-24 border-b border-charcoal/10">
@@ -228,7 +399,7 @@ export default function ConsumerVerificationPage() {
                 <div className="flex flex-wrap items-center gap-3 mb-4">
                   <span className="h-px w-8 bg-gold" />
                   <span className="text-[10px] uppercase tracking-ultra text-warm-grey font-semibold">
-                    KVIC • National Bee Board • {qrToken}
+                    KVIC &bull; National Bee Board &bull; {qrToken}
                   </span>
                   <GITagBadge
                     location={farmer.location}
@@ -386,9 +557,9 @@ export default function ConsumerVerificationPage() {
           <div className="max-w-6xl mx-auto space-y-16">
             <Scorecard report={labReport} />
             <ExplainableQualityCard report={labReport} />
-            <MultiSignalFusionCard batchId={batch.batchId} initialScore={batch.qualityScore} flowerSource={data.botanicalFlora || farmer.location} />
+            <MultiSignalFusionCard batchId={batch.batchId} initialScore={batch.qualityScore} flowerSource={data!.botanicalFlora || farmer.location} />
             <ShelfLifeDecayPredictor batchId={batch.batchId} initialHmf={Number(labReport.hmfMgPerKg) || 8.4} initialDiastase={labReport.diastaseNumber || 18.2} bottlingDate={harvestDate} />
-            <PollenInspector botanicalFlora={data.botanicalFlora || farmer.location} batchId={batch.batchId} />
+            <PollenInspector botanicalFlora={data!.botanicalFlora || farmer.location} batchId={batch.batchId} />
             <NMRSpectrumViewer purityScore={batch.qualityScore} />
           </div>
         </section>
@@ -396,7 +567,7 @@ export default function ConsumerVerificationPage() {
         {/* 5B. PHYSICAL TRANSIT & SUPPLY CHAIN ROUTE REPLAY */}
         <section className="py-20 px-6 md:px-12 lg:px-24 border-b border-charcoal/10 bg-[#F9F8F6]">
           <div className="max-w-6xl mx-auto space-y-12">
-            <SupplyChainMapReplay batchId={batch.batchId} custodyChain={custodyChain} botanicalOrigin={data.botanicalFlora || farmer.location} />
+            <SupplyChainMapReplay batchId={batch.batchId} custodyChain={custodyChain} botanicalOrigin={data!.botanicalFlora || farmer.location} />
             <DBTPayoutCard
               beekeeperName={farmer.name}
               cooperativeId={farmer.cooperativeId}
@@ -647,7 +818,7 @@ export default function ConsumerVerificationPage() {
         <VerifiableCredentialModal
           isOpen={showVCModal}
           onClose={() => setShowVCModal(false)}
-          batch={data}
+          batch={data!}
         />
 
         {/* UNDER-CAP PIN CLAIM & JAR BURN MODAL */}
@@ -661,7 +832,7 @@ export default function ConsumerVerificationPage() {
 
         {/* APEDA & AGMARK DIGITAL EXPORT CERTIFICATE MODAL */}
         <ApedaCertificateView
-          data={data}
+          data={data!}
           isOpen={showApedaModal}
           onClose={() => setShowApedaModal(false)}
         />

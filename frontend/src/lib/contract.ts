@@ -67,13 +67,19 @@ export async function getSignerContract(): Promise<{ contract: ethers.Contract; 
 }
 
 /**
- * Fetch batch metadata by QR token with fallback cascade: DB API -> Smart Contract -> LocalStorage -> Demo
+ * Fetch batch metadata by QR token with fallback cascade: DB API -> Smart Contract -> LocalStorage -> Demo (Exact match only)
  */
-export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
+export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata | null> {
+  if (!qrToken || qrToken.trim() === "") {
+    return null;
+  }
+
+  const normalizedQR = qrToken.trim();
+
   // 1. Try DB API first (matches either numeric ID or QR token string)
   if (typeof window !== "undefined") {
     try {
-      const res = await fetch(`/api/batches/${encodeURIComponent(qrToken)}`, { cache: "no-store" });
+      const res = await fetch(`/api/batches/${encodeURIComponent(normalizedQR)}`, { cache: "no-store" });
       if (res.ok) {
         const data = await res.json();
         if (data.batch) return data.batch;
@@ -83,84 +89,98 @@ export async function fetchBatchByQR(qrToken: string): Promise<BatchMetadata> {
     }
   }
 
+  // 2. Check local custom registry for exact match
   const customList = getCustomBatches();
   const localMatch = customList.find(
     (b) =>
-      b.qrToken?.toLowerCase() === qrToken?.toLowerCase() ||
-      String(b.batchId) === String(qrToken)
+      b.qrToken?.toLowerCase() === normalizedQR.toLowerCase() ||
+      String(b.batchId) === normalizedQR
+  );
+  if (localMatch) return localMatch;
+
+  // 3. Check demo batches for exact match
+  const demoMatch = DEMO_BATCHES.find(
+    (b) =>
+      b.qrToken?.toLowerCase() === normalizedQR.toLowerCase() ||
+      String(b.batchId) === normalizedQR
   );
 
-  try {
-    const contract = getReadOnlyContract();
-    // 2. Get Batch by QR Token on Smart Contract
-    const rawBatch = await withTimeout(contract.getBatchByQR(qrToken), 4000);
-    const batchId = Number(rawBatch.batchId);
-    if (!batchId || batchId === 0) {
-      return localMatch || customList[0] || DEMO_BATCHES[0];
+  // 4. Try querying Smart Contract on Polygon Amoy if address is configured
+  if (HONEYCHAIN_CONTRACT_ADDRESS) {
+    try {
+      const contract = getReadOnlyContract();
+      const rawBatch = await withTimeout(contract.getBatchByQR(normalizedQR), 4000);
+      const batchId = Number(rawBatch.batchId);
+      if (batchId && batchId > 0) {
+        const rawFarmer = await withTimeout(contract.getFarmer(Number(rawBatch.farmerId)), 3000);
+        const rawCustody: Array<{ actor: string; entity: string; timestamp: bigint; action: string }> =
+          await withTimeout(contract.getCustodyChain(batchId), 3000).catch(() => []);
+
+        const custodyChain: CustodyEntry[] = rawCustody.map((c) => ({
+          actor: c.actor,
+          entity: c.entity,
+          timestamp: Number(c.timestamp),
+          action: c.action,
+        }));
+
+        const farmer: Farmer = {
+          farmerId: Number(rawFarmer.farmerId),
+          name: rawFarmer.name,
+          location: rawFarmer.location,
+          cooperativeId: rawFarmer.cooperativeId,
+          ipfsProfileHash: rawFarmer.ipfsProfileHash,
+          isVerified: rawFarmer.isVerified,
+          registeredAt: Number(rawFarmer.registeredAt),
+        };
+
+        const batch: HoneyBatch = {
+          batchId: Number(rawBatch.batchId),
+          farmerId: Number(rawBatch.farmerId),
+          harvestTimestamp: Number(rawBatch.harvestTimestamp),
+          ipfsMetadataHash: rawBatch.ipfsMetadataHash,
+          qualityScore: Number(rawBatch.qualityScore),
+          grade: rawBatch.grade,
+          isAuthentic: rawBatch.isAuthentic && !rawBatch.isRevoked && !rawBatch.isDisputed,
+          isRevoked: rawBatch.isRevoked,
+        };
+
+        return {
+          batchId,
+          farmer,
+          batch,
+          custodyChain: custodyChain.length > 0 ? custodyChain : (demoMatch?.custodyChain || []),
+          labReport: demoMatch?.labReport || {
+            moisturePercent: 17.5,
+            brixPercent: 81.0,
+            hmfMgPerKg: 15.0,
+            diastaseNumber: 17.5,
+            electricalConductivity: 0.4,
+            purityScore: batch.qualityScore,
+            grade: batch.grade,
+            passedFSSAI: batch.qualityScore >= 70,
+            testedAt: new Date(batch.harvestTimestamp * 1000).toISOString().split("T")[0],
+          },
+          qrToken: normalizedQR,
+          txHash: demoMatch?.txHash,
+        };
+      }
+    } catch {
+      // Contract call failed or batch not found on chain
     }
-
-    // Get Farmer & Custody
-    const rawFarmer = await withTimeout(contract.getFarmer(Number(rawBatch.farmerId)), 3000);
-    const rawCustody: Array<{ actor: string; entity: string; timestamp: bigint; action: string }> =
-      await withTimeout(contract.getCustodyChain(batchId), 3000).catch(() => []);
-
-    const custodyChain: CustodyEntry[] = rawCustody.map((c) => ({
-      actor: c.actor,
-      entity: c.entity,
-      timestamp: Number(c.timestamp),
-      action: c.action,
-    }));
-
-    const farmer: Farmer = {
-      farmerId: Number(rawFarmer.farmerId),
-      name: rawFarmer.name,
-      location: rawFarmer.location,
-      cooperativeId: rawFarmer.cooperativeId,
-      ipfsProfileHash: rawFarmer.ipfsProfileHash,
-      isVerified: rawFarmer.isVerified,
-      registeredAt: Number(rawFarmer.registeredAt),
-    };
-
-    const batch: HoneyBatch = {
-      batchId: Number(rawBatch.batchId),
-      farmerId: Number(rawBatch.farmerId),
-      harvestTimestamp: Number(rawBatch.harvestTimestamp),
-      ipfsMetadataHash: rawBatch.ipfsMetadataHash,
-      qualityScore: Number(rawBatch.qualityScore),
-      grade: rawBatch.grade,
-      isAuthentic: rawBatch.isAuthentic && !rawBatch.isRevoked && !rawBatch.isDisputed,
-      isRevoked: rawBatch.isRevoked,
-    };
-
-    return {
-      batchId,
-      farmer,
-      batch,
-      custodyChain: custodyChain.length > 0 ? custodyChain : (localMatch?.custodyChain || []),
-      labReport: localMatch?.labReport || {
-        moisturePercent: 17.5,
-        brixPercent: 81.0,
-        hmfMgPerKg: 15.0,
-        diastaseNumber: 17.5,
-        electricalConductivity: 0.4,
-        purityScore: batch.qualityScore,
-        grade: batch.grade,
-        passedFSSAI: batch.qualityScore >= 70,
-        testedAt: new Date(batch.harvestTimestamp * 1000).toISOString().split("T")[0],
-      },
-      qrToken: localMatch?.qrToken || qrToken,
-      txHash: localMatch?.txHash,
-    };
-  } catch (err) {
-    // Graceful offline fallback to local registry
-    return localMatch || customList[0] || DEMO_BATCHES[0];
   }
+
+  // Return demoMatch if exact match exists, otherwise null
+  return demoMatch || null;
 }
 
 /**
- * Fetch batch metadata by Batch ID with fallback cascade: DB API -> Smart Contract -> LocalStorage -> Demo
+ * Fetch batch metadata by Batch ID with fallback cascade: DB API -> Smart Contract -> LocalStorage -> Demo (Exact match only)
  */
-export async function fetchBatchById(batchId: number): Promise<BatchMetadata> {
+export async function fetchBatchById(batchId: number): Promise<BatchMetadata | null> {
+  if (!batchId || isNaN(batchId) || batchId <= 0) {
+    return null;
+  }
+
   // 1. Try DB API first
   if (typeof window !== "undefined") {
     try {
@@ -174,60 +194,70 @@ export async function fetchBatchById(batchId: number): Promise<BatchMetadata> {
     }
   }
 
+  // 2. Check local custom registry for exact match
   const customList = getCustomBatches();
   const localMatch = customList.find((b) => Number(b.batchId) === Number(batchId));
+  if (localMatch) return localMatch;
 
-  try {
-    const contract = getReadOnlyContract();
-    const rawBatch = await withTimeout(contract.getBatch(batchId), 4000);
-    if (!rawBatch || Number(rawBatch.batchId) === 0) {
-      return localMatch || customList[0] || DEMO_BATCHES[0];
+  // 3. Check demo batches for exact match
+  const demoMatch = DEMO_BATCHES.find((b) => Number(b.batchId) === Number(batchId));
+
+  // 4. Try querying Smart Contract on Polygon Amoy if address is configured
+  if (HONEYCHAIN_CONTRACT_ADDRESS) {
+    try {
+      const contract = getReadOnlyContract();
+      const rawBatch = await withTimeout(contract.getBatch(batchId), 4000);
+      if (rawBatch && Number(rawBatch.batchId) > 0) {
+        const rawFarmer = await withTimeout(contract.getFarmer(Number(rawBatch.farmerId)), 3000);
+        const rawCustody = await withTimeout(contract.getCustodyChain(batchId), 3000).catch(() => []);
+
+        return {
+          batchId,
+          farmer: {
+            farmerId: Number(rawFarmer.farmerId),
+            name: rawFarmer.name,
+            location: rawFarmer.location,
+            cooperativeId: rawFarmer.cooperativeId,
+            ipfsProfileHash: rawFarmer.ipfsProfileHash,
+            isVerified: rawFarmer.isVerified,
+            registeredAt: Number(rawFarmer.registeredAt),
+          },
+          batch: {
+            batchId: Number(rawBatch.batchId),
+            farmerId: Number(rawBatch.farmerId),
+            harvestTimestamp: Number(rawBatch.harvestTimestamp),
+            ipfsMetadataHash: rawBatch.ipfsMetadataHash,
+            qualityScore: Number(rawBatch.qualityScore),
+            grade: rawBatch.grade,
+            isAuthentic: rawBatch.isAuthentic && !rawBatch.isRevoked && !rawBatch.isDisputed,
+            isRevoked: rawBatch.isRevoked,
+          },
+          custodyChain: (rawCustody || []).map((c: any) => ({
+            actor: c.actor,
+            entity: c.entity,
+            timestamp: Number(c.timestamp),
+            action: c.action,
+          })),
+          labReport: demoMatch?.labReport || {
+            moisturePercent: 17.2,
+            brixPercent: 81.4,
+            hmfMgPerKg: 14.5,
+            diastaseNumber: 18.2,
+            electricalConductivity: 0.38,
+            purityScore: Number(rawBatch.qualityScore),
+            grade: rawBatch.grade,
+            passedFSSAI: Number(rawBatch.qualityScore) >= 70,
+            testedAt: new Date(Number(rawBatch.harvestTimestamp) * 1000).toISOString().split("T")[0],
+          },
+          qrToken: demoMatch?.qrToken || `TT-2026-0000${batchId}`,
+          txHash: demoMatch?.txHash,
+        };
+      }
+    } catch {
+      // Contract call failed or batch not found
     }
-    const rawFarmer = await withTimeout(contract.getFarmer(Number(rawBatch.farmerId)), 3000);
-    const rawCustody = await withTimeout(contract.getCustodyChain(batchId), 3000).catch(() => []);
-
-    return {
-      batchId,
-      farmer: {
-        farmerId: Number(rawFarmer.farmerId),
-        name: rawFarmer.name,
-        location: rawFarmer.location,
-        cooperativeId: rawFarmer.cooperativeId,
-        ipfsProfileHash: rawFarmer.ipfsProfileHash,
-        isVerified: rawFarmer.isVerified,
-        registeredAt: Number(rawFarmer.registeredAt),
-      },
-      batch: {
-        batchId: Number(rawBatch.batchId),
-        farmerId: Number(rawBatch.farmerId),
-        harvestTimestamp: Number(rawBatch.harvestTimestamp),
-        ipfsMetadataHash: rawBatch.ipfsMetadataHash,
-        qualityScore: Number(rawBatch.qualityScore),
-        grade: rawBatch.grade,
-        isAuthentic: rawBatch.isAuthentic && !rawBatch.isRevoked && !rawBatch.isDisputed,
-        isRevoked: rawBatch.isRevoked,
-      },
-      custodyChain: (rawCustody || []).map((c: any) => ({
-        actor: c.actor,
-        entity: c.entity,
-        timestamp: Number(c.timestamp),
-        action: c.action,
-      })),
-      labReport: localMatch?.labReport || {
-        moisturePercent: 17.2,
-        brixPercent: 81.4,
-        hmfMgPerKg: 14.5,
-        diastaseNumber: 18.2,
-        electricalConductivity: 0.38,
-        purityScore: Number(rawBatch.qualityScore),
-        grade: rawBatch.grade,
-        passedFSSAI: Number(rawBatch.qualityScore) >= 70,
-        testedAt: new Date(Number(rawBatch.harvestTimestamp) * 1000).toISOString().split("T")[0],
-      },
-      qrToken: localMatch?.qrToken || `TT-2026-0000${batchId}`,
-      txHash: localMatch?.txHash,
-    };
-  } catch {
-    return localMatch || customList[0] || DEMO_BATCHES[0];
   }
+
+  // Return demoMatch if exact match exists, otherwise null
+  return demoMatch || null;
 }
