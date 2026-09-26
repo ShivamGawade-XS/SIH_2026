@@ -24,7 +24,7 @@
   "license": "MIT",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
-    "dotenv": "^16.6.1",
+    "dotenv": "^18.0.3",
     "hardhat": "^2.19.4"
   },
   "dependencies": {
